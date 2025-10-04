@@ -1,0 +1,86 @@
+<div class="login-form-container">
+  <mat-card class="login-card">
+    <!-- Logo Section -->
+    <div class="logo-section">
+      <img src="/sems-logo.png" alt="SEMS Logo" class="sems-logo">
+    </div>
+
+    <mat-card-content class="login-content">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        
+        <!-- Username Field -->
+        <div class="form-field">
+          <label class="field-label">{{ 'auth.login.username' | translate }}</label>
+          <input
+            type="text"
+            formControlName="username"
+            [placeholder]="'auth.login.usernamePlaceholder' | translate"
+            autocomplete="username"
+            class="custom-input"
+            [class.error]="isFieldInvalid('username')">
+          <div *ngIf="isFieldInvalid('username')" class="error-message">
+            {{ getFieldError('username') }}
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-field">
+          <label class="field-label">{{ 'auth.login.password' | translate }}</label>
+          <div class="password-wrapper">
+            <input
+              [type]="hidePassword ? 'password' : 'text'"
+              formControlName="password"
+              [placeholder]="'auth.login.passwordPlaceholder' | translate"
+              autocomplete="current-password"
+              class="custom-input password-input"
+              [class.error]="isFieldInvalid('password')">
+            <button
+              type="button"
+              (click)="togglePasswordVisibility()"
+              class="password-toggle"
+              [attr.aria-label]="'Toggle password visibility'">
+              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </div>
+          <div *ngIf="isFieldInvalid('password')" class="error-message">
+            {{ getFieldError('password') }}
+          </div>
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="authState.error" class="error-message general-error">
+          <mat-icon class="error-icon">error</mat-icon>
+          <span>{{ authState.error }}</span>
+          <button
+            type="button"
+            mat-icon-button
+            (click)="clearError()"
+            class="close-error">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="login-button"
+          [disabled]="authState.isLoading || loginForm.invalid">
+          
+          <mat-spinner 
+            *ngIf="authState.isLoading" 
+            diameter="20" 
+            class="button-spinner">
+          </mat-spinner>
+          
+          <span *ngIf="!authState.isLoading">
+            {{ 'auth.login.loginButton' | translate }}
+          </span>
+          
+          <span *ngIf="authState.isLoading">
+            {{ 'auth.login.loading' | translate }}
+          </span>
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

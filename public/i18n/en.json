@@ -1,0 +1,25 @@
+{
+  "auth": {
+    "login": {
+      "title": "SEMS",
+      "username": "Username",
+      "password": "Password",
+      "usernamePlaceholder": "Username/Email",
+      "passwordPlaceholder": "Password",
+      "loginButton": "Log in",
+      "loading": "Logging in...",
+      "errors": {
+        "required": "This field is required",
+        "email": "Please enter a valid email",
+        "minLength": "Minimum {{length}} characters required",
+        "invalidCredentials": "Invalid username or password",
+        "networkError": "Network error. Please try again."
+      }
+    }
+  },
+  "common": {
+    "language": "Language",
+    "english": "English",
+    "spanish": "Spanish"
+  }
+}

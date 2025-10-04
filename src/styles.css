@@ -1,4 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+* {
+  box-sizing: border-box;
+}
+
+/* Universal gradient background */
+html, body, app-root {
+  background: linear-gradient(135deg, #64b5f6 0%, #1976d2 50%, #0d47a1 100%) !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+  background-size: 100% 100% !important;
+}
+
+html, body { 
+  height: 100%; 
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #64b5f6 0%, #1976d2 50%, #0d47a1 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  overflow-x: hidden;
+}
+
+body { 
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
+
+/* Remove any debug borders or frames */
+*, *::before, *::after {
+  border: none !important;
+  outline: none !important;
+}
+
+/* Ensure app-root covers full screen */
+app-root {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #64b5f6 0%, #1976d2 50%, #0d47a1 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}

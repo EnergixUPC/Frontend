@@ -1,0 +1,25 @@
+.layout-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: linear-gradient(135deg, #64b5f6 0%, #1976d2 50%, #0d47a1 100%);
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Ensure full viewport coverage */
+:host {
+  display: block;
+  width: 100%;
+  height: 100vh;
+}
