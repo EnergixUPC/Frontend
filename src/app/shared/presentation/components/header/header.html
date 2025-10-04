@@ -1,1 +1,27 @@
-<p>header works!</p>
+<header class="header">
+  <div class="header-left">
+    <div class="date-time">
+      <span class="day">{{ getDayOfWeek() }}</span>
+      <span class="date">{{ getFormattedDate() }}</span>
+      <span class="time">{{ getFormattedTime() }}</span>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <button 
+      mat-icon-button 
+      class="notification-button"
+      (click)="onNotificationClick()"
+      [matBadge]="notificationCount"
+      matBadgeColor="warn"
+      matBadgeSize="small">
+      <mat-icon>notifications</mat-icon>
+    </button>
+
+    <div class="user-info">
+      <span class="greeting">Hello,</span>
+      <span class="username">{{ userName }}</span>
+      <img src="assets/user-avatar.png" alt="User Avatar" class="user-avatar" />
+    </div>
+  </div>
+</header>

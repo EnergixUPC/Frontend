@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -49,7 +50,8 @@ export class LoginForm implements OnInit, OnDestroy {
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly authController: AuthControllerService,
-    private readonly translate: TranslateService
+    private readonly translate: TranslateService,
+    private readonly router: Router
   ) {
     this.initializeForm();
   }
@@ -93,25 +95,9 @@ export class LoginForm implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    if (this.loginForm.valid && !this.authState.isLoading) {
-      this.clearError();
-      
-      const loginCommand: LoginCommand = {
-        username: this.loginForm.get('username')?.value?.trim(),
-        password: this.loginForm.get('password')?.value
-      };
-
-      this.authController.executeLogin(loginCommand)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: () => {
-            // Success handled by auth state subscription
-          },
-          error: (error) => {
-            console.error('Login error:', error);
-            // Error handled by auth state subscription
-          }
-        });
+    if (this.loginForm.valid) {
+      // Para demo sin backend, navegamos directamente al home
+      this.router.navigate(['/home']);
     } else {
       this.markFormGroupTouched();
     }

@@ -14,12 +14,62 @@
         "minLength": "Mínimo {{length}} caracteres requeridos",
         "invalidCredentials": "Usuario o contraseña incorrectos",
         "networkError": "Error de red. Por favor intente nuevamente."
-      }
+      },
+      "success": "Inicio de sesión exitoso"
     }
+  },
+  "dashboard": {
+    "stats": {
+      "energyConsumption": "Consumo de Energía",
+      "estimatedSavings": "Ahorros Estimados",
+      "activeDevices": "Dispositivos Activos",
+      "estimatedBill": "Factura Estimada",
+      "todayConsumption": "Consumo de Hoy",
+      "monthlySavingGoal": "Meta de ahorro mensual",
+      "consumption": "Consumo",
+      "devices": "Dispositivos"
+    },
+    "charts": {
+      "dailyConsumption": "Consumo Diario de Energía",
+      "consumptionByCategory": "Consumo de Energía",
+      "byCategory": "por Categoría",
+      "monthlyComparison": "Consumo Mensual",
+      "comparison": "Comparación"
+    },
+    "devices": {
+      "title": "Mis Dispositivos",
+      "myDevices": "Mis Dispositivos",
+      "noDevices": "No se encontraron dispositivos"
+    },
+    "alerts": {
+      "title": "Alertas",
+      "highConsumption": "¡Consumo alto detectado!",
+      "highConsumptionMessage": "Tu uso está un 20% por encima del promedio en las últimas 3 horas.",
+      "reminder": "Recordatorio:",
+      "reminderMessage": "Olvidaste apagar las luces del patio."
+    }
+  },
+  "sidebar": {
+    "home": "Inicio",
+    "profile": "Perfil",
+    "devices": "Dispositivos",
+    "reports": "Reportes",
+    "settings": "Configuración",
+    "logout": "Cerrar Sesión"
   },
   "common": {
     "language": "Idioma",
     "english": "Inglés",
-    "spanish": "Español"
+    "spanish": "Español",
+    "close": "Cerrar",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "status": {
+      "on": "ENCENDIDO",
+      "off": "APAGADO",
+      "active": "Activo",
+      "inactive": "Inactivo"
+    }
   }
 }

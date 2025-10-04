@@ -1,0 +1,27 @@
+<mat-card class="monthly-card">
+  <mat-card-header>
+    <mat-card-title>{{ 'dashboard.charts.monthlyComparison' | translate }}</mat-card-title>
+    <mat-card-subtitle>{{ 'dashboard.charts.comparison' | translate }}</mat-card-subtitle>
+  </mat-card-header>
+  
+  <mat-card-content>
+    <div class="monthly-content" *ngIf="monthlyComparison">
+      <div class="bar-chart">
+        <div class="bar-container" *ngFor="let month of monthlyComparison.months">
+          <div class="bar-wrapper">
+            <div 
+              class="bar"
+              [class.current]="isCurrentMonth(month.month)"
+              [style.height]="getBarHeight(month.consumption)">
+            </div>
+          </div>
+          <span class="bar-label">{{ month.month }}</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="no-data" *ngIf="!monthlyComparison">
+      <p>{{ getTranslation('common.loading') }}</p>
+    </div>
+  </mat-card-content>
+</mat-card>

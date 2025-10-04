@@ -1,0 +1,91 @@
+.chart-card {
+  border-radius: 12px;
+  height: 100%;
+}
+
+mat-card-header {
+  padding: 1.5rem 1.5rem 0;
+}
+
+mat-card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #333;
+}
+
+mat-card-content {
+  padding: 1.5rem !important;
+}
+
+.chart-container {
+  display: flex;
+  gap: 1rem;
+  height: 350px;
+}
+
+.y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0 0.5rem;
+  min-width: 60px;
+}
+
+.y-label {
+  font-size: 0.75rem;
+  color: #666;
+  text-align: right;
+}
+
+.chart-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-svg {
+  flex: 1;
+  width: 100%;
+  height: 300px;
+}
+
+.x-axis {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.x-label {
+  font-size: 0.7rem;
+  color: #666;
+  text-align: center;
+  flex: 1;
+}
+
+.no-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  color: #999;
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+    height: 250px;
+  }
+
+  .chart-svg {
+    height: 200px;
+  }
+
+  .x-label {
+    font-size: 0.6rem;
+  }
+
+  .y-axis {
+    min-width: 50px;
+  }
+}

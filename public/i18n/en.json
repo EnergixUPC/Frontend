@@ -14,12 +14,62 @@
         "minLength": "Minimum {{length}} characters required",
         "invalidCredentials": "Invalid username or password",
         "networkError": "Network error. Please try again."
-      }
+      },
+      "success": "Login successful"
     }
+  },
+  "dashboard": {
+    "stats": {
+      "energyConsumption": "Energy Consumption",
+      "estimatedSavings": "Estimated Savings",
+      "activeDevices": "Active Devices",
+      "estimatedBill": "Estimated Bill",
+      "todayConsumption": "Today's Consumption",
+      "monthlySavingGoal": "Monthly saving goal",
+      "consumption": "Consumption",
+      "devices": "Devices"
+    },
+    "charts": {
+      "dailyConsumption": "Daily Energy Consumption",
+      "consumptionByCategory": "Energy Consumption",
+      "byCategory": "by Category",
+      "monthlyComparison": "Monthly Consumption",
+      "comparison": "Comparison"
+    },
+    "devices": {
+      "title": "My Devices",
+      "myDevices": "My Devices",
+      "noDevices": "No devices found"
+    },
+    "alerts": {
+      "title": "Alerts",
+      "highConsumption": "High consumption detected!",
+      "highConsumptionMessage": "Your usage is 20% above average in the last 3 hours.",
+      "reminder": "Reminder:",
+      "reminderMessage": "You forgot to turn off the patio lights."
+    }
+  },
+  "sidebar": {
+    "home": "Home",
+    "profile": "Profile",
+    "devices": "Devices",
+    "reports": "Reports",
+    "settings": "Settings",
+    "logout": "Log out"
   },
   "common": {
     "language": "Language",
     "english": "English",
-    "spanish": "Spanish"
+    "spanish": "Spanish",
+    "close": "Close",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "status": {
+      "on": "ON",
+      "off": "OFF",
+      "active": "Active",
+      "inactive": "Inactive"
+    }
   }
 }

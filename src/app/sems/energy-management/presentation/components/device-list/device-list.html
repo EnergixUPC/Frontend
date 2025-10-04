@@ -1,0 +1,25 @@
+<mat-card class="device-card">
+  <mat-card-header>
+    <mat-card-title>{{ 'dashboard.devices.title' | translate }}</mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content>
+    <div class="device-list" *ngIf="devices.length > 0">
+      <div class="device-item" *ngFor="let device of devices">
+        <mat-icon class="device-icon" [ngClass]="getDeviceClass(device.type)">
+          {{ getDeviceIcon(device.type) }}
+        </mat-icon>
+        <div class="device-info">
+          <span class="device-name">{{ device.getDisplayName() }}</span>
+          <span class="device-status" [ngClass]="getStatusClass(device)">
+            {{ getStatusText(device) }}
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="no-data" *ngIf="devices.length === 0">
+      <p>{{ 'dashboard.devices.noDevices' | translate }}</p>
+    </div>
+  </mat-card-content>
+</mat-card>

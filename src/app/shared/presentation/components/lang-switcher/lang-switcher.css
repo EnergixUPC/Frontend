@@ -1,74 +1,55 @@
 .lang-switcher {
-  position: absolute;
+  position: fixed;
   top: 20px;
   right: 20px;
-  z-index: 1000;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .language-toggle {
   display: flex;
-  background: rgba(255, 255, 255, 0.25);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
   padding: 4px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .lang-btn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
+  padding: 6px 12px;
   border: none;
   background: transparent;
-  border-radius: 8px;
+  border-radius: 16px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   font-family: inherit;
-  min-width: 60px;
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 40px;
   justify-content: center;
 }
 
 .lang-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-1px);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .lang-btn.active {
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  color: #2d3748;
+  background: linear-gradient(135deg, #64b5f6 25%, #3386da 50%);
+  color: white;
+  font-weight: 600;
 }
 
 .lang-btn:not(.active) {
-  color: rgba(255, 255, 255, 0.8);
+  color: #666;
 }
 
-.language-flag {
+.language-text {
   font-size: 12px;
-  font-weight: 700;
-  color: inherit;
-  letter-spacing: 0.5px;
-}
-
-.language-code {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-::ng-deep .mat-mdc-select-value {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-::ng-deep .mat-mdc-form-field-outline {
-  border-radius: 8px;
-}
-
-::ng-deep .mat-mdc-form-field-outline-thick {
-  border-width: 1px;
+  font-weight: inherit;
 }
 
 /* Hover effect */

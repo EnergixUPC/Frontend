@@ -1,0 +1,167 @@
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background: white;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  overflow-x: hidden;
+}
+
+.sidebar-header {
+  padding: 2rem 1.5rem;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 2px;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 1.5rem 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sidebar-nav mat-nav-list {
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.menu-item {
+  cursor: pointer;
+  padding: 0.75rem 1.5rem !important;
+  margin: 0.25rem 0.75rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  color: #666;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: calc(250px - 1.5rem);
+  box-sizing: border-box;
+}
+
+.menu-item:hover {
+  background-color: #f5f5f5;
+  color: #333;
+  border-radius: 8px;
+}
+
+.menu-item.active {
+  background: #1976d2;
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.menu-item mat-icon {
+  color: inherit;
+  margin-right: 0.75rem;
+}
+
+.menu-item span {
+  display: block;
+}
+
+.sidebar-footer {
+  padding: 1.5rem;
+}
+
+.logout-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  color: #666;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.logout-button:hover {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.logout-button span {
+  display: block;
+}
+
+.logout-button:hover {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.logout-button mat-icon {
+  color: inherit;
+}
+
+/* Scrollbar styling */
+.sidebar-nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Hide horizontal scrollbar completely */
+.sidebar::-webkit-scrollbar:horizontal {
+  display: none;
+}
+
+.sidebar-nav::-webkit-scrollbar:horizontal {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+  }
+
+  .logo-text,
+  .menu-item span,
+  .logout-button span {
+    display: none;
+  }
+
+  .logo {
+    justify-content: center;
+  }
+
+  .menu-item {
+    justify-content: center;
+    padding: 0.75rem !important;
+  }
+
+  .logout-button {
+    justify-content: center;
+  }
+}

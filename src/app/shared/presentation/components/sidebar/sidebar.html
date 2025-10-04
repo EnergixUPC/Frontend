@@ -1,1 +1,30 @@
-<p>sidebar works!</p>
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">
+      <img src="/sems-logo.png" alt="SEMS Logo" class="logo-image" />
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <mat-nav-list>
+      <mat-list-item 
+        *ngFor="let item of menuItems"
+        [class.active]="item.active"
+        (click)="onMenuItemClick(item)"
+        class="menu-item">
+        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+        <span matListItemTitle>{{ getLabel(item.labelKey) }}</span>
+      </mat-list-item>
+    </mat-nav-list>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button 
+      mat-button 
+      class="logout-button"
+      (click)="onLogout()">
+      <mat-icon>logout</mat-icon>
+      <span>{{ getLogoutLabel() }}</span>
+    </button>
+  </div>
+</aside>

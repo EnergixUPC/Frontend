@@ -5,7 +5,7 @@
       [class]="'lang-btn ' + (currentLanguage === language.code ? 'active' : '')"
       (click)="onLanguageChange(language.code)"
       type="button">
-      <span class="language-flag">{{ language.flag }}</span>
+      <span class="language-text">{{ language.code.toUpperCase() }}</span>
     </button>
   </div>
 </div>

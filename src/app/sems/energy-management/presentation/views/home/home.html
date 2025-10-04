@@ -1,0 +1,81 @@
+<div class="dashboard-container">
+  <!-- Stats Cards Row -->
+  <div class="stats-row">
+    <app-stats-card 
+      [title]="'dashboard.stats.energyConsumption' | translate" 
+      [value]="dashboardStats.energyConsumption + ' kWh'"
+      [subtitle]="'dashboard.stats.monthlySavingGoal' | translate">
+    </app-stats-card>
+    
+    <app-stats-card 
+      [title]="'dashboard.stats.estimatedSavings' | translate" 
+      [value]="dashboardStats.estimatedSavings + '%'"
+      [subtitle]="'dashboard.stats.consumption' | translate">
+    </app-stats-card>
+    
+    <app-stats-card 
+      [title]="'dashboard.stats.activeDevices' | translate" 
+      [value]="dashboardStats.activeDevices + ' ' + ('dashboard.stats.devices' | translate)"
+      subtitle="">
+    </app-stats-card>
+    
+    <app-stats-card 
+      [title]="'dashboard.stats.estimatedBill' | translate" 
+      [value]="dashboardStats.currency + ' ' + dashboardStats.estimatedBill"
+      subtitle="">
+    </app-stats-card>
+    
+    <app-stats-card 
+      [title]="'dashboard.stats.todayConsumption' | translate" 
+      [value]="dashboardStats.todayConsumption + ' kWh'"
+      subtitle="">
+    </app-stats-card>
+  </div>
+
+  <!-- Charts Row -->
+  <div class="charts-row">
+    <div class="chart-large">
+      <app-daily-chart [dailyConsumption]="dailyConsumption"></app-daily-chart>
+    </div>
+    
+    <div class="chart-small">
+      <app-category-chart [consumptionByCategory]="consumptionByCategory"></app-category-chart>
+    </div>
+  </div>
+
+  <!-- Bottom Row -->
+  <div class="bottom-row">
+    <div class="chart-medium">
+      <app-monthly-chart [monthlyComparison]="monthlyComparison"></app-monthly-chart>
+    </div>
+
+    <div class="alerts-section">
+      <mat-card class="alerts-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'dashboard.alerts.title' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="alert-item warning">
+            <mat-icon>warning</mat-icon>
+            <div class="alert-content">
+              <strong>{{ 'dashboard.alerts.highConsumption' | translate }}</strong>
+              <p>{{ 'dashboard.alerts.highConsumptionMessage' | translate }}</p>
+            </div>
+          </div>
+          
+          <div class="alert-item info">
+            <mat-icon>info</mat-icon>
+            <div class="alert-content">
+              <strong>{{ 'dashboard.alerts.reminder' | translate }}</strong>
+              <p>{{ 'dashboard.alerts.reminderMessage' | translate }}</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="devices-section">
+      <app-device-list [devices]="devices"></app-device-list>
+    </div>
+  </div>
+</div>
