@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { Header } from '../../components/header/header';
 import { Sidebar } from '../../components/sidebar/sidebar';
-import { LangSwitcher } from '../../components/lang-switcher/lang-switcher';
 
 @Component({
   selector: 'app-layout-home',
@@ -12,8 +11,7 @@ import { LangSwitcher } from '../../components/lang-switcher/lang-switcher';
     CommonModule,
     RouterOutlet,
     Header,
-    Sidebar,
-    LangSwitcher
+    Sidebar
   ],
   templateUrl: './layout-home.html',
   styleUrl: './layout-home.css'

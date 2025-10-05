@@ -1,8 +1,5 @@
 .lang-switcher {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 500;
+  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -64,11 +61,6 @@
 
 /* Responsive Design for Language Switcher */
 @media (max-width: 768px) {
-  .lang-switcher {
-    top: 15px;
-    right: 15px;
-  }
-  
   .language-toggle {
     padding: 3px;
     border-radius: 10px;
@@ -87,11 +79,6 @@
 }
 
 @media (max-width: 480px) {
-  .lang-switcher {
-    top: 12px;
-    right: 12px;
-  }
-  
   .language-toggle {
     padding: 2px;
     border-radius: 8px;
@@ -110,11 +97,6 @@
 }
 
 @media (max-width: 360px) {
-  .lang-switcher {
-    top: 8px;
-    right: 8px;
-  }
-  
   .lang-btn {
     padding: 3px 6px;
     min-width: 35px;
@@ -128,11 +110,6 @@
 
 /* Landscape orientation for mobile */
 @media (max-height: 600px) and (orientation: landscape) {
-  .lang-switcher {
-    top: 8px;
-    right: 8px;
-  }
-  
   .language-toggle {
     padding: 2px;
   }

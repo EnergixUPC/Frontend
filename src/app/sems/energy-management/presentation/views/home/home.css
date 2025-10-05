@@ -1,6 +1,6 @@
 .dashboard-container {
-  padding: 20px;
-  max-width: 1400px;
+  max-width: 100%;
+  min-height: 100vh;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -13,11 +13,14 @@
   gap: 20px;
   justify-content: space-between;
   flex-wrap: wrap;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .stats-row app-stats-card {
   flex: 1;
-  min-width: 200px;
+  min-width: 180px;
+  max-width: calc(20% - 16px);
 }
 
 /* Charts Row */
@@ -25,16 +28,20 @@
   display: flex;
   gap: 20px;
   height: 400px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .chart-large {
   flex: 2;
-  min-width: 600px;
+  min-width: 0;
+  max-width: 66.67%;
 }
 
 .chart-small {
   flex: 1;
-  min-width: 300px;
+  min-width: 0;
+  max-width: 33.33%;
 }
 
 /* Bottom Row */
@@ -42,21 +49,26 @@
   display: flex;
   gap: 20px;
   height: 300px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .chart-medium {
   flex: 1;
-  min-width: 300px;
+  min-width: 0;
+  max-width: 33.33%;
 }
 
 .alerts-section {
   flex: 1;
-  min-width: 300px;
+  min-width: 0;
+  max-width: 33.33%;
 }
 
 .devices-section {
   flex: 1;
-  min-width: 300px;
+  min-width: 0;
+  max-width: 33.33%;
 }
 
 /* Alerts Card Styling */
@@ -119,6 +131,17 @@
   .chart-large,
   .chart-small {
     height: 300px;
+    max-width: 100%;
+  }
+  
+  .bottom-row {
+    flex-wrap: wrap;
+  }
+  
+  .chart-medium,
+  .alerts-section,
+  .devices-section {
+    max-width: 100%;
   }
 }
 
@@ -131,6 +154,11 @@
     flex-direction: column;
   }
   
+  .stats-row app-stats-card {
+    max-width: 100%;
+    min-width: unset;
+  }
+  
   .bottom-row {
     flex-direction: column;
     height: auto;
@@ -140,5 +168,6 @@
   .alerts-section,
   .devices-section {
     height: 300px;
+    max-width: 100%;
   }
 }

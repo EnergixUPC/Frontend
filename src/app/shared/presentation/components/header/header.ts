@@ -5,6 +5,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { interval, Subscription } from 'rxjs';
 import { AuthControllerService } from '../../../../sems/authentication/application/services/auth-controller.service';
+import { LangSwitcher } from '../lang-switcher/lang-switcher';
 
 @Component({
   selector: 'app-header',
@@ -13,16 +14,18 @@ import { AuthControllerService } from '../../../../sems/authentication/applicati
     CommonModule,
     MatIconModule,
     MatBadgeModule,
-    MatButtonModule
+    MatButtonModule,
+    LangSwitcher
   ],
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
 export class Header implements OnInit, OnDestroy {
   currentDate: Date = new Date();
-  userName: string = '';
+  userName: string = 'User';
   notificationCount: number = 2;
   private timeSubscription?: Subscription;
+  private authSubscription?: Subscription;
 
   constructor(private authController: AuthControllerService) {}
 
@@ -32,15 +35,25 @@ export class Header implements OnInit, OnDestroy {
       this.updateDateTime();
     });
 
-    const currentUser = this.authController.getCurrentUser();
-    if (currentUser) {
-      this.userName = currentUser.firstName || currentUser.email.split('@')[0];
-    }
+    // Subscribe to auth state to get current user
+    this.authSubscription = this.authController.getCurrentAuthState().subscribe(authState => {
+      console.log('Header - Auth state updated:', authState);
+      if (authState.user) {
+        console.log('Header - User found:', authState.user);
+        this.userName = authState.user.firstName || authState.user.email.split('@')[0];
+      } else {
+        console.log('Header - No user in auth state');
+        this.userName = 'User';
+      }
+    });
   }
 
   ngOnDestroy(): void {
     if (this.timeSubscription) {
       this.timeSubscription.unsubscribe();
+    }
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
     }
   }
 

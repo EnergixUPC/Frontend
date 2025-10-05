@@ -15,7 +15,9 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideClientHydration(withEventReplay()),
     importProvidersFrom(
-      TranslateModule.forRoot()
+      TranslateModule.forRoot({
+        defaultLanguage: 'es'
+      })
     )
   ]
 };

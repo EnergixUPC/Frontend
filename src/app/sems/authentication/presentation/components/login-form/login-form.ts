@@ -96,8 +96,23 @@ export class LoginForm implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      // Para demo sin backend, navegamos directamente al home
-      this.router.navigate(['/home']);
+      const { username, password } = this.loginForm.value;
+      
+      const command: LoginCommand = {
+        username,
+        password
+      };
+
+      this.authController.executeLogin(command).subscribe({
+        next: (result) => {
+          console.log('Login successful:', result);
+          this.router.navigate(['/home']);
+        },
+        error: (error) => {
+          console.error('Login error:', error);
+          // Error handling is managed by the auth state subscription
+        }
+      });
     } else {
       this.markFormGroupTouched();
     }

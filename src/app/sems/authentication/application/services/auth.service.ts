@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { map, tap, catchError, switchMap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 import { AuthRepository } from '../../domain/model/repositories/auth.repository';
 import { UserRepositoryImpl } from '../../infrastructure/repositories/user-repository';
@@ -32,7 +33,8 @@ export class AuthService {
 
   constructor(
     private readonly userRepository: UserRepositoryImpl,
-    private readonly tokenService: TokenService
+    private readonly tokenService: TokenService,
+    private readonly http: HttpClient
   ) {
     this.authRepository = this.userRepository;
     this.initializeAuthState();
@@ -59,41 +61,61 @@ export class AuthService {
       error: null
     });
 
-    try {
-      const credentials = new LoginCredentials(username, password);
-      
-      return this.authRepository.login(credentials).pipe(
-        tap(({ user, tokens }) => {
-          // Save tokens and user to local storage
+    // Use API to validate credentials against db.json
+    return this.http.get<any[]>(`http://localhost:3000/users?username=${username}&password=${password}`).pipe(
+      map(users => {
+        console.log('AuthService - API response:', users);
+        if (users && users.length > 0) {
+          const userData = users[0];
+          console.log('AuthService - User data from API:', userData);
+          const user = new User(
+            userData.id.toString(),
+            userData.email,
+            userData.firstName,
+            userData.lastName,
+            userData.role,
+            true,
+            new Date(userData.createdAt),
+            new Date()
+          );
+
+          console.log('AuthService - Created user object:', user);
+
+          const tokens = new TokenPair(
+            'mock-access-token-' + Date.now(),
+            'mock-refresh-token-' + Date.now(),
+            3600
+          );
+
+          // Save tokens and user
           this.tokenService.saveTokens(tokens);
-          this.tokenService.saveUser(user.updateLastLogin());
-          
+          this.tokenService.saveUser(user);
+
           // Update auth state
           this.updateAuthState({
-            user: user.updateLastLogin(),
+            user,
             isAuthenticated: true,
             isLoading: false,
             error: null
           });
-        }),
-        catchError(error => {
-          this.updateAuthState({
-            ...this.authStateSubject.value,
-            isLoading: false,
-            error: this.getErrorMessage(error)
-          });
-          return throwError(() => error);
-        })
-      );
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Invalid credentials format';
-      this.updateAuthState({
-        ...this.authStateSubject.value,
-        isLoading: false,
-        error: errorMessage
-      });
-      return throwError(() => new Error(errorMessage));
-    }
+
+          console.log('AuthService - Auth state updated with user:', user);
+
+          return { user, tokens };
+        } else {
+          throw new Error('Invalid credentials');
+        }
+      }),
+      catchError(error => {
+        const errorMessage = 'Invalid credentials';
+        this.updateAuthState({
+          ...this.authStateSubject.value,
+          isLoading: false,
+          error: errorMessage
+        });
+        return throwError(() => new Error(errorMessage));
+      })
+    );
   }
 
   logout(): Observable<void> {

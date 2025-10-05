@@ -1,0 +1,139 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "Iker",
+      "password": "123456",
+      "email": "iker.santos@sems.com",
+      "firstName": "Iker",
+      "lastName": "Santos",
+      "role": "admin",
+      "createdAt": "2025-10-01T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "username": "Andres",
+      "password": "lala123",
+      "email": "andres.garcia@sems.com",
+      "firstName": "Andrés",
+      "lastName": "García",
+      "role": "admin",
+      "createdAt": "2025-10-01T10:00:00Z"
+    }
+  ],
+  "dashboardStats": {
+    "energyConsumption": 250,
+    "estimatedSavings": -15,
+    "activeDevices": 8,
+    "estimatedBill": 150.35,
+    "todayConsumption": 9.5,
+    "currency": "S/."
+  },
+  "dailyConsumption": {
+    "id": 1,
+    "date": "2025-10-04",
+    "dataPoints": [
+      { "time": "00:00", "value": 0.5 },
+      { "time": "02:00", "value": 0.3 },
+      { "time": "04:00", "value": 0.2 },
+      { "time": "06:00", "value": 1.5 },
+      { "time": "08:00", "value": 3.2 },
+      { "time": "10:00", "value": 2.8 },
+      { "time": "12:00", "value": 4.1 },
+      { "time": "14:00", "value": 5.2 },
+      { "time": "16:00", "value": 6.8 },
+      { "time": "18:00", "value": 9.1 },
+      { "time": "20:00", "value": 7.2 },
+      { "time": "22:00", "value": 3.8 }
+    ],
+    "totalConsumption": 45.8,
+    "peakTime": "18:00",
+    "peakValue": 9.1
+  },
+  "consumptionByCategory": {
+    "id": 1,
+    "categories": [
+      { "name": "Lighting", "value": 30, "percentage": 30, "color": "#E3F2FD" },
+      { "name": "Heating & Cooling", "value": 25, "percentage": 25, "color": "#1976D2" },
+      { "name": "Electronics", "value": 20, "percentage": 20, "color": "#2196F3" },
+      { "name": "Major Appliances", "value": 15, "percentage": 15, "color": "#64B5F6" },
+      { "name": "Other", "value": 10, "percentage": 10, "color": "#BBDEFB" }
+    ],
+    "totalConsumption": 100
+  },
+  "monthlyComparison": {
+    "id": 1,
+    "months": [
+      { "month": "Jun", "year": 2025, "consumption": 180 },
+      { "month": "Jul", "year": 2025, "consumption": 220 },
+      { "month": "Aug", "year": 2025, "consumption": 195 },
+      { "month": "Sep", "year": 2025, "consumption": 250 }
+    ],
+    "currentMonth": "Sep",
+    "previousMonthComparison": 15
+  },
+  "devices": [
+    {
+      "id": "1",
+      "name": "Smart Lamp",
+      "location": "Living Room",
+      "type": "SMART_LAMP",
+      "status": "ON",
+      "lastActive": null
+    },
+    {
+      "id": "2",
+      "name": "Smart TV",
+      "location": "Living Room",
+      "type": "SMART_TV",
+      "status": "OFF",
+      "lastActive": null
+    },
+    {
+      "id": "3",
+      "name": "Smart Fan",
+      "location": "Master Bedroom",
+      "type": "SMART_FAN",
+      "status": "OFF",
+      "lastActive": "Last active 2h ago"
+    }
+  ],
+  "alerts": [
+    {
+      "id": 1,
+      "type": "warning",
+      "title": "High consumption detected!",
+      "message": "Your usage is 20% above average in the last 3 hours.",
+      "icon": "warning",
+      "timestamp": "2025-10-04T15:30:00Z",
+      "isRead": false
+    },
+    {
+      "id": 2,
+      "type": "info",
+      "title": "Reminder:",
+      "message": "You forgot to turn off the patio lights.",
+      "icon": "info",
+      "timestamp": "2025-10-04T14:00:00Z",
+      "isRead": false
+    }
+  ],
+  "notifications": [
+    {
+      "id": 1,
+      "title": "Energy savings achieved",
+      "message": "You saved 15% energy this month compared to last month",
+      "type": "success",
+      "timestamp": "2025-10-04T12:00:00Z",
+      "isRead": false
+    },
+    {
+      "id": 2,
+      "title": "Device maintenance",
+      "message": "Smart Fan in Master Bedroom needs maintenance",
+      "type": "warning",
+      "timestamp": "2025-10-04T10:30:00Z",
+      "isRead": true
+    }
+  ]
+}

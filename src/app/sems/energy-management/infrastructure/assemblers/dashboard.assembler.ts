@@ -9,7 +9,7 @@ import {
   ConsumptionByCategoryResponse,
   MonthlyComparisonResponse,
   DeviceResponse
-} from '../response';
+} from '../response/dashboard.response';
 
 export class DashboardAssembler {
   static toDashboardStats(response: DashboardStatsResponse): DashboardStats {

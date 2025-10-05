@@ -9,6 +9,14 @@
   background-size: 100% 100%;
 }
 
+/* Position lang-switcher in top-right corner */
+app-lang-switcher {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
 .main-content {
   flex: 1;
   display: flex;

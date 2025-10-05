@@ -52,7 +52,7 @@ export class Login implements OnInit {
   }
 
   private navigateToDashboard(): void {
-    // Navigate to dashboard or main application
-    this.router.navigate(['/dashboard']);
+    // Navigate to home instead of dashboard
+    this.router.navigate(['/home']);
   }
 }
