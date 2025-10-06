@@ -1,0 +1,173 @@
+:host {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  color: #222;
+}
+
+.settings-content {
+  padding: 30px 40px;
+  background: #fff;
+  height: 100%;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+/* Title */
+.settings-container h1 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+/* Grid de secciones */
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.card {
+  border: 1px solid #c8d3e3;
+  border-radius: 8px;
+  padding: 20px;
+  background: #fff;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.toggles label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0;
+}
+
+.schedule {
+  margin: 10px 0;
+  font-size: 0.9rem;
+}
+
+.schedule span {
+  color: #007bff;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 10px 0;
+}
+
+/* Chips (botones seleccionables) */
+.chip {
+  border: 1px solid #000;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  margin-right: 8px;
+  cursor: pointer;
+  background: #fff;
+  color: #000;
+  transition: all 0.2s ease-in-out;
+}
+
+.chip:hover {
+  background: #000;
+  color: #fff;
+}
+
+.chip.selected {
+  background: #000;
+  color: #fff;
+}
+
+.edit-btn,
+.add-btn {
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.security-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+/* Botones Save/Cancel */
+.actions {
+  margin-top: 30px;
+  display: flex;
+  gap: 10px;
+}
+
+.save-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: white;
+  border: 1px solid #007bff;
+  border-radius: 8px;
+  padding: 8px 20px;
+  color: #007bff;
+  cursor: pointer;
+}
+
+/* Evita superposición o bloqueos al hacer clic */
+button.chip {
+  pointer-events: all;
+  position: relative;
+  z-index: 2;
+}
+.selected-black {
+  color: #000 !important;
+}
+.selected-format {
+  color: #000 !important;
+}
+
