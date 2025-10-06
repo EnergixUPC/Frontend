@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { interval, Subscription } from 'rxjs';
 import { AuthControllerService } from '../../../../sems/authentication/application/services/auth-controller.service';
 import { LangSwitcher } from '../lang-switcher/lang-switcher';
+import {NotificationsComponent} from '../../../../sems/notifications/presentation/views/notifications';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +16,8 @@ import { LangSwitcher } from '../lang-switcher/lang-switcher';
     MatIconModule,
     MatBadgeModule,
     MatButtonModule,
-    LangSwitcher
+    LangSwitcher,
+    NotificationsComponent
   ],
   templateUrl: './header.html',
   styleUrl: './header.css'
@@ -26,6 +28,7 @@ export class Header implements OnInit, OnDestroy {
   notificationCount: number = 2;
   private timeSubscription?: Subscription;
   private authSubscription?: Subscription;
+  showNotifications = false;
 
   constructor(private authController: AuthControllerService) {}
 
@@ -72,15 +75,15 @@ export class Header implements OnInit, OnDestroy {
   }
 
   getFormattedTime(): string {
-    return this.currentDate.toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
+    return this.currentDate.toLocaleTimeString('en-US', {
+      hour: '2-digit',
       minute: '2-digit',
-      hour12: true 
+      hour12: true
     });
   }
 
-  onNotificationClick(): void {
-    // Navigate to notifications page
-    console.log('Navigate to notifications');
+  toggleNotifications() {
+    this.showNotifications = !this.showNotifications;
+    console.log('Show:', this.showNotifications);
   }
 }
