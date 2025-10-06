@@ -10,7 +10,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
-
 import { AuthControllerService, LoginCommand } from '../../../application/services/auth-controller.service';
 import { AuthState } from '../../../application/services/auth.service';
 

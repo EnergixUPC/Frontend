@@ -2,7 +2,7 @@ import { DashboardStats } from '../../domain/model/entities/dashboard-stats.enti
 import { DailyConsumption } from '../../domain/model/entities/daily-consumption.entity';
 import { ConsumptionByCategory } from '../../domain/model/entities/consumption-by-category.entity';
 import { MonthlyComparison } from '../../domain/model/entities/monthly-comparison.entity';
-import { Device } from '../../domain/model/entities/device.entity';
+import { Device } from '../../domain/model/device.entity';
 import {
   DashboardStatsResponse,
   DailyConsumptionResponse,
@@ -49,7 +49,19 @@ export class DashboardAssembler {
   }
 
   static toDevice(response: DeviceResponse): Device {
-    return Device.fromJson(response);
+    return {
+      id: response.id,
+      name: response.name,
+      category: 'Other', // Valor por defecto para dispositivos del dashboard
+      type: response.type,
+      status: response.status as any,
+      realTimeStatus: response.status,
+      lastActive: response.lastActive || 'Unknown',
+      alertHistory: 'No alerts',
+      energyConsumption: response.consumption ? `${response.consumption} kWh` : '0 kWh',
+      location: response.location,
+      isActive: response.status === 'ON'
+    };
   }
 
   static toDevices(responses: DeviceResponse[]): Device[] {

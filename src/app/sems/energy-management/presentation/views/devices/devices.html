@@ -1,1 +1,95 @@
-<p>devices works!</p>
+<div class="devices-container">
+  <div class="devices-header">
+    <h1 class="devices-title">{{ myDevicesText }}</h1>
+    <div class="devices-actions">
+      <button class="preferences-btn">
+        <span class="preferences-icon">+</span>
+        {{ preferencesText }}
+      </button>
+      <button class="add-device-btn">
+        <span class="add-icon">+</span>
+        {{ addDeviceText }}
+      </button>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Loading devices...</p>
+    </div>
+  } @else if (error) {
+    <div class="error-container">
+      <p class="error-message">{{ error }}</p>
+    </div>
+  } @else if (devices.length === 0) {
+    <div class="no-devices-container">
+      <p class="no-devices-message">{{ noDevicesText }}</p>
+    </div>
+  } @else {
+    <div class="devices-grid">
+      @for (device of devices; track device.id) {
+        <div class="device-card">
+          <div class="device-header">
+            <div class="device-info">
+              <h3 class="device-name">{{ device.name }}</h3>
+              <p class="device-category">{{ getCategoryText(device.category) }}</p>
+            </div>
+            <button class="device-settings">
+              <svg class="settings-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+            </button>
+          </div>
+
+          <div class="device-content">
+            <div class="device-status-row">
+              <div class="status-section">
+                <span class="label">{{ realTimeStatusText }}</span>
+                <span class="value status" [class.active]="device.isActive">{{ getStatusText(device.realTimeStatus) }}</span>
+              </div>
+              <div class="status-section">
+                <span class="label">{{ lastActiveText }}</span>
+                <span class="value">{{ device.lastActive }}</span>
+              </div>
+            </div>
+
+            <div class="device-status-row">
+              <div class="status-section">
+                <span class="label">{{ alertHistoryText }}</span>
+                <span class="value alert" [class.no-alerts]="device.alertHistory.toLowerCase().includes('no alert')">
+                  {{ getAlertText(device.alertHistory) }}
+                </span>
+              </div>
+              <div class="status-section">
+                <span class="label">{{ energyConsumptionText }}</span>
+                <span class="value consumption">{{ device.energyConsumption }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <button class="pagination-btn prev" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <polyline points="15,18 9,12 15,6"></polyline>
+        </svg>
+      </button>
+      
+      <div class="pagination-numbers">
+        <span class="page-number active">1</span>
+        <span class="page-number">2</span>
+        <span class="page-number">3</span>
+      </div>
+      
+      <button class="pagination-btn next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <polyline points="9,18 15,12 9,6"></polyline>
+        </svg>
+      </button>
+    </div>
+  }

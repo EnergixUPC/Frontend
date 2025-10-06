@@ -8,7 +8,7 @@ import { DailyChart } from '../../components/daily-chart/daily-chart';
 import { CategoryChart } from '../../components/category-chart/category-chart';
 import { MonthlyChart } from '../../components/monthly-chart/monthly-chart';
 import { DeviceList } from '../../components/device-list/device-list';
-import { Device, DeviceStatus, DeviceType } from '../../../domain/model/entities/device.entity';
+import { Device, DeviceStatus, DeviceType } from '../../../domain/model/device.entity';
 import { DailyConsumption } from '../../../domain/model/entities/daily-consumption.entity';
 import { ConsumptionByCategory } from '../../../domain/model/entities/consumption-by-category.entity';
 import { MonthlyComparison } from '../../../domain/model/entities/monthly-comparison.entity';
@@ -123,15 +123,58 @@ export class Home implements OnInit, OnDestroy {
       }
     });
 
-    // Load devices
-    this.dashboardService.loadDevices().subscribe({
-      next: (data: Device[]) => {
-        this.devices = data;
+    // Load devices - CAMBIAR A USAR LA NUEVA API DE DEVICES
+    // this.dashboardService.loadDevices().subscribe({
+    //   next: (data: Device[]) => {
+    //     this.devices = data;
+    //   },
+    //   error: (error: any) => {
+    //     console.error('Error loading devices:', error);
+    //   }
+    // });
+    
+    // Usar datos hardcodeados temporalmente para test
+    this.devices = [
+      {
+        id: '1',
+        name: 'Air Conditioner',
+        category: 'Heating & Cooling',
+        type: 'AIR_CONDITIONER',
+        status: 'ON' as any,
+        realTimeStatus: 'On',
+        lastActive: 'Now',
+        alertHistory: 'No alerts',
+        energyConsumption: '2 kWh this week',
+        location: 'Living Room',
+        isActive: true
       },
-      error: (error: any) => {
-        console.error('Error loading devices:', error);
+      {
+        id: '2',
+        name: 'Refrigerator',
+        category: 'Major Appliances',
+        type: 'REFRIGERATOR',
+        status: 'ON' as any,
+        realTimeStatus: 'On',
+        lastActive: 'Now',
+        alertHistory: 'No alerts',
+        energyConsumption: '30 kWh this week',
+        location: 'Kitchen',
+        isActive: true
+      },
+      {
+        id: '3',
+        name: 'TV',
+        category: 'Electronics',
+        type: 'TV',
+        status: 'STANDBY' as any,
+        realTimeStatus: 'Standby',
+        lastActive: '15 minutes ago',
+        alertHistory: 'Phantom load alert',
+        energyConsumption: '8 kWh this week',
+        location: 'Living Room',
+        isActive: false
       }
-    });
+    ];
   }
 
   getTranslation(key: string): string {

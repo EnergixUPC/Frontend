@@ -4,7 +4,7 @@ import { DashboardStats } from '../../domain/model/entities/dashboard-stats.enti
 import { DailyConsumption } from '../../domain/model/entities/daily-consumption.entity';
 import { ConsumptionByCategory } from '../../domain/model/entities/consumption-by-category.entity';
 import { MonthlyComparison } from '../../domain/model/entities/monthly-comparison.entity';
-import { Device } from '../../domain/model/entities/device.entity';
+import { Device } from '../../domain/model/device.entity';
 
 export interface DashboardState {
   stats: DashboardStats | undefined;

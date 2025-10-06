@@ -1,11 +1,130 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Device } from '../../../domain/model/device.entity';
+import { DevicesService } from '../../../application/services/devices.service';
 
 @Component({
   selector: 'app-devices',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './devices.html',
   styleUrl: './devices.css'
 })
-export class Devices {
+export class Devices implements OnInit, OnDestroy {
+  devices: Device[] = [];
+  loading = true;
+  error: string | null = null;
+  
+  private destroy$ = new Subject<void>();
 
+  constructor(
+    private readonly devicesService: DevicesService,
+    private readonly translateService: TranslateService
+  ) {}
+
+  ngOnInit(): void {
+    this.loadDevices();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private loadDevices(): void {
+    this.loading = true;
+    this.devicesService.getAllDevices()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (devices) => {
+          this.devices = devices;
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Error loading devices:', error);
+          this.error = 'Error loading devices';
+          this.loading = false;
+        }
+      });
+  }
+
+  // Getters para las traducciones
+  get myDevicesText(): string {
+    return this.translateService.instant('dashboard.devices.myDevices');
+  }
+
+  get preferencesText(): string {
+    return this.translateService.instant('dashboard.devices.preferences');
+  }
+
+  get addDeviceText(): string {
+    return this.translateService.instant('dashboard.devices.addDevice');
+  }
+
+  get realTimeStatusText(): string {
+    return this.translateService.instant('dashboard.devices.realTimeStatus');
+  }
+
+  get lastActiveText(): string {
+    return this.translateService.instant('dashboard.devices.lastActive');
+  }
+
+  get alertHistoryText(): string {
+    return this.translateService.instant('dashboard.devices.alertHistory');
+  }
+
+  get energyConsumptionText(): string {
+    return this.translateService.instant('dashboard.devices.energyConsumption');
+  }
+
+  get noDevicesText(): string {
+    return this.translateService.instant('dashboard.devices.noDevices');
+  }
+
+  getStatusText(status: string): string {
+    switch (status.toLowerCase()) {
+      case 'on':
+        return this.translateService.instant('dashboard.devices.status.on');
+      case 'off':
+        return this.translateService.instant('dashboard.devices.status.off');
+      case 'standby':
+        return this.translateService.instant('dashboard.devices.status.standby');
+      case 'charging':
+        return this.translateService.instant('dashboard.devices.status.charging');
+      default:
+        return status;
+    }
+  }
+
+  getCategoryText(category: string): string {
+    // Debug: Ver qué categoría está llegando
+    console.log('Category received in devices:', category);
+    
+    // Convertir "Heating & Cooling" a "heating_cooling"
+    const categoryKey = category.toLowerCase()
+      .replace(/\s*&\s*/g, '_')  // Reemplazar " & " con "_"
+      .replace(/\s+/g, '_');     // Reemplazar espacios con "_"
+    
+    console.log('Category key generated:', categoryKey);
+    
+    const translationKey = `dashboard.devices.categories.${categoryKey}`;
+    const translated = this.translateService.instant(translationKey);
+    
+    console.log('Translation result:', translated);
+    
+    // Si la traducción devuelve la misma clave, significa que no encontró la traducción
+    return translated !== translationKey ? translated : category;
+  }
+
+  getAlertText(alert: string): string {
+    if (alert.toLowerCase().includes('no alert')) {
+      return this.translateService.instant('dashboard.devices.alerts.noAlerts');
+    }
+    if (alert.toLowerCase().includes('phantom load')) {
+      return this.translateService.instant('dashboard.devices.alerts.phantomLoad');
+    }
+    return alert;
+  }
 }

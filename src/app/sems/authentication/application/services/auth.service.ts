@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { map, tap, catchError, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-
 import { AuthRepository } from '../../domain/model/repositories/auth.repository';
 import { UserRepositoryImpl } from '../../infrastructure/repositories/user-repository';
 import { TokenService } from '../../infrastructure/services/token.service';
 import { User } from '../../domain/model/entities/user.entity';
 import { TokenPair } from '../../domain/model/entities/token-pair.entity';
-import { LoginCredentials } from '../../domain/model/value-objects/login-credentials.value-object';
+import { environment } from '../../../../../environments/environments';
 
 export interface AuthState {
   user: User | null;
@@ -62,7 +61,7 @@ export class AuthService {
     });
 
     // Use API to validate credentials against db.json
-    return this.http.get<any[]>(`http://localhost:3000/users?username=${username}&password=${password}`).pipe(
+    return this.http.get<any[]>(`${environment.apiUrl}/users?username=${username}&password=${password}`).pipe(
       map(users => {
         console.log('AuthService - API response:', users);
         if (users && users.length > 0) {

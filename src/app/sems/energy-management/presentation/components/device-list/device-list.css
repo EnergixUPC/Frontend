@@ -104,6 +104,13 @@ mat-card-content {
   margin-bottom: 0.125rem;
 }
 
+.device-category {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #666;
+  text-transform: capitalize;
+}
+
 .device-status {
   font-size: 0.75rem;
   font-weight: 500;

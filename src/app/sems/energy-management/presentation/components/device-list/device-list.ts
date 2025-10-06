@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateService } from '@ngx-translate/core';
-import { Device } from '../../../domain/model/entities/device.entity';
+import { Device } from '../../../domain/model/device.entity';
 
 @Component({
   selector: 'app-device-list',
@@ -20,6 +20,41 @@ export class DeviceList {
   @Input() devices: Device[] = [];
 
   constructor(private translate: TranslateService) {}
+
+  // Getter para mostrar solo los primeros 3 dispositivos
+  get limitedDevices(): Device[] {
+    return this.devices.slice(0, 3);
+  }
+
+  getCategoryText(category: string): string {
+    // Debug más detallado
+    console.log('=== DEBUG CATEGORY TRANSLATION ===');
+    console.log('Input category:', category);
+    console.log('Current language:', this.translate.currentLang);
+    console.log('Default language:', this.translate.defaultLang);
+    
+    // Transformar "Heating & Cooling" a "heating_cooling"
+    const categoryKey = category.toLowerCase()
+      .replace(/\s*&\s*/g, '_')  // Reemplazar " & " con "_"
+      .replace(/\s+/g, '_');     // Reemplazar espacios con "_"
+    
+    console.log('Generated key:', categoryKey);
+    
+    const translationKey = `dashboard.devices.categories.${categoryKey}`;
+    console.log('Full translation key:', translationKey);
+    
+    const translated = this.translate.instant(translationKey);
+    console.log('Translation result:', translated);
+    console.log('Translation matches key?', translated === translationKey);
+    
+    // Probar traducción directa para debugging
+    const directTest = this.translate.instant('dashboard.devices.categories.heating_cooling');
+    console.log('Direct test heating_cooling:', directTest);
+    
+    console.log('=== END DEBUG ===');
+    
+    return translated !== translationKey ? translated : category;
+  }
 
   getDeviceIcon(type: string): string {
     const iconMap: { [key: string]: string } = {
@@ -42,14 +77,14 @@ export class DeviceList {
   }
 
   getStatusClass(device: Device): string {
-    if (device.isActive()) {
+    if (device.isActive) {
       return 'status-active';
     }
     return 'status-inactive';
   }
 
   getStatusText(device: Device): string {
-    if (device.isActive()) {
+    if (device.isActive) {
       return this.translate.instant('common.status.on');
     } else if (device.lastActive) {
       return `${this.translate.instant('common.status.off')} - ${device.lastActive}`;

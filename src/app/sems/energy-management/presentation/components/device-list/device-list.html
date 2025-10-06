@@ -6,16 +6,14 @@
   <mat-card-content>
     @if (devices.length > 0) {
       <div class="device-list">
-        @for (device of devices; track device.id) {
+        @for (device of limitedDevices; track device.id) {
           <div class="device-item">
             <mat-icon class="device-icon" [ngClass]="getDeviceClass(device.type)">
               {{ getDeviceIcon(device.type) }}
             </mat-icon>
             <div class="device-info">
-              <span class="device-name">{{ device.getDisplayName() }}</span>
-              <span class="device-status" [ngClass]="getStatusClass(device)">
-                {{ getStatusText(device) }}
-              </span>
+              <span class="device-name">{{ device.location }} - {{ device.name }}</span>
+              <span class="device-category">{{ getCategoryText(device.category) }}</span>
             </div>
           </div>
         }

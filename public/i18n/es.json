@@ -39,7 +39,35 @@
     "devices": {
       "title": "Mis Dispositivos",
       "myDevices": "Mis Dispositivos",
-      "noDevices": "No se encontraron dispositivos"
+      "noDevices": "No se encontraron dispositivos",
+      "preferences": "Preferencias",
+      "addDevice": "Agregar Dispositivo",
+      "realTimeStatus": "Estado en Tiempo Real",
+      "lastActive": "Última Actividad",
+      "alertHistory": "Historial de Alertas",
+      "energyConsumption": "Consumo de Energía",
+      "status": {
+        "on": "Encendido",
+        "off": "Apagado",
+        "standby": "En espera",
+        "charging": "Cargando"
+      },
+      "lastActiveTime": {
+        "now": "Ahora",
+        "minutesAgo": "hace {{minutes}} minutos",
+        "hourAgo": "hace 1 hora",
+        "hoursAgo": "hace {{hours}} horas"
+      },
+      "alerts": {
+        "noAlerts": "Sin alertas",
+        "phantomLoad": "Alerta de carga fantasma"
+      },
+      "categories": {
+        "heating_cooling": "Calefacción y Refrigeración",
+        "major_appliances": "Electrodomésticos Principales",
+        "electronics": "Electrónicos",
+        "other": "Otros"
+      }
     },
     "alerts": {
       "title": "Alertas",

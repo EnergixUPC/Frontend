@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-
 import { UserRepository, AuthRepository } from '../../domain/model/repositories/auth.repository';
 import { User } from '../../domain/model/entities/user.entity';
 import { TokenPair } from '../../domain/model/entities/token-pair.entity';

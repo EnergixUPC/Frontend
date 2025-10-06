@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
-
 import { LoginForm } from '../../components/login-form/login-form';
 import { AuthControllerService } from '../../../application/services/auth-controller.service';
 

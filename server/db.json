@@ -75,27 +75,81 @@
   "devices": [
     {
       "id": "1",
-      "name": "Smart Lamp",
-      "location": "Living Room",
-      "type": "SMART_LAMP",
+      "name": "Air Conditioner",
+      "category": "Heating & Cooling",
+      "type": "AIR_CONDITIONER",
       "status": "ON",
-      "lastActive": null
+      "realTimeStatus": "On",
+      "lastActive": "Now",
+      "alertHistory": "No alerts",
+      "energyConsumption": "2 kWh this week",
+      "location": "Living Room",
+      "isActive": true
     },
     {
       "id": "2",
-      "name": "Smart TV",
-      "location": "Living Room",
-      "type": "SMART_TV",
-      "status": "OFF",
-      "lastActive": null
+      "name": "Refrigerator",
+      "category": "Major Appliances",
+      "type": "REFRIGERATOR",
+      "status": "ON",
+      "realTimeStatus": "On",
+      "lastActive": "Now",
+      "alertHistory": "No alerts",
+      "energyConsumption": "30 kWh this week",
+      "location": "Kitchen",
+      "isActive": true
     },
     {
       "id": "3",
-      "name": "Smart Fan",
-      "location": "Master Bedroom",
-      "type": "SMART_FAN",
+      "name": "TV",
+      "category": "Electronics",
+      "type": "TV",
+      "status": "STANDBY",
+      "realTimeStatus": "Standby",
+      "lastActive": "15 minutes ago",
+      "alertHistory": "Phantom load alert",
+      "energyConsumption": "8 kWh this week",
+      "location": "Living Room",
+      "isActive": false
+    },
+    {
+      "id": "4",
+      "name": "Microwave",
+      "category": "Other",
+      "type": "MICROWAVE",
       "status": "OFF",
-      "lastActive": "Last active 2h ago"
+      "realTimeStatus": "Off",
+      "lastActive": "1 hour ago",
+      "alertHistory": "No alerts",
+      "energyConsumption": "1 kWh this week",
+      "location": "Kitchen",
+      "isActive": false
+    },
+    {
+      "id": "5",
+      "name": "Laptop",
+      "category": "Electronics",
+      "type": "LAPTOP",
+      "status": "CHARGING",
+      "realTimeStatus": "Charging",
+      "lastActive": "Now",
+      "alertHistory": "No alerts",
+      "energyConsumption": "5 kWh this week",
+      "location": "Home Office",
+      "isActive": true
+    },
+    {
+      "id": "6",
+      "name": "Smart Speaker",
+      "category": "Other",
+      "type": "SMART_SPEAKER",
+      "status": "STANDBY",
+      "realTimeStatus": "Standby",
+      "lastActive": "2 hours ago",
+      "alertHistory": "No alerts",
+      "energyConsumption": "2 kWh this week",
+      "location": "Bedroom",
+      "isActive": false
     }
   ],
   "alerts": [
