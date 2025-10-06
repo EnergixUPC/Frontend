@@ -130,5 +130,48 @@
       "active": "Active",
       "inactive": "Inactive"
     }
+  },
+  "settings": {
+    "title": "Settings",
+    "autoSavingMode": {
+      "title": "Automatic Saving Mode",
+      "turnOffPatio": "Turn off patio lights at 12 AM",
+      "turnOffDevices": "Turn off devices when leaving home",
+      "unplugWeekdays": "Unplug electronics on weekdays at 10 PM",
+      "runDishwasher": "Run the dishwasher during off-peak hours"
+    },
+    "notifications": {
+      "title": "Notifications and Alerts",
+      "highConsumption": "High Consumption Alerts",
+      "summary": "Daily/Weekly Summary",
+      "schedule": "Notification Schedule: {{start}} - {{end}}",
+      "edit": "Edit"
+    },
+    "reports": {
+      "title": "Personalized Reports",
+      "frequency": "Report Frequency",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "format": "Format",
+      "pdf": "PDF",
+      "csv": "CSV"
+    },
+    "support": {
+      "title": "Support and Help",
+      "helpCenter": "Help Center / FAQs",
+      "contact": "Contact Support",
+      "tutorials": "Tutorials and Guides"
+    },
+    "security": {
+      "title": "Security and Privacy",
+      "changePassword": "Change Password",
+      "twoFA": "2FA Authentication"
+    },
+    "actions": {
+      "save": "Save",
+      "cancel": "Cancel"
+    }
   }
+
 }

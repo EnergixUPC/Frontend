@@ -130,5 +130,47 @@
       "active": "Activo",
       "inactive": "Inactivo"
     }
+  },
+  "settings": {
+    "title": "Configuración",
+    "autoSavingMode": {
+      "title": "Modo de Ahorro Automático",
+      "turnOffPatio": "Apagar luces del patio a las 12 AM",
+      "turnOffDevices": "Apagar dispositivos al salir de casa",
+      "unplugWeekdays": "Desconectar electrónicos entre semana a las 10 PM",
+      "runDishwasher": "Usar lavavajillas en horas valle"
+    },
+    "notifications": {
+      "title": "Notificaciones y Alertas",
+      "highConsumption": "Alertas de alto consumo",
+      "summary": "Resumen diario/semanal",
+      "schedule": "Horario de notificaciones: {{start}} - {{end}}",
+      "edit": "Editar"
+    },
+    "reports": {
+      "title": "Reportes Personalizados",
+      "frequency": "Frecuencia del reporte",
+      "daily": "Diario",
+      "weekly": "Semanal",
+      "monthly": "Mensual",
+      "format": "Formato",
+      "pdf": "PDF",
+      "csv": "CSV"
+    },
+    "support": {
+      "title": "Soporte y Ayuda",
+      "helpCenter": "Centro de ayuda / Preguntas frecuentes",
+      "contact": "Contactar Soporte",
+      "tutorials": "Tutoriales y Guías"
+    },
+    "security": {
+      "title": "Seguridad y Privacidad",
+      "changePassword": "Cambiar Contraseña",
+      "twoFA": "Autenticación 2FA"
+    },
+    "actions": {
+      "save": "Guardar",
+      "cancel": "Cancelar"
+    }
   }
 }
