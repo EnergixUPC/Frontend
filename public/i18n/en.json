@@ -69,7 +69,7 @@
       "encouragement": "Keep up the great work!",
       "days": {
         "MON": "MON",
-        "TUE": "TUE", 
+        "TUE": "TUE",
         "WED": "WED",
         "THU": "THU",
         "FRI": "FRI",
@@ -130,5 +130,13 @@
       "active": "Active",
       "inactive": "Inactive"
     }
+  },
+
+  "profile": {
+    "title": "My Profile",
+    "editButton": "Edit Profile",
+    "saveButton": "Save Changes",
+    "changePhotoButton": "Change Photo"
   }
+
 }

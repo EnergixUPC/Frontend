@@ -130,5 +130,14 @@
       "active": "Activo",
       "inactive": "Inactivo"
     }
+  },
+
+
+  "profile": {
+    "title": "Mi Perfil",
+    "editButton": "Editar Perfil",
+    "saveButton": "Guardar Cambios",
+    "changePhotoButton": "Cambiar Foto"
   }
+
 }
