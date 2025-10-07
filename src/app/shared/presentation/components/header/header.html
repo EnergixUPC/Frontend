@@ -24,7 +24,7 @@
       <span class="greeting">Hello,</span>
       <span class="username">{{ userName }}</span>
       <img
-        src="assets/user-avatar.png"
+        [src]="userAvatarUrl"
         alt="User Avatar"
         class="user-avatar"
       />
@@ -33,3 +33,4 @@
     <app-lang-switcher></app-lang-switcher>
   </div>
 </header>
+

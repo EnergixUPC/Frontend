@@ -1,0 +1,168 @@
+/* ==== General Layout ==== */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  background-color: transparent;
+  min-height: calc(100vh - 100px);
+}
+
+/* ==== Page Header ==== */
+.page-header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 30px;
+}
+
+.page-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+/* ==== Profile Card ==== */
+.profile-card {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 900px;
+  max-width: 100%;
+  transition: box-shadow 0.3s ease;
+}
+
+.profile-card:hover {
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* ==== Photo Section ==== */
+.profile-photo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-photo {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #0077ff;
+}
+
+.change-photo-btn {
+  background-color: #e7f1ff;
+  color: #0077ff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.change-photo-btn:hover {
+  background-color: #0077ff;
+  color: white;
+}
+
+/* ==== Info Section ==== */
+.profile-info-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.profile-item {
+  display: flex;
+  flex-direction: column;
+  background-color: #f9fafb;
+  padding: 10px 16px;
+  border-radius: 8px;
+}
+
+.profile-item .label {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 4px;
+}
+
+.profile-item .value {
+  color: #1f2937;
+  font-weight: 500;
+}
+
+/* ==== Editable Inputs ==== */
+.input-edit {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #1f2937;
+}
+
+.input-edit:focus {
+  border-color: #0077ff;
+  outline: none;
+}
+
+/* ==== Actions ==== */
+.profile-actions {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.edit-btn,
+.save-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.edit-btn {
+  background-color: #0077ff;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #005ec2;
+}
+
+.save-btn {
+  background-color: #22c55e;
+  color: white;
+}
+
+.save-btn:hover {
+  background-color: #16a34a;
+}
+
+/* ==== Empty State ==== */
+.profile-empty {
+  text-align: center;
+  color: #6b7280;
+  font-size: 16px;
+  padding: 40px;
+}

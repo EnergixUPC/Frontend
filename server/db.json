@@ -8,6 +8,9 @@
       "firstName": "Iker",
       "lastName": "Santos",
       "role": "admin",
+      "address": "Av. Gral. Salaverry 2255, San Isidro 15076",
+      "phoneNumber": "+51 987654321",
+      "profilePhotoUrl": "https://i.postimg.cc/RZrpyQYH/4bebb0e0-e9a9-4c32-804a-d6e44f5c1109.jpg",
       "createdAt": "2025-10-01T10:00:00Z"
     },
     {
@@ -18,6 +21,9 @@
       "firstName": "Andrés",
       "lastName": "García",
       "role": "admin",
+      "address": "Av. Primavera 2390, Santiago de Surco 15023",
+      "phoneNumber": "+51 912345678",
+      "profilePhotoUrl": "https://i.postimg.cc/GpDLrQ3H/sombr-1.jpg",
       "createdAt": "2025-10-01T10:00:00Z"
     }
   ],
@@ -282,6 +288,9 @@
       "timestamp": "2025-10-05T09:15:00Z",
       "isRead": true
     }
+
+  ]
+}
   ],
   "devicePreferences": {
     "id": 1,

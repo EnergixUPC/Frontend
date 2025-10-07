@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
-import { interval, Subscription } from 'rxjs';
+import { interval, Subscription, combineLatest } from 'rxjs';
+import { ProfileStore } from '../../../../sems/energy-management/application/state/profile.store';
 import { AuthControllerService } from '../../../../sems/authentication/application/services/auth-controller.service';
 import { LangSwitcher } from '../lang-switcher/lang-switcher';
-import {NotificationsComponent} from '../../../../sems/notifications/presentation/views/notifications';
+import { NotificationsComponent } from '../../../../sems/notifications/presentation/views/notifications';
 
 @Component({
   selector: 'app-header',
@@ -25,39 +26,58 @@ import {NotificationsComponent} from '../../../../sems/notifications/presentatio
 export class Header implements OnInit, OnDestroy {
   currentDate: Date = new Date();
   userName: string = 'User';
+  userAvatarUrl: string = 'assets/default-avatar.png';
   notificationCount: number = 2;
-  private timeSubscription?: Subscription;
-  private authSubscription?: Subscription;
   showNotifications = false;
 
-  constructor(private authController: AuthControllerService) {}
+  private timeSubscription?: Subscription;
+  private combinedSubscription?: Subscription;
+
+  constructor(
+    private authController: AuthControllerService,
+    private profileStore: ProfileStore
+  ) {}
 
   ngOnInit(): void {
     this.updateDateTime();
-    this.timeSubscription = interval(1000).subscribe(() => {
-      this.updateDateTime();
-    });
+    this.timeSubscription = interval(1000).subscribe(() => this.updateDateTime());
 
-    // Subscribe to auth state to get current user
-    this.authSubscription = this.authController.getCurrentAuthState().subscribe(authState => {
-      console.log('Header - Auth state updated:', authState);
-      if (authState.user) {
-        console.log('Header - User found:', authState.user);
-        this.userName = authState.user.firstName || authState.user.email.split('@')[0];
+    this.combinedSubscription = combineLatest([
+      this.authController.getCurrentAuthState(),
+      this.profileStore.profile$
+    ]).subscribe(async ([authState, profile]) => {
+      if (authState?.user) {
+        const user = authState.user;
+
+        this.userName =
+          user.firstName ||
+          user.lastName ||
+          (user.email ? user.email.split('@')[0] : 'User');
+
+        if (!profile || profile.id !== user.id) {
+          try {
+            const res = await fetch(`http://localhost:3000/users/${user.id}`);
+            const data = await res.json();
+            this.profileStore.updateActiveProfile(data);
+            this.userAvatarUrl = data.profilePhotoUrl || 'assets/default-avatar.png';
+          } catch (err) {
+            console.error('Error cargando perfil:', err);
+            this.userAvatarUrl = 'assets/default-avatar.png';
+          }
+        } else {
+          this.userAvatarUrl = profile.profilePhotoUrl || 'assets/default-avatar.png';
+        }
       } else {
-        console.log('Header - No user in auth state');
         this.userName = 'User';
+        this.userAvatarUrl = 'assets/default-avatar.png';
+        this.profileStore.clearActiveProfile();
       }
     });
   }
 
   ngOnDestroy(): void {
-    if (this.timeSubscription) {
-      this.timeSubscription.unsubscribe();
-    }
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-    }
+    this.timeSubscription?.unsubscribe();
+    this.combinedSubscription?.unsubscribe();
   }
 
   updateDateTime(): void {
@@ -82,8 +102,7 @@ export class Header implements OnInit, OnDestroy {
     });
   }
 
-  toggleNotifications() {
+  toggleNotifications(): void {
     this.showNotifications = !this.showNotifications;
-    console.log('Show:', this.showNotifications);
   }
 }
