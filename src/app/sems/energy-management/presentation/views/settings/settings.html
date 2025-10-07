@@ -1,1 +1,108 @@
-<p>settings works!</p>
+<!-- settings.html -->
+<div class="settings-content">
+  <section class="settings-container">
+    <h1>{{ t('settings.title') }}</h1>
+
+    <div class="settings-grid">
+      <!-- Modo de ahorro automático -->
+      <div class="card">
+        <div class="card-header">
+          <h2>{{ t('settings.autoSavingMode.title') }}</h2>
+          <button mat-mini-fab color="primary" class="add-btn">+</button>
+        </div>
+        <div class="toggles">
+          <mat-checkbox>{{ t('settings.autoSavingMode.turnOffPatio') }}</mat-checkbox>
+          <mat-checkbox checked>{{ t('settings.autoSavingMode.turnOffDevices') }}</mat-checkbox>
+          <mat-checkbox>{{ t('settings.autoSavingMode.unplugWeekdays') }}</mat-checkbox>
+          <mat-checkbox checked>{{ t('settings.autoSavingMode.runDishwasher') }}</mat-checkbox>
+        </div>
+      </div>
+
+      <!-- Notificaciones -->
+      <div class="card">
+        <h2>{{ t('settings.notifications.title') }}</h2>
+        <div class="toggles">
+          <mat-checkbox checked>{{ t('settings.notifications.highConsumption') }}</mat-checkbox>
+          <mat-checkbox checked>{{ t('settings.notifications.summary') }}</mat-checkbox>
+        </div>
+        <p class="schedule">
+          {{ t('settings.notifications.schedule', { start: '05:00 AM', end: '22:00 PM' }) }}
+          <button mat-stroked-button color="accent" class="edit-btn">{{ t('settings.notifications.edit') }}</button>
+        </p>
+        <hr />
+        <h3>{{ t('settings.reports.title') }}</h3>
+        <div class="chip-group">
+          <button
+            mat-button
+            class="chip"
+            [ngClass]="{'selected': selectedFrequencies.includes('Daily')}"
+            (click)="toggleFrequency('Daily')"
+          >
+            {{ t('settings.reports.daily') }}
+          </button>
+          <button
+            mat-button
+            class="chip"
+            [ngClass]="{'selected': selectedFrequencies.includes('Weekly')}"
+            (click)="toggleFrequency('Weekly')"
+          >
+            {{ t('settings.reports.weekly') }}
+          </button>
+          <button
+            mat-button
+            class="chip"
+            [ngClass]="{'selected': selectedFrequencies.includes('Monthly')}"
+            (click)="toggleFrequency('Monthly')"
+          >
+            {{ t('settings.reports.monthly') }}
+          </button>
+          <button
+            mat-button
+            class="chip"
+            [ngClass]="{'selected': selectedFormats.includes('PDF')}"
+            (click)="toggleFormat('PDF')"
+          >
+            {{ t('settings.reports.pdf') }}
+          </button>
+          <button
+            mat-button
+            class="chip"
+            [ngClass]="{'selected': selectedFormats.includes('CSV')}"
+            (click)="toggleFormat('CSV')"
+          >
+            {{ t('settings.reports.csv') }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Soporte -->
+      <div class="card">
+        <h2>{{ t('settings.support.title') }}</h2>
+        <ul>
+          <li><a href="#">{{ t('settings.support.helpCenter') }}</a></li>
+          <li><a href="#">{{ t('settings.support.contact') }}</a></li>
+          <li><a href="#">{{ t('settings.support.tutorials') }}</a></li>
+        </ul>
+      </div>
+
+      <!-- Seguridad -->
+      <div class="card">
+        <h2>{{ t('settings.security.title') }}</h2>
+        <div class="security-item">
+          <span>{{ t('settings.security.changePassword') }}</span>
+          <button mat-stroked-button color="accent" class="edit-btn">{{ t('settings.notifications.edit') }}</button>
+        </div>
+        <div class="security-item">
+          <span>{{ t('settings.security.twoFA') }}</span>
+          <button mat-stroked-button color="accent" class="edit-btn">{{ t('settings.notifications.edit') }}</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button mat-raised-button color="primary" class="save-btn">{{ t('settings.actions.save') }}</button>
+      <button mat-button color="warn" class="cancel-btn">{{ t('settings.actions.cancel') }}</button>
+    </div>
+  </section>
+</div>
+
