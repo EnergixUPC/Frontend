@@ -5,7 +5,8 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   border: 1px solid #e0e0e0;
   width: 100%;
-  height: 70%;
+  max-width: 100%;
+  height: auto;
   margin: 0 auto;
 }
 
@@ -20,7 +21,6 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  height: 100%;
 }
 
 .export-controls-row {
@@ -28,6 +28,7 @@
   align-items: center;
   gap: 48px;
   flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 .format-section {
@@ -54,12 +55,14 @@
   outline: none;
   transition: border-color 0.3s ease;
   min-width: 80px;
+  max-width: 100%;
 }
 
 .checkboxes-section {
   display: flex;
   gap: 48px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .checkbox-group {
@@ -81,22 +84,25 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .email-input {
-  width: 300px;
-  max-width: 300px;
+  width: 250px;
+  max-width: 100%;
+  min-width: 150px;
   padding: 10px 16px;
   border: 2px solid #000000 !important;
   border-radius: 6px;
   font-size: 14px;
   outline: none;
   transition: border-color 0.3s ease;
+  flex: none;
 }
 
 .download-button {
   padding: 10px 24px;
-  background: #2c3e50;
+  background: #000000;
   color: white;
   border: none;
   border-radius: 6px;
@@ -113,7 +119,7 @@
 
 .send-button {
   padding: 10px 20px;
-  background: #5B9BD5;
+  background: #1976d2;
   color: white;
   border: none;
   border-radius: 6px;
@@ -150,7 +156,7 @@
 }
 
 .send-button:hover:not(:disabled) {
-  background: #4A8BC2;
+  background: #1565c0;
   transform: translateY(-1px);
 }
 
@@ -161,7 +167,7 @@
 }
 
 .download-button:hover:not(:disabled) {
-  background: #34495e;
+  background: #333333;
   transform: translateY(-1px);
 }
 
@@ -186,8 +192,8 @@
 }
 
 .checkbox-input:checked + .checkbox-custom {
-  background: #2c3e50;
-  border-color: #2c3e50;
+  background: #000000;
+  border-color: #000000;
 }
 
 .checkbox-input:checked + .checkbox-custom::after {
@@ -235,19 +241,42 @@
 }
 
 /* Responsive design */
+@media (max-width: 1024px) {
+  .export-controls-row {
+    gap: 24px;
+  }
+  
+  .checkboxes-section {
+    gap: 24px;
+  }
+}
+
 @media (max-width: 768px) {
   .export-card-container {
     padding: 16px;
+    height: auto;
   }
 
   .export-controls-row {
     flex-direction: column;
     align-items: stretch;
-    gap: 16px;
+    gap: 20px;
+  }
+
+  .format-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
   }
 
   .checkboxes-section {
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .checkbox-label {
+    justify-content: flex-start;
   }
 
   .email-row {
@@ -263,5 +292,93 @@
   .send-button,
   .download-button {
     width: 100%;
+    min-width: auto;
+  }
+
+  .format-dropdown {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .export-card-container {
+    padding: 12px;
+    margin: 0;
+  }
+
+  .card-header h3 {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  .card-content {
+    gap: 16px;
+  }
+
+  .section-label {
+    font-size: 13px;
+  }
+
+  .checkboxes-section {
+    gap: 8px;
+  }
+
+  .checkbox-label {
+    font-size: 13px;
+  }
+
+  .email-input {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .send-button,
+  .download-button {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .format-dropdown {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+}
+
+/* Mejoras adicionales para landscape en móviles */
+@media (max-width: 768px) and (orientation: landscape) {
+  .export-controls-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .format-section {
+    flex-direction: row;
+    align-items: center;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .checkboxes-section {
+    flex-direction: row;
+    gap: 16px;
+    flex: 2;
+    min-width: 300px;
+  }
+
+  .email-row {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .email-input {
+    flex: 1;
+    width: auto !important;
+    max-width: none !important;
+  }
+
+  .send-button {
+    width: auto;
+    min-width: 120px;
   }
 }
