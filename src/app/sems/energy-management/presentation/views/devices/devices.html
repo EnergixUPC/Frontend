@@ -2,7 +2,7 @@
   <div class="devices-header">
     <h1 class="devices-title">{{ myDevicesText }}</h1>
     <div class="devices-actions">
-      <button class="preferences-btn">
+      <button class="preferences-btn" (click)="goToPreferences()">
         <span class="preferences-icon">+</span>
         {{ preferencesText }}
       </button>
@@ -70,26 +70,5 @@
           </div>
         </div>
       }
-    </div>
-
-    <!-- Pagination -->
-    <div class="pagination">
-      <button class="pagination-btn prev" disabled>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <polyline points="15,18 9,12 15,6"></polyline>
-        </svg>
-      </button>
-      
-      <div class="pagination-numbers">
-        <span class="page-number active">1</span>
-        <span class="page-number">2</span>
-        <span class="page-number">3</span>
-      </div>
-      
-      <button class="pagination-btn next">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <polyline points="9,18 15,12 9,6"></polyline>
-        </svg>
-      </button>
     </div>
   }

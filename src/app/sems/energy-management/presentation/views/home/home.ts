@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subject, filter, takeUntil } from 'rxjs';
@@ -44,7 +44,8 @@ export class Home implements OnInit, OnDestroy {
   constructor(
     private translate: TranslateService,
     private dashboardService: DashboardService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +56,9 @@ export class Home implements OnInit, OnDestroy {
     // Debug: Check if translations are loaded
     console.log('Home - ngOnInit. Translations loaded:', this.translate.instant('dashboard.stats.energyConsumption'));
 
+    // Force change detection
+    this.cdr.detectChanges();
+    
     this.loadDashboardData();
 
     // when navigation ends, if we returned to /home reload data

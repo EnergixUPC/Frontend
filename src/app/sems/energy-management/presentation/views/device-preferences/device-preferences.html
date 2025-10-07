@@ -1,1 +1,110 @@
-<p>device-preferences works!</p>
+<div class="device-preferences-container">
+  <!-- Header -->
+  <header class="preferences-header">
+    <button class="back-button" (click)="goBack()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="m15 18-6-6 6-6"/>
+      </svg>
+    </button>
+    <h1 class="preferences-title">{{ titleText }}</h1>
+  </header>
+
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Loading preferences...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error && !loading) {
+    <div class="error-container">
+      <p class="error-message">{{ error }}</p>
+      <button class="retry-button" (click)="loadDevicePreferences()">
+        Retry
+      </button>
+    </div>
+  }
+
+  <!-- Main Content -->
+  @if (devicePreferences && !loading && !error) {
+    <div class="preferences-content">
+      
+      <!-- Preference Groups -->
+      @for (group of preferenceGroups; track group.title) {
+        <div class="preference-group">
+          <h3 class="group-title">{{ group.title }}</h3>
+          
+          <div class="preferences-list">
+            @for (preference of group.preferences; track preference.key) {
+              <div class="preference-item">
+                <div class="preference-info">
+                  <label class="preference-label" [for]="preference.key">
+                    {{ getPreferenceLabel(preference.key) }}
+                  </label>
+                </div>
+                
+                <div class="toggle-container">
+                  <input 
+                    type="checkbox"
+                    class="toggle-input"
+                    [id]="preference.key"
+                    [checked]="preference.enabled"
+                    (change)="onPreferenceChange(preference.key, $event.target.checked)"
+                  />
+                  <label 
+                    class="toggle-label" 
+                    [for]="preference.key"
+                    [class.enabled]="preference.enabled"
+                  >
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Action Buttons -->
+      <div class="actions-container">
+        <button 
+          class="reset-button" 
+          (click)="onResetToDefault()"
+          [disabled]="saving"
+          type="button"
+        >
+          {{ resetToDefaultText }}
+        </button>
+        
+        <button 
+          class="save-button" 
+          (click)="onSavePreferences()"
+          [disabled]="saving || !hasUnsavedChanges"
+          [class.has-changes]="hasUnsavedChanges"
+          type="button"
+        >
+          @if (saving) {
+            <span class="loading-text">Saving...</span>
+          } @else {
+            {{ savePreferencesText }}
+          }
+        </button>
+      </div>
+
+      <!-- Success/Error Messages -->
+      @if (saveSuccess) {
+        <div class="success-message">
+           {{ saveSuccessText }}
+        </div>
+      }
+      
+      @if (error && !loading) {
+        <div class="error-message">
+           {{ error }}
+        </div>
+      }
+    </div>
+  }
+</div>

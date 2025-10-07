@@ -75,6 +75,24 @@
       "highConsumptionMessage": "Your usage is 20% above average in the last 3 hours.",
       "reminder": "Reminder:",
       "reminderMessage": "You forgot to turn off the patio lights."
+    },
+    "preferences": {
+      "title": "Device Monitoring Preferences",
+      "enableEnergyMonitoring": "Enable Energy Monitoring",
+      "receiveHighUsageAlerts": "Receive High Usage Alerts",
+      "monitorHeatingCooling": "Monitor Heating & Cooling",
+      "monitorMajorAppliances": "Monitor Major Appliances",
+      "monitorElectronics": "Monitor Electronics",
+      "monitorKitchenDevices": "Monitor Kitchen Devices",
+      "includeOutdoorLighting": "Include Outdoor Lighting",
+      "trackStandbyPower": "Track Standby Power",
+      "dailySummaryEmails": "Daily Summary Emails",
+      "weeklyProgressReports": "Weekly Progress Reports",
+      "suggestSavingAutomations": "Suggest Saving Automations",
+      "alertsForUnpluggedDevices": "Alerts for Unplugged Devices",
+      "resetToDefault": "Reset to Default",
+      "savePreferences": "Save Preferences",
+      "saveSuccess": "Preferences saved successfully"
     }
   },
   "reports": {

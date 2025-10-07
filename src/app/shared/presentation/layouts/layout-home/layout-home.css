@@ -10,20 +10,49 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  transition: all 0.3s ease;
 }
 
 .content {
   flex: 1;
   padding: 2rem;
   overflow-y: auto;
+  max-width: calc(100vw - 250px);
+  box-sizing: border-box;
 }
 
+/* Tablet responsive */
+@media (max-width: 1024px) {
+  .main-content {
+    margin-left: 220px;
+  }
+  
+  .content {
+    padding: 1.5rem;
+    max-width: calc(100vw - 220px);
+  }
+}
+
+/* Mobile responsive */
 @media (max-width: 768px) {
   .main-content {
     margin-left: 70px;
   }
-
+  
   .content {
     padding: 1rem;
+    max-width: calc(100vw - 70px);
+  }
+}
+
+/* Small mobile responsive */
+@media (max-width: 480px) {
+  .main-content {
+    margin-left: 60px;
+  }
+
+  .content {
+    padding: 0.75rem;
+    max-width: calc(100vw - 60px);
   }
 }

@@ -10,22 +10,31 @@
   top: 0;
   z-index: 1000;
   overflow-x: hidden;
+  border-right: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
 }
 
 .sidebar-header {
   padding: 2rem 1.5rem;
+  border-bottom: 1px solid #f0f0f0;
+  min-height: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logo {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all 0.3s ease;
 }
 
 .logo-image {
   width: 150px;
   height: 150px;
   border-radius: 2px;
+  transition: all 0.3s ease;
 }
 
 .sidebar-nav {
@@ -53,6 +62,7 @@
   white-space: nowrap;
   max-width: calc(250px - 1.5rem);
   box-sizing: border-box;
+  min-height: 48px;
 }
 
 .menu-item:hover {
@@ -71,14 +81,20 @@
 .menu-item mat-icon {
   color: inherit;
   margin-right: 0.75rem;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
 }
 
 .menu-item span {
   display: block;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sidebar-footer {
   padding: 1.5rem;
+  border-top: 1px solid #f0f0f0;
 }
 
 .logout-button {
@@ -94,6 +110,7 @@
   overflow: hidden;
   white-space: nowrap;
   box-sizing: border-box;
+  min-height: 48px;
 }
 
 .logout-button:hover {
@@ -103,15 +120,15 @@
 
 .logout-button span {
   display: block;
-}
-
-.logout-button:hover {
-  background-color: #f5f5f5;
-  color: #333;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .logout-button mat-icon {
   color: inherit;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
 }
 
 /* Scrollbar styling */
@@ -141,12 +158,50 @@
   display: none;
 }
 
+/* Tablet responsive */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 220px;
+  }
+  
+  .sidebar-header {
+    padding: 1.5rem 1rem;
+    min-height: 160px;
+  }
+  
+  .logo-image {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .menu-item {
+    padding: 0.65rem 1.25rem !important;
+    margin: 0.2rem 0.5rem;
+    max-width: calc(220px - 1rem);
+  }
+  
+  .menu-item mat-icon {
+    margin-right: 0.65rem;
+  }
+}
+
+/* Mobile responsive */
 @media (max-width: 768px) {
   .sidebar {
     width: 70px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
-  .logo-text,
+  .sidebar-header {
+    padding: 1rem 0.5rem;
+    min-height: 80px;
+  }
+
+  .logo-image {
+    width: 40px;
+    height: 40px;
+  }
+
   .menu-item span,
   .logout-button span {
     display: none;
@@ -158,10 +213,74 @@
 
   .menu-item {
     justify-content: center;
-    padding: 0.75rem !important;
+    padding: 0.8rem !important;
+    margin: 0.3rem 0.5rem;
+    max-width: calc(70px - 1rem);
+    border-radius: 12px;
+    position: relative;
+  }
+  
+  .menu-item mat-icon {
+    margin-right: 0;
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
   }
 
   .logout-button {
     justify-content: center;
+    gap: 0;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
   }
+  
+  .logout-button mat-icon {
+    margin: 0;
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+  }
+
+  .sidebar-footer {
+    padding: 1rem 0.5rem;
+  }
+}
+
+/* Small mobile responsive */
+@media (max-width: 480px) {
+  .sidebar {
+    width: 65px;
+  }
+  
+  .sidebar-header {
+    padding: 0.75rem 0.25rem;
+    min-height: 70px;
+  }
+  
+  .logo-image {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .menu-item {
+    padding: 0.7rem !important;
+    margin: 0.25rem 0.3rem;
+    max-width: calc(65px - 0.6rem);
+  }
+  
+  .menu-item mat-icon,
+  .logout-button mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .sidebar-footer {
+    padding: 0.75rem 0.3rem;
+  }
+}
+
+/* Hover effects for collapsed sidebar - Removed for mobile */
+@media (max-width: 768px) {
+  /* No hover expansion on mobile - keep icons only */
 }

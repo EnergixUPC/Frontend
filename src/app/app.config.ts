@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { DEVICE_REPOSITORY_PROVIDER } from './sems/energy-management/infrastructure/repositories/device.repository.provider';
+import { DEVICE_PREFERENCE_REPOSITORY_PROVIDER } from './sems/energy-management/infrastructure/repositories/device-preference.repository.provider';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,6 +21,7 @@ export const appConfig: ApplicationConfig = {
         defaultLanguage: 'es'
       })
     ),
-    DEVICE_REPOSITORY_PROVIDER
+    DEVICE_REPOSITORY_PROVIDER,
+    DEVICE_PREFERENCE_REPOSITORY_PROVIDER
   ]
 };

@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -21,10 +22,14 @@ export class Devices implements OnInit, OnDestroy {
 
   constructor(
     private readonly devicesService: DevicesService,
-    private readonly translateService: TranslateService
+    private readonly translateService: TranslateService,
+    private readonly router: Router,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+    // Force change detection
+    this.cdr.detectChanges();
     this.loadDevices();
   }
 
@@ -126,5 +131,9 @@ export class Devices implements OnInit, OnDestroy {
       return this.translateService.instant('dashboard.devices.alerts.phantomLoad');
     }
     return alert;
+  }
+
+  goToPreferences(): void {
+    this.router.navigate(['/device-preferences']);
   }
 }

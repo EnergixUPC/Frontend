@@ -75,6 +75,24 @@
       "highConsumptionMessage": "Tu uso está un 20% por encima del promedio en las últimas 3 horas.",
       "reminder": "Recordatorio:",
       "reminderMessage": "Olvidaste apagar las luces del patio."
+    },
+    "preferences": {
+      "title": "Preferencias de Monitoreo de Dispositivos",
+      "enableEnergyMonitoring": "Habilitar Monitoreo de Energía",
+      "receiveHighUsageAlerts": "Recibir Alertas de Alto Consumo",
+      "monitorHeatingCooling": "Monitorear Calefacción y Refrigeración",
+      "monitorMajorAppliances": "Monitorear Electrodomésticos Principales",
+      "monitorElectronics": "Monitorear Electrónicos",
+      "monitorKitchenDevices": "Monitorear Dispositivos de Cocina",
+      "includeOutdoorLighting": "Incluir Iluminación Exterior",
+      "trackStandbyPower": "Rastrear Energía en Espera",
+      "dailySummaryEmails": "Emails de Resumen Diario",
+      "weeklyProgressReports": "Reportes de Progreso Semanal",
+      "suggestSavingAutomations": "Sugerir Automatizaciones de Ahorro",
+      "alertsForUnpluggedDevices": "Alertas para Dispositivos Desconectados",
+      "resetToDefault": "Restablecer por Defecto",
+      "savePreferences": "Guardar Preferencias",
+      "saveSuccess": "Preferencias guardadas correctamente"
     }
   },
   "reports": {
