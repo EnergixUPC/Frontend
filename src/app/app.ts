@@ -22,17 +22,17 @@ export class App implements OnInit {
 
   ngOnInit() {
     // Set default language
-    this.translate.setDefaultLang('es');
+    this.translate.setDefaultLang('en');
     
     // Load translations manually
-    this.http.get<any>('./i18n/es.json').subscribe({
+    this.http.get<any>('./i18n/en.json').subscribe({
       next: (translations) => {
-        this.translate.setTranslation('es', translations);
-        this.translate.use('es');
+        this.translate.setTranslation('en ', translations);
+        this.translate.use('en');
       },
       error: (error) => {
         console.error('Error loading translations:', error);
-        this.translate.use('es');
+        this.translate.use('en'); // Fallback to default language
       }
     });
   }

@@ -192,7 +192,7 @@ export class DevicePreferences implements OnInit, OnDestroy {
     this.error = null;
     this.cdr.detectChanges();
 
-    console.log('💾 Saving preferences:', this.devicePreferences);
+    console.log('Saving preferences:', this.devicePreferences);
 
     this.devicePreferenceService.updateDevicePreferences(this.devicePreferences)
       .pipe(takeUntil(this.destroy$))

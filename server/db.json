@@ -291,7 +291,6 @@
   ],
   "devicePreferences": {
     "id": 1,
-    "userId": "user1",
     "preferences": {
       "enableEnergyMonitoring": true,
       "receiveHighUsageAlerts": true,
