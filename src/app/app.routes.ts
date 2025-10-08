@@ -26,10 +26,10 @@ export const routes: Routes = [
       },
       {
         path: 'profile',
-        loadComponent: () => import('./sems/energy-management/presentation/views/profile/profile').then(m => m.Profile)
+        loadComponent: () => import('./sems/energy-management/presentation/views/profile/profile').then(m => m.ProfileComponent)
       },
       {
-        path: 'devices',
+        path: 'devices', 
         loadComponent: () => import('./sems/energy-management/presentation/views/devices/devices').then(m => m.Devices)
       },
       {

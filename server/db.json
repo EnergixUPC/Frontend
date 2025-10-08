@@ -288,17 +288,14 @@
       "timestamp": "2025-10-05T09:15:00Z",
       "isRead": true
     }
-
-  ]
-}
   ],
   "devicePreferences": {
     "id": 1,
     "userId": "user1",
     "preferences": {
       "enableEnergyMonitoring": true,
-      "receiveHighUsageAlerts": false,
-      "monitorHeatingCooling": false,
+      "receiveHighUsageAlerts": true,
+      "monitorHeatingCooling": true,
       "monitorMajorAppliances": false,
       "monitorElectronics": true,
       "monitorKitchenDevices": false,
@@ -309,6 +306,6 @@
       "suggestSavingAutomations": true,
       "alertsForUnpluggedDevices": true
     },
-    "lastUpdated": "2025-10-07T00:41:34.918Z"
+    "lastUpdated": "2025-10-08T01:01:37.380Z"
   }
 }
