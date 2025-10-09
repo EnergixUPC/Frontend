@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subject, filter, takeUntil } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { StatsCard } from '../../components/stats-card/stats-card';
 import { DailyChart } from '../../components/daily-chart/daily-chart';
 import { CategoryChart } from '../../components/category-chart/category-chart';
@@ -21,6 +21,7 @@ import { DashboardService } from '../../../application/services/dashboard.servic
   selector: 'app-home',
   imports: [
     CommonModule,
+    TranslateModule,
     StatsCard,
     DailyChart,
     CategoryChart,
@@ -49,11 +50,8 @@ export class Home implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Initialize translations first
-    this.translate.setDefaultLang('es');
-    this.translate.use('es');
-
-    // Debug: Check if translations are loaded
+    // Debug: Check current language
+    console.log('Home - ngOnInit. Current language:', this.translate.currentLang);
     console.log('Home - ngOnInit. Translations loaded:', this.translate.instant('dashboard.stats.energyConsumption'));
 
     // Force change detection
