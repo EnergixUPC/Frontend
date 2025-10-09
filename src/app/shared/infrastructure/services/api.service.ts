@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from '../../../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  private readonly baseUrl = 'http://localhost:3000/api';
+  private readonly baseUrl = `${environment.apiUrl}/api`;
 
   constructor(private http: HttpClient) {}
 
@@ -51,7 +52,7 @@ export class ApiService {
 
   // Método especial para login que busca directamente en users
   login(username: string, password: string): Observable<any> {
-    return this.http.get<any[]>(`http://localhost:3000/users?username=${username}&password=${password}`, {
+    return this.http.get<any[]>(`${environment.apiUrl}/users?username=${username}&password=${password}`, {
       headers: this.getHeaders()
     }).pipe(
       catchError(this.handleError)
