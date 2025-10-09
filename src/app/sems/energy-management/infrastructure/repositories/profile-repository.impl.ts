@@ -3,8 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ProfileRepository } from '../../../energy-management/domain/model/repositories/profile.repository';
 import { ProfileResponse } from '../../infrastructure/response/profile.response';
+import { environment } from '../../../../../environments/environments';
 
-const BASE_URL = 'http://localhost:3000/users';
+const BASE_URL = `${environment.apiUrl}/users`;
 
 @Injectable({
   providedIn: 'root'

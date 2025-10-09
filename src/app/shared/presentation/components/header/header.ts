@@ -8,6 +8,7 @@ import { ProfileStore } from '../../../../sems/energy-management/application/sta
 import { AuthControllerService } from '../../../../sems/authentication/application/services/auth-controller.service';
 import { LangSwitcher } from '../lang-switcher/lang-switcher';
 import { NotificationsComponent } from '../../../../sems/notifications/presentation/views/notifications';
+import { environment } from '../../../../../environments/environments';
 
 @Component({
   selector: 'app-header',
@@ -56,7 +57,7 @@ export class Header implements OnInit, OnDestroy {
 
         if (!profile || profile.id !== user.id) {
           try {
-            const res = await fetch(`http://localhost:3000/users/${user.id}`);
+            const res = await fetch(`${environment.apiUrl}/users/${user.id}`);
             const data = await res.json();
             this.profileStore.updateActiveProfile(data);
             this.userAvatarUrl = data.profilePhotoUrl || 'assets/default-avatar.png';
