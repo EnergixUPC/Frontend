@@ -44,8 +44,7 @@ export interface TokenResponse {
   providedIn: 'root'
 })
 export class UserRepositoryImpl implements UserRepository, AuthRepository {
-  private readonly apiUrl = `${environment.apiUrl}/auth`;
-
+  private readonly apiUrl = `${environment.apiUrl}/api/v1/auth`;
   constructor(private readonly http: HttpClient) {}
 
   // UserRepository methods
