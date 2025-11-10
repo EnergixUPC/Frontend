@@ -16,6 +16,59 @@
         "networkError": "Error de red. Por favor intente nuevamente."
       },
       "success": "Inicio de sesión exitoso"
+    },
+    "register": {
+      "title": "Crear Cuenta",
+      "subtitle": "Completa tus datos para registrarte",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Correo Electrónico",
+      "username": "Nombre de Usuario",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar Contraseña",
+      "phoneNumber": "Teléfono",
+      "address": "Dirección",
+      "registerButton": "Registrarse",
+      "loading": "Registrando...",
+      "success": "Registro exitoso. ¡Bienvenido!",
+      "failed": "Error en el registro. Intenta nuevamente.",
+      "hasAccount": "¿Ya tienes una cuenta?",
+      "loginLink": "Inicia sesión aquí",
+      "errors": {
+        "firstName": {
+          "required": "El nombre es requerido",
+          "minlength": "El nombre debe tener al menos 2 caracteres"
+        },
+        "lastName": {
+          "required": "El apellido es requerido",
+          "minlength": "El apellido debe tener al menos 2 caracteres"
+        },
+        "email": {
+          "required": "El correo electrónico es requerido",
+          "email": "Por favor ingrese un correo válido"
+        },
+        "username": {
+          "required": "El nombre de usuario es requerido",
+          "minlength": "El nombre de usuario debe tener al menos 3 caracteres"
+        },
+        "password": {
+          "required": "La contraseña es requerida",
+          "minlength": "La contraseña debe tener al menos 6 caracteres",
+          "strongPassword": "La contraseña debe contener al menos: 8 caracteres, 1 mayúscula, 1 minúscula y 1 número"
+        },
+        "confirmPassword": {
+          "required": "Confirma tu contraseña",
+          "passwordMismatch": "Las contraseñas no coinciden"
+        },
+        "phoneNumber": {
+          "required": "El teléfono es requerido",
+          "phone": "Formato inválido. Usa: +51 987654321"
+        },
+        "address": {
+          "required": "La dirección es requerida",
+          "minlength": "La dirección debe tener al menos 10 caracteres"
+        }
+      }
     }
   },
   "dashboard": {

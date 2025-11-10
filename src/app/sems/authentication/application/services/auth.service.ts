@@ -75,7 +75,11 @@ export class AuthService {
             userData.role,
             true,
             new Date(userData.createdAt),
-            new Date()
+            new Date(),
+            userData.username,
+            userData.phoneNumber,
+            userData.address,
+            userData.profilePhotoUrl
           );
 
           console.log('AuthService - Created user object:', user);
@@ -181,6 +185,114 @@ export class AuthService {
     }
 
     return this.authRepository.changePassword(user.id, oldPassword, newPassword);
+  }
+
+  register(command: { firstName: string; lastName: string; email: string; username: string; password: string; phoneNumber: string; address: string }): Observable<{ user: User; tokens: TokenPair }> {
+    this.updateAuthState({
+      ...this.authStateSubject.value,
+      isLoading: true,
+      error: null
+    });
+
+    // First, check if username or email already exists
+    return this.http.get<any[]>(`${environment.apiUrl}/users`).pipe(
+      switchMap(existingUsers => {
+        // Check for duplicate username or email
+        const duplicateUsername = existingUsers.find(user => user.username.toLowerCase() === command.username.toLowerCase());
+        const duplicateEmail = existingUsers.find(user => user.email.toLowerCase() === command.email.toLowerCase());
+
+        if (duplicateUsername) {
+          this.updateAuthState({
+            ...this.authStateSubject.value,
+            isLoading: false,
+            error: 'El nombre de usuario ya está en uso'
+          });
+          return throwError(() => new Error('El nombre de usuario ya está en uso'));
+        }
+
+        if (duplicateEmail) {
+          this.updateAuthState({
+            ...this.authStateSubject.value,
+            isLoading: false,
+            error: 'El email ya está registrado'
+          });
+          return throwError(() => new Error('El email ya está registrado'));
+        }
+
+        // Generate new user ID
+        const newId = existingUsers.length > 0 ? Math.max(...existingUsers.map(u => u.id)) + 1 : 1;
+        
+        // Create new user object for db.json
+        const newUserData = {
+          id: newId,
+          username: command.username,
+          password: command.password, // In production, this should be hashed
+          email: command.email,
+          firstName: command.firstName,
+          lastName: command.lastName,
+          role: 'user', // Default role for new users
+          address: command.address,
+          phoneNumber: command.phoneNumber,
+          profilePhotoUrl: 'https://via.placeholder.com/150/007BFF/FFFFFF?text=USER', // Default user placeholder
+          createdAt: new Date().toISOString()
+        };
+
+        // Save new user to db.json
+        return this.http.post<any>(`${environment.apiUrl}/users`, newUserData);
+      }),
+      map(savedUser => {
+        console.log('AuthService - User registered successfully:', savedUser);
+        
+        // Create User entity
+        const user = new User(
+          savedUser.id.toString(),
+          savedUser.email,
+          savedUser.firstName,
+          savedUser.lastName,
+          savedUser.role,
+          true,
+          new Date(savedUser.createdAt),
+          new Date(),
+          savedUser.username,
+          savedUser.phoneNumber,
+          savedUser.address,
+          savedUser.profilePhotoUrl
+        );
+
+        // Create mock tokens
+        const tokens = new TokenPair(
+          'mock-access-token-' + Date.now(),
+          'mock-refresh-token-' + Date.now(),
+          3600
+        );
+
+        // Save tokens and user
+        this.tokenService.saveTokens(tokens);
+        this.tokenService.saveUser(user);
+
+        // Update auth state
+        this.updateAuthState({
+          user,
+          isAuthenticated: true,
+          isLoading: false,
+          error: null
+        });
+
+        return { user, tokens };
+      }),
+      catchError(error => {
+        console.error('AuthService - Register error:', error);
+        const errorMessage = this.getErrorMessage(error);
+        
+        this.updateAuthState({
+          ...this.authStateSubject.value,
+          isLoading: false,
+          error: errorMessage
+        });
+
+        return throwError(() => error);
+      })
+    );
   }
 
   getCurrentUser(): User | null {

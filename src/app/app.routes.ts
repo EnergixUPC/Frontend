@@ -7,12 +7,47 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'auth',
+    children: [
+      {
+        path: 'login',
+        loadComponent: () => import('./shared/presentation/layouts/layout-login/layout-login').then(m => m.LayoutLogin),
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./sems/authentication/presentation/views/login/login').then(m => m.Login)
+          }
+        ]
+      },
+      {
+        path: 'register',
+        loadComponent: () => import('./shared/presentation/layouts/layout-login/layout-login').then(m => m.LayoutLogin),
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./sems/authentication/presentation/views/register/register').then(m => m.Register)
+          }
+        ]
+      }
+    ]
+  },
+  {
     path: 'login',
     loadComponent: () => import('./shared/presentation/layouts/layout-login/layout-login').then(m => m.LayoutLogin),
     children: [
       {
         path: '',
         loadComponent: () => import('./sems/authentication/presentation/views/login/login').then(m => m.Login)
+      }
+    ]
+  },
+  {
+    path: 'register',
+    loadComponent: () => import('./shared/presentation/layouts/layout-login/layout-login').then(m => m.LayoutLogin),
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./sems/authentication/presentation/views/register/register').then(m => m.Register)
       }
     ]
   },
