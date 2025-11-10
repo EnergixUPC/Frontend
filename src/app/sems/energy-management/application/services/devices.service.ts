@@ -29,6 +29,10 @@ export class DevicesService {
     return this.deviceRepository.updateDevice(device);
   }
 
+  createDevice(device: Device): Observable<Device> {
+    return this.deviceRepository.createDevice(device);
+  }
+
   deleteDevice(id: string): Observable<boolean> {
     return this.deviceRepository.deleteDevice(id);
   }

@@ -120,6 +120,24 @@
         "major_appliances": "Major Appliances",
         "electronics": "Electronics",
         "other": "Other"
+      },
+      "addDeviceTitle": "Add a new device",
+      "addDeviceSave": "Save Device",
+      "addDeviceCancel": "Cancel",
+      "addDeviceValidation": "Please provide at least a name and category for the device.",
+      "addDeviceError": "There was an error saving the device. Try again.",
+      "deleteConfirmation": "Are you sure you want to delete '{{name}}'? This action cannot be undone.",
+      "deleteError": "There was an error deleting the device. Please try again.",
+      "form": {
+        "name": "Device Name",
+        "category": "Category",
+        "type": "Type",
+        "status": "Status",
+        "lastActive": "Last Active",
+        "alertHistory": "Alert History",
+        "energyConsumption": "Energy Consumption",
+        "location": "Location",
+        "isActive": "Active"
       }
     },
     "alerts": {
