@@ -1,5 +1,5 @@
 export const environment = {
-  production: false,
+  production: true,
   apiUrl: 'https://sems-fake-api.onrender.com',
   tokenKey: 'sems_token',
   refreshTokenKey: 'sems_refresh_token',
