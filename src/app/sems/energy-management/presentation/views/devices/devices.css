@@ -157,13 +157,13 @@
 }
 
 .device-settings:hover {
-  background-color: #f1f5f9;
+  background-color: #fef2f2;
 }
 
-.settings-icon {
+.delete-icon {
   width: 20px;
   height: 20px;
-  color: #64748b;
+  color: #ef4444;
 }
 
 .device-content {

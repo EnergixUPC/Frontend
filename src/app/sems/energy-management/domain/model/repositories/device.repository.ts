@@ -7,6 +7,7 @@ export interface DeviceRepository {
   getDeviceById(id: string): Observable<Device | null>;
   getDevicesByStatus(status: string): Observable<Device[]>;
   getDevicesByCategory(category: string): Observable<Device[]>;
+  createDevice(device: Device): Observable<Device>;
   updateDevice(device: Device): Observable<Device>;
   deleteDevice(id: string): Observable<boolean>;
 }

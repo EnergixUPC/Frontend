@@ -136,4 +136,33 @@ export class Devices implements OnInit, OnDestroy {
   goToPreferences(): void {
     this.router.navigate(['/device-preferences']);
   }
+
+  goToAddDevice(): void {
+    this.router.navigate(['/devices/add']);
+  }
+
+  deleteDevice(deviceId: string, deviceName: string): void {
+    const confirmed = confirm(
+      this.translateService.instant('dashboard.devices.deleteConfirmation', { name: deviceName })
+    );
+    
+    if (confirmed) {
+      this.devicesService.deleteDevice(deviceId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (success) => {
+            if (success) {
+              // Reload the devices list
+              this.loadDevices();
+            } else {
+              alert(this.translateService.instant('dashboard.devices.deleteError'));
+            }
+          },
+          error: (error: any) => {
+            console.error('Error deleting device:', error);
+            alert(this.translateService.instant('dashboard.devices.deleteError'));
+          }
+        });
+    }
+  }
 }

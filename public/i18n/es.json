@@ -120,6 +120,24 @@
         "major_appliances": "Electrodomésticos Principales",
         "electronics": "Electrónicos",
         "other": "Otros"
+      },
+      "addDeviceTitle": "Agregar un nuevo dispositivo",
+      "addDeviceSave": "Guardar Dispositivo",
+      "addDeviceCancel": "Cancelar",
+      "addDeviceValidation": "Por favor ingresa al menos un nombre y una categoría para el dispositivo.",
+      "addDeviceError": "Hubo un error al guardar el dispositivo. Inténtalo de nuevo.",
+      "deleteConfirmation": "¿Estás seguro de que quieres eliminar '{{name}}'? Esta acción no se puede deshacer.",
+      "deleteError": "Hubo un error al eliminar el dispositivo. Por favor inténtalo de nuevo.",
+      "form": {
+        "name": "Nombre del Dispositivo",
+        "category": "Categoría",
+        "type": "Tipo",
+        "status": "Estado",
+        "lastActive": "Última Actividad",
+        "alertHistory": "Historial de Alertas",
+        "energyConsumption": "Consumo de Energía",
+        "location": "Ubicación",
+        "isActive": "Activo"
       }
     },
     "alerts": {

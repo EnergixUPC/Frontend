@@ -68,6 +68,10 @@ export const routes: Routes = [
         loadComponent: () => import('./sems/energy-management/presentation/views/devices/devices').then(m => m.Devices)
       },
       {
+        path: 'devices/add',
+        loadComponent: () => import('./sems/energy-management/presentation/views/add-device/add-device').then(m => m.AddDevice)
+      },
+      {
         path: 'device-preferences',
         loadComponent: () => import('./sems/energy-management/presentation/views/device-preferences/device-preferences').then(m => m.DevicePreferences)
       },

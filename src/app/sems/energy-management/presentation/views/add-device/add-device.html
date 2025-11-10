@@ -1,0 +1,77 @@
+<div class="add-device-container">
+  <div class="add-device-header">
+    <button class="back-button" (click)="onCancel()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6"/>
+      </svg>
+    </button>
+    <h1 class="add-device-title">{{ titleText }}</h1>
+  </div>
+
+  <div class="add-device-content">
+    <div class="add-device-form">
+      <div class="form-group">
+        <label>{{ 'dashboard.devices.form.name' | translate }}</label>
+        <input type="text" [(ngModel)]="device.name" />
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'dashboard.devices.form.category' | translate }}</label>
+        <input type="text" [(ngModel)]="device.category" />
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'dashboard.devices.form.type' | translate }}</label>
+        <input type="text" [(ngModel)]="device.type" />
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'dashboard.devices.form.status' | translate }}</label>
+        <select [(ngModel)]="device.status">
+          <option value="ON">{{ 'dashboard.devices.status.on' | translate }}</option>
+          <option value="OFF">{{ 'dashboard.devices.status.off' | translate }}</option>
+          <option value="STANDBY">{{ 'dashboard.devices.status.standby' | translate }}</option>
+          <option value="CHARGING">{{ 'dashboard.devices.status.charging' | translate }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'dashboard.devices.form.lastActive' | translate }}</label>
+        <input type="text" [(ngModel)]="device.lastActive" />
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'dashboard.devices.form.alertHistory' | translate }}</label>
+        <input type="text" [(ngModel)]="device.alertHistory" />
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'dashboard.devices.form.energyConsumption' | translate }}</label>
+        <input type="text" [(ngModel)]="device.energyConsumption" />
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'dashboard.devices.form.location' | translate }}</label>
+        <input type="text" [(ngModel)]="device.location" />
+      </div>
+
+      <div class="form-group checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" [(ngModel)]="device.isActive" /> 
+          <span class="checkbox-text">{{ 'dashboard.devices.form.isActive' | translate }}</span>
+        </label>
+      </div>
+
+      @if (error) {
+        <div class="error-message">{{ error }}</div>
+      }
+
+      <div class="actions-container">
+        <button class="reset-button" (click)="onCancel()">{{ cancelText }}</button>
+        <button class="save-button" (click)="onSave()" [disabled]="saving">
+          {{ saving ? ('common.loading' | translate) : saveText }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

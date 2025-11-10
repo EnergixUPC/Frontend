@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { Device } from '../../domain/model/device.entity';
+import { Device, DeviceStatus } from '../../domain/model/device.entity';
 import { DeviceRepository } from '../../domain/model/repositories/device.repository';
 import { environment } from '../../../../../environments/environments';
 
@@ -33,7 +33,7 @@ export class DeviceRepositoryImpl implements DeviceRepository {
   getAllDevices(): Observable<Device[]> {
     return this.http.get<DeviceResponse[]>(this.apiUrl)
       .pipe(
-        map(responses => responses.map(response => this.mapToDevice(response))),
+        map((responses: DeviceResponse[]) => responses.map((response: DeviceResponse) => this.mapToDevice(response))),
         catchError(() => of([]))
       );
   }
@@ -41,7 +41,7 @@ export class DeviceRepositoryImpl implements DeviceRepository {
   getDeviceById(id: string): Observable<Device | null> {
     return this.http.get<DeviceResponse>(`${this.apiUrl}/${id}`)
       .pipe(
-        map(response => this.mapToDevice(response)),
+        map((response: DeviceResponse) => this.mapToDevice(response)),
         catchError(() => of(null))
       );
   }
@@ -49,7 +49,7 @@ export class DeviceRepositoryImpl implements DeviceRepository {
   getDevicesByStatus(status: string): Observable<Device[]> {
     return this.http.get<DeviceResponse[]>(`${this.apiUrl}?status=${status}`)
       .pipe(
-        map(responses => responses.map(response => this.mapToDevice(response))),
+        map((responses: DeviceResponse[]) => responses.map((response: DeviceResponse) => this.mapToDevice(response))),
         catchError(() => of([]))
       );
   }
@@ -57,7 +57,7 @@ export class DeviceRepositoryImpl implements DeviceRepository {
   getDevicesByCategory(category: string): Observable<Device[]> {
     return this.http.get<DeviceResponse[]>(`${this.apiUrl}?category=${category}`)
       .pipe(
-        map(responses => responses.map(response => this.mapToDevice(response))),
+        map((responses: DeviceResponse[]) => responses.map((response: DeviceResponse) => this.mapToDevice(response))),
         catchError(() => of([]))
       );
   }
@@ -66,7 +66,16 @@ export class DeviceRepositoryImpl implements DeviceRepository {
     const deviceDto = this.mapToDeviceResponse(device);
     return this.http.put<DeviceResponse>(`${this.apiUrl}/${device.id}`, deviceDto)
       .pipe(
-        map(response => this.mapToDevice(response))
+        map((response: DeviceResponse) => this.mapToDevice(response))
+      );
+  }
+
+  createDevice(device: Device): Observable<Device> {
+    const deviceDto = this.mapToDeviceResponse(device);
+    // If the fake API (json-server) expects numeric ids, server may assign one. We keep id if provided.
+    return this.http.post<DeviceResponse>(this.apiUrl, deviceDto)
+      .pipe(
+        map((response: DeviceResponse) => this.mapToDevice(response))
       );
   }
 
@@ -85,7 +94,8 @@ export class DeviceRepositoryImpl implements DeviceRepository {
       name: response.name,
       category: response.category,
       type: response.type,
-      status: response.status as any,
+      // Cast the incoming string to DeviceStatus enum safely
+      status: (response.status as unknown) as DeviceStatus,
       realTimeStatus: response.realTimeStatus,
       lastActive: response.lastActive,
       alertHistory: response.alertHistory,
