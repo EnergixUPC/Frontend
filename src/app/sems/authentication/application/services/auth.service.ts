@@ -61,7 +61,6 @@ export class AuthService {
       error: null
     });
 
-
     // Use API to validate credentials against db.json
     return this.http.get<any[]>(`${environment.apiUrl}/users?username=${username}&password=${password}`).pipe(
       map(users => {
@@ -110,39 +109,18 @@ export class AuthService {
         } else {
           throw new Error('Invalid credentials');
         }
-    const loginRequest = {
-      username: username,
-      password: password
-    };
-
-    return this.http.post<any>(`${environment.apiUrl}/api/v1/auth/login`, loginRequest).pipe(
-      switchMap(response => {
-        console.log('AuthService - API response:', response);
-
-        
-        const tokens = new TokenPair(
-          response.accessToken,
-          response.refreshToken || response.accessToken,
-          response.expiresIn || 3600
-        );
-
-       
-        this.tokenService.saveTokens(tokens);
-
-        
-        return this.getUserProfile(tokens.accessToken).pipe(
-          map(user => ({ user, tokens }))
-        );
-
       }),
       catchError(error => {
-        const errorMessage = 'Invalid credentials';
+        console.error('AuthService - Login error:', error);
+        const errorMessage = this.getErrorMessage(error);
+        
         this.updateAuthState({
           ...this.authStateSubject.value,
           isLoading: false,
           error: errorMessage
         });
-        return throwError(() => new Error(errorMessage));
+
+        return throwError(() => error);
       })
     );
   }
@@ -439,5 +417,21 @@ export class AuthService {
       isLoading: false,
       error: null
     });
+  }
+
+  private getErrorMessage(error: any): string {
+    if (error?.error?.message) {
+      return error.error.message;
+    }
+    if (error?.message) {
+      return error.message;
+    }
+    if (error?.status === 401) {
+      return 'Invalid username or password';
+    }
+    if (error?.status === 0) {
+      return 'Network error. Please check your connection.';
+    }
+    return 'An unexpected error occurred. Please try again.';
   }
 }
