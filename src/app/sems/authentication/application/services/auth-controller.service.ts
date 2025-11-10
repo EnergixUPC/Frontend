@@ -18,6 +18,16 @@ export interface ChangePasswordCommand {
   newPassword: string;
 }
 
+export interface RegisterCommand {
+  firstName: string;
+  lastName: string;
+  email: string;
+  username: string;
+  password: string;
+  phoneNumber: string;
+  address: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -44,12 +54,24 @@ export class AuthControllerService {
     return this.authService.changePassword(command.oldPassword, command.newPassword);
   }
 
+  executeRegister(command: RegisterCommand): Observable<{ user: User; tokens: TokenPair }> {
+    return this.authService.register(command);
+  }
+
   validateCurrentSession(): Observable<boolean> {
     return this.authService.validateToken();
   }
 
   getCurrentAuthState() {
     return this.authService.authState$;
+  }
+
+  get authState$() {
+    return this.authService.authState$;
+  }
+
+  register(command: RegisterCommand): Observable<{ user: User; tokens: TokenPair }> {
+    return this.authService.register(command);
   }
 
   getCurrentUser(): User | null {

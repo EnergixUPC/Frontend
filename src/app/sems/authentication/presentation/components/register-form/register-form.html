@@ -1,0 +1,199 @@
+<div class="register-form-container">
+  <mat-card class="register-card">
+    <!-- Logo Section -->
+    <div class="logo-section">
+      <img src="/sems-logo.png" alt="SEMS Logo" class="sems-logo">
+    </div>
+
+    <mat-card-content class="register-content">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+        <h2 class="form-title">{{ 'auth.register.title' | translate }}</h2>
+        <p class="form-subtitle">{{ 'auth.register.subtitle' | translate }}</p>
+
+        <div class="form-row">
+          <!-- First Name Field -->
+          <div class="form-field">
+            <label class="field-label">{{ 'auth.register.firstName' | translate }}</label>
+            <input
+              type="text"
+              formControlName="firstName"
+              [placeholder]="'auth.register.firstName' | translate"
+              autocomplete="given-name"
+              class="custom-input"
+              [class.error]="isFieldInvalid('firstName')">
+            <div *ngIf="isFieldInvalid('firstName')" class="error-message">
+              {{ getErrorMessage('firstName') }}
+            </div>
+          </div>
+
+          <!-- Last Name Field -->
+          <div class="form-field">
+            <label class="field-label">{{ 'auth.register.lastName' | translate }}</label>
+            <input
+              type="text"
+              formControlName="lastName"
+              [placeholder]="'auth.register.lastName' | translate"
+              autocomplete="family-name"
+              class="custom-input"
+              [class.error]="isFieldInvalid('lastName')">
+            <div *ngIf="isFieldInvalid('lastName')" class="error-message">
+              {{ getErrorMessage('lastName') }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-field">
+          <label class="field-label">{{ 'auth.register.email' | translate }}</label>
+          <input
+            type="email"
+            formControlName="email"
+            [placeholder]="'auth.register.email' | translate"
+            autocomplete="email"
+            class="custom-input"
+            [class.error]="isFieldInvalid('email')">
+          <div *ngIf="isFieldInvalid('email')" class="error-message">
+            {{ getErrorMessage('email') }}
+          </div>
+        </div>
+
+        <!-- Username Field -->
+        <div class="form-field">
+          <label class="field-label">{{ 'auth.register.username' | translate }}</label>
+          <input
+            type="text"
+            formControlName="username"
+            [placeholder]="'auth.register.username' | translate"
+            autocomplete="username"
+            class="custom-input"
+            [class.error]="isFieldInvalid('username')">
+          <div *ngIf="isFieldInvalid('username')" class="error-message">
+            {{ getErrorMessage('username') }}
+          </div>
+        </div>
+
+        <div class="form-row">
+          <!-- Password Field -->
+          <div class="form-field">
+            <label class="field-label">{{ 'auth.register.password' | translate }}</label>
+            <div class="password-wrapper">
+              <input
+                [type]="hidePassword ? 'password' : 'text'"
+                formControlName="password"
+                [placeholder]="'auth.register.password' | translate"
+                autocomplete="new-password"
+                class="custom-input password-input"
+                [class.error]="isFieldInvalid('password')">
+              <button
+                type="button"
+                (click)="togglePasswordVisibility()"
+                class="password-toggle"
+                [attr.aria-label]="'Toggle password visibility'">
+                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </div>
+            <div *ngIf="isFieldInvalid('password')" class="error-message">
+              {{ getErrorMessage('password') }}
+            </div>
+          </div>
+
+          <!-- Confirm Password Field -->
+          <div class="form-field">
+            <label class="field-label">{{ 'auth.register.confirmPassword' | translate }}</label>
+            <div class="password-wrapper">
+              <input
+                [type]="hideConfirmPassword ? 'password' : 'text'"
+                formControlName="confirmPassword"
+                [placeholder]="'auth.register.confirmPassword' | translate"
+                autocomplete="new-password"
+                class="custom-input password-input"
+                [class.error]="isFieldInvalid('confirmPassword')">
+              <button
+                type="button"
+                (click)="toggleConfirmPasswordVisibility()"
+                class="password-toggle"
+                [attr.aria-label]="'Toggle confirm password visibility'">
+                <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </div>
+            <div *ngIf="isFieldInvalid('confirmPassword')" class="error-message">
+              {{ getErrorMessage('confirmPassword') }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Phone Field -->
+        <div class="form-field">
+          <label class="field-label">{{ 'auth.register.phoneNumber' | translate }}</label>
+          <input
+            type="tel"
+            formControlName="phoneNumber"
+            [placeholder]="'+51 987654321'"
+            autocomplete="tel"
+            class="custom-input"
+            [class.error]="isFieldInvalid('phoneNumber')">
+          <div *ngIf="isFieldInvalid('phoneNumber')" class="error-message">
+            {{ getErrorMessage('phoneNumber') }}
+          </div>
+        </div>
+
+        <!-- Address Field -->
+        <div class="form-field">
+          <label class="field-label">{{ 'auth.register.address' | translate }}</label>
+          <input
+            type="text"
+            formControlName="address"
+            [placeholder]="'auth.register.address' | translate"
+            autocomplete="street-address"
+            class="custom-input"
+            [class.error]="isFieldInvalid('address')">
+          <div *ngIf="isFieldInvalid('address')" class="error-message">
+            {{ getErrorMessage('address') }}
+          </div>
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="authState.error" class="error-message general-error">
+          <mat-icon class="error-icon">error</mat-icon>
+          <span>{{ authState.error }}</span>
+          <button
+            type="button"
+            mat-icon-button
+            (click)="clearError()"
+            class="close-error">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="register-button"
+          [disabled]="authState.isLoading || registerForm.invalid">
+          
+          <mat-spinner 
+            *ngIf="authState.isLoading" 
+            diameter="20" 
+            class="button-spinner">
+          </mat-spinner>
+          
+          <span *ngIf="!authState.isLoading">
+            {{ 'auth.register.registerButton' | translate }}
+          </span>
+          
+          <span *ngIf="authState.isLoading">
+            {{ 'auth.register.loading' | translate }}
+          </span>
+        </button>
+
+        <!-- Login Link -->
+        <div class="register-link-section">
+          <p class="register-text">
+            {{ 'auth.register.hasAccount' | translate }}
+            <a routerLink="/login" class="register-link">{{ 'auth.register.loginLink' | translate }}</a>
+          </p>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

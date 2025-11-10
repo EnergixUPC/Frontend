@@ -7,7 +7,11 @@ export class User {
     public readonly role: string,
     public readonly isActive: boolean,
     public readonly createdAt: Date,
-    public readonly lastLogin?: Date
+    public readonly lastLogin?: Date,
+    public readonly username?: string,
+    public readonly phoneNumber?: string,
+    public readonly address?: string,
+    public readonly profilePhotoUrl?: string
   ) {}
 
   public getFullName(): string {
@@ -31,7 +35,11 @@ export class User {
       this.role,
       this.isActive,
       this.createdAt,
-      new Date()
+      new Date(),
+      this.username,
+      this.phoneNumber,
+      this.address,
+      this.profilePhotoUrl
     );
   }
 
@@ -44,7 +52,11 @@ export class User {
       this.role,
       false,
       this.createdAt,
-      this.lastLogin
+      this.lastLogin,
+      this.username,
+      this.phoneNumber,
+      this.address,
+      this.profilePhotoUrl
     );
   }
 

@@ -16,6 +16,59 @@
         "networkError": "Network error. Please try again."
       },
       "success": "Login successful"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Complete your details to register",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "username": "Username",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "phoneNumber": "Phone",
+      "address": "Address",
+      "registerButton": "Register",
+      "loading": "Registering...",
+      "success": "Registration successful. Welcome!",
+      "failed": "Registration failed. Please try again.",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Sign in here",
+      "errors": {
+        "firstName": {
+          "required": "First name is required",
+          "minlength": "First name must be at least 2 characters"
+        },
+        "lastName": {
+          "required": "Last name is required",
+          "minlength": "Last name must be at least 2 characters"
+        },
+        "email": {
+          "required": "Email is required",
+          "email": "Please enter a valid email"
+        },
+        "username": {
+          "required": "Username is required",
+          "minlength": "Username must be at least 3 characters"
+        },
+        "password": {
+          "required": "Password is required",
+          "minlength": "Password must be at least 6 characters",
+          "strongPassword": "Password must contain at least: 8 characters, 1 uppercase, 1 lowercase and 1 number"
+        },
+        "confirmPassword": {
+          "required": "Please confirm your password",
+          "passwordMismatch": "Passwords do not match"
+        },
+        "phoneNumber": {
+          "required": "Phone number is required",
+          "phone": "Invalid format. Use: +51 987654321"
+        },
+        "address": {
+          "required": "Address is required",
+          "minlength": "Address must be at least 10 characters"
+        }
+      }
     }
   },
   "dashboard": {

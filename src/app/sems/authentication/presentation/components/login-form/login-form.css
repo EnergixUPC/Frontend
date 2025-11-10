@@ -394,3 +394,36 @@
     margin-top: 16px;
   }
 }
+
+/* Register Link Section */
+.register-link-section {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.register-text {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.register-link {
+  color: #2196F3;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.register-link:hover {
+  color: #1976D2;
+  border-bottom: 1px solid #1976D2;
+  text-decoration: none;
+}
+
+.register-link:focus {
+  outline: 2px solid #2196F3;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
