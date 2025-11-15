@@ -9,6 +9,8 @@ import { AuthControllerService } from '../../../../sems/authentication/applicati
 import { LangSwitcher } from '../lang-switcher/lang-switcher';
 import { NotificationsComponent } from '../../../../sems/notifications/presentation/views/notifications';
 import { environment } from '../../../../../environments/environments';
+import { distinctUntilChanged } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-header',
@@ -46,34 +48,46 @@ export class Header implements OnInit, OnDestroy {
     this.combinedSubscription = combineLatest([
       this.authController.getCurrentAuthState(),
       this.profileStore.profile$
-    ]).subscribe(async ([authState, profile]) => {
-      if (authState?.user) {
-        const user = authState.user;
+    ]).pipe(
+      distinctUntilChanged((prev, curr) =>
+        prev[0]?.user?.id === curr[0]?.user?.id &&
+        prev[1]?.id === curr[1]?.id
+      )
+    ).subscribe(async ([authState, profile]) => {
+      if (authState?.user && !profile) {
+        const token = localStorage.getItem(environment.tokenKey);
+        if (token) {
+          const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+          const userId = tokenPayload.userId || tokenPayload.id;
 
-        this.userName =
-          user.firstName ||
-          user.lastName ||
-          (user.email ? user.email.split('@')[0] : 'User');
-
-        if (!profile || profile.id !== user.id) {
           try {
-            const res = await fetch(`${environment.apiUrl}/api/profile/${user.id}`);
-            const data = await res.json();
-            this.profileStore.updateActiveProfile(data);
-            this.userAvatarUrl = data.profilePhotoUrl || 'assets/default-avatar.png';
+            const res = await fetch(`${environment.apiUrl}/api/profile/${userId}`, {
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              }
+            });
+
+            if (res.ok) {
+              const data = await res.json();
+              this.profileStore.updateActiveProfile(data);
+            }
           } catch (err) {
             console.error('Error cargando perfil:', err);
-            this.userAvatarUrl = 'assets/default-avatar.png';
           }
-        } else {
-          this.userAvatarUrl = profile.profilePhotoUrl || 'assets/default-avatar.png';
         }
+      }
+
+      if (profile) {
+        this.userName = profile.fullName || `${profile.firstName} ${profile.lastName}`;
+        this.userAvatarUrl = profile.profilePhotoUrl || 'assets/default-avatar.png';
       } else {
         this.userName = 'User';
         this.userAvatarUrl = 'assets/default-avatar.png';
-        this.profileStore.clearActiveProfile();
       }
     });
+
+
   }
 
   ngOnDestroy(): void {
