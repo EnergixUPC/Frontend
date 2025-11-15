@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environments';
 import { 
@@ -15,16 +15,24 @@ import {
   providedIn: 'root'
 })
 export class ReportResource {
-  private readonly apiUrl = `${environment.apiUrl}/reports`;
+  private readonly apiUrl = `${environment.apiUrl}/api/v1/reports`;
 
   constructor(private http: HttpClient) {}
 
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem(environment.tokenKey);
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': token ? `Bearer ${token}` : ''
+    });
+  }
+
   generateReport(request: ReportGenerationRequest): Observable<ReportResponse> {
-    return this.http.post<ReportResponse>(`${this.apiUrl}/generate`, request);
+    return this.http.post<ReportResponse>(`${this.apiUrl}/generate`, request, { headers: this.getHeaders() });
   }
 
   getReport(id: string): Observable<ReportResponse> {
-    return this.http.get<ReportResponse>(`${this.apiUrl}/${id}`);
+    return this.http.get<ReportResponse>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
 
   getReportHistory(filter?: ReportFilterRequest): Observable<ReportListResponse> {
@@ -41,15 +49,15 @@ export class ReportResource {
       if (filter.offset) params = params.set('offset', filter.offset.toString());
     }
 
-    return this.http.get<ReportListResponse>(this.apiUrl, { params });
+    return this.http.get<ReportListResponse>(this.apiUrl, { params, headers: this.getHeaders() });
   }
 
   deleteReport(id: string): Observable<{ success: boolean }> {
-    return this.http.delete<{ success: boolean }>(`${this.apiUrl}/${id}`);
+    return this.http.delete<{ success: boolean }>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
 
   getReportData(id: string, includeCharts: boolean = true): Observable<any> {
     const params = new HttpParams().set('includeCharts', includeCharts.toString());
-    return this.http.get(`${this.apiUrl}/${id}/data`, { params });
+    return this.http.get(`${this.apiUrl}/${id}/data`, { params, headers: this.getHeaders() });
   }
 }

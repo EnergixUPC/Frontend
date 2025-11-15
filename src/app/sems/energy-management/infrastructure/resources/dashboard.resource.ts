@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
   DashboardStatsResponse,
@@ -26,23 +26,31 @@ export class DashboardResource {
     private readonly http: HttpClient
   ) {}
 
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem(environment.tokenKey);
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': token ? `Bearer ${token}` : ''
+    });
+  }
+
   getDashboardStats(request: DashboardStatsRequest): Observable<DashboardStatsResponse> {
-    return this.http.get<DashboardStatsResponse>(`${environment.apiUrl}/dashboardStats`);
+    return this.http.get<DashboardStatsResponse>(`${environment.apiUrl}/api/v1/dashboard/stats`, { headers: this.getHeaders() });
   }
 
   getDailyConsumption(request: DailyConsumptionRequest): Observable<DailyConsumptionResponse> {
-    return this.http.get<DailyConsumptionResponse>(`${environment.apiUrl}/dailyConsumption`);
+    return this.http.get<DailyConsumptionResponse>(`${environment.apiUrl}/api/v1/consumption/daily`, { headers: this.getHeaders() });
   }
 
   getConsumptionByCategory(request: ConsumptionByCategoryRequest): Observable<ConsumptionByCategoryResponse> {
-    return this.http.get<ConsumptionByCategoryResponse>(`${environment.apiUrl}/consumptionByCategory`);
+    return this.http.get<ConsumptionByCategoryResponse>(`${environment.apiUrl}/api/v1/consumption/categories`, { headers: this.getHeaders() });
   }
 
   getMonthlyComparison(request: MonthlyComparisonRequest): Observable<MonthlyComparisonResponse> {
-    return this.http.get<MonthlyComparisonResponse>(`${environment.apiUrl}/monthlyComparison`);
+    return this.http.get<MonthlyComparisonResponse>(`${environment.apiUrl}/api/v1/consumption/monthly`, { headers: this.getHeaders() });
   }
 
   getDevices(request: DevicesRequest): Observable<DeviceResponse[]> {
-    return this.http.get<DeviceResponse[]>(`${environment.apiUrl}/devices`);
+    return this.http.get<DeviceResponse[]>(`${environment.apiUrl}/api/v1/devices`, { headers: this.getHeaders() });
   }
 }

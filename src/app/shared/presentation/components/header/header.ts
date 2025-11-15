@@ -57,7 +57,7 @@ export class Header implements OnInit, OnDestroy {
 
         if (!profile || profile.id !== user.id) {
           try {
-            const res = await fetch(`${environment.apiUrl}/users/${user.id}`);
+            const res = await fetch(`${environment.apiUrl}/api/profile/${user.id}`);
             const data = await res.json();
             this.profileStore.updateActiveProfile(data);
             this.userAvatarUrl = data.profilePhotoUrl || 'assets/default-avatar.png';

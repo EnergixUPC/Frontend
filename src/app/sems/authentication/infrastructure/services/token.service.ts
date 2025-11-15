@@ -16,7 +16,11 @@ export class TokenService {
   saveTokens(tokens: TokenPair): void {
     if (typeof window !== 'undefined' && window.localStorage) {
       localStorage.setItem(this.TOKEN_KEY, tokens.accessToken);
-      localStorage.setItem(this.REFRESH_TOKEN_KEY, tokens.refreshToken);
+      if (tokens.refreshToken) {
+        localStorage.setItem(this.REFRESH_TOKEN_KEY, tokens.refreshToken);
+      } else {
+        localStorage.removeItem(this.REFRESH_TOKEN_KEY);
+      }
       
       // Also save token expiration
       const expirationDate = tokens.getExpirationDate();
@@ -47,7 +51,7 @@ export class TokenService {
     const refreshToken = this.getRefreshToken();
     const expiresAt = localStorage.getItem(`${this.TOKEN_KEY}_expires`);
 
-    if (!accessToken || !refreshToken || !expiresAt) {
+    if (!accessToken || !expiresAt) {
       return null;
     }
 
@@ -55,7 +59,7 @@ export class TokenService {
     const now = new Date();
     const expiresIn = Math.max(0, Math.floor((expirationDate.getTime() - now.getTime()) / 1000));
 
-    return new TokenPair(accessToken, refreshToken, expiresIn);
+    return new TokenPair(accessToken, refreshToken || undefined, expiresIn);
   }
 
   isTokenExpired(): boolean {

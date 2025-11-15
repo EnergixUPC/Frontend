@@ -1,8 +1,8 @@
 export class TokenPair {
   constructor(
     public readonly accessToken: string,
-    public readonly refreshToken: string,
-    public readonly expiresIn: number,
+    public readonly refreshToken?: string,
+    public readonly expiresIn: number = 3600,
     public readonly tokenType: string = 'Bearer'
   ) {
     this.validateTokens();
@@ -12,7 +12,7 @@ export class TokenPair {
     if (!this.accessToken || this.accessToken.trim().length === 0) {
       throw new Error('Access token cannot be empty');
     }
-    if (!this.refreshToken || this.refreshToken.trim().length === 0) {
+    if (this.refreshToken != null && this.refreshToken.trim().length === 0) {
       throw new Error('Refresh token cannot be empty');
     }
     if (this.expiresIn <= 0) {

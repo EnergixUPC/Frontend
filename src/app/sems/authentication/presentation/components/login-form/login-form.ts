@@ -65,9 +65,9 @@ export class LoginForm implements OnInit, OnDestroy {
 
   private initializeForm(): void {
     this.loginForm = this.formBuilder.group({
-      username: ['', [
+      email: ['', [
         Validators.required,
-        Validators.minLength(3)
+        Validators.email
       ]],
       password: ['', [
         Validators.required,
@@ -94,10 +94,10 @@ export class LoginForm implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      const { username, password } = this.loginForm.value;
+      const { email, password } = this.loginForm.value;
       
       const command: LoginCommand = {
-        username,
+        email,
         password
       };
 
@@ -160,16 +160,16 @@ export class LoginForm implements OnInit, OnDestroy {
   }
 
   // Translation helper methods
-  get usernameLabel(): string {
-    return this.translate.instant('auth.login.username');
+  get emailLabel(): string {
+    return this.translate.instant('auth.login.email');
   }
 
   get passwordLabel(): string {
     return this.translate.instant('auth.login.password');
   }
 
-  get usernamePlaceholder(): string {
-    return this.translate.instant('auth.login.usernamePlaceholder');
+  get emailPlaceholder(): string {
+    return this.translate.instant('auth.login.emailPlaceholder');
   }
 
   get passwordPlaceholder(): string {

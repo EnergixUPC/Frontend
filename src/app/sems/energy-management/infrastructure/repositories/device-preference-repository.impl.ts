@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -12,12 +12,20 @@ import { environment } from '../../../../../environments/environments';
   providedIn: 'root'
 })
 export class DevicePreferenceRepositoryImpl implements DevicePreferenceRepository {
-  private readonly apiUrl = `${environment.apiUrl}/devicePreferences`;
+  private readonly apiUrl = `${environment.apiUrl}/api/v1/preferences/devices`;
 
   constructor(private readonly http: HttpClient) {}
 
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem(environment.tokenKey);
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': token ? `Bearer ${token}` : ''
+    });
+  }
+
   getDevicePreferences(userId: string): Observable<DevicePreference> {
-    return this.http.get<DevicePreferenceResponse>(this.apiUrl)
+    return this.http.get<DevicePreferenceResponse>(this.apiUrl, { headers: this.getHeaders() })
       .pipe(
         map(response => this.mapToDevicePreference(response)),
         catchError(() => of(this.getDefaultPreferences(userId)))
@@ -37,7 +45,7 @@ export class DevicePreferenceRepositoryImpl implements DevicePreferenceRepositor
     console.log('Sending PUT request to:', this.apiUrl);
     console.log('Update data:', updateData);
     
-    return this.http.put<DevicePreferenceResponse>(this.apiUrl, updateData)
+    return this.http.put<DevicePreferenceResponse>(this.apiUrl, updateData, { headers: this.getHeaders() })
       .pipe(
         map(response => {
           console.log('PUT response received:', response);

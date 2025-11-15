@@ -89,7 +89,7 @@ export class ReportService {
 
   // Métodos para obtener datos de gráficos desde la API
   getWeeklyConsumption(): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/weeklyConsumption`).pipe(
+    return this.http.get<any>(`${environment.apiUrl}/api/v1/reports/weeklyConsumption`).pipe(
       delay(200) // Pequeño delay para simular latencia real
     );
   }

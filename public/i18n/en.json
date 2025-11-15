@@ -2,9 +2,9 @@
   "auth": {
     "login": {
       "title": "SEMS",
-      "username": "Username",
+      "email": "Email",
       "password": "Password",
-      "usernamePlaceholder": "Username/Email",
+      "emailPlaceholder": "Email",
       "passwordPlaceholder": "Password",
       "loginButton": "Log in",
       "loading": "Logging in...",

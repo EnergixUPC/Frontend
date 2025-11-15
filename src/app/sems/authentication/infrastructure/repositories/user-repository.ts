@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { UserRepository, AuthRepository } from '../../domain/model/repositories/auth.repository';
@@ -101,7 +101,7 @@ export class UserRepositoryImpl implements UserRepository, AuthRepository {
           user: this.mapToUser(response.user),
           tokens: new TokenPair(
             response.accessToken,
-            response.refreshToken,
+            response.refreshToken || undefined,
             response.expiresIn,
             response.tokenType
           )
@@ -118,7 +118,7 @@ export class UserRepositoryImpl implements UserRepository, AuthRepository {
       .pipe(
         map(response => new TokenPair(
           response.accessToken,
-          response.refreshToken,
+          response.refreshToken || undefined,
           response.expiresIn,
           response.tokenType
         ))
@@ -126,7 +126,8 @@ export class UserRepositoryImpl implements UserRepository, AuthRepository {
   }
 
   validateToken(token: string): Observable<boolean> {
-    return this.http.post<{ valid: boolean }>(`${this.apiUrl}/validate`, { token })
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<{ valid: boolean }>(`${this.apiUrl}/validate`, { headers })
       .pipe(
         map(response => response.valid),
         catchError(() => of(false))
@@ -153,7 +154,7 @@ export class UserRepositoryImpl implements UserRepository, AuthRepository {
       response.lastName,
       response.role,
       response.isActive,
-      new Date(response.createdAt),
+      new Date(response.createdAt || new Date()),
       response.lastLogin ? new Date(response.lastLogin) : undefined
     );
   }

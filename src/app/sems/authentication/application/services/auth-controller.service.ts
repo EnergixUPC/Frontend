@@ -5,7 +5,7 @@ import { User } from '../../domain/model/entities/user.entity';
 import { TokenPair } from '../../domain/model/entities/token-pair.entity';
 
 export interface LoginCommand {
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -35,7 +35,7 @@ export class AuthControllerService {
   constructor(private readonly authService: AuthService) {}
 
   executeLogin(command: LoginCommand): Observable<{ user: User; tokens: TokenPair }> {
-    return this.authService.login(command.username, command.password);
+    return this.authService.login(command.email, command.password);
   }
 
   executeLogout(): Observable<void> {

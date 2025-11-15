@@ -8,18 +8,18 @@
     <mat-card-content class="login-content">
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
         
-        <!-- Username Field -->
+        <!-- Email Field -->
         <div class="form-field">
-          <label class="field-label">{{ usernameLabel }}</label>
+          <label class="field-label">{{ emailLabel }}</label>
           <input
-            type="text"
-            formControlName="username"
-            [placeholder]="usernamePlaceholder"
-            autocomplete="username"
+            type="email"
+            formControlName="email"
+            [placeholder]="emailPlaceholder"
+            autocomplete="email"
             class="custom-input"
-            [class.error]="isFieldInvalid('username')">
-          <div *ngIf="isFieldInvalid('username')" class="error-message">
-            {{ getFieldError('username') }}
+            [class.error]="isFieldInvalid('email')">
+          <div *ngIf="isFieldInvalid('email')" class="error-message">
+            {{ getFieldError('email') }}
           </div>
         </div>
 
