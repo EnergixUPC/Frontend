@@ -80,19 +80,33 @@
       "todayConsumption": "Today's Consumption",
       "monthlySavingGoal": "Monthly saving goal",
       "consumption": "Consumption",
-      "devices": "Devices"
+      "devices": "Devices",
+      "noData": "No data available",
+      "noDevices": "No devices registered",
+      "extraConsumption": "extra consumption",
+      "noSavings": "No savings",
+      "saved": "saved",
+      "active": "active",
+      "weeklyPeriod": "weekly"
     },
     "charts": {
       "dailyConsumption": "Daily Energy Consumption",
       "consumptionByCategory": "Energy Consumption",
       "byCategory": "by Category",
       "monthlyComparison": "Monthly Consumption",
-      "comparison": "Comparison"
+      "comparison": "Comparison",
+      "noConsumptionData": "No consumption data",
+      "noConsumptionMessage": "Start using your devices to see energy consumption data here.",
+      "noCategoryData": "No category data",
+      "noCategoryMessage": "Register devices to see consumption by category.",
+      "noMonthlyData": "No monthly data",
+      "noMonthlyMessage": "Use the system for a month to see consumption comparisons."
     },
     "devices": {
       "title": "My Devices",
       "myDevices": "My Devices",
-      "noDevices": "No devices found",
+      "noDevices": "No devices registered",
+      "noDevicesMessage": "Add your first device to start monitoring energy consumption.",
       "preferences": "Preferences",
       "addDevice": "Add Device",
       "realTimeStatus": "Real-time Status",
@@ -145,7 +159,9 @@
       "highConsumption": "High consumption detected!",
       "highConsumptionMessage": "Your usage is 20% above average in the last 3 hours.",
       "reminder": "Reminder:",
-      "reminderMessage": "You forgot to turn off the patio lights."
+      "reminderMessage": "You forgot to turn off the patio lights.",
+      "noAlerts": "No alerts at this time",
+      "loading": "Loading alerts..."
     },
     "preferences": {
       "title": "Device Monitoring Preferences",

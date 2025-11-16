@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap, catchError, of } from 'rxjs';
 import {
   DashboardStatsResponse,
   DailyConsumptionResponse,
@@ -28,6 +28,9 @@ export class DashboardResource {
 
   private getHeaders(): HttpHeaders {
     const token = localStorage.getItem(environment.tokenKey);
+    console.log('🔑 Dashboard API Token check:', token ? 'Token found' : 'No token found');
+    console.log('🔑 Token preview:', token ? `${token.substring(0, 20)}...` : 'N/A');
+    
     return new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': token ? `Bearer ${token}` : ''
@@ -39,7 +42,8 @@ export class DashboardResource {
   }
 
   getDailyConsumption(request: DailyConsumptionRequest): Observable<DailyConsumptionResponse> {
-    return this.http.get<DailyConsumptionResponse>(`${environment.apiUrl}/api/v1/consumption/daily`, { headers: this.getHeaders() });
+    const params = request.date ? `/${request.date}` : '';
+    return this.http.get<DailyConsumptionResponse>(`${environment.apiUrl}/api/v1/consumption/daily${params}`, { headers: this.getHeaders() });
   }
 
   getConsumptionByCategory(request: ConsumptionByCategoryRequest): Observable<ConsumptionByCategoryResponse> {
@@ -51,6 +55,20 @@ export class DashboardResource {
   }
 
   getDevices(request: DevicesRequest): Observable<DeviceResponse[]> {
-    return this.http.get<DeviceResponse[]>(`${environment.apiUrl}/api/v1/devices`, { headers: this.getHeaders() });
+    console.log('🌐 Making API call to fetch devices:', `${environment.apiUrl}/api/v1/devices`);
+    return this.http.get<DeviceResponse[]>(`${environment.apiUrl}/api/v1/devices`, { headers: this.getHeaders() }).pipe(
+      tap((response: DeviceResponse[]) => {
+        console.log('🌐 Devices API response:', response);
+        console.log('🌐 Number of devices returned:', response?.length || 0);
+      }),
+      catchError((error: any) => {
+        console.error('🌐 Error fetching devices from API:', error);
+        return of([]);
+      })
+    );
+  }
+
+  getAlerts(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/api/v1/alerts`, { headers: this.getHeaders() });
   }
 }

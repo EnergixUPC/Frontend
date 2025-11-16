@@ -34,10 +34,50 @@ export class ProfileComponent implements OnInit {
     this.profile$ = this.profileStore.profile$;
   }
 
+
+  private getUserIdFromToken(): string | null {
+    const token = localStorage.getItem('sems_token');
+    if (!token) return null;
+
+    try {
+      const parts = token.split('.');
+      if (parts.length !== 3) return null;
+
+      const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+      console.log('Payload del token:', payload);
+
+      // Primero buscar userId, luego id, y finalmente sub
+      const userId = payload.userId || payload.id;
+
+      if (userId) {
+        return String(userId);
+      }
+
+      return null;
+    } catch (e) {
+      console.error('Error decodificando token:', e);
+      return null;
+    }
+  }
   ngOnInit(): void {
     const currentUser = this.authService.getCurrentUser();
-    if (currentUser?.id) {
-      const id = typeof currentUser.id === 'number' ? String(currentUser.id) : currentUser.id;
+    console.log('Usuario actual completo:', currentUser);
+
+    // Obtener ID del token si currentUser.id es 0 o undefined
+    let userId: string | undefined = currentUser?.id;
+
+    if (!userId || userId === '0' || (typeof userId === 'number' && userId === 0)) {
+      console.log(' ID inválido, obteniendo del token...');
+      const tokenId = this.getUserIdFromToken();
+      if (tokenId) {
+        userId = tokenId;
+      }
+    }
+
+    console.log(' ID final a usar:', userId);
+
+    if (userId) {
+      const id = typeof userId === 'number' ? String(userId) : userId;
       this.profileService.loadUserProfile(id).subscribe({
         next: () => {
           const user = this.profileStore.currentProfile;
@@ -48,6 +88,8 @@ export class ProfileComponent implements OnInit {
         },
         error: err => console.error('Error', err)
       });
+    } else {
+      console.error(' No se pudo obtener el ID del usuario');
     }
 
     this.profile$.subscribe(p => {
@@ -62,12 +104,35 @@ export class ProfileComponent implements OnInit {
   onEdit(): void {
     this.editable = !this.editable;
   }
-
   saveChanges(): void {
-    this.editable = false;
-    console.log('', this.editableProfile);
-    this.profileStore.updateActiveProfile(this.editableProfile as ProfileResource);
+    if (!this.editableProfile.id) {
+      console.error('No se puede guardar: falta el ID del perfil');
+      return;
+    }
+
+    const currentUser = this.authService.getCurrentUser();
+    const tokenUserId = this.getUserIdFromToken();
+
+
+  this.editable = false;
+
+    this.profileService.updateProfile(
+      this.editableProfile.id,
+      this.editableProfile as ProfileResource
+    ).subscribe({
+      next: (updatedProfile) => {
+        console.log('Perfil actualizado correctamente:', updatedProfile);
+        this.editableProfile = { ...updatedProfile };
+      },
+      error: (err) => {
+        console.error('Error completo:', err);
+        console.error('Status:', err.status);
+        console.error('Mensaje:', err.error);
+        this.editable = true;
+      }
+    });
   }
+
 
   changePhoto(): void {
     this.fileInput.nativeElement.click();

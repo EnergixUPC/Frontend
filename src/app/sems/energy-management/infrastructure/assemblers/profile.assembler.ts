@@ -21,14 +21,15 @@ export class ProfileAssembler {
     };
   }
 
-  toRequest(resource: ProfileResource) {
+  toRequest(resource: ProfileResource): any {
     return {
+      email: resource.email,
       firstName: resource.firstName,
       lastName: resource.lastName,
-      email: resource.email,
-      address: resource.address,
       phoneNumber: resource.phoneNumber,
+      address: resource.address,
       profilePhotoUrl: resource.profilePhotoUrl
     };
   }
+
 }

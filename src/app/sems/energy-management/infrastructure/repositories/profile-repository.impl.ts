@@ -26,6 +26,8 @@ export class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   updateProfile(userId: string, request: any): Observable<ProfileResponse> {
-    return this.http.put<ProfileResponse>(`${BASE_URL}/${userId}`, request, { headers: this.getHeaders() });
+    const headers = this.getHeaders();
+    return this.http.put<ProfileResponse>(`${BASE_URL}/${userId}`, request, { headers });
   }
+
 }

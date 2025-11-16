@@ -23,8 +23,12 @@ export class ProfileService {
     );
   }
 
-  updateProfile(userId: string, resource: ProfileResource) {
+  updateProfile(userId: string, resource: ProfileResource): Observable<ProfileResource> {
     const req = this.assembler.toRequest(resource);
-    return this.repo.updateProfile(userId, req);
+    return this.repo.updateProfile(userId, req).pipe(
+      map(dto => this.assembler.toResource(dto)),
+      tap(res => this.store.updateActiveProfile(res))
+    );
   }
+
 }

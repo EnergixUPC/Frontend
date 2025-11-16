@@ -45,4 +45,8 @@ export class DashboardRepositoryImpl implements DashboardRepository {
       .getDevices({})
       .pipe(map(responses => DashboardAssembler.toDevices(responses)));
   }
+
+  getAlerts(): Observable<any[]> {
+    return this.dashboardResource.getAlerts();
+  }
 }
