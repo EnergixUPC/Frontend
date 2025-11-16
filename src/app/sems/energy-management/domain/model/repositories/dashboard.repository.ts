@@ -11,4 +11,5 @@ export interface DashboardRepository {
   getConsumptionByCategory(): Observable<ConsumptionByCategory>;
   getMonthlyComparison(): Observable<MonthlyComparison>;
   getDevices(): Observable<Device[]>;
+  getAlerts(): Observable<any[]>;
 }

@@ -80,19 +80,33 @@
       "todayConsumption": "Consumo de Hoy",
       "monthlySavingGoal": "Meta de ahorro mensual",
       "consumption": "Consumo",
-      "devices": "Dispositivos"
+      "devices": "Dispositivos",
+      "noData": "Sin datos disponibles",
+      "noDevices": "Sin dispositivos registrados",
+      "extraConsumption": "consumo extra",
+      "noSavings": "Sin ahorros",
+      "saved": "ahorrado",
+      "active": "activos",
+      "weeklyPeriod": "semanal"
     },
     "charts": {
       "dailyConsumption": "Consumo Diario de Energía",
       "consumptionByCategory": "Consumo de Energía",
       "byCategory": "por Categoría",
       "monthlyComparison": "Consumo Mensual",
-      "comparison": "Comparación"
+      "comparison": "Comparación",
+      "noConsumptionData": "Sin datos de consumo",
+      "noConsumptionMessage": "Comienza a usar tus dispositivos para ver los datos de consumo de energía aquí.",
+      "noCategoryData": "Sin datos por categoría",
+      "noCategoryMessage": "Registra dispositivos para ver el consumo por categoría.",
+      "noMonthlyData": "Sin datos mensuales",
+      "noMonthlyMessage": "Usa el sistema durante un mes para ver comparaciones de consumo."
     },
     "devices": {
       "title": "Mis Dispositivos",
       "myDevices": "Mis Dispositivos",
-      "noDevices": "No se encontraron dispositivos",
+      "noDevices": "Sin dispositivos registrados",
+      "noDevicesMessage": "Agrega tu primer dispositivo para comenzar a monitorear el consumo de energía.",
       "preferences": "Preferencias",
       "addDevice": "Agregar Dispositivo",
       "realTimeStatus": "Estado en Tiempo Real",
@@ -145,7 +159,9 @@
       "highConsumption": "¡Consumo alto detectado!",
       "highConsumptionMessage": "Tu uso está un 20% por encima del promedio en las últimas 3 horas.",
       "reminder": "Recordatorio:",
-      "reminderMessage": "Olvidaste apagar las luces del patio."
+      "reminderMessage": "Olvidaste apagar las luces del patio.",
+      "noAlerts": "Sin alertas en este momento",
+      "loading": "Cargando alertas..."
     },
     "preferences": {
       "title": "Preferencias de Monitoreo de Dispositivos",

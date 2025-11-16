@@ -144,4 +144,13 @@ export class DashboardService {
   resetDashboard(): void {
     this.dashboardStore.reset();
   }
+
+  loadAlerts(): Observable<any[]> {
+    return this.dashboardRepository.getAlerts().pipe(
+      catchError(error => {
+        console.error('Error loading alerts:', error);
+        return of([]);
+      })
+    );
+  }
 }
