@@ -13,13 +13,15 @@ export interface DeviceResponse {
   name: string;
   category: string;
   type: string;
+  brand: string;
+  model: string;
   status: string;
   realTimeStatus: string;
   lastActive: string;
-  alertHistory: string;
-  energyConsumption: string;
+  alertHistory?: string;
+  energyConsumption?: string;
   location: string;
-  isActive: boolean;
+  isActive: number;
 }
 
 @Injectable({
@@ -110,6 +112,8 @@ export class DeviceRepositoryImpl implements DeviceRepository {
       name: response.name,
       category: response.category,
       type: response.type,
+      brand: response.brand,
+      model: response.model,
       // Cast the incoming string to DeviceStatus enum safely
       status: (response.status as unknown) as DeviceStatus,
       realTimeStatus: response.realTimeStatus,
@@ -127,6 +131,8 @@ export class DeviceRepositoryImpl implements DeviceRepository {
       name: device.name,
       category: device.category,
       type: device.type,
+      brand: device.brand,
+      model: device.model,
       status: device.status,
       realTimeStatus: device.realTimeStatus,
       lastActive: device.lastActive,

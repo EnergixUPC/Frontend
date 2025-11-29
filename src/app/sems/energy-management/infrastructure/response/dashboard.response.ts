@@ -49,6 +49,8 @@ export interface DeviceResponse {
   name: string;
   location: string;
   type: string;
+  brand?: string;
+  model?: string;
   status: string;
   lastActive?: string;
   consumption?: number;

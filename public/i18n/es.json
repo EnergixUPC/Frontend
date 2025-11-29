@@ -146,6 +146,8 @@
         "name": "Nombre del Dispositivo",
         "category": "Categoría",
         "type": "Tipo",
+        "brand": "Marca",
+        "model": "Modelo",
         "status": "Estado",
         "lastActive": "Última Actividad",
         "alertHistory": "Historial de Alertas",

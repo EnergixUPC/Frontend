@@ -183,7 +183,7 @@ export class Home implements OnInit, OnDestroy {
             id: device.id,
             name: device.name,
             category: device.category,
-            consumption: device.energyConsumption,
+            consumption: device.energyConsumption || 'N/A',
             consumptionValue: device.energyConsumptionValue,
             isActive: device.isActive,
             status: device.status

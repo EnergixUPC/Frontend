@@ -60,13 +60,13 @@
             <div class="device-status-row">
               <div class="status-section">
                 <span class="label">{{ alertHistoryText }}</span>
-                <span class="value alert" [class.no-alerts]="device.alertHistory.toLowerCase().includes('no alert')">
-                  {{ getAlertText(device.alertHistory) }}
+                <span class="value alert" [class.no-alerts]="(device.alertHistory || 'No alerts').toLowerCase().includes('no alert')">
+                  {{ getAlertText(device.alertHistory || 'No alerts') }}
                 </span>
               </div>
               <div class="status-section">
                 <span class="label">{{ energyConsumptionText }}</span>
-                <span class="value consumption">{{ device.energyConsumption }}</span>
+                <span class="value consumption">{{ device.energyConsumption || '0 kWh this week' }}</span>
               </div>
             </div>
           </div>

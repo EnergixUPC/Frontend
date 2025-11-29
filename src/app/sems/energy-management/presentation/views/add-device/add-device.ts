@@ -19,13 +19,13 @@ export class AddDevice {
     name: '',
     category: '',
     type: '',
+    brand: '',
+    model: '',
     status: DeviceStatus.OFF,
     realTimeStatus: 'Off',
     lastActive: 'Now',
-    alertHistory: 'No alerts',
-    energyConsumption: '0 kWh this week',
     location: '',
-    isActive: false
+    isActive: 0
   };
 
   saving = false;
@@ -36,6 +36,14 @@ export class AddDevice {
     private readonly router: Router,
     private readonly translateService: TranslateService
   ) {}
+
+  get isActive(): boolean {
+    return this.device.isActive === 1;
+  }
+
+  set isActive(value: boolean) {
+    this.device.isActive = value ? 1 : 0;
+  }
 
   get titleText(): string {
     return this.translateService.instant('dashboard.devices.addDeviceTitle');
@@ -55,7 +63,7 @@ export class AddDevice {
 
   onSave(): void {
     // Basic validation
-    if (!this.device.name || !this.device.category) {
+    if (!this.device.name || !this.device.category || !this.device.brand || !this.device.model) {
       this.error = this.translateService.instant('dashboard.devices.addDeviceValidation');
       return;
     }
@@ -69,13 +77,13 @@ export class AddDevice {
       name: this.device.name as string,
       category: this.device.category as string,
       type: (this.device.type as string) || 'UNKNOWN',
+      brand: (this.device.brand as string) || '',
+      model: (this.device.model as string) || '',
       status: (this.device.status as any) || 'OFF',
       realTimeStatus: (this.device.realTimeStatus as string) || 'Off',
       lastActive: (this.device.lastActive as string) || 'Now',
-      alertHistory: (this.device.alertHistory as string) || 'No alerts',
-      energyConsumption: (this.device.energyConsumption as string) || '0 kWh this week',
       location: (this.device.location as string) || '',
-      isActive: !!this.device.isActive
+      isActive: this.device.isActive ? 1 : 0
     };
 
     this.devicesService.createDevice(newDevice).subscribe({

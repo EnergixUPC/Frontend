@@ -146,6 +146,8 @@
         "name": "Device Name",
         "category": "Category",
         "type": "Type",
+        "brand": "Brand",
+        "model": "Model",
         "status": "Status",
         "lastActive": "Last Active",
         "alertHistory": "Alert History",

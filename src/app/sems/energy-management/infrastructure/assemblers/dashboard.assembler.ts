@@ -54,13 +54,15 @@ export class DashboardAssembler {
       name: response.name,
       category: 'Other', // Valor por defecto para dispositivos del dashboard
       type: response.type,
+      brand: response.brand || '',
+      model: response.model || '',
       status: response.status as any,
       realTimeStatus: response.status,
       lastActive: response.lastActive || 'Unknown',
       alertHistory: 'No alerts',
       energyConsumption: response.consumption ? `${response.consumption} kWh` : '0 kWh',
       location: response.location,
-      isActive: response.status === 'ON'
+      isActive: response.status === 'ON' ? 1 : 0
     };
   }
 
