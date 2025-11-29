@@ -310,8 +310,17 @@
   },
   "profile": {
     "title": "Mi Perfil",
+    "firstName": "Nombre",
+    "lastName": "Apellido", 
+    "email": "Correo Electrónico",
+    "username": "Nombre de Usuario",
+    "address": "Dirección",
+    "phoneNumber": "Teléfono",
     "editButton": "Editar Perfil",
     "saveButton": "Guardar Cambios",
-    "changePhotoButton": "Cambiar Foto"
+    "cancelButton": "Cancelar",
+    "changePhotoButton": "Cambiar Foto",
+    "loading": "Cargando perfil...",
+    "noUser": "No se encontró información del usuario"
   }
 }

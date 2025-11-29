@@ -1,4 +1,4 @@
-<div class="profile-container" *ngIf="profile$ | async as profile">
+<div class="profile-container" *ngIf="!isLoading && user">
   <!-- Page Header -->
   <div class="page-header">
     <h1>{{ 'profile.title' | translate }}</h1>
@@ -9,26 +9,37 @@
     <div class="profile-info-section">
       <div class="profile-details">
         <div class="profile-item">
+          <label>{{ 'profile.firstName' | translate }}:</label>
           <span *ngIf="!editable" class="value">{{ editableProfile.firstName }}</span>
           <input *ngIf="editable" [(ngModel)]="editableProfile.firstName" class="input-edit" />
         </div>
 
         <div class="profile-item">
+          <label>{{ 'profile.lastName' | translate }}:</label>
           <span *ngIf="!editable" class="value">{{ editableProfile.lastName }}</span>
           <input *ngIf="editable" [(ngModel)]="editableProfile.lastName" class="input-edit" />
         </div>
 
         <div class="profile-item">
+          <label>{{ 'profile.email' | translate }}:</label>
           <span *ngIf="!editable" class="value">{{ editableProfile.email }}</span>
           <input *ngIf="editable" [(ngModel)]="editableProfile.email" class="input-edit" />
         </div>
 
         <div class="profile-item">
+          <label>{{ 'profile.username' | translate }}:</label>
+          <span *ngIf="!editable" class="value">{{ editableProfile.username }}</span>
+          <input *ngIf="editable" [(ngModel)]="editableProfile.username" class="input-edit" />
+        </div>
+
+        <div class="profile-item">
+          <label>{{ 'profile.address' | translate }}:</label>
           <span *ngIf="!editable" class="value">{{ editableProfile.address }}</span>
           <input *ngIf="editable" [(ngModel)]="editableProfile.address" class="input-edit" />
         </div>
 
         <div class="profile-item">
+          <label>{{ 'profile.phoneNumber' | translate }}:</label>
           <span *ngIf="!editable" class="value">{{ editableProfile.phoneNumber }}</span>
           <input *ngIf="editable" [(ngModel)]="editableProfile.phoneNumber" class="input-edit" />
         </div>
@@ -42,13 +53,16 @@
         <button *ngIf="editable" class="save-btn" (click)="saveChanges()">
           {{ 'profile.saveButton' | translate }}
         </button>
+        <button *ngIf="editable" class="cancel-btn" (click)="onEdit()">
+          {{ 'profile.cancelButton' | translate }}
+        </button>
       </div>
     </div>
 
     <!-- Right section: Photo -->
     <div class="profile-photo-section">
       <img
-        [src]="profilePhotoUrl || '/assets/default-avatar.png'"
+        [src]="profilePhotoUrl"
         alt="Profile Photo"
         class="profile-photo"
       />
@@ -72,7 +86,12 @@
   </div>
 </div>
 
-<!-- Loading fallback -->
-<div class="profile-empty" *ngIf="!(profile$ | async)">
+<!-- Loading state -->
+<div class="profile-empty" *ngIf="isLoading">
   <p>{{ 'profile.loading' | translate }}</p>
+</div>
+
+<!-- No user state -->
+<div class="profile-empty" *ngIf="!isLoading && !user">
+  <p>{{ 'profile.noUser' | translate }}</p>
 </div>

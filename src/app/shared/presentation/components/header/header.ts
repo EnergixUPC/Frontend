@@ -3,13 +3,10 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
-import { interval, Subscription, combineLatest } from 'rxjs';
-import { ProfileStore } from '../../../../sems/energy-management/application/state/profile.store';
+import { interval, Subscription } from 'rxjs';
 import { AuthControllerService } from '../../../../sems/authentication/application/services/auth-controller.service';
 import { LangSwitcher } from '../lang-switcher/lang-switcher';
 import { NotificationsComponent } from '../../../../sems/notifications/presentation/views/notifications';
-import { environment } from '../../../../../environments/environments';
-import { distinctUntilChanged } from 'rxjs/operators';
 
 
 @Component({
@@ -37,55 +34,41 @@ export class Header implements OnInit, OnDestroy {
   private combinedSubscription?: Subscription;
 
   constructor(
-    private authController: AuthControllerService,
-    private profileStore: ProfileStore
+    private authController: AuthControllerService
   ) {}
 
   ngOnInit(): void {
     this.updateDateTime();
     this.timeSubscription = interval(1000).subscribe(() => this.updateDateTime());
 
-    this.combinedSubscription = combineLatest([
-      this.authController.getCurrentAuthState(),
-      this.profileStore.profile$
-    ]).pipe(
-      distinctUntilChanged((prev, curr) =>
-        prev[0]?.user?.id === curr[0]?.user?.id &&
-        prev[1]?.id === curr[1]?.id
-      )
-    ).subscribe(async ([authState, profile]) => {
-      if (authState?.user && !profile) {
-        const token = localStorage.getItem(environment.tokenKey);
-        if (token) {
-          const tokenPayload = JSON.parse(atob(token.split('.')[1]));
-          const userId = tokenPayload.userId || tokenPayload.id;
-
-          try {
-            const res = await fetch(`${environment.apiUrl}/api/profile/${userId}`, {
-              headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-              }
-            });
-
-            if (res.ok) {
-              const data = await res.json();
-              this.profileStore.updateActiveProfile(data);
-            }
-          } catch (err) {
-            console.error('Error cargando perfil:', err);
-          }
+    // Suscribirse solo al estado de autenticación
+    this.combinedSubscription = this.authController.getCurrentAuthState()
+      .subscribe(authState => {
+        console.log('🎯 Header - Auth state received:', authState);
+        
+        if (authState?.user) {
+          const user = authState.user;
+          console.log('🎯 Header - User found:', {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            id: user.id
+          });
+          
+          this.userName = user.firstName && user.lastName 
+            ? `${user.firstName} ${user.lastName}` 
+            : user.email;
+          
+          this.userAvatarUrl = user.profilePhotoUrl || 'assets/default-avatar.png';
+          
+          console.log('🎯 Header - userName set to:', this.userName);
+          console.log('🎯 Header - userAvatarUrl set to:', this.userAvatarUrl);
+        } else {
+          console.log('🎯 Header - No user found, using defaults');
+          this.userName = 'User';
+          this.userAvatarUrl = 'assets/default-avatar.png';
         }
-      }
-
-      if (profile) {
-        this.userName = profile.fullName || `${profile.firstName} ${profile.lastName}`;
-        this.userAvatarUrl = profile.profilePhotoUrl || 'assets/default-avatar.png';
-      } else {
-        this.userName = 'User';
-        this.userAvatarUrl = 'assets/default-avatar.png';
-      }
-    });
+      });
 
 
   }

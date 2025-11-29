@@ -158,6 +158,10 @@ export class RegisterForm implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    console.log('📝 RegisterForm - Submit button clicked');
+    console.log('✅ RegisterForm - Form valid:', this.registerForm.valid);
+    console.log('⏳ RegisterForm - Currently loading:', this.authState.isLoading);
+    
     if (this.registerForm.valid && !this.authState.isLoading) {
       const formValue = this.registerForm.value;
       const registerCommand: RegisterCommand = {
@@ -170,20 +174,42 @@ export class RegisterForm implements OnInit, OnDestroy {
         address: formValue.address.trim()
       };
 
+      console.log('📤 RegisterForm - Sending registration command:', {
+        ...registerCommand,
+        password: '***'
+      });
+
       this.authController.register(registerCommand)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
-          next: () => {
+          next: (result) => {
+            console.log('🎉 RegisterForm - Registration successful!', result);
+            console.log('👤 RegisterForm - Registered user:', result.user?.email);
+            console.log('🔑 RegisterForm - Tokens received:', result.tokens ? 'Yes' : 'No');
+            
             this.onRegisterSuccess.emit();
           },
           error: (error) => {
-            console.error('Register error:', error);
+            console.error('❌ RegisterForm - Registration failed:', error);
+            console.error('❌ RegisterForm - Error message:', error.message);
+            
             this.onRegisterError.emit(
               error.message || this.translate.instant('auth.register.failed') || 'Error en el registro'
             );
           }
         });
     } else {
+      console.log('⚠️ RegisterForm - Form not valid or currently loading');
+      if (!this.registerForm.valid) {
+        console.log('❌ RegisterForm - Form errors:', this.registerForm.errors);
+        Object.keys(this.registerForm.controls).forEach(key => {
+          const control = this.registerForm.get(key);
+          if (control?.errors) {
+            console.log(`❌ RegisterForm - Field '${key}' errors:`, control.errors);
+          }
+        });
+      }
+      
       // Mark all fields as touched to show validation errors
       Object.keys(this.registerForm.controls).forEach(key => {
         this.registerForm.get(key)?.markAsTouched();

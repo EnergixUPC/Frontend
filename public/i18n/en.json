@@ -310,8 +310,17 @@
   },
   "profile": {
     "title": "My Profile",
+    "firstName": "First Name",
+    "lastName": "Last Name", 
+    "email": "Email",
+    "username": "Username",
+    "address": "Address",
+    "phoneNumber": "Phone Number",
     "editButton": "Edit Profile",
     "saveButton": "Save Changes",
-    "changePhotoButton": "Change Photo"
+    "cancelButton": "Cancel",
+    "changePhotoButton": "Change Photo",
+    "loading": "Loading profile...",
+    "noUser": "User information not found"
   }
 }

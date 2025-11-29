@@ -90,22 +90,28 @@ export class Home implements OnInit, OnDestroy {
   private loadDashboardData(): void {
     this.isLoading = true;
 
-    // 🔐 Ensure user is authenticated before loading dashboard data
+    // 🔐 Check authentication state
     this.authService.authState$.subscribe(authState => {
-      console.log('🔐 Authentication state changed:', authState);
+      console.log('🔐 Home - Authentication state changed:', authState);
+      
+      // If still loading, wait
+      if (authState.isLoading) {
+        console.log('⏳ Home - Auth still loading, waiting...');
+        return;
+      }
       
       if (!authState.isAuthenticated || !authState.user) {
-        console.warn('⚠️ User not authenticated, redirecting to login');
+        console.warn('⚠️ Home - User not authenticated, redirecting to login');
         this.router.navigate(['/login']);
         return;
       }
 
       const currentUser = authState.user;
-      console.log('✅ User authenticated - Loading dashboard for user:', currentUser.id, currentUser.username);
+      console.log('✅ Home - User authenticated - Loading dashboard for user:', currentUser.id, currentUser.email);
       
       // Load dashboard data using backend endpoints (they filter by authenticated user automatically)
       this.loadBackendData();
-    }).unsubscribe();
+    });
   }
 
   private loadBackendData(): void {
