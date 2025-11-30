@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DevicePreference, PreferenceSettings } from '../../../domain/model/entities/device-preference.entity';
@@ -19,7 +19,7 @@ interface PreferenceGroup {
 
 @Component({
   selector: 'app-device-preferences',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './device-preferences.html',
   styleUrl: './device-preferences.css'
 })
@@ -32,17 +32,17 @@ export class DevicePreferences implements OnInit, OnDestroy {
   saving = false;
   saveSuccess = false;
   hasUnsavedChanges = false;
-  
+
   private destroy$ = new Subject<void>();
 
-  // Group structure only 
+  // Group structure only
   private readonly groupStructure = [
     {
       title: 'Monitoring Settings',
       keys: ['enableEnergyMonitoring', 'receiveHighUsageAlerts', 'monitorHeatingCooling']
     },
     {
-      title: 'Device Categories', 
+      title: 'Device Categories',
       keys: ['monitorMajorAppliances', 'monitorElectronics', 'monitorKitchenDevices']
     },
     {
@@ -80,13 +80,13 @@ export class DevicePreferences implements OnInit, OnDestroy {
       .subscribe({
         next: (preferences) => {
           console.log('Loaded preferences from DB:', preferences);
-          
+
           this.devicePreferences = preferences;
           this.originalPreferences = JSON.parse(JSON.stringify(preferences));
           this.buildPreferenceGroupsFromData();
           this.hasUnsavedChanges = false;
           this.loading = false;
-          
+
           this.cdr.detectChanges();
         },
         error: (error) => {
@@ -127,10 +127,10 @@ export class DevicePreferences implements OnInit, OnDestroy {
 
     // Update the UI groups
     this.updatePreferenceInGroups(key, enabled);
-    
+
     // Check for unsaved changes
     this.checkForUnsavedChanges();
-    
+
     this.cdr.detectChanges();
   }
 
@@ -145,8 +145,8 @@ export class DevicePreferences implements OnInit, OnDestroy {
 
   private checkForUnsavedChanges(): void {
     if (!this.devicePreferences || !this.originalPreferences) return;
-    
-    this.hasUnsavedChanges = JSON.stringify(this.devicePreferences.preferences) !== 
+
+    this.hasUnsavedChanges = JSON.stringify(this.devicePreferences.preferences) !==
                             JSON.stringify(this.originalPreferences.preferences);
   }
 
@@ -155,7 +155,7 @@ export class DevicePreferences implements OnInit, OnDestroy {
 
     // Get defaults (all false)
     const defaults = this.devicePreferenceService.resetToDefaults();
-    
+
     const updatedPreferences = {
       ...this.devicePreferences,
       preferences: defaults,
@@ -199,15 +199,15 @@ export class DevicePreferences implements OnInit, OnDestroy {
       .subscribe({
         next: (updated) => {
           console.log('Preferences saved successfully:', updated);
-          
+
           this.devicePreferences = updated;
           this.originalPreferences = JSON.parse(JSON.stringify(updated));
           this.saving = false;
           this.saveSuccess = true;
           this.hasUnsavedChanges = false;
-          
+
           this.cdr.detectChanges();
-          
+
           // Hide success message after 3 seconds
           setTimeout(() => {
             this.saveSuccess = false;
@@ -216,12 +216,12 @@ export class DevicePreferences implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.error('Error saving preferences:', error);
-          
+
           this.saving = false;
           this.error = 'Error guardando preferencias';
-          
+
           this.cdr.detectChanges();
-          
+
           // Hide error after 5 seconds
           setTimeout(() => {
             this.error = null;
