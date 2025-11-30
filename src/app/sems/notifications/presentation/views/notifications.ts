@@ -1,5 +1,6 @@
 import {ChangeDetectorRef, Component, HostListener, OnInit} from '@angular/core';
 import {CommonModule, NgClass, DatePipe, NgIf} from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 import { NotificationService } from '../../infrastructure/notifications.service';
 import { NotificationEntity } from '../../domain/model/notifications.entity';
 
@@ -12,7 +13,8 @@ import { NotificationEntity } from '../../domain/model/notifications.entity';
     CommonModule,
     NgClass,
     DatePipe,
-    NgIf
+    NgIf,
+    TranslateModule
   ]
 })
 export class NotificationsComponent implements OnInit {
