@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthControllerService, LoginCommand } from '../../../application/services/auth-controller.service';
 import { AuthState } from '../../../application/services/auth.service';
@@ -25,7 +25,8 @@ import { AuthState } from '../../../application/services/auth.service';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    TranslateModule
   ],
   templateUrl: './login-form.html',
   styleUrl: './login-form.css'
@@ -81,11 +82,11 @@ export class LoginForm implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(state => {
         this.authState = state;
-        
+
         if (state.isAuthenticated && !state.isLoading) {
           this.loginSuccess.emit();
         }
-        
+
         if (state.error) {
           this.loginError.emit(state.error);
         }
@@ -95,7 +96,7 @@ export class LoginForm implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      
+
       const command: LoginCommand = {
         email,
         password
@@ -126,7 +127,7 @@ export class LoginForm implements OnInit, OnDestroy {
 
   getFieldError(fieldName: string): string {
     const field = this.loginForm.get(fieldName);
-    
+
     if (!field || !field.errors || !field.touched) {
       return '';
     }
@@ -134,11 +135,11 @@ export class LoginForm implements OnInit, OnDestroy {
     if (field.errors['required']) {
       return this.translate.instant('auth.login.errors.required');
     }
-    
+
     if (field.errors['email']) {
       return this.translate.instant('auth.login.errors.email');
     }
-    
+
     if (field.errors['minlength']) {
       const requiredLength = field.errors['minlength'].requiredLength;
       return this.translate.instant('auth.login.errors.minLength', { length: requiredLength });
