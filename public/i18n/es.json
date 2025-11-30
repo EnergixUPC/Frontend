@@ -8,6 +8,8 @@
       "passwordPlaceholder": "Contraseña",
       "loginButton": "Iniciar Sesión",
       "loading": "Iniciando sesión...",
+      "noAccount": "¿No tienes una cuenta?",
+      "registerLink": "Regístrate aquí",
       "errors": {
         "required": "Este campo es obligatorio",
         "email": "Por favor ingrese un email válido",
@@ -259,6 +261,8 @@
     "spanish": "Español",
     "close": "Cerrar",
     "loading": "Cargando...",
+    "saving": "Guardando...",
+    "retry": "Reintentar",
     "error": "Error",
     "success": "Éxito",
     "status": {
@@ -313,7 +317,7 @@
   "profile": {
     "title": "Mi Perfil",
     "firstName": "Nombre",
-    "lastName": "Apellido", 
+    "lastName": "Apellido",
     "email": "Correo Electrónico",
     "username": "Nombre de Usuario",
     "address": "Dirección",
@@ -324,5 +328,15 @@
     "changePhotoButton": "Cambiar Foto",
     "loading": "Cargando perfil...",
     "noUser": "No se encontró información del usuario"
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "newNotifications": "nuevas",
+    "noNotifications": "No hay notificaciones",
+    "types": {
+      "success": "Éxito",
+      "warning": "Advertencia",
+      "info": "Información"
+    }
   }
 }

@@ -8,6 +8,8 @@
       "passwordPlaceholder": "Password",
       "loginButton": "Log in",
       "loading": "Logging in...",
+      "noAccount": "Don't have an account?",
+      "registerLink": "Sign up here",
       "errors": {
         "required": "This field is required",
         "email": "Please enter a valid email",
@@ -259,6 +261,8 @@
     "spanish": "Spanish",
     "close": "Close",
     "loading": "Loading...",
+    "saving": "Saving...",
+    "retry": "Retry",
     "error": "Error",
     "success": "Success",
     "status": {
@@ -313,7 +317,7 @@
   "profile": {
     "title": "My Profile",
     "firstName": "First Name",
-    "lastName": "Last Name", 
+    "lastName": "Last Name",
     "email": "Email",
     "username": "Username",
     "address": "Address",
@@ -324,5 +328,15 @@
     "changePhotoButton": "Change Photo",
     "loading": "Loading profile...",
     "noUser": "User information not found"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "newNotifications": "new",
+    "noNotifications": "No notifications",
+    "types": {
+      "success": "Success",
+      "warning": "Warning",
+      "info": "Information"
+    }
   }
 }
