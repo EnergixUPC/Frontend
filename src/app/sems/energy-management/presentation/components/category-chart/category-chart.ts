@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ConsumptionByCategory } from '../../../domain/model/entities/consumption-by-category.entity';
 
 @Component({
@@ -9,7 +9,8 @@ import { ConsumptionByCategory } from '../../../domain/model/entities/consumptio
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule
+    MatCardModule,
+    TranslateModule
   ],
   templateUrl: './category-chart.html',
   styleUrl: './category-chart.css'
