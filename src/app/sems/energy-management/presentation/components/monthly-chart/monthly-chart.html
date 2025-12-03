@@ -3,29 +3,27 @@
     <mat-card-title>{{ monthlyComparisonLabel }}</mat-card-title>
     <mat-card-subtitle>{{ comparisonLabel }}</mat-card-subtitle>
   </mat-card-header>
-  
+
   <mat-card-content>
     @if (monthlyComparison) {
-      <div class="monthly-content">
-        <div class="bar-chart">
-          @for (month of monthlyComparison.months; track month.month) {
-            <div class="bar-container">
-              <div class="bar-wrapper">
-                <div 
-                  class="bar"
-                  [class.current]="isCurrentMonth(month.month)"
-                  [style.height]="getBarHeight(month.consumption)">
-                </div>
-              </div>
-              <span class="bar-label">{{ month.month }}</span>
+    <div class="monthly-content">
+      <div class="bar-chart">
+        @for (month of monthlyComparison.months; track month.month) {
+        <div class="bar-container">
+          <div class="bar-wrapper">
+            <div class="bar" [class.current]="isCurrentMonth(month.month)"
+              [style.height]="getBarHeight(month.consumption)">
             </div>
-          }
+          </div>
+          <span class="bar-label">{{ getMonthTranslation(month.month) }}</span>
         </div>
+        }
       </div>
+    </div>
     } @else {
-      <div class="no-data">
-        <p>{{ getTranslation('common.loading') }}</p>
-      </div>
+    <div class="no-data">
+      <p>{{ getTranslation('common.loading') }}</p>
+    </div>
     }
   </mat-card-content>
 </mat-card>

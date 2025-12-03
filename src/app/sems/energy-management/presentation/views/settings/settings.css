@@ -43,6 +43,7 @@
   gap: 32px;
   margin-bottom: 32px;
 }
+
 .card {
   background: #fff;
   border: 3px dashed #222;
@@ -53,25 +54,30 @@
   margin-bottom: 0;
   box-shadow: 2px 2px 0 0 #222, 4px 4px 0 0 #bbb;
 }
+
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .card-header h2,
-.card > h2 {
+.card>h2 {
   font-size: 1.4rem;
   font-weight: bold;
   margin-bottom: 18px;
 }
+
 .card h2 {
   font-size: 1.2rem;
   margin-bottom: 10px;
 }
+
 .toggles mat-checkbox {
   display: block;
   margin-bottom: 8px;
 }
+
 .toggles label {
   display: flex;
   align-items: center;
@@ -93,11 +99,13 @@ hr {
   border-top: 1px solid #ccc;
   margin: 10px 0;
 }
+
 .chip-group {
   display: flex;
   gap: 12px;
   margin-top: 12px;
 }
+
 /* Chips (botones seleccionables) */
 .chip {
   background: #e3f0ff;
@@ -126,6 +134,7 @@ hr {
   background: #1976d2;
   color: #fff;
 }
+
 .chip-group {
   display: flex;
   gap: 10px;
@@ -139,6 +148,7 @@ hr {
   min-width: 60px;
   margin-left: 12px;
 }
+
 .add-btn {
   background: #000;
   color: #fff;
@@ -147,6 +157,7 @@ hr {
   padding: 4px 10px;
   cursor: pointer;
 }
+
 .save-btn {
   background: #1976d2 !important;
   color: #fff !important;
@@ -154,6 +165,7 @@ hr {
   min-width: 100px;
   margin-right: 12px;
 }
+
 ul {
   list-style: none;
   padding: 0;
@@ -185,6 +197,7 @@ ul li a {
   min-width: 100px;
   margin-right: 12px;
 }
+
 .cancel-btn {
   color: #1976d2 !important;
   background: #fff !important;
@@ -209,13 +222,76 @@ ul li a {
   text-decoration: underline;
   font-size: 1rem;
 }
+
 /* Evita superposición o bloqueos al hacer clic */
 button.chip {
   pointer-events: all;
   position: relative;
   z-index: 2;
 }
+
 .selected-black {
   color: #000 !important;
 }
 
+.selected-black {
+  color: #000 !important;
+}
+
+/* Tablet Responsive */
+@media (max-width: 1024px) {
+  .settings-grid {
+    gap: 24px;
+  }
+
+  .card {
+    padding: 24px;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .settings-content {
+    padding: 20px 16px;
+  }
+
+  .settings-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .settings-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .card {
+    padding: 20px;
+    min-height: auto;
+  }
+
+  .card-header h2,
+  .card>h2 {
+    font-size: 1.2rem;
+  }
+
+  .chip-group {
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    min-width: auto;
+    padding: 0 12px;
+    font-size: 0.9rem;
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+    gap: 12px;
+  }
+
+  .save-btn,
+  .cancel-btn {
+    width: 100%;
+    margin: 0;
+  }
+}

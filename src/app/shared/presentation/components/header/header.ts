@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -14,6 +15,7 @@ import { NotificationsComponent } from '../../../../sems/notifications/presentat
   standalone: true,
   imports: [
     CommonModule,
+    TranslateModule,
     MatIconModule,
     MatBadgeModule,
     MatButtonModule,
@@ -34,18 +36,24 @@ export class Header implements OnInit, OnDestroy {
   private combinedSubscription?: Subscription;
 
   constructor(
-    private authController: AuthControllerService
-  ) {}
+    private authController: AuthControllerService,
+    private translate: TranslateService
+  ) { }
 
   ngOnInit(): void {
     this.updateDateTime();
     this.timeSubscription = interval(1000).subscribe(() => this.updateDateTime());
 
+    // Update date when language changes
+    this.translate.onLangChange.subscribe(() => {
+      this.updateDateTime();
+    });
+
     // Suscribirse solo al estado de autenticación
     this.combinedSubscription = this.authController.getCurrentAuthState()
       .subscribe(authState => {
         console.log('🎯 Header - Auth state received:', authState);
-        
+
         if (authState?.user) {
           const user = authState.user;
           console.log('🎯 Header - User found:', {
@@ -54,13 +62,13 @@ export class Header implements OnInit, OnDestroy {
             email: user.email,
             id: user.id
           });
-          
-          this.userName = user.firstName && user.lastName 
-            ? `${user.firstName} ${user.lastName}` 
+
+          this.userName = user.firstName && user.lastName
+            ? `${user.firstName} ${user.lastName}`
             : user.email;
-          
+
           this.userAvatarUrl = user.profilePhotoUrl || 'assets/default-avatar.png';
-          
+
           console.log('🎯 Header - userName set to:', this.userName);
           console.log('🎯 Header - userAvatarUrl set to:', this.userAvatarUrl);
         } else {
@@ -83,13 +91,17 @@ export class Header implements OnInit, OnDestroy {
   }
 
   getDayOfWeek(): string {
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    return days[this.currentDate.getDay()];
+    const day = this.currentDate.toLocaleDateString(this.translate.currentLang, { weekday: 'long' });
+    return day.charAt(0).toUpperCase() + day.slice(1);
   }
 
   getFormattedDate(): string {
-    const months = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
-    return `${months[this.currentDate.getMonth()]} ${this.currentDate.getDate()}th, ${this.currentDate.getFullYear()}`;
+    const dateStr = this.currentDate.toLocaleDateString(this.translate.currentLang, {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+    return dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
   }
 
   getFormattedTime(): string {

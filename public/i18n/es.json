@@ -73,6 +73,9 @@
       }
     }
   },
+  "header": {
+    "greeting": "Hola,"
+  },
   "dashboard": {
     "stats": {
       "energyConsumption": "Consumo de Energía",
@@ -94,7 +97,7 @@
     "charts": {
       "dailyConsumption": "Consumo Diario de Energía",
       "consumptionByCategory": "Consumo de Energía",
-      "byCategory": "por Categoría",
+      "byCategory": "Por categoría",
       "monthlyComparison": "Consumo Mensual",
       "comparison": "Comparación",
       "noConsumptionData": "Sin datos de consumo",
@@ -103,6 +106,25 @@
       "noCategoryMessage": "Registra dispositivos para ver el consumo por categoría.",
       "noMonthlyData": "Sin datos mensuales",
       "noMonthlyMessage": "Usa el sistema durante un mes para ver comparaciones de consumo."
+    },
+    "months": {
+      "Jan": "Ene",
+      "Feb": "Feb",
+      "Mar": "Mar",
+      "Apr": "Abr",
+      "May": "May",
+      "Jun": "Jun",
+      "Jul": "Jul",
+      "Aug": "Ago",
+      "Sep": "Sep",
+      "Oct": "Oct",
+      "Nov": "Nov",
+      "Dec": "Dic"
+    },
+    "units": {
+      "kwh": "kWh",
+      "currency": "S/.",
+      "percentage": "%"
     },
     "devices": {
       "title": "Mis Dispositivos",

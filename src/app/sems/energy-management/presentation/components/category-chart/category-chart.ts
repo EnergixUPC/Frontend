@@ -18,7 +18,7 @@ import { ConsumptionByCategory } from '../../../domain/model/entities/consumptio
 export class CategoryChart implements OnChanges {
   @Input() consumptionByCategory?: ConsumptionByCategory;
 
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslateService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['consumptionByCategory'] && this.consumptionByCategory) {
@@ -41,5 +41,18 @@ export class CategoryChart implements OnChanges {
 
   get byCategoryLabel(): string {
     return this.translate.instant('dashboard.charts.byCategory');
+  }
+
+  getCategoryTranslation(categoryName: string): string {
+    // Transform "Heating & Cooling" to "heating_cooling"
+    const categoryKey = categoryName.toLowerCase()
+      .replace(/\s*&\s*/g, '_')  // Replace " & " with "_"
+      .replace(/\s+/g, '_');     // Replace spaces with "_"
+
+    const translationKey = `dashboard.devices.categories.${categoryKey}`;
+    const translated = this.translate.instant(translationKey);
+
+    // Return translated string if key exists, otherwise return original name
+    return translated !== translationKey ? translated : categoryName;
   }
 }

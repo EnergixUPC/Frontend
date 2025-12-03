@@ -36,7 +36,7 @@ import { AuthService } from '../../../../authentication/application/services/aut
 })
 export class Home implements OnInit, OnDestroy {
   // Data from API
-  dashboardStats: DashboardStats = new DashboardStats(0, 0, 0, 0, 0, 'S/.');
+  dashboardStats: DashboardStats = new DashboardStats(0, 0, 0, 0, 0, 'S/.'); // Will be updated with translation in ngOnInit
 
   dailyConsumption?: DailyConsumption;
   consumptionByCategory?: ConsumptionByCategory;
@@ -51,16 +51,19 @@ export class Home implements OnInit, OnDestroy {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Debug: Check current language
     console.log('Home - ngOnInit. Current language:', this.translate.currentLang);
     console.log('Home - ngOnInit. Translations loaded:', this.translate.instant('dashboard.stats.energyConsumption'));
 
+    // Update initial currency with translation
+    this.dashboardStats.currency = this.translate.instant('dashboard.units.currency');
+
     // Force change detection
     this.cdr.detectChanges();
-    
+
     this.loadDashboardData();
 
     // when navigation ends, if we returned to /home reload data
@@ -93,13 +96,13 @@ export class Home implements OnInit, OnDestroy {
     // 🔐 Check authentication state
     this.authService.authState$.subscribe(authState => {
       console.log('🔐 Home - Authentication state changed:', authState);
-      
+
       // If still loading, wait
       if (authState.isLoading) {
         console.log('⏳ Home - Auth still loading, waiting...');
         return;
       }
-      
+
       if (!authState.isAuthenticated || !authState.user) {
         console.warn('⚠️ Home - User not authenticated, redirecting to login');
         this.router.navigate(['/login']);
@@ -108,7 +111,7 @@ export class Home implements OnInit, OnDestroy {
 
       const currentUser = authState.user;
       console.log('✅ Home - User authenticated - Loading dashboard for user:', currentUser.id, currentUser.email);
-      
+
       // Load dashboard data using backend endpoints (they filter by authenticated user automatically)
       this.loadBackendData();
     });
@@ -121,29 +124,29 @@ export class Home implements OnInit, OnDestroy {
     this.dashboardService.loadUnifiedDashboard().subscribe({
       next: () => {
         console.log('✅ Unified dashboard data loaded successfully');
-        
+
         // Subscribe to dashboard state to get the loaded data
         this.dashboardService.getDashboardState().subscribe(state => {
           if (state.stats) {
             this.dashboardStats = state.stats;
             console.log('📊 Dashboard stats:', state.stats);
           }
-          
+
           if (state.dailyConsumption) {
             this.dailyConsumption = state.dailyConsumption;
             console.log('📅 Daily consumption:', state.dailyConsumption);
           }
-          
+
           if (state.consumptionByCategory) {
             this.consumptionByCategory = state.consumptionByCategory;
             console.log('🏷️ Category consumption:', state.consumptionByCategory);
           }
-          
+
           if (state.devices) {
             this.devices = state.devices || [];
             console.log('🔌 Devices from dashboard state:', this.devices.length, 'devices');
             console.log('🔌 Full devices array:', JSON.stringify(this.devices, null, 2));
-            
+
             // Log device details
             this.devices.forEach((device, index) => {
               console.log(`🔌 Device ${index + 1}:`, {
@@ -157,11 +160,13 @@ export class Home implements OnInit, OnDestroy {
               });
             });
           }
-          
-          this.isLoading = false;
-          this.cdr.detectChanges();
+
+          setTimeout(() => {
+            this.isLoading = false;
+            this.cdr.detectChanges();
+          }, 400);
         });
-        
+
         // 🔌 Cargar dispositivos del endpoint /api/v1/devices como fallback
         console.log('🔌 Loading devices from /api/v1/devices endpoint...');
         this.dashboardService.loadDevices().subscribe({
@@ -186,8 +191,28 @@ export class Home implements OnInit, OnDestroy {
         this.dailyConsumption = undefined;
         this.consumptionByCategory = undefined;
         this.devices = [];
-        this.isLoading = false;
-        this.cdr.detectChanges();
+        setTimeout(() => {
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        }, 400);
+      }
+    });
+
+    // Load alerts from backend API for the authenticated user
+    this.loadAlerts();
+
+    this.isLoading = false;
+  }
+
+  private loadAlerts(): void {
+    this.dashboardService.loadAlerts().subscribe({
+      next: (alerts: any[]) => {
+        this.alerts = alerts || [];
+        console.log('Alerts loaded:', this.alerts);
+      },
+      error: (error: any) => {
+        console.error('Error loading alerts:', error);
+        this.alerts = [];
       }
     });
   }
@@ -265,9 +290,9 @@ export class Home implements OnInit, OnDestroy {
       console.log('📊 Using monthly saving goal from backend:', this.dashboardStats.energyConsumption);
       return `${this.dashboardStats.energyConsumption.toFixed(1)} kWh`;
     }
-    
+
     console.log('🔌 Calculating energy consumption for', this.devices.length, 'devices');
-    
+
     if (!this.hasDevices) {
       console.log('⚠️ No devices found for user');
       return this.translate.instant('dashboard.stats.noData');
@@ -275,7 +300,7 @@ export class Home implements OnInit, OnDestroy {
 
     const totalConsumption = this.devices.reduce((total, device) => {
       let deviceConsumption = 0;
-      
+
       // Get consumption value from device
       if (device.energyConsumptionValue) {
         deviceConsumption = device.energyConsumptionValue;
@@ -296,9 +321,10 @@ export class Home implements OnInit, OnDestroy {
     if (totalConsumption > 0) {
       const activeDevices = this.devices.filter(d => d.isActive).length;
       const period = this.translate.instant('dashboard.stats.weeklyPeriod');
-      return `${totalConsumption.toFixed(1)} kWh ${period}`;
+      const unit = this.translate.instant('dashboard.units.kwh');
+      return `${totalConsumption.toFixed(1)} ${unit} ${period}`;
     }
-    
+
     return this.translate.instant('dashboard.stats.noData');
   }
 
@@ -310,7 +336,7 @@ export class Home implements OnInit, OnDestroy {
       const currency = this.dashboardStats.currency || 'S/.';
       return `${currency} ${this.dashboardStats.estimatedBill.toFixed(2)}`;
     }
-    
+
     if (!this.hasDevices) {
       return this.translate.instant('dashboard.stats.noData');
     }
@@ -343,7 +369,8 @@ export class Home implements OnInit, OnDestroy {
       estimatedBill = 100 * 0.4087 + 100 * 0.5073 + (monthlyConsumption - 200) * 0.6208;
     }
 
-    return estimatedBill > 0 ? `S/. ${estimatedBill.toFixed(2)}` : this.translate.instant('dashboard.stats.noData');
+    const currency = this.translate.instant('dashboard.units.currency');
+    return estimatedBill > 0 ? `${currency} ${estimatedBill.toFixed(2)}` : this.translate.instant('dashboard.stats.noData');
   }
 
   // Calculate today's consumption - use backend data if available
@@ -353,7 +380,7 @@ export class Home implements OnInit, OnDestroy {
       console.log('📅 Using today consumption from backend:', this.dashboardStats.todayConsumption);
       return `${this.dashboardStats.todayConsumption.toFixed(2)} kWh`;
     }
-    
+
     if (!this.hasDevices) {
       return this.translate.instant('dashboard.stats.noData');
     }
@@ -404,17 +431,17 @@ export class Home implements OnInit, OnDestroy {
 
       // Calculate daily consumption: weekly consumption * daily factor / 7 days
       const deviceDailyConsumption = (deviceConsumption * dailyFactor) / 7;
-      
+
       return total + deviceDailyConsumption;
     }, 0);
 
-    return todayConsumption > 0 ? `${todayConsumption.toFixed(2)} kWh` : this.translate.instant('dashboard.stats.noData');
+    const unit = this.translate.instant('dashboard.units.kwh');
+    return todayConsumption > 0 ? `${todayConsumption.toFixed(2)} ${unit}` : this.translate.instant('dashboard.stats.noData');
   }
-
   // Calculate active devices count - use backend data if available
   getCalculatedActiveDevices(): string {
     console.log('🔌 Calculating active devices for user');
-    
+
     // Prefer backend data from unified dashboard
     if (this.dashboardStats && this.dashboardStats.activeDevices >= 0) {
       const activeCount = this.dashboardStats.activeDevices;
@@ -422,7 +449,7 @@ export class Home implements OnInit, OnDestroy {
       console.log('🔌 Using active devices from backend:', activeCount, '/', totalCount);
       return `${activeCount} ${this.translate.instant('dashboard.stats.active')} / ${totalCount} ${this.devicesLabel}`;
     }
-    
+
     if (!this.hasDevices) {
       console.log('⚠️ No devices found for user - showing no devices message');
       return this.translate.instant('dashboard.stats.noDevices');
@@ -433,9 +460,9 @@ export class Home implements OnInit, OnDestroy {
       return device.isActive;
     }).length;
     const totalDevicesCount = this.devices.length;
-    
+
     console.log('🔌 Active devices count:', activeDevicesCount, '/ Total:', totalDevicesCount);
-    
+
     return `${activeDevicesCount} ${this.translate.instant('dashboard.stats.active')} / ${totalDevicesCount} ${this.devicesLabel}`;
   }
 
@@ -447,11 +474,11 @@ export class Home implements OnInit, OnDestroy {
       console.log('💰 Using estimated savings from backend:', savings);
       return `${savings.toFixed(1)}%`;
     }
-    
+
     if (!this.hasDevices) {
       return this.translate.instant('dashboard.stats.noData');
     }
-    
+
     // Calculate savings based on device efficiency (example calculation)
     const totalConsumption = this.devices.reduce((total, device) => {
       if (device.energyConsumptionValue) {
@@ -465,24 +492,26 @@ export class Home implements OnInit, OnDestroy {
     }, 0);
 
     // Example: Calculate savings based on number of efficient devices vs total consumption
-    const efficientDevices = this.devices.filter(device => 
+    const efficientDevices = this.devices.filter(device =>
       device.category === 'Electronics' || device.status === DeviceStatus.STANDBY
     ).length;
-    
-    const savingsPercentage = totalConsumption > 0 ? 
+
+    const savingsPercentage = totalConsumption > 0 ?
       Math.round((efficientDevices / this.devices.length) * 20 - 10) : 0; // Example calculation
-    
+
     // Handle negative savings (extra consumption)
+    const percentSymbol = this.translate.instant('dashboard.units.percentage');
     if (savingsPercentage < 0) {
-      return `${Math.abs(savingsPercentage)}% ${this.translate.instant('dashboard.stats.extraConsumption')}`;
+      return `${Math.abs(savingsPercentage)}${percentSymbol} ${this.translate.instant('dashboard.stats.extraConsumption')}`;
     }
-    
+
     // Handle zero or positive savings
     if (savingsPercentage === 0) {
       return this.translate.instant('dashboard.stats.noSavings');
     }
-    
-    return `${savingsPercentage}% ${this.translate.instant('dashboard.stats.saved')}`;
+
+    const percent = this.translate.instant('dashboard.units.percentage');
+    return `${savingsPercentage}${percent} ${this.translate.instant('dashboard.stats.saved')}`;
   }
 
   getDeviceStatValue(count: number): string {
@@ -505,7 +534,7 @@ export class Home implements OnInit, OnDestroy {
     if (!this.hasDevices) {
       return this.translate.instant('dashboard.stats.noData');
     }
-    
+
     // Calculate savings based on device efficiency (example calculation)
     const totalConsumption = this.devices.reduce((total, device) => {
       if (device.energyConsumptionValue) {
@@ -519,34 +548,37 @@ export class Home implements OnInit, OnDestroy {
     }, 0);
 
     // Example: Calculate savings based on number of efficient devices vs total consumption
-    const efficientDevices = this.devices.filter(device => 
+    const efficientDevices = this.devices.filter(device =>
       device.category === 'Electronics' || device.status === DeviceStatus.STANDBY
     ).length;
-    
-    const savingsPercentage = totalConsumption > 0 ? 
+
+    const savingsPercentage = totalConsumption > 0 ?
       Math.round((efficientDevices / this.devices.length) * 20 - 10) : 0; // Example calculation
-    
+
+    // Handle negative savings (extra consumption)
+    const percentSymbol = this.translate.instant('dashboard.units.percentage');
+
     // Handle negative savings (extra consumption)
     if (savingsPercentage < 0) {
-      return `${Math.abs(savingsPercentage)}% ${this.translate.instant('dashboard.stats.extraConsumption')}`;
+      return `${Math.abs(savingsPercentage)}${percentSymbol} ${this.translate.instant('dashboard.stats.extraConsumption')}`;
     }
-    
+
     // Handle zero or positive savings
     if (savingsPercentage === 0) {
       return this.translate.instant('dashboard.stats.noSavings');
     }
-    
-    return `${savingsPercentage}% ${this.translate.instant('dashboard.stats.saved')}`;
+
+    return `${savingsPercentage}${percentSymbol} ${this.translate.instant('dashboard.stats.saved')}`;
   }
 
   get hasDevices(): boolean {
     const hasDevices = this.devices && this.devices.length > 0;
     console.log('🔌 hasDevices check:', hasDevices, '- Device count:', this.devices?.length || 0);
     if (hasDevices) {
-      console.log('🔌 Devices:', this.devices.map(d => ({ 
+      console.log('🔌 Devices:', this.devices.map(d => ({
         id: d.id,
-        name: d.name, 
-        category: d.category, 
+        name: d.name,
+        category: d.category,
         location: d.location,
         type: d.type,
         status: d.status

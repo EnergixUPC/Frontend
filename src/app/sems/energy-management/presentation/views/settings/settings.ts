@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, filter } from 'rxjs';
 
 import { SettingsService } from '../../../application/services/settings.service';
 import { SettingsStore } from '../../../application/state/settings.store';
@@ -45,16 +45,20 @@ export class Settings implements OnInit, OnDestroy {
   ngOnInit(): void {
     console.log('🔷 Settings ngOnInit');
 
-    const user = this.authService.getCurrentUser();
-    console.log('👤 Current user:', user);
-
-    if (user) {
-      this.currentUserId = user.id;
-      console.log('✅ User ID:', this.currentUserId);
-      this.loadSettings();
-    } else {
-      console.error('❌ No user found');
-    }
+    // Subscribe to auth state to handle page refreshes where user might not be immediately available
+    this.authService.authState$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(state => state.isAuthenticated && !!state.user)
+      )
+      .subscribe(state => {
+        console.log('👤 Auth state updated:', state.user);
+        if (state.user && state.user.id !== this.currentUserId) {
+          this.currentUserId = state.user.id;
+          console.log('✅ User ID set:', this.currentUserId);
+          this.loadSettings();
+        }
+      });
 
     this.settingsStore.settings$
       .pipe(takeUntil(this.destroy$))

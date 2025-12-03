@@ -20,7 +20,7 @@ export class MonthlyChart implements OnChanges {
 
   maxValue: number = 100;
 
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslateService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['monthlyComparison'] && this.monthlyComparison) {
@@ -54,5 +54,11 @@ export class MonthlyChart implements OnChanges {
 
   get comparisonLabel(): string {
     return this.translate.instant('dashboard.charts.comparison');
+  }
+
+  getMonthTranslation(monthAbbr: string): string {
+    // Remove any trailing dots if present (e.g., "Jan.")
+    const cleanAbbr = monthAbbr.replace('.', '');
+    return this.translate.instant(`dashboard.months.${cleanAbbr}`);
   }
 }
