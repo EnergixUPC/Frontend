@@ -115,106 +115,79 @@ export class Home implements OnInit, OnDestroy {
   }
 
   private loadBackendData(): void {
-    console.log('📊 Loading dashboard data from backend endpoints...');
+    console.log('📊 Loading unified dashboard data from backend...');
 
-    // 📊 Load dashboard stats from backend endpoint: /api/v1/dashboard/stats
-    this.dashboardService.loadDashboardStats().subscribe({
-      next: (stats: DashboardStats) => {
-        console.log('✅ Dashboard stats loaded from backend:', stats);
-        this.dashboardStats = stats;
-        this.cdr.detectChanges();
-      },
-      error: (error: any) => {
-        console.error('❌ Error loading dashboard stats from backend:', error);
-        // Set empty stats for new users
-        this.dashboardStats = new DashboardStats(0, 0, 0, 0, 0, 'S/.');
-      }
-    });
-
-    // 📅 Load daily consumption from backend endpoint: /api/v1/consumption/daily
-    this.dashboardService.loadDailyConsumption().subscribe({
-      next: (data: DailyConsumption) => {
-        console.log('📅 Daily consumption loaded from backend:', data);
-        this.dailyConsumption = data;
-      },
-      error: (error: any) => {
-        console.error('❌ Error loading daily consumption from backend:', error);
-        // Set empty data for new users or connection issues
-        this.dailyConsumption = undefined;
-      }
-    });
-
-    // 🏷️ Load consumption by category from backend endpoint: /api/v1/consumption/categories
-    this.dashboardService.loadConsumptionByCategory().subscribe({
-      next: (data: ConsumptionByCategory) => {
-        console.log('🏷️ Consumption by category loaded from backend:', data);
-        this.consumptionByCategory = data;
-      },
-      error: (error: any) => {
-        console.error('❌ Error loading consumption by category from backend:', error);
-        // Set empty data for new users or connection issues
-        this.consumptionByCategory = undefined;
-      }
-    });
-
-    // 📊 Load monthly comparison from backend endpoint: /api/v1/consumption/monthly
-    this.dashboardService.loadMonthlyComparison().subscribe({
-      next: (data: MonthlyComparison) => {
-        console.log('📊 Monthly comparison loaded from backend:', data);
-        this.monthlyComparison = data;
-      },
-      error: (error: any) => {
-        console.error('❌ Error loading monthly comparison from backend:', error);
-        // Set empty data for new users
-        this.monthlyComparison = undefined;
-      }
-    });
-
-    // 🔌 Load devices from backend endpoint: /api/v1/devices (filtered by authenticated user)
-    this.dashboardService.loadDevices().subscribe({
-      next: (data: Device[]) => {
-        this.devices = data || [];
-        console.log('🔌 Devices loaded from backend:', this.devices.length, 'devices');
-        console.log('🔌 Device details:', this.devices);
+    // 🚀 Load all dashboard data from unified endpoint: /api/v1/dashboard
+    this.dashboardService.loadUnifiedDashboard().subscribe({
+      next: () => {
+        console.log('✅ Unified dashboard data loaded successfully');
         
-        // Log device consumption for debugging the 4 cards
-        this.devices.forEach((device, index) => {
-          console.log(`🔌 Device ${index + 1}:`, {
-            id: device.id,
-            name: device.name,
-            category: device.category,
-            consumption: device.energyConsumption || 'N/A',
-            consumptionValue: device.energyConsumptionValue,
-            isActive: device.isActive,
-            status: device.status
-          });
+        // Subscribe to dashboard state to get the loaded data
+        this.dashboardService.getDashboardState().subscribe(state => {
+          if (state.stats) {
+            this.dashboardStats = state.stats;
+            console.log('📊 Dashboard stats:', state.stats);
+          }
+          
+          if (state.dailyConsumption) {
+            this.dailyConsumption = state.dailyConsumption;
+            console.log('📅 Daily consumption:', state.dailyConsumption);
+          }
+          
+          if (state.consumptionByCategory) {
+            this.consumptionByCategory = state.consumptionByCategory;
+            console.log('🏷️ Category consumption:', state.consumptionByCategory);
+          }
+          
+          if (state.devices) {
+            this.devices = state.devices || [];
+            console.log('🔌 Devices from dashboard state:', this.devices.length, 'devices');
+            console.log('🔌 Full devices array:', JSON.stringify(this.devices, null, 2));
+            
+            // Log device details
+            this.devices.forEach((device, index) => {
+              console.log(`🔌 Device ${index + 1}:`, {
+                id: device.id,
+                name: device.name,
+                category: device.category,
+                type: device.type,
+                status: device.status,
+                location: device.location,
+                isActive: device.isActive
+              });
+            });
+          }
+          
+          this.isLoading = false;
+          this.cdr.detectChanges();
         });
         
-        // Force UI update after devices load - this triggers the 4 cards calculation
-        this.cdr.detectChanges();
+        // 🔌 Cargar dispositivos del endpoint /api/v1/devices como fallback
+        console.log('🔌 Loading devices from /api/v1/devices endpoint...');
+        this.dashboardService.loadDevices().subscribe({
+          next: (devices: Device[]) => {
+            console.log('✅ Devices loaded from /api/v1/devices:', devices.length, 'devices');
+            console.log('✅ Device details:', devices);
+            // Solo usar estos dispositivos si el dashboard no trajo ninguno
+            if (this.devices.length === 0) {
+              this.devices = devices;
+              this.cdr.detectChanges();
+            }
+          },
+          error: (error: any) => {
+            console.error('❌ Error loading devices from /api/v1/devices:', error);
+          }
+        });
       },
       error: (error: any) => {
-        console.error('❌ Error loading devices from backend:', error);
-        // Set empty array for new users or connection issues
+        console.error('❌ Error loading unified dashboard:', error);
+        // Set empty/default data
+        this.dashboardStats = new DashboardStats(0, 0, 0, 0, 0, 'S/.');
+        this.dailyConsumption = undefined;
+        this.consumptionByCategory = undefined;
         this.devices = [];
-      }
-    });
-
-    // Load alerts from backend API for the authenticated user
-    this.loadAlerts();
-    
-    this.isLoading = false;
-  }
-
-  private loadAlerts(): void {
-    this.dashboardService.loadAlerts().subscribe({
-      next: (alerts: any[]) => {
-        this.alerts = alerts || [];
-        console.log('Alerts loaded:', this.alerts);
-      },
-      error: (error: any) => {
-        console.error('Error loading alerts:', error);
-        this.alerts = [];
+        this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -285,8 +258,14 @@ export class Home implements OnInit, OnDestroy {
     return `${value} ${unit}`;
   }
 
-  // Calculate total energy consumption from all user's devices
+  // Calculate total energy consumption - use backend data if available
   getCalculatedEnergyConsumption(): string {
+    // Prefer backend data from unified dashboard
+    if (this.dashboardStats && this.dashboardStats.energyConsumption >= 0) {
+      console.log('📊 Using monthly saving goal from backend:', this.dashboardStats.energyConsumption);
+      return `${this.dashboardStats.energyConsumption.toFixed(1)} kWh`;
+    }
+    
     console.log('🔌 Calculating energy consumption for', this.devices.length, 'devices');
     
     if (!this.hasDevices) {
@@ -323,8 +302,15 @@ export class Home implements OnInit, OnDestroy {
     return this.translate.instant('dashboard.stats.noData');
   }
 
-  // Calculate estimated monthly bill based on energy consumption
+  // Calculate estimated monthly bill - use backend data if available
   getCalculatedEstimatedBill(): string {
+    // Prefer backend data from unified dashboard
+    if (this.dashboardStats && this.dashboardStats.estimatedBill >= 0) {
+      console.log('💰 Using estimated bill from backend:', this.dashboardStats.estimatedBill);
+      const currency = this.dashboardStats.currency || 'S/.';
+      return `${currency} ${this.dashboardStats.estimatedBill.toFixed(2)}`;
+    }
+    
     if (!this.hasDevices) {
       return this.translate.instant('dashboard.stats.noData');
     }
@@ -360,8 +346,14 @@ export class Home implements OnInit, OnDestroy {
     return estimatedBill > 0 ? `S/. ${estimatedBill.toFixed(2)}` : this.translate.instant('dashboard.stats.noData');
   }
 
-  // Calculate today's consumption with intelligent formula
+  // Calculate today's consumption - use backend data if available
   getCalculatedTodayConsumption(): string {
+    // Prefer backend data from unified dashboard
+    if (this.dashboardStats && this.dashboardStats.todayConsumption >= 0) {
+      console.log('📅 Using today consumption from backend:', this.dashboardStats.todayConsumption);
+      return `${this.dashboardStats.todayConsumption.toFixed(2)} kWh`;
+    }
+    
     if (!this.hasDevices) {
       return this.translate.instant('dashboard.stats.noData');
     }
@@ -419,9 +411,17 @@ export class Home implements OnInit, OnDestroy {
     return todayConsumption > 0 ? `${todayConsumption.toFixed(2)} kWh` : this.translate.instant('dashboard.stats.noData');
   }
 
-  // Calculate active devices count for the current user
+  // Calculate active devices count - use backend data if available
   getCalculatedActiveDevices(): string {
     console.log('🔌 Calculating active devices for user');
+    
+    // Prefer backend data from unified dashboard
+    if (this.dashboardStats && this.dashboardStats.activeDevices >= 0) {
+      const activeCount = this.dashboardStats.activeDevices;
+      const totalCount = this.devices.length || activeCount;
+      console.log('🔌 Using active devices from backend:', activeCount, '/', totalCount);
+      return `${activeCount} ${this.translate.instant('dashboard.stats.active')} / ${totalCount} ${this.devicesLabel}`;
+    }
     
     if (!this.hasDevices) {
       console.log('⚠️ No devices found for user - showing no devices message');
@@ -439,8 +439,15 @@ export class Home implements OnInit, OnDestroy {
     return `${activeDevicesCount} ${this.translate.instant('dashboard.stats.active')} / ${totalDevicesCount} ${this.devicesLabel}`;
   }
 
-  // Calculate savings based on actual device usage
+  // Calculate savings - use backend data if available
   getCalculatedSavings(): string {
+    // Prefer backend data from unified dashboard
+    if (this.dashboardStats) {
+      const savings = this.dashboardStats.estimatedSavings;
+      console.log('💰 Using estimated savings from backend:', savings);
+      return `${savings.toFixed(1)}%`;
+    }
+    
     if (!this.hasDevices) {
       return this.translate.instant('dashboard.stats.noData');
     }
@@ -535,6 +542,16 @@ export class Home implements OnInit, OnDestroy {
   get hasDevices(): boolean {
     const hasDevices = this.devices && this.devices.length > 0;
     console.log('🔌 hasDevices check:', hasDevices, '- Device count:', this.devices?.length || 0);
+    if (hasDevices) {
+      console.log('🔌 Devices:', this.devices.map(d => ({ 
+        id: d.id,
+        name: d.name, 
+        category: d.category, 
+        location: d.location,
+        type: d.type,
+        status: d.status
+      })));
+    }
     return hasDevices;
   }
 

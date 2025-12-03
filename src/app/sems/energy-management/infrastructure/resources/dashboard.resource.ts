@@ -6,7 +6,8 @@ import {
   DailyConsumptionResponse,
   ConsumptionByCategoryResponse,
   MonthlyComparisonResponse,
-  DeviceResponse
+  DeviceResponse,
+  UnifiedDashboardResponse
 } from '../response/dashboard.response';
 import {
   DashboardStatsRequest,
@@ -37,8 +38,18 @@ export class DashboardResource {
     });
   }
 
-  getDashboardStats(request: DashboardStatsRequest): Observable<DashboardStatsResponse> {
-    return this.http.get<DashboardStatsResponse>(`${environment.apiUrl}/api/v1/dashboard/stats`, { headers: this.getHeaders() });
+  getDashboardStats(request: DashboardStatsRequest): Observable<UnifiedDashboardResponse> {
+    console.log('🌐 Making API call to fetch dashboard data:', `${environment.apiUrl}/api/v1/dashboard`);
+    return this.http.get<UnifiedDashboardResponse>(`${environment.apiUrl}/api/v1/dashboard`, { headers: this.getHeaders() }).pipe(
+      tap((response: UnifiedDashboardResponse) => {
+        console.log('🌐 Dashboard API FULL response:', JSON.stringify(response, null, 2));
+        console.log('🌐 Devices from API:', response.devices);
+      }),
+      catchError((error: any) => {
+        console.error('🌐 Error fetching dashboard:', error);
+        throw error;
+      })
+    );
   }
 
   getDailyConsumption(request: DailyConsumptionRequest): Observable<DailyConsumptionResponse> {
