@@ -34,6 +34,12 @@ export class DeviceList {
     console.log('Current language:', this.translate.currentLang);
     console.log('Default language:', this.translate.defaultLang);
 
+    // Handle undefined or null category
+    if (!category) {
+      console.log('⚠️ Category is undefined or null, using default');
+      return this.translate.instant('dashboard.devices.categories.other');
+    }
+
     // Transformar "Heating & Cooling" a "heating_cooling"
     const categoryKey = category.toLowerCase()
       .replace(/\s*&\s*/g, '_')  // Reemplazar " & " con "_"

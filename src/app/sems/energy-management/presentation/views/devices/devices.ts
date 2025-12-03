@@ -44,6 +44,7 @@ export class Devices implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (devices) => {
+          console.log('Devices loaded from backend:', devices);
           this.devices = devices;
           this.loading = false;
         },
@@ -89,6 +90,10 @@ export class Devices implements OnInit, OnDestroy {
   }
 
   getStatusText(status: string): string {
+    if (!status) {
+      return 'N/A';
+    }
+    
     switch (status.toLowerCase()) {
       case 'on':
         return this.translateService.instant('dashboard.devices.status.on');
@@ -106,6 +111,11 @@ export class Devices implements OnInit, OnDestroy {
   getCategoryText(category: string): string {
     // Debug: Ver qué categoría está llegando
     console.log('Category received in devices:', category);
+    
+    // Handle undefined or null
+    if (!category) {
+      return 'N/A';
+    }
 
     // Convertir "Heating & Cooling" a "heating_cooling"
     const categoryKey = category.toLowerCase()

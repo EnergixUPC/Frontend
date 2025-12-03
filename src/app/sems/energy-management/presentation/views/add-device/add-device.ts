@@ -63,7 +63,7 @@ export class AddDevice {
 
   onSave(): void {
     // Basic validation
-    if (!this.device.name || !this.device.category || !this.device.brand || !this.device.model) {
+    if (!this.device.name || !this.device.category || !this.device.type) {
       this.error = this.translateService.instant('dashboard.devices.addDeviceValidation');
       return;
     }
@@ -77,8 +77,8 @@ export class AddDevice {
       name: this.device.name as string,
       category: this.device.category as string,
       type: (this.device.type as string) || 'UNKNOWN',
-      brand: (this.device.brand as string) || '',
-      model: (this.device.model as string) || '',
+      brand: '',
+      model: '',
       status: (this.device.status as any) || 'OFF',
       realTimeStatus: (this.device.realTimeStatus as string) || 'Off',
       lastActive: (this.device.lastActive as string) || 'Now',

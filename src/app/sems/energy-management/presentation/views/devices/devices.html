@@ -48,25 +48,23 @@
           <div class="device-content">
             <div class="device-status-row">
               <div class="status-section">
-                <span class="label">{{ realTimeStatusText }}</span>
-                <span class="value status" [class.active]="device.isActive">{{ getStatusText(device.realTimeStatus) }}</span>
+                <span class="label">{{ 'dashboard.devices.form.type' | translate }}:</span>
+                <span class="value">{{ device.type }}</span>
               </div>
               <div class="status-section">
-                <span class="label">{{ lastActiveText }}</span>
-                <span class="value">{{ device.lastActive }}</span>
+                <span class="label">{{ 'dashboard.devices.realTimeStatus' | translate }}:</span>
+                <span class="value status" [class.active]="device.isActive">{{ getStatusText(device.status) }}</span>
               </div>
             </div>
 
             <div class="device-status-row">
               <div class="status-section">
-                <span class="label">{{ alertHistoryText }}</span>
-                <span class="value alert" [class.no-alerts]="(device.alertHistory || 'No alerts').toLowerCase().includes('no alert')">
-                  {{ getAlertText(device.alertHistory || 'No alerts') }}
-                </span>
+                <span class="label">{{ 'dashboard.devices.lastActive' | translate }}:</span>
+                <span class="value">{{ device.lastActive }}</span>
               </div>
               <div class="status-section">
-                <span class="label">{{ energyConsumptionText }}</span>
-                <span class="value consumption">{{ device.energyConsumption || '0 kWh this week' }}</span>
+                <span class="label">{{ 'dashboard.devices.form.location' | translate }}:</span>
+                <span class="value">{{ device.location }}</span>
               </div>
             </div>
           </div>

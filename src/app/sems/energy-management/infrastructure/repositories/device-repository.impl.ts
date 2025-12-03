@@ -9,19 +9,15 @@ import { environment } from '../../../../../environments/environments';
 
 // DTO para la comunicación con la API
 export interface DeviceResponse {
-  id: string;
-  name: string;
-  category: string;
-  type: string;
-  brand: string;
-  model: string;
-  status: string;
-  realTimeStatus: string;
-  lastActive: string;
-  alertHistory?: string;
-  energyConsumption?: string;
-  location: string;
-  isActive: number;
+  id?: number;
+  userId?: string;
+  nombre: string;
+  categoria: string;
+  tipo: string;
+  estado: string;
+  ultimaActividad: string;
+  ubicacion: string;
+  activo: boolean;
 }
 
 @Injectable({
@@ -43,8 +39,16 @@ export class DeviceRepositoryImpl implements DeviceRepository {
   getAllDevices(): Observable<Device[]> {
     return this.http.get<DeviceResponse[]>(this.apiUrl, { headers: this.getHeaders() })
       .pipe(
-        map((responses: DeviceResponse[]) => responses.map((response: DeviceResponse) => this.mapToDevice(response))),
-        catchError(() => of([]))
+        map((responses: DeviceResponse[]) => {
+          console.log('DeviceRepository - Raw API response:', responses);
+          const devices = responses.map((response: DeviceResponse) => this.mapToDevice(response));
+          console.log('DeviceRepository - Mapped devices:', devices);
+          return devices;
+        }),
+        catchError((error) => {
+          console.error('DeviceRepository - Error:', error);
+          return of([]);
+        })
       );
   }
 
@@ -108,38 +112,31 @@ export class DeviceRepositoryImpl implements DeviceRepository {
   // Mappers
   private mapToDevice(response: DeviceResponse): Device {
     return {
-      id: response.id,
-      name: response.name,
-      category: response.category,
-      type: response.type,
-      brand: response.brand,
-      model: response.model,
-      // Cast the incoming string to DeviceStatus enum safely
-      status: (response.status as unknown) as DeviceStatus,
-      realTimeStatus: response.realTimeStatus,
-      lastActive: response.lastActive,
-      alertHistory: response.alertHistory,
-      energyConsumption: response.energyConsumption,
-      location: response.location,
-      isActive: response.isActive
+      id: response.id?.toString() || '',
+      name: response.nombre,
+      category: response.categoria,
+      type: response.tipo,
+      brand: '',
+      model: '',
+      status: (response.estado as unknown) as DeviceStatus,
+      realTimeStatus: response.estado,
+      lastActive: response.ultimaActividad,
+      alertHistory: undefined,
+      energyConsumption: undefined,
+      location: response.ubicacion,
+      isActive: response.activo ? 1 : 0
     };
   }
 
-  private mapToDeviceResponse(device: Device): DeviceResponse {
+  private mapToDeviceResponse(device: Device): any {
     return {
-      id: device.id,
-      name: device.name,
-      category: device.category,
-      type: device.type,
-      brand: device.brand,
-      model: device.model,
-      status: device.status,
-      realTimeStatus: device.realTimeStatus,
-      lastActive: device.lastActive,
-      alertHistory: device.alertHistory,
-      energyConsumption: device.energyConsumption,
-      location: device.location,
-      isActive: device.isActive
+      nombre: device.name,
+      categoria: device.category,
+      tipo: device.type,
+      estado: device.status,
+      ultimaActividad: device.lastActive,
+      ubicacion: device.location,
+      activo: device.isActive === 1
     };
   }
 }
