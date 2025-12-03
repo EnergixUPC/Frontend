@@ -157,7 +157,10 @@
         "heating_cooling": "Calefacción y Refrigeración",
         "major_appliances": "Electrodomésticos Principales",
         "electronics": "Electrónicos",
-        "other": "Otros"
+        "other": "Otros",
+        "computer": "Computadora",
+        "phone": "Celular",
+        "tv": "Televisor"
       },
       "addDeviceTitle": "Agregar un nuevo dispositivo",
       "addDeviceSave": "Guardar Dispositivo",

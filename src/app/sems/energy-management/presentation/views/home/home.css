@@ -5,9 +5,7 @@
   display: flex;
   flex-direction: column;
   gap: 32px;
-  /* Increased gap */
   padding: 32px;
-  /* Added padding */
   box-sizing: border-box;
 }
 
@@ -15,7 +13,6 @@
 .stats-row {
   display: flex;
   gap: 32px;
-  /* Increased gap */
   justify-content: space-between;
   flex-wrap: wrap;
   width: 100%;
@@ -24,16 +21,19 @@
 .stats-row app-stats-card {
   flex: 1;
   min-width: 200px;
-  /* Ensure cards don't get too small */
 }
 
 /* Charts Row */
 .charts-row {
   display: flex;
   gap: 32px;
-  /* Increased gap */
   width: 100%;
-  /* Removed fixed height */
+}
+
+.chart-large,
+.chart-small,
+.chart-container {
+  position: relative;
 }
 
 .chart-large {
@@ -46,26 +46,38 @@
   min-width: 0;
 }
 
+/* Demo Badge */
+.demo-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: linear-gradient(135deg, #FF9800 0%, #FF6F00 100%);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+  z-index: 10;
+  backdrop-filter: blur(4px);
+}
+
 /* Monthly Row */
 .monthly-row {
   width: 100%;
-  /* Removed fixed height */
+  position: relative;
 }
 
 /* Info Row (Alerts & Devices) */
 .info-row {
   display: flex;
   gap: 32px;
-  /* Increased gap */
   width: 100%;
-  /* Removed fixed height */
 }
 
-.alerts-section {
-  flex: 1;
-  min-width: 0;
-}
-
+.alerts-section,
 .devices-section {
   flex: 1;
   min-width: 0;
@@ -76,7 +88,6 @@
   background: white;
   height: 100%;
   border-radius: 20px !important;
-  /* Premium rounded corners */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
 }
 
@@ -92,14 +103,12 @@
 
 .alert-item.warning {
   background-color: #fff8e1;
-  /* Softer yellow */
   border-left-color: #ffc107;
   color: #856404;
 }
 
 .alert-item.info {
   background-color: #e3f2fd;
-  /* Softer blue */
   border-left-color: #2196f3;
   color: #0d47a1;
 }
@@ -152,12 +161,41 @@
   font-size: 16px;
 }
 
+/* No Data Messages */
+.no-data-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  color: #888;
+}
+
+.no-data-message mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.no-data-message h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #555;
+}
+
+.no-data-message p {
+  margin: 0;
+  font-size: 14px;
+  color: #888;
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
-  .charts-row {
-    flex-direction: column;
-  }
-
+  .charts-row,
   .info-row {
     flex-direction: column;
   }
@@ -175,5 +213,12 @@
 
   .stats-row app-stats-card {
     min-width: 100%;
+  }
+
+  .demo-badge {
+    padding: 4px 10px;
+    font-size: 10px;
+    top: 12px;
+    right: 12px;
   }
 }

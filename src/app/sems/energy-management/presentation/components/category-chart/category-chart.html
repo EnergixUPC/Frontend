@@ -1,39 +1,22 @@
-<mat-card class="category-card">
+<mat-card class="chart-card">
   <mat-card-header>
-    <mat-card-title>{{ consumptionByCategoryLabel }}</mat-card-title>
-    <mat-card-subtitle>{{ byCategoryLabel }}</mat-card-subtitle>
+    <mat-card-title>{{ categoryConsumptionLabel }}</mat-card-title>
   </mat-card-header>
 
   <mat-card-content>
-    @if (consumptionByCategory) {
-    <div class="category-content">
-      <div class="donut-chart">
-        <svg viewBox="0 0 200 200" class="donut-svg">
-          <circle cx="100" cy="100" r="80" fill="none" stroke="#e0e0e0" stroke-width="30" />
-          <circle cx="100" cy="100" r="80" fill="none" stroke="#1976d2" stroke-width="30" stroke-dasharray="251.2 251.2"
-            stroke-dashoffset="62.8" transform="rotate(-90 100 100)" />
-          <circle cx="100" cy="100" r="80" fill="none" stroke="#1e88e5" stroke-width="30" stroke-dasharray="125.6 376.8"
-            stroke-dashoffset="-62.8" transform="rotate(-90 100 100)" />
-          <circle cx="100" cy="100" r="80" fill="none" stroke="#42a5f5" stroke-width="30"
-            stroke-dasharray="75.36 427.04" stroke-dashoffset="-188.4" transform="rotate(-90 100 100)" />
-          <circle cx="100" cy="100" r="80" fill="none" stroke="#90caf9" stroke-width="30"
-            stroke-dasharray="50.24 452.16" stroke-dashoffset="-263.76" transform="rotate(-90 100 100)" />
-        </svg>
-      </div>
+    <div class="chart-container" *ngIf="hasChartData(); else noData">
+      <canvas baseChart
+              [data]="doughnutChartData"
+              [options]="doughnutChartOptions"
+              [type]="doughnutChartType">
+      </canvas>
+    </div>
 
-      <div class="legend">
-        @for (category of consumptionByCategory.categories; track $index) {
-        <div class="legend-item">
-          <span class="legend-dot" [style.background-color]="getColor($index)"></span>
-          <span class="legend-label">{{ getCategoryTranslation(category.name) }}</span>
-        </div>
-        }
+    <ng-template #noData>
+      <div class="no-data">
+        <mat-icon>device_hub</mat-icon>
+        <p>{{ 'dashboard.charts.noConsumptionData' | translate }}</p>
       </div>
-    </div>
-    } @else {
-    <div class="no-data">
-      <p>{{ getTranslation('common.loading') }}</p>
-    </div>
-    }
+    </ng-template>
   </mat-card-content>
 </mat-card>

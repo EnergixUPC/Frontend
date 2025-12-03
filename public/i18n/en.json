@@ -157,7 +157,10 @@
         "heating_cooling": "Heating & Cooling",
         "major_appliances": "Major Appliances",
         "electronics": "Electronics",
-        "other": "Other"
+        "other": "Other",
+        "computer": "Computer",
+        "phone": "Phone",
+        "tv": "TV"
       },
       "addDeviceTitle": "Add a new device",
       "addDeviceSave": "Save Device",
