@@ -108,6 +108,11 @@ export class MonthlyChart implements OnInit, OnChanges {
   ngOnInit(): void {
     console.log('📊 MonthlyChart - ngOnInit');
     this.updateChartData();
+
+    // Suscribirse a cambios de idioma
+    this.translate.onLangChange.subscribe(() => {
+      this.updateChartData();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
