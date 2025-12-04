@@ -103,7 +103,7 @@ export class DashboardAssembler {
         deviceName = nameMatch[1];
       }
 
-      // Extraer la categoría del formato "DeviceCategory[category=Electrodomestico]"
+      // Extract category from format "DeviceCategory[category=Electrodomestico]"
       let deviceCategory = device.category;
       const categoryMatch = device.category.match(/DeviceCategory\[category=(.+?)\]/);
       if (categoryMatch) {
@@ -158,19 +158,19 @@ export class DashboardAssembler {
 
   static toConsumptionByCategoryFromUnified(response: UnifiedDashboardResponse): ConsumptionByCategory {
     console.log('Mapping unified dashboard category consumption:', response.categoryConsumption);
-    
+
     const totalConsumption = response.categoryConsumption.reduce((sum, cat) => sum + cat.kwh, 0);
-    
+
     const categories = response.categoryConsumption.map(cat => {
-      // Extraer el nombre de la categoría del formato "DeviceCategory[category=Electronico]"
+      // Extract category name from format "DeviceCategory[category=Electronico]"
       let categoryName = cat.category;
       const categoryMatch = cat.category.match(/DeviceCategory\[category=(.+?)\]/);
       if (categoryMatch) {
         categoryName = categoryMatch[1];
       }
-      
+
       const percentage = totalConsumption > 0 ? (cat.kwh / totalConsumption) * 100 : 0;
-      
+
       return {
         name: categoryName,
         value: cat.kwh,
@@ -187,7 +187,7 @@ export class DashboardAssembler {
 
   static toAlertsFromUnified(response: UnifiedDashboardResponse): any[] {
     console.log('Mapping unified dashboard alerts:', response.alerts);
-    
+
     if (!response.alerts || response.alerts.length === 0) {
       return [];
     }

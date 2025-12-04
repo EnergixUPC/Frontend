@@ -7,7 +7,7 @@ import { Device, DeviceStatus } from '../../domain/model/device.entity';
 import { DeviceRepository } from '../../domain/model/repositories/device.repository';
 import { environment } from '../../../../../environments/environments';
 
-// DTO para la comunicación con la API
+// DTO for API communication
 export interface DeviceResponse {
   id?: number;
   userId?: string;
@@ -26,7 +26,7 @@ export interface DeviceResponse {
 export class DeviceRepositoryImpl implements DeviceRepository {
   private readonly apiUrl = `${environment.apiUrl}/api/v1/devices`;
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) { }
 
   private getHeaders(): HttpHeaders {
     const token = localStorage.getItem(environment.tokenKey);

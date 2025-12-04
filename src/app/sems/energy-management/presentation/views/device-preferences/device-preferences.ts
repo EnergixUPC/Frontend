@@ -35,7 +35,7 @@ export class DevicePreferences implements OnInit, OnDestroy {
   hasUnsavedChanges = false;
 
   private destroy$ = new Subject<void>();
-  private readonly currentUserId = '1'; // ID numérico esperado por la API
+  private readonly currentUserId = '1'; // Numeric ID expected by API
 
   // Group structure only
   private readonly groupStructure = [
@@ -62,7 +62,7 @@ export class DevicePreferences implements OnInit, OnDestroy {
     private readonly translateService: TranslateService,
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadDevicePreferences();
@@ -152,7 +152,7 @@ export class DevicePreferences implements OnInit, OnDestroy {
     if (!this.devicePreferences || !this.originalPreferences) return;
 
     this.hasUnsavedChanges = JSON.stringify(this.devicePreferences.preferences) !==
-                            JSON.stringify(this.originalPreferences.preferences);
+      JSON.stringify(this.originalPreferences.preferences);
   }
 
   onResetToDefault(): void {

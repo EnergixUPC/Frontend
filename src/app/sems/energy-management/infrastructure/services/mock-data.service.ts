@@ -73,7 +73,7 @@ export class MockDataService {
       });
     });
 
-    // Calcular comparación con mes anterior
+    // Calculate comparison with previous month
     const currentMonthIndex = months.indexOf(currentMonth);
     const previousMonthIndex = currentMonthIndex > 0 ? currentMonthIndex - 1 : months.length - 1;
 

@@ -166,7 +166,7 @@ export class ProfileComponent implements OnInit {
 
       console.log('ProfileComponent - Nueva URL de foto:', photoUrl);
 
-      // Guardar automáticamente el cambio de foto
+      // Automatically save photo change
       if (this.user && this.editableProfile) {
         const profileResource = {
           id: this.editableProfile.id || '',

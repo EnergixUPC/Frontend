@@ -16,7 +16,7 @@ export class ReportService {
     private reportRepository: ReportRepositoryImpl,
     private reportResource: ReportResource,
     private http: HttpClient
-  ) {}
+  ) { }
 
   generateWeeklyConsumptionReport(format: ReportFormat = ReportFormat.PDF): Observable<Report> {
     return this.reportRepository.generateReport(
@@ -89,11 +89,11 @@ export class ReportService {
     ];
   }
 
-  // Métodos para obtener datos de gráficos desde la API
+  // Methods to get chart data from API
   getWeeklyConsumption(): Observable<any> {
     const userId = this.getCurrentUserId();
-    console.log('🔍 Obteniendo weekly consumption desde backend para userId:', userId);
-    
+    console.log('Getting weekly consumption from backend for userId:', userId);
+
     return this.reportResource.getWeeklyConsumption(userId).pipe(
       delay(200)
     );
@@ -101,8 +101,8 @@ export class ReportService {
 
   getTopDevices(): Observable<any> {
     const userId = this.getCurrentUserId();
-    console.log('🔍 Obteniendo top devices desde backend para userId:', userId);
-    
+    console.log('Getting top devices from backend for userId:', userId);
+
     return this.reportResource.getTopDevices(userId).pipe(
       delay(200)
     );
@@ -111,25 +111,25 @@ export class ReportService {
   private getCurrentUserId(): number | undefined {
     try {
       const userStr = localStorage.getItem(environment.userKey);
-      console.log('🗝 Contenido de userKey en localStorage:', userStr);
-      
+      console.log('Content of userKey in localStorage:', userStr);
+
       if (userStr) {
         const user = JSON.parse(userStr);
-        console.log('🔑 Usuario actual completo:', user);
-        console.log('🎯 ID del usuario:', user.id);
+        console.log('Current user complete:', user);
+        console.log('User ID:', user.id);
         return user.id;
       } else {
-        console.warn('⚠️ No hay usuario en localStorage');
+        console.warn('No user in localStorage');
       }
     } catch (error) {
-      console.error('❌ Error obteniendo userId:', error);
+      console.error('Error getting userId:', error);
     }
     return undefined;
   }
 
   getReportSummary(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/reportSummary`).pipe(
-      delay(200) // Pequeño delay para simular latencia real
+      delay(200) // Small delay to simulate real latency
     );
   }
 }

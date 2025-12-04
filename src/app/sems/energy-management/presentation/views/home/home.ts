@@ -53,7 +53,7 @@ export class Home implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     private authService: AuthService,
     private mockDataService: MockDataService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     console.log('Home - ngOnInit. Current language:', this.translate.currentLang);
@@ -67,7 +67,7 @@ export class Home implements OnInit, OnDestroy {
     interval(30000)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
-        console.log('🔄 Auto-refreshing dashboard data...');
+        console.log('Auto-refreshing dashboard data...');
         this.loadBackendData();
       });
 
@@ -112,14 +112,14 @@ export class Home implements OnInit, OnDestroy {
   }
 
   private updateChartData(): void {
-    console.log('🔄 Updating all dashboard data');
+    console.log('Updating all dashboard data');
 
     if (!this.devices || this.devices.length === 0) {
-      console.warn('⚠️ No devices available for calculations');
+      console.warn('No devices available for calculations');
       return;
     }
 
-    console.log('📊 Recalculating stats from', this.devices.length, 'devices');
+    console.log('Recalculating stats from', this.devices.length, 'devices');
 
     this.devices.forEach((device, i) => {
       console.log(`Device ${i + 1}:`, {
@@ -146,7 +146,7 @@ export class Home implements OnInit, OnDestroy {
         // Update alerts from unified response
         if (data.alerts) {
           this.alerts = data.alerts;
-          console.log('✅ Alerts loaded from unified dashboard:', this.alerts);
+          console.log('Alerts loaded from unified dashboard:', this.alerts);
         }
 
         this.dashboardService.getDashboardState().subscribe(state => {
@@ -167,13 +167,13 @@ export class Home implements OnInit, OnDestroy {
 
           if (state.devices) {
             this.devices = state.devices || [];
-            console.log('✅ Devices loaded from unified dashboard:', this.devices.length);
+            console.log('Devices loaded from unified dashboard:', this.devices.length);
             this.updateChartData();
           }
         });
       },
       error: (error: any) => {
-        console.error('❌ Error loading dashboard:', error);
+        console.error('Error loading dashboard:', error);
         this.dashboardStats = new DashboardStats(0, 0, 0, 0, 0, 'S/.');
         this.devices = [];
         this.alerts = [];
@@ -189,42 +189,42 @@ export class Home implements OnInit, OnDestroy {
   }
 
   getCalculatedEnergyConsumption(): string {
-    console.log('📊 Getting energy consumption from API:', this.dashboardStats.energyConsumption);
+    console.log('Getting energy consumption from API:', this.dashboardStats.energyConsumption);
     const unit = this.translate.instant('dashboard.units.kwh');
     return `${this.dashboardStats.energyConsumption.toFixed(1)} ${unit}`;
   }
 
   getCalculatedTodayConsumption(): string {
-    console.log('📅 Getting today consumption from API:', this.dashboardStats.todayConsumption);
+    console.log('Getting today consumption from API:', this.dashboardStats.todayConsumption);
     const unit = this.translate.instant('dashboard.units.kwh');
     return `${this.dashboardStats.todayConsumption.toFixed(2)} ${unit}`;
   }
 
   getCalculatedEstimatedBill(): string {
-    console.log('💰 Getting estimated bill from API:', this.dashboardStats.estimatedBill);
+    console.log('Getting estimated bill from API:', this.dashboardStats.estimatedBill);
     const currency = this.translate.instant('dashboard.units.currency');
     return `${currency} ${this.dashboardStats.estimatedBill.toFixed(2)}`;
   }
 
   getCalculatedActiveDevices(): string {
-    console.log('🔌 Getting active devices from API:', this.dashboardStats.activeDevices);
+    console.log('Getting active devices from API:', this.dashboardStats.activeDevices);
     const totalDevicesCount = this.devices.length || this.dashboardStats.activeDevices;
     return `${this.dashboardStats.activeDevices} ${this.translate.instant('dashboard.stats.active')} / ${totalDevicesCount} ${this.devicesLabel}`;
   }
 
   getCalculatedSavings(): string {
-    console.log('💡 Getting savings from API:', this.dashboardStats.estimatedSavings);
+    console.log('Getting savings from API:', this.dashboardStats.estimatedSavings);
     const percentSymbol = this.translate.instant('dashboard.units.percentage');
     const savingsValue = this.dashboardStats.estimatedSavings;
-    
+
     if (savingsValue < 0) {
       return `${Math.abs(savingsValue)}${percentSymbol} ${this.translate.instant('dashboard.stats.extraConsumption')}`;
     }
-    
+
     if (savingsValue === 0) {
       return this.translate.instant('dashboard.stats.noSavings');
     }
-    
+
     return `${savingsValue}${percentSymbol} ${this.translate.instant('dashboard.stats.saved')}`;
   }
 
@@ -244,7 +244,7 @@ export class Home implements OnInit, OnDestroy {
 
   get hasDevices(): boolean {
     const hasDevices = this.devices && this.devices.length > 0;
-    console.log('🔌 hasDevices check:', hasDevices, '- Device count:', this.devices?.length || 0);
+    console.log('hasDevices check:', hasDevices, '- Device count:', this.devices?.length || 0);
     return hasDevices;
   }
 
@@ -257,7 +257,7 @@ export class Home implements OnInit, OnDestroy {
   }
 
   get hasMonthlyData(): boolean {
-    // Siempre mostrar el gráfico mensual con datos estáticos
+    // Always show monthly chart with static data
     return true;
   }
 

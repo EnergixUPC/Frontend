@@ -1,5 +1,5 @@
 // src/app/sems/energy-management/presentation/views/settings/settings.ts
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
@@ -44,13 +44,14 @@ export class Settings implements OnInit, OnDestroy {
     private settingsService: SettingsService,
     private settingsStore: SettingsStore,
     private authService: AuthService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private cdr: ChangeDetectorRef
   ) {
-    console.log('🔷 Settings component constructed');
+    console.log('Settings component constructed');
   }
 
   ngOnInit(): void {
-    console.log('🔷 Settings ngOnInit');
+    console.log('Settings ngOnInit');
 
     // Subscribe to auth state to handle page refreshes where user might not be immediately available
     this.authService.authState$
@@ -59,10 +60,10 @@ export class Settings implements OnInit, OnDestroy {
         filter(state => state.isAuthenticated && !!state.user)
       )
       .subscribe(state => {
-        console.log('👤 Auth state updated:', state.user);
+        console.log('Auth state updated:', state.user);
         if (state.user && state.user.id !== this.currentUserId) {
           this.currentUserId = state.user.id;
-          console.log('✅ User ID set:', this.currentUserId);
+          console.log('User ID set:', this.currentUserId);
           this.loadSettings();
         }
       });
@@ -70,11 +71,12 @@ export class Settings implements OnInit, OnDestroy {
     this.settingsStore.settings$
       .pipe(takeUntil(this.destroy$))
       .subscribe(settings => {
-        console.log('📦 Settings from store:', settings);
+        console.log('Settings from store:', settings);
         if (settings) {
           this.currentSettings = settings;
           this.editableSettings = JSON.parse(JSON.stringify(settings));
-          console.log('✅ Editable settings initialized:', this.editableSettings);
+          console.log('Editable settings initialized:', this.editableSettings);
+          this.cdr.detectChanges(); // Force change detection
         }
       });
   }
@@ -91,19 +93,20 @@ export class Settings implements OnInit, OnDestroy {
   loadSettings(): void {
     if (!this.currentUserId) return;
 
-    console.log('📡 Loading settings for user:', this.currentUserId);
+    console.log('Loading settings for user:', this.currentUserId);
 
     this.settingsService.loadUserSettings(this.currentUserId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (settings) => {
-          console.log('✅ Settings loaded:', settings);
+          console.log('Settings loaded:', settings);
           if (settings.rules) {
             this.rules = settings.rules;
           }
+          this.cdr.detectChanges(); // Force change detection
         },
         error: (error) => {
-          console.error('❌ Failed to load settings:', error);
+          console.error('Failed to load settings:', error);
           if (error.status === 404) {
             this.showError('Settings not found for this user.');
           } else if (error.status === 401) {
@@ -111,12 +114,13 @@ export class Settings implements OnInit, OnDestroy {
           } else {
             this.showError(`Failed to load settings: ${error.message || 'Unknown error'}`);
           }
+          this.cdr.detectChanges(); // Force change detection on error too
         }
       });
   }
 
   onAutoSavingModeChange(field: string, value: boolean): void {
-    console.log('🔄 onAutoSavingModeChange:', field, '=', value);
+    console.log('onAutoSavingModeChange:', field, '=', value);
 
     if (!this.editableSettings.autoSavingMode) {
       this.editableSettings.autoSavingMode = {
@@ -130,12 +134,12 @@ export class Settings implements OnInit, OnDestroy {
     (this.editableSettings.autoSavingMode as any)[field] = value;
     this.hasChanges = true;
 
-    console.log('✅ hasChanges:', this.hasChanges);
-    console.log('✅ editableSettings:', this.editableSettings);
+    console.log('hasChanges:', this.hasChanges);
+    console.log('editableSettings:', this.editableSettings);
   }
 
   onNotificationChange(field: string, value: boolean | string): void {
-    console.log('🔔 onNotificationChange:', field, '=', value);
+    console.log('onNotificationChange:', field, '=', value);
 
     if (!this.editableSettings.notifications) {
       this.editableSettings.notifications = {
@@ -149,7 +153,7 @@ export class Settings implements OnInit, OnDestroy {
     (this.editableSettings.notifications as any)[field] = value;
     this.hasChanges = true;
 
-    console.log('✅ hasChanges:', this.hasChanges);
+    console.log('hasChanges:', this.hasChanges);
   }
 
   get selectedFrequencies(): string[] {
@@ -161,49 +165,49 @@ export class Settings implements OnInit, OnDestroy {
   }
 
   toggleFrequency(freq: string): void {
-    console.log('📊 toggleFrequency:', freq);
+    console.log('toggleFrequency:', freq);
 
     const frequencies = this.editableSettings.reportFrequencies || [];
     const idx = frequencies.indexOf(freq);
 
     if (idx > -1) {
       this.editableSettings.reportFrequencies = frequencies.filter(f => f !== freq);
-      console.log('➖ Removed:', freq);
+      console.log('Removed:', freq);
     } else if (frequencies.length < 2) {
       this.editableSettings.reportFrequencies = [...frequencies, freq];
-      console.log('➕ Added:', freq);
+      console.log('Added:', freq);
     } else {
       this.showError('Maximum 2 frequencies allowed');
       return;
     }
 
     this.hasChanges = true;
-    console.log('✅ Frequencies:', this.editableSettings.reportFrequencies);
+    console.log('Frequencies:', this.editableSettings.reportFrequencies);
   }
 
   toggleFormat(fmt: string): void {
-    console.log('📄 toggleFormat:', fmt);
+    console.log('toggleFormat:', fmt);
 
     const formats = this.editableSettings.reportFormats || [];
     const idx = formats.indexOf(fmt);
 
     if (idx > -1) {
       this.editableSettings.reportFormats = formats.filter(f => f !== fmt);
-      console.log('➖ Removed:', fmt);
+      console.log('Removed:', fmt);
     } else if (formats.length < 2) {
       this.editableSettings.reportFormats = [...formats, fmt];
-      console.log('➕ Added:', fmt);
+      console.log('Added:', fmt);
     } else {
       this.showError('Maximum 2 formats allowed');
       return;
     }
 
     this.hasChanges = true;
-    console.log('✅ Formats:', this.editableSettings.reportFormats);
+    console.log('Formats:', this.editableSettings.reportFormats);
   }
 
   onAddNewRule(): void {
-    console.log('➕ Add new rule clicked');
+    console.log('Add new rule clicked');
     const name = window.prompt('Enter rule name:');
     if (!name) return;
 
@@ -216,44 +220,44 @@ export class Settings implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (rule) => {
-          console.log('✅ Rule added:', rule);
+          console.log('Rule added:', rule);
           // Reload settings to ensure we have the correct data format from backend
           this.loadSettings();
           this.showSuccess('Rule added successfully');
         },
         error: (err) => {
-          console.error('❌ Failed to add rule:', err);
+          console.error('Failed to add rule:', err);
           this.showError('Failed to add rule');
         }
       });
   }
 
   onDeleteRule(ruleId: string): void {
-    console.log('🗑️ Delete rule clicked:', ruleId);
+    console.log('Delete rule clicked:', ruleId);
     this.settingsService.deleteRule(ruleId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          console.log('✅ Rule deleted');
+          console.log('Rule deleted');
           this.rules = this.rules.filter(r => r.id !== ruleId);
           this.showSuccess('Rule deleted successfully');
         },
         error: (err) => {
-          console.error('❌ Failed to delete rule:', err);
+          console.error('Failed to delete rule:', err);
           this.showError('Failed to delete rule');
         }
       });
   }
 
   onToggleRule(rule: SavingRule): void {
-    console.log('🔄 Toggle rule:', rule.id, !rule.isEnabled);
+    console.log('Toggle rule:', rule.id, !rule.isEnabled);
     const updatedRule = { ...rule, isEnabled: !rule.isEnabled };
 
     this.settingsService.updateRule(rule.id, updatedRule)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          console.log('✅ Rule updated:', res);
+          console.log('Rule updated:', res);
           const index = this.rules.findIndex(r => r.id === rule.id);
           if (index !== -1) {
             this.rules[index] = res;
@@ -261,7 +265,7 @@ export class Settings implements OnInit, OnDestroy {
           this.showSuccess('Rule updated successfully');
         },
         error: (err) => {
-          console.error('❌ Failed to update rule:', err);
+          console.error('Failed to update rule:', err);
           this.showError('Failed to update rule');
           // Revert change in UI if needed, but here we rely on the list refresh or optimistic update
           rule.isEnabled = !rule.isEnabled; // Revert
@@ -270,7 +274,7 @@ export class Settings implements OnInit, OnDestroy {
   }
 
   onEditSchedule(): void {
-    console.log('✏️ Edit schedule clicked');
+    console.log('Edit schedule clicked');
 
     const currentStart = this.editableSettings.notifications?.scheduleStart || '05:00 AM';
     const currentEnd = this.editableSettings.notifications?.scheduleEnd || '22:00 PM';
@@ -307,12 +311,12 @@ export class Settings implements OnInit, OnDestroy {
   }
 
   onChangePassword(): void {
-    console.log('🔒 Change password clicked');
+    console.log('Change password clicked');
     this.showInfo('Feature coming soon: Change password');
   }
 
   onEnable2FA(): void {
-    console.log('🔐 Enable 2FA clicked');
+    console.log('Enable 2FA clicked');
 
     if (!this.currentUserId) return;
 
@@ -332,51 +336,51 @@ export class Settings implements OnInit, OnDestroy {
   }
 
   saveSettings(): void {
-    console.log('💾 saveSettings() called');
-    console.log('💾 currentUserId:', this.currentUserId);
-    console.log('💾 hasChanges:', this.hasChanges);
-    console.log('💾 editableSettings:', JSON.stringify(this.editableSettings, null, 2));
+    console.log('saveSettings() called');
+    console.log('currentUserId:', this.currentUserId);
+    console.log('hasChanges:', this.hasChanges);
+    console.log('editableSettings:', JSON.stringify(this.editableSettings, null, 2));
 
     if (!this.currentUserId) {
-      console.error('❌ No currentUserId');
+      console.error('No currentUserId');
       return;
     }
 
     if (!this.hasChanges) {
-      console.error('❌ No changes detected');
+      console.error('No changes detected');
       return;
     }
 
-    console.log('✅ Calling settingsService.updateSettings...');
+    console.log('Calling settingsService.updateSettings...');
 
     this.settingsService.updateSettings(this.currentUserId, this.editableSettings)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
-          console.log('✅ Settings saved successfully:', response);
+          console.log('Settings saved successfully:', response);
           this.hasChanges = false;
           this.showSuccess('Settings saved successfully!');
         },
         error: (error) => {
-          console.error('❌ Failed to save settings:', error);
+          console.error('Failed to save settings:', error);
           this.showError('Failed to save settings');
         }
       });
   }
 
   cancelChanges(): void {
-    console.log('❌ cancelChanges() called');
+    console.log('cancelChanges() called');
 
     if (this.currentSettings) {
       this.editableSettings = JSON.parse(JSON.stringify(this.currentSettings));
-      console.log('↩️ Reverted to original settings');
+      console.log('Reverted to original settings');
     }
 
     this.hasChanges = false;
   }
 
   private showSuccess(message: string): void {
-    this.snackBar.open(message, '✖', {
+    this.snackBar.open(message, 'Close', {
       duration: 3000,
       panelClass: ['success-snackbar'],
       horizontalPosition: 'end',
@@ -385,7 +389,7 @@ export class Settings implements OnInit, OnDestroy {
   }
 
   private showError(message: string): void {
-    this.snackBar.open(message, '✖', {
+    this.snackBar.open(message, 'Close', {
       duration: 5000,
       panelClass: ['error-snackbar'],
       horizontalPosition: 'end',
@@ -394,7 +398,7 @@ export class Settings implements OnInit, OnDestroy {
   }
 
   private showInfo(message: string): void {
-    this.snackBar.open(message, '✖', {
+    this.snackBar.open(message, 'Close', {
       duration: 3000,
       horizontalPosition: 'end',
       verticalPosition: 'top'

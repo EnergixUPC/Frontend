@@ -125,7 +125,7 @@ export class DailyChart implements OnInit, OnChanges {
           font: {
             size: 11
           },
-          callback: function(value) {
+          callback: function (value) {
             if (typeof value === 'number') {
               return value.toFixed(2);
             }
@@ -138,13 +138,13 @@ export class DailyChart implements OnInit, OnChanges {
 
   public lineChartType: 'line' = 'line';
 
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslateService) { }
 
   ngOnInit(): void {
-    console.log('📊 DailyChart - ngOnInit');
+    console.log('DailyChart - ngOnInit');
     // Actualizar traducciones de los ejes
     this.updateAxisLabels();
-    // Inicializar con datos vacíos
+    // Initialize with empty data
     this.updateChartData();
 
     // Suscribirse a cambios de idioma
@@ -168,7 +168,7 @@ export class DailyChart implements OnInit, OnChanges {
       const currentDevices = changes['devices'].currentValue;
       const previousDevices = changes['devices'].previousValue;
 
-      console.log('📊 DailyChart - Devices input changed:');
+      console.log('DailyChart - Devices input changed:');
       console.log('  - Previous devices:', previousDevices?.length || 0);
       console.log('  - Current devices:', currentDevices?.length || 0);
 
@@ -176,36 +176,36 @@ export class DailyChart implements OnInit, OnChanges {
         console.log('  - First device:', currentDevices[0]);
         this.updateChartData();
       } else {
-        console.warn('⚠️ DailyChart - No devices received');
+        console.warn('DailyChart - No devices received');
         this.clearChartData();
       }
     }
   }
 
   private updateChartData(): void {
-    console.log('📈 DailyChart - Generating realistic daily consumption data');
+    console.log('DailyChart - Generating realistic daily consumption data');
 
     if (!this.devices || this.devices.length === 0) {
-      console.log('⚠️ DailyChart - No devices available');
+      console.log('DailyChart - No devices available');
       this.clearChartData();
       return;
     }
 
     // Calcular consumo total diario de dispositivos
     const totalDailyConsumption = this.calculateTotalDailyConsumption();
-    console.log('💡 DailyChart - Total daily consumption:', totalDailyConsumption.toFixed(3), 'kWh');
+    console.log('DailyChart - Total daily consumption:', totalDailyConsumption.toFixed(3), 'kWh');
 
     if (totalDailyConsumption === 0) {
-      console.warn('⚠️ DailyChart - Total consumption is 0, using fallback data');
+      console.warn('DailyChart - Total consumption is 0, using fallback data');
       // Usar datos de fallback si el consumo es 0
       this.generateFallbackData();
       return;
     }
 
-    // Generar patrón de consumo por hora (24 horas)
+    // Generate hourly consumption pattern (24 hours)
     const hourlyData = this.generateHourlyConsumptionPattern(totalDailyConsumption);
 
-    // Actualizar datos del gráfico
+    // Update chart data
     this.lineChartData = {
       datasets: [{
         data: hourlyData.map(h => h.consumption),
@@ -223,15 +223,15 @@ export class DailyChart implements OnInit, OnChanges {
       labels: hourlyData.map(h => h.hour)
     };
 
-    console.log('✅ DailyChart - Chart data updated:');
+    console.log('DailyChart - Chart data updated:');
     console.log('  - Data points:', hourlyData.length);
     console.log('  - Sample values:', hourlyData.slice(0, 3).map(h => h.consumption.toFixed(3)));
 
-    // Forzar actualización del gráfico
+    // Force chart update
     setTimeout(() => {
       if (this.chart) {
         this.chart.update();
-        console.log('✅ DailyChart - Chart updated successfully');
+        console.log('DailyChart - Chart updated successfully');
       }
     }, 100);
   }
@@ -255,7 +255,7 @@ export class DailyChart implements OnInit, OnChanges {
       // Convertir a consumo diario
       const dailyConsumption = weeklyConsumption / 7;
 
-      console.log(`📱 DailyChart - Device "${device.name}": ${dailyConsumption.toFixed(3)} kWh/day (weekly: ${weeklyConsumption.toFixed(3)} kWh)`);
+      console.log(`DailyChart - Device "${device.name}": ${dailyConsumption.toFixed(3)} kWh/day (weekly: ${weeklyConsumption.toFixed(3)} kWh)`);
 
       return total + dailyConsumption;
     }, 0);
@@ -264,19 +264,19 @@ export class DailyChart implements OnInit, OnChanges {
   private generateHourlyConsumptionPattern(totalDailyConsumption: number): HourlyConsumption[] {
     const hourlyData: HourlyConsumption[] = [];
 
-    // Patrón de consumo realista por hora (suma debe ser ≈ totalDailyConsumption)
+    // Realistic hourly consumption pattern (sum should be approx totalDailyConsumption)
     const consumptionPattern = [
       0.02, 0.015, 0.01, 0.01, 0.015, 0.03,  // 00:00 - 05:00 (bajo consumo nocturno)
       0.08, 0.12, 0.10, 0.07, 0.05, 0.06,    // 06:00 - 11:00 (pico matutino)
-      0.07, 0.05, 0.04, 0.03, 0.04, 0.05,    // 12:00 - 17:00 (mediodía)
+      0.07, 0.05, 0.04, 0.03, 0.04, 0.05,    // 12:00 - 17:00 (noon)
       0.09, 0.12, 0.10, 0.08, 0.05, 0.03     // 18:00 - 23:00 (pico vespertino)
     ];
 
-    // Normalizar patrón para que sume exactamente el consumo total
+    // Normalize pattern to sum exactly to total consumption
     const patternSum = consumptionPattern.reduce((sum, val) => sum + val, 0);
     const scaleFactor = totalDailyConsumption / patternSum;
 
-    console.log('📐 DailyChart - Pattern normalization:');
+    console.log('DailyChart - Pattern normalization:');
     console.log('  - Pattern sum:', patternSum.toFixed(3));
     console.log('  - Scale factor:', scaleFactor.toFixed(3));
 
@@ -294,7 +294,7 @@ export class DailyChart implements OnInit, OnChanges {
   }
 
   private generateFallbackData(): void {
-    console.log('📊 DailyChart - Generating fallback demo data');
+    console.log('DailyChart - Generating fallback demo data');
 
     const hourlyData: HourlyConsumption[] = [];
     const baseConsumption = 5.0; // 5 kWh diarios de ejemplo
@@ -356,7 +356,7 @@ export class DailyChart implements OnInit, OnChanges {
   }
 
   private clearChartData(): void {
-    console.log('🧹 DailyChart - Clearing chart data');
+    console.log('DailyChart - Clearing chart data');
 
     this.lineChartData = {
       datasets: [{
@@ -377,7 +377,7 @@ export class DailyChart implements OnInit, OnChanges {
 
   hasChartData(): boolean {
     const hasData = this.lineChartData.datasets[0].data.length > 0;
-    console.log('🔍 DailyChart - hasChartData:', hasData);
+    console.log('DailyChart - hasChartData:', hasData);
     return hasData;
   }
 

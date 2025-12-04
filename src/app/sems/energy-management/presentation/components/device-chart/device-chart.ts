@@ -34,10 +34,10 @@ export class DeviceChart implements OnInit {
     private translate: TranslateService,
     private reportService: ReportService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    // Asegurar que el componente esté completamente inicializado
+    // Ensure component is fully initialized
     setTimeout(() => {
       this.loadDeviceData();
     }, 100);
@@ -46,64 +46,64 @@ export class DeviceChart implements OnInit {
   loadDeviceData(): void {
     this.isLoading = true;
     this.hasError = false;
-    
-    console.log('🔄 Cargando datos de dispositivos top...');
-    
+
+    console.log('Loading top devices data...');
+
     this.reportService.getTopDevices().subscribe({
       next: (devices: any[]) => {
-        console.log('✅ Datos de dispositivos recibidos:', devices);
-        
+        console.log('Devices data received:', devices);
+
         if (!Array.isArray(devices)) {
-          console.warn('⚠️ Los datos no son un array:', devices);
+          console.warn('Data is not an array:', devices);
           this.devices = [];
           this.isLoading = false;
           this.cdr.detectChanges();
           return;
         }
-        
+
         if (devices.length === 0) {
-          console.log('ℹ️ No hay dispositivos disponibles');
+          console.log('No devices available');
           this.devices = [];
         } else {
-          // Convertir los dispositivos del backend a datos para la gráfica
+          // Convert backend devices to chart data
           this.devices = devices.slice(0, 3).map((device, index) => ({
             nameKey: this.getDeviceNameKey(device.deviceName),
             displayName: device.deviceName,
             consumption: device.totalConsumption,
             color: this.getDeviceColor(index),
-            percentage: 0, // Se calculará después
+            percentage: 0, // Will be calculated later
             deviceType: device.deviceType,
             deviceCategory: device.deviceCategory,
             deviceId: device.deviceId,
             period: device.period
           }));
-          
-          console.log('📊 Dispositivos procesados:', this.devices);
-          
+
+          console.log('Processed devices:', this.devices);
+
           this.calculateMetrics();
         }
         this.isLoading = false;
         this.cdr.detectChanges();
       },
       error: (error) => {
-        console.error('❌ Error cargando datos de dispositivos:', error);
+        console.error('Error loading devices data:', error);
         console.error('Status:', error.status);
         console.error('Message:', error.message);
         console.error('URL:', error.url);
-        
+
         let errorMessage = 'No se pudieron cargar los datos';
-        
+
         if (error.status === 401) {
-          errorMessage = 'Error de autenticación. Por favor, inicie sesión nuevamente.';
-          console.error('❌ Error 401: Usuario no autenticado');
+          errorMessage = 'Authentication error. Please login again.';
+          console.error('Error 401: User not authenticated');
         } else if (error.status === 403) {
           errorMessage = 'No tiene permisos para acceder a estos datos.';
         } else if (error.status === 404) {
           errorMessage = 'No se encontraron dispositivos para este usuario.';
         } else if (error.status === 0) {
-          errorMessage = 'Error de conexión. Verifique su conexión a internet.';
+          errorMessage = 'Connection error. Check your internet connection.';
         }
-        
+
         this.devices = [];
         this.isLoading = false;
         this.hasError = true;
@@ -132,7 +132,7 @@ export class DeviceChart implements OnInit {
       'Refrigerador': 'refrigerator',
       'Aire Acondicionado': 'airConditioning',
       'Televisor': 'tv',
-      'Portátil': 'laptop',
+
       'Altavoz Inteligente': 'smartSpeaker',
       'Microondas': 'microwave',
       'PC de Escritorio': 'desktopPC'
@@ -147,10 +147,10 @@ export class DeviceChart implements OnInit {
       this.topThreePercentage = 0;
       return;
     }
-    
+
     this.totalConsumption = this.devices.reduce((sum, device) => sum + device.consumption, 0);
     this.maxConsumption = Math.max(...this.devices.map(device => device.consumption));
-    
+
     // Calcular porcentajes
     this.devices.forEach(device => {
       device.percentage = this.totalConsumption > 0 ? (device.consumption / this.totalConsumption) * 100 : 0;
@@ -173,30 +173,30 @@ export class DeviceChart implements OnInit {
   }
 
   getXAxisLabels(): number[] {
-    // Si no hay consumo máximo, retornar escala por defecto
+    // If no max consumption, return default scale
     if (this.maxConsumption === 0) {
       return [0, 1, 2, 3, 4, 5];
     }
-    
+
     let maxRounded;
     let step;
-    
-    // Para valores pequeños (≤ 5), usar incrementos más pequeños
+
+    // For small values (<= 5), use smaller increments
     if (this.maxConsumption <= 5) {
       maxRounded = Math.ceil(this.maxConsumption);
-      step = Math.max(maxRounded / 5, 0.2); // Mínimo step de 0.2
-    } 
+      step = Math.max(maxRounded / 5, 0.2); // Minimum step of 0.2
+    }
     // Para valores medianos (5-20), usar incrementos de 1
     else if (this.maxConsumption <= 20) {
       maxRounded = Math.ceil(this.maxConsumption / 5) * 5;
       step = maxRounded / 5;
     }
-    // Para valores grandes, usar el método original
+    // For large values, use original method
     else {
       maxRounded = Math.ceil(this.maxConsumption / 10) * 10;
       step = maxRounded / 5;
     }
-    
+
     const labels = [];
     for (let i = 0; i <= 5; i++) {
       const value = i * step;

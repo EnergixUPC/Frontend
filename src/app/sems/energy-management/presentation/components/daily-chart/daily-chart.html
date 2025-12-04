@@ -3,13 +3,9 @@
     <mat-card-title>{{ dailyConsumptionLabel }}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <!-- ✅ Cambiar dailyConsumption por hasChartData() -->
+    <!-- Change dailyConsumption to hasChartData() -->
     <div class="chart-container" *ngIf="hasChartData(); else noData">
-      <canvas
-        baseChart
-        [data]="lineChartData"
-        [options]="lineChartOptions"
-        [type]="lineChartType">
+      <canvas baseChart [data]="lineChartData" [options]="lineChartOptions" [type]="lineChartType">
       </canvas>
     </div>
 

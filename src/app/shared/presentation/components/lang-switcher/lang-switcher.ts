@@ -13,26 +13,26 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class LangSwitcher implements OnInit {
   currentLanguage = 'es';
-  
+
   languages = [
-    { code: 'es', name: 'Español', flag: 'ES' },
+    { code: 'es', name: 'Spanish', flag: 'ES' },
     { code: 'en', name: 'English', flag: 'EN' }
   ];
 
   constructor(
     private translate: TranslateService,
     private http: HttpClient
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Load translation files manually
     this.loadTranslations();
-    
+
     // Set default language to Spanish
     this.translate.setDefaultLang('es');
     this.translate.use('es');
     this.currentLanguage = 'es';
-    
+
     // Check for saved language preference (only in browser)
     if (typeof window !== 'undefined' && window.localStorage) {
       const savedLanguage = localStorage.getItem('preferred-language');
@@ -68,7 +68,7 @@ export class LangSwitcher implements OnInit {
   onLanguageChange(languageCode: string): void {
     this.currentLanguage = languageCode;
     this.translate.use(languageCode);
-    
+
     // Save language preference to localStorage (only in browser)
     if (typeof window !== 'undefined' && window.localStorage) {
       localStorage.setItem('preferred-language', languageCode);
@@ -77,6 +77,6 @@ export class LangSwitcher implements OnInit {
 
   getCurrentLanguageName(): string {
     const currentLang = this.languages.find(lang => lang.code === this.currentLanguage);
-    return currentLang ? currentLang.name : 'Español';
+    return currentLang ? currentLang.name : 'Spanish';
   }
 }

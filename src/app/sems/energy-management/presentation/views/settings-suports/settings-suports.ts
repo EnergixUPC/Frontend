@@ -36,16 +36,16 @@ export class SettingsSuports {
 
   faqs: FAQ[] = [
     {
-      question: '¿Cómo puedo reducir mi consumo energético?',
-      answer: 'Puedes activar el modo de ahorro automático, configurar horarios para tus dispositivos y revisar regularmente tus reportes de consumo.'
+      question: 'How can I reduce my energy consumption?',
+      answer: 'You can activate the automatic saving mode, configure schedules for your devices, and regularly review your consumption reports.'
     },
     {
-      question: '¿Qué significan las notificaciones de alto consumo?',
-      answer: 'Estas notificaciones te alertan cuando tu consumo supera el promedio habitual, ayudándote a identificar posibles problemas o desperdicios.'
+      question: 'What do high consumption notifications mean?',
+      answer: 'These notifications alert you when your consumption exceeds the usual average, helping you identify possible issues or waste.'
     },
     {
-      question: '¿Cómo funcionan los reportes automáticos?',
-      answer: 'Los reportes se generan según la frecuencia que elijas y se envían a tu correo en el formato seleccionado.'
+      question: 'How do automatic reports work?',
+      answer: 'Reports are generated according to the frequency you choose and are sent to your email in the selected format.'
     }
   ];
 
@@ -63,7 +63,7 @@ export class SettingsSuports {
 
   helpMessage = '';
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private snackBar: MatSnackBar) { }
 
   openFaqModal(): void {
     this.showFaqModal = true;
@@ -92,17 +92,17 @@ export class SettingsSuports {
 
   sendHelpMessage(): void {
     if (!this.helpMessage.trim()) {
-      this.snackBar.open('Por favor escribe un mensaje', '✖', { duration: 3000 });
+      this.snackBar.open('Por favor escribe un mensaje', 'Close', { duration: 3000 });
       return;
     }
 
-    this.snackBar.open('Mensaje enviado correctamente. Te responderemos pronto.', '✖', { duration: 3000 });
+    this.snackBar.open('Mensaje enviado correctamente. Te responderemos pronto.', 'Close', { duration: 3000 });
     this.closeHelpModal();
   }
 
   copyToClipboard(text: string, type: string): void {
     navigator.clipboard.writeText(text);
-    this.snackBar.open(`${type} copiado al portapapeles`, '✖', { duration: 2000 });
+    this.snackBar.open(`${type} copiado al portapapeles`, 'Close', { duration: 2000 });
   }
 
   openWhatsApp(): void {

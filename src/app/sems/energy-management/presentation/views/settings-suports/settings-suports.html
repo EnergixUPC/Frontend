@@ -3,7 +3,7 @@
 <!-- Modal FAQ -->
 <div class="modal-container" *ngIf="showFaqModal" (click)="$event.stopPropagation()">
   <div class="modal-header">
-    <h2>Preguntas Frecuentes</h2>
+    <h2>Frequently Asked Questions</h2>
     <button class="close-btn" (click)="closeFaqModal()">
       <mat-icon>close</mat-icon>
     </button>
@@ -24,7 +24,7 @@
 <!-- Modal Centro de Ayuda -->
 <div class="modal-container" *ngIf="showHelpModal" (click)="$event.stopPropagation()">
   <div class="modal-header help-header">
-    <h2>Centro de Ayuda</h2>
+    <h2>Help Center</h2>
     <button class="close-btn" (click)="closeHelpModal()">
       <mat-icon>close</mat-icon>
     </button>
@@ -32,24 +32,20 @@
 
   <div class="modal-body">
     <div class="form-section">
-      <h3>¿En qué podemos ayudarte?</h3>
+      <h3>How can we help you?</h3>
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Describe tu problema</mat-label>
-        <textarea
-          matInput
-          [(ngModel)]="helpMessage"
-          rows="4"
-          placeholder="Escribe tu mensaje aquí...">
+        <mat-label>Describe your problem</mat-label>
+        <textarea matInput [(ngModel)]="helpMessage" rows="4" placeholder="Write your message here...">
         </textarea>
       </mat-form-field>
       <button mat-raised-button color="primary" class="send-btn" (click)="sendHelpMessage()">
         <mat-icon>send</mat-icon>
-        Enviar Mensaje
+        Send Message
       </button>
     </div>
 
     <div class="contact-section">
-      <h3>Contáctanos directamente</h3>
+      <h3>Contact us directly</h3>
 
       <div class="contact-item">
         <mat-icon>email</mat-icon>
@@ -65,10 +61,10 @@
       <div class="contact-item">
         <mat-icon>phone</mat-icon>
         <div class="contact-details">
-          <span class="contact-label">Teléfono</span>
+          <span class="contact-label">Phone</span>
           <span class="contact-value">{{ contactInfo.phone }}</span>
         </div>
-        <button mat-icon-button (click)="copyToClipboard(contactInfo.phone, 'Teléfono')">
+        <button mat-icon-button (click)="copyToClipboard(contactInfo.phone, 'Phone')">
           <mat-icon>content_copy</mat-icon>
         </button>
       </div>
@@ -85,7 +81,7 @@
       </div>
 
       <div class="social-section">
-        <h4>Síguenos en redes sociales</h4>
+        <h4>Follow us on social media</h4>
         <div class="social-icons">
           <a [href]="contactInfo.socials.facebook" target="_blank" class="social-link facebook">
             <mat-icon>facebook</mat-icon>
@@ -108,7 +104,7 @@
 <!-- Modal Tutoriales -->
 <div class="modal-container" *ngIf="showTutorialsModal" (click)="$event.stopPropagation()">
   <div class="modal-header tutorials-header">
-    <h2>Tutoriales</h2>
+    <h2>Tutorials</h2>
     <button class="close-btn" (click)="closeTutorialsModal()">
       <mat-icon>close</mat-icon>
     </button>
@@ -119,28 +115,28 @@
       <div class="tutorial-item">
         <mat-icon>play_circle_outline</mat-icon>
         <div class="tutorial-info">
-          <h4>Introducción al sistema</h4>
-          <p>Aprende lo básico del sistema de gestión energética</p>
+          <h4>System Introduction</h4>
+          <p>Learn the basics of the energy management system</p>
         </div>
-        <button mat-stroked-button color="primary">Ver</button>
+        <button mat-stroked-button color="primary">Watch</button>
       </div>
 
       <div class="tutorial-item">
         <mat-icon>play_circle_outline</mat-icon>
         <div class="tutorial-info">
-          <h4>Configurar modo de ahorro</h4>
-          <p>Cómo activar y personalizar el ahorro automático</p>
+          <h4>Configure saving mode</h4>
+          <p>How to activate and customize automatic saving</p>
         </div>
-        <button mat-stroked-button color="primary">Ver</button>
+        <button mat-stroked-button color="primary">Watch</button>
       </div>
 
       <div class="tutorial-item">
         <mat-icon>play_circle_outline</mat-icon>
         <div class="tutorial-info">
-          <h4>Leer reportes de consumo</h4>
-          <p>Entiende tus gráficas y estadísticas</p>
+          <h4>Read consumption reports</h4>
+          <p>Understand your charts and statistics</p>
         </div>
-        <button mat-stroked-button color="primary">Ver</button>
+        <button mat-stroked-button color="primary">Watch</button>
       </div>
 
       <div class="tutorial-item">
@@ -149,7 +145,7 @@
           <h4>Conectar dispositivos</h4>
           <p>Agrega y controla nuevos dispositivos</p>
         </div>
-        <button mat-stroked-button color="primary">Ver</button>
+        <button mat-stroked-button color="primary">Watch</button>
       </div>
     </div>
   </div>

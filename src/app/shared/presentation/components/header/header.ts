@@ -49,7 +49,7 @@ export class Header implements OnInit, OnDestroy {
       this.updateDateTime();
     });
 
-    // Suscribirse solo al estado de autenticación
+    // Subscribe only to authentication state
     this.combinedSubscription = this.authController.getCurrentAuthState()
       .subscribe(authState => {
         console.log('Header - Auth state received:', authState);

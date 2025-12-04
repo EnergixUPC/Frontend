@@ -37,7 +37,7 @@
   font-weight: bold;
 }
 
-/* Grid de secciones */
+/* Sections Grid */
 .settings-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -161,7 +161,7 @@ hr {
   margin-top: 12px;
 }
 
-/* Chips (botones seleccionables) */
+/* Chips (selectable buttons) */
 .chip {
   background: #e3f0ff;
   color: #1976d2;
@@ -244,7 +244,7 @@ ul li a {
   margin-top: 15px;
 }
 
-/* Botones Save/Cancel */
+/* Save/Cancel Buttons */
 .actions {
   margin-top: 30px;
   display: flex;

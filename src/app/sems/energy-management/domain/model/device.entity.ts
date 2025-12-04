@@ -10,7 +10,7 @@
   lastActive: string;
   alertHistory?: string;
   energyConsumption?: string;
-  energyConsumptionValue?: number; // Valor numérico para cálculos
+  energyConsumptionValue?: number; // Numeric value for calculations
   location: string;
   isActive: number;
 }

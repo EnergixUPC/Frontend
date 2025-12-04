@@ -166,7 +166,7 @@
     gap: 1rem;
   }
 
-  /* Order for mobile: Notificaciones → Hello, Iker → Foto → ES/EN */
+  /* Order for mobile: Notifications -> Hello, Iker -> Photo -> ES/EN */
   .notification-button {
     order: 2;
   }
@@ -213,7 +213,7 @@
     gap: 0.75rem;
   }
 
-  /* Maintain same order: Notificaciones → Hello, Iker → Foto → ES/EN */
+  /* Maintain same order: Notifications -> Hello, Iker -> Photo -> ES/EN */
   .notification-button {
     order: 1;
   }

@@ -58,7 +58,7 @@ export class MonthlyChart implements OnInit, OnChanges {
         callbacks: {
           label: (context) => {
             const value = context.parsed.y;
-            // ✅ FIX: Validar que value no sea null
+            // FIX: Validate that value is not null
             if (value === null || value === undefined) {
               return `${context.label}: 0 kWh`;
             }
@@ -90,7 +90,7 @@ export class MonthlyChart implements OnInit, OnChanges {
           },
           color: '#666',
           callback: (value) => {
-            // ✅ FIX: Validar que value no sea null
+            // FIX: Validate that value is not null
             if (typeof value === 'number') {
               return `${value} kWh`;
             }
@@ -103,10 +103,10 @@ export class MonthlyChart implements OnInit, OnChanges {
 
   public barChartType: 'bar' = 'bar';
 
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslateService) { }
 
   ngOnInit(): void {
-    console.log('📊 MonthlyChart - ngOnInit');
+    console.log('MonthlyChart - ngOnInit');
     this.updateChartData();
 
     // Suscribirse a cambios de idioma
@@ -117,18 +117,18 @@ export class MonthlyChart implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['monthlyComparison']) {
-      console.log('📊 MonthlyChart - Monthly comparison input changed');
+      console.log('MonthlyChart - Monthly comparison input changed');
       this.updateChartData();
     }
   }
 
   private updateChartData(): void {
-    console.log('📈 MonthlyChart - Generating monthly consumption data');
+    console.log('MonthlyChart - Generating monthly consumption data');
 
-    // ✅ CAMBIO: Generar solo 3 meses (actual + 2 anteriores)
+    // CHANGE: Generate only 3 months (current + 2 previous)
     const monthlyData: MonthlyData[] = this.generateMonthlyData();
 
-    console.log('✅ MonthlyChart - Using demo monthly data:', monthlyData);
+    console.log('MonthlyChart - Using demo monthly data:', monthlyData);
 
     // Obtener mes actual para resaltar
     const currentMonth = new Date().toLocaleString('es-ES', { month: 'short' }).replace('.', '');
@@ -155,26 +155,26 @@ export class MonthlyChart implements OnInit, OnChanges {
       labels: monthlyData.map(m => this.getMonthTranslation(m.month))
     };
 
-    console.log('✅ MonthlyChart - Chart data updated');
+    console.log('MonthlyChart - Chart data updated');
     console.log('  - Data points:', monthlyData.length);
     console.log('  - Sample values:', monthlyData.map(m => `${m.month}: ${m.consumption.toFixed(1)}`));
 
-    // Forzar actualización del gráfico
+    // Force chart update
     setTimeout(() => {
       if (this.chart) {
         this.chart.update();
-        console.log('✅ MonthlyChart - Chart rendered');
+        console.log('MonthlyChart - Chart rendered');
       }
     }, 100);
   }
 
   private generateMonthlyData(): MonthlyData[] {
-    // ✅ CAMBIO: Generar solo 3 meses (actual + 2 anteriores)
+    // CHANGE: Generate only 3 months (current + 2 previous)
     const now = new Date();
     const monthlyData: MonthlyData[] = [];
 
     // Consumo base con variaciones realistas para 3 meses
-    const baseConsumptions = [185,88, 95,102]; // [2 meses atrás, 1 mes atrás, mes actual]
+    const baseConsumptions = [185, 88, 95, 102]; // [2 months ago, 1 month ago, current month]
 
     for (let i = 3; i >= 0; i--) {
       const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
@@ -191,7 +191,7 @@ export class MonthlyChart implements OnInit, OnChanges {
   }
 
   private getMonthTranslation(monthAbbr: string): string {
-    // Mapeo de abreviaturas españolas a claves de traducción
+    // Mapping Spanish abbreviations to translation keys
     const monthMap: { [key: string]: string } = {
       'ene': 'january',
       'feb': 'february',
@@ -215,7 +215,7 @@ export class MonthlyChart implements OnInit, OnChanges {
 
   hasChartData(): boolean {
     const hasData = this.barChartData.datasets[0].data.length > 0;
-    console.log('🔍 MonthlyChart - hasChartData:', hasData);
+    console.log('MonthlyChart - hasChartData:', hasData);
     return hasData;
   }
 

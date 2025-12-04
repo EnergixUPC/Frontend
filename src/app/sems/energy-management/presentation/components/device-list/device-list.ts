@@ -28,7 +28,7 @@ export class DeviceList {
   }
 
   getCategoryText(category: string): string {
-    // Debug más detallado
+    // Detailed debug
     console.log('=== DEBUG CATEGORY TRANSLATION ===');
     console.log('Input category:', category);
     console.log('Current language:', this.translate.currentLang);
@@ -54,7 +54,7 @@ export class DeviceList {
     console.log('Translation result:', translated);
     console.log('Translation matches key?', translated === translationKey);
 
-    // Probar traducción directa para debugging
+    // Test direct translation for debugging
     const directTest = this.translate.instant('dashboard.devices.categories.heating_cooling');
     console.log('Direct test heating_cooling:', directTest);
 

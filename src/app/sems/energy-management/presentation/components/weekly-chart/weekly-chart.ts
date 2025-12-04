@@ -28,10 +28,10 @@ export class WeeklyChart implements OnInit {
     private translate: TranslateService,
     private reportService: ReportService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    // Asegurar que el componente esté completamente inicializado
+    // Ensure component is fully initialized
     setTimeout(() => {
       this.loadWeeklyData();
     }, 100);
@@ -41,54 +41,54 @@ export class WeeklyChart implements OnInit {
     this.isLoading = true;
     this.hasError = false;
     this.errorMessage = '';
-    
-    console.log('🔄 Cargando datos semanales...');
-    
+
+    console.log('Loading weekly data...');
+
     this.reportService.getWeeklyConsumption().subscribe({
       next: (data) => {
-        console.log('✅ Datos semanales recibidos:', data);
-        
+        console.log('Weekly data received:', data);
+
         if (!data || !data.dailyConsumptions) {
-          console.warn('⚠️ Estructura de datos inesperada:', data);
+          console.warn('Unexpected data structure:', data);
           this.initializeEmptyWeeklyData();
           this.isLoading = false;
           this.cdr.detectChanges();
           return;
         }
-        
+
         this.weeklyData = data.dailyConsumptions.map((daily: any) => ({
           day: this.getDayAbbreviation(daily.dayName),
           consumption: daily.consumption,
           label: daily.dayName,
           date: daily.date
         }));
-        
-        console.log('📊 Datos procesados:', this.weeklyData);
-        
+
+        console.log('Processed data:', this.weeklyData);
+
         // Calcular el promedio real basado en los datos actuales
         this.calculateMetrics();
         this.isLoading = false;
         this.cdr.detectChanges();
       },
       error: (error) => {
-        console.error('❌ Error cargando datos semanales:', error);
+        console.error('Error loading weekly data:', error);
         console.error('Status:', error.status);
         console.error('Message:', error.message);
         console.error('URL:', error.url);
-        
+
         let errorMessage = 'No se pudieron cargar los datos';
-        
+
         if (error.status === 401) {
-          errorMessage = 'Error de autenticación. Por favor, inicie sesión nuevamente.';
-          console.error('❌ Error 401: Usuario no autenticado');
+          errorMessage = 'Authentication error. Please login again.';
+          console.error('Error 401: User not authenticated');
         } else if (error.status === 403) {
           errorMessage = 'No tiene permisos para acceder a estos datos.';
         } else if (error.status === 404) {
           errorMessage = 'No se encontraron datos para este usuario.';
         } else if (error.status === 0) {
-          errorMessage = 'Error de conexión. Verifique su conexión a internet.';
+          errorMessage = 'Connection error. Check your internet connection.';
         }
-        
+
         this.initializeEmptyWeeklyData();
         this.isLoading = false;
         this.hasError = true;
@@ -101,11 +101,11 @@ export class WeeklyChart implements OnInit {
   private getDayAbbreviation(dayName: string): string {
     const dayAbbreviations: { [key: string]: string } = {
       'lunes': 'MON',
-      'martes': 'TUE', 
-      'miércoles': 'WED',
+      'martes': 'TUE',
+      'wednesday': 'WED',
       'jueves': 'THU',
       'viernes': 'FRI',
-      'sábado': 'SAT',
+      'saturday': 'SAT',
       'domingo': 'SUN',
       'Monday': 'MON',
       'Tuesday': 'TUE',
@@ -137,19 +137,19 @@ export class WeeklyChart implements OnInit {
       this.maxConsumption = 0;
       return;
     }
-    
+
     // Calcular el promedio real de los datos
     const totalConsumption = this.weeklyData.reduce((sum, day) => sum + day.consumption, 0);
     this.weeklyAverage = totalConsumption / this.weeklyData.length;
-    
-    // Encontrar el máximo consumo para el escalado
+
+    // Find max consumption for scaling
     this.maxConsumption = Math.max(...this.weeklyData.map(day => day.consumption));
-    
+
     // Asegurar que maxConsumption no sea menor que weeklyAverage para posicionamiento correcto
     if (this.maxConsumption < this.weeklyAverage) {
       this.maxConsumption = this.weeklyAverage * 1.2; // Dar un poco de espacio extra
     }
-    
+
     console.log('Weekly metrics calculated:', {
       weeklyAverage: this.weeklyAverage,
       maxConsumption: this.maxConsumption,
@@ -160,7 +160,7 @@ export class WeeklyChart implements OnInit {
   }
 
   private initializeEmptyWeeklyData(): void {
-    // Mostrar los días de la semana pero sin datos de consumo
+    // Show days of week but without consumption data
     this.weeklyData = [
       { day: 'MON', consumption: 1, label: 'Monday' },
       { day: 'TUE', consumption: 1, label: 'Tuesday' },
@@ -171,12 +171,12 @@ export class WeeklyChart implements OnInit {
       { day: 'SUN', consumption: 1, label: 'Sunday' }
     ];
     this.weeklyAverage = 0;
-    this.maxConsumption = 100; // Valor alto para hacer barras muy pequeñas
+    this.maxConsumption = 100; // High value to make bars very small
   }
 
   getBarHeight(consumption: number): number {
     const height = (consumption / this.maxConsumption) * 100;
-    // Asegurar altura mínima para detectar hover
+    // Ensure minimum height to detect hover
     return Math.max(height, 10);
   }
 

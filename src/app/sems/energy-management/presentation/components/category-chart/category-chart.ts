@@ -84,24 +84,24 @@ export class CategoryChart implements OnInit, OnChanges {
 
   public doughnutChartType: 'doughnut' = 'doughnut';
 
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslateService) { }
 
   ngOnInit(): void {
-    console.log('🍩 CategoryChart - ngOnInit');
+    console.log('CategoryChart - ngOnInit');
     this.updateChartData();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['devices']) {
-      console.log('🍩 CategoryChart - Devices input changed');
+      console.log('CategoryChart - Devices input changed');
       this.updateChartData();
     }
   }
 
   private updateChartData(): void {
-    console.log('📊 CategoryChart - Generating category consumption data');
+    console.log('CategoryChart - Generating category consumption data');
 
-    // Siempre usar datos estáticos de ejemplo (PC, Celular, TV)
+    // Always use static example data (PC, Mobile, TV)
     const categoryData: CategoryData[] = [
       {
         category: this.translate.instant('dashboard.categories.computer'),
@@ -120,7 +120,7 @@ export class CategoryChart implements OnInit, OnChanges {
       }
     ];
 
-    console.log('✅ CategoryChart - Using demo data:', categoryData);
+    console.log('CategoryChart - Using demo data:', categoryData);
 
     this.doughnutChartData = {
       datasets: [{
@@ -133,19 +133,19 @@ export class CategoryChart implements OnInit, OnChanges {
       labels: categoryData.map(c => c.category)
     };
 
-    console.log('✅ CategoryChart - Chart data updated');
+    console.log('CategoryChart - Chart data updated');
 
     setTimeout(() => {
       if (this.chart) {
         this.chart.update();
-        console.log('✅ CategoryChart - Chart rendered');
+        console.log('CategoryChart - Chart rendered');
       }
     }, 100);
   }
 
   hasChartData(): boolean {
     const hasData = this.doughnutChartData.datasets[0].data.length > 0;
-    console.log('🔍 CategoryChart - hasChartData:', hasData);
+    console.log('CategoryChart - hasChartData:', hasData);
     return hasData;
   }
 

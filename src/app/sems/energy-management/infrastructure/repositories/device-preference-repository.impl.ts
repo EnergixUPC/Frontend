@@ -14,7 +14,7 @@ import { environment } from '../../../../../environments/environments';
 export class DevicePreferenceRepositoryImpl implements DevicePreferenceRepository {
   private readonly baseUrl = `${environment.apiUrl}/api/v1`;
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) { }
 
   private getHeaders(): HttpHeaders {
     const token = localStorage.getItem(environment.tokenKey);
@@ -56,7 +56,7 @@ export class DevicePreferenceRepositoryImpl implements DevicePreferenceRepositor
   private mapToDevicePreference(response: DevicePreferenceResponse): DevicePreference {
     // La API puede devolver las preferencias de dos formas:
     // 1. Dentro de un campo "preferences": { preferences: { habilitarMonitoreoEnergia: true, ... } }
-    // 2. Directamente en el objeto raíz: { habilitarMonitoreoEnergia: true, ... }
+    // 2. Directly in the root object: { habilitarMonitoreoEnergia: true, ... }
     const apiPrefs = response.preferences || response;
 
     const internal: PreferenceSettings = {

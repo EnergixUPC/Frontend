@@ -123,7 +123,7 @@ export class Devices implements OnInit, OnDestroy {
   }
 
   getCategoryText(category: string): string {
-    // Debug: Ver qué categoría está llegando
+    // Debug: See what category is arriving
     console.log('Category received in devices:', category);
 
     // Handle undefined or null
@@ -143,7 +143,7 @@ export class Devices implements OnInit, OnDestroy {
 
     console.log('Translation result:', translated);
 
-    // Si la traducción devuelve la misma clave, significa que no encontró la traducción
+    // If translation returns the same key, it means translation was not found
     return translated !== translationKey ? translated : category;
   }
 

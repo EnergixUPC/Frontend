@@ -46,7 +46,7 @@ export class ExportCard implements OnInit {
   constructor(
     private translate: TranslateService,
     private reportService: ReportService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Initialization logic if needed
@@ -74,7 +74,7 @@ export class ExportCard implements OnInit {
       periodLabel: selectedPeriod?.labelKey
     });
 
-    // Obtener datos de ambos gráficos
+    // Get data from both charts
     forkJoin({
       topDevices: this.reportService.getTopDevices(),
       weeklyConsumption: this.reportService.getWeeklyConsumption()
@@ -86,7 +86,7 @@ export class ExportCard implements OnInit {
         console.log('Weekly Consumption completo:', data.weeklyConsumption);
         console.log('Tipo de weeklyConsumption:', typeof data.weeklyConsumption);
         console.log('Es array weeklyConsumption:', Array.isArray(data.weeklyConsumption));
-        
+
         // Verificar si tiene dailyConsumptions
         if (data.weeklyConsumption) {
           console.log('Propiedades de weeklyConsumption:', Object.keys(data.weeklyConsumption));
@@ -94,10 +94,10 @@ export class ExportCard implements OnInit {
           console.log('Tipo de dailyConsumptions:', typeof data.weeklyConsumption.dailyConsumptions);
           console.log('Es array dailyConsumptions:', Array.isArray(data.weeklyConsumption.dailyConsumptions));
         }
-        
-        // Procesar datos semanales usando la misma lógica que el gráfico
+
+        // Process weekly data using same logic as chart
         let weeklyData: any[] = [];
-        
+
         if (data.weeklyConsumption && data.weeklyConsumption.dailyConsumptions && Array.isArray(data.weeklyConsumption.dailyConsumptions)) {
           weeklyData = data.weeklyConsumption.dailyConsumptions.map((daily: any) => ({
             day: daily.dayName,
@@ -105,24 +105,24 @@ export class ExportCard implements OnInit {
             label: daily.dayName,
             date: daily.date
           }));
-          console.log('📊 Datos semanales procesados:', weeklyData);
+          console.log('Weekly data processed:', weeklyData);
         } else if (Array.isArray(data.weeklyConsumption)) {
           // Caso alternativo: si weeklyConsumption es directamente un array
           weeklyData = data.weeklyConsumption;
-          console.log('📊 Usando weeklyConsumption como array directo:', weeklyData);
+          console.log('Using weeklyConsumption as direct array:', weeklyData);
         } else {
-          console.warn('⚠️ No se encontraron datos semanales en la estructura esperada');
+          console.warn('Weekly data not found in expected structure');
           console.log('Estructura recibida:', JSON.stringify(data.weeklyConsumption, null, 2));
         }
 
         // Procesar datos de dispositivos
         let devicesData = data.topDevices || [];
-        
+
         console.log('=== DATOS FINALES PARA GENERAR ARCHIVO ===');
         console.log('Weekly Data final:', weeklyData);
         console.log('Devices Data final:', devicesData);
-        console.log('Período seleccionado:', selectedPeriod);
-        
+        console.log('Selected period:', selectedPeriod);
+
         switch (this.selectedFormat) {
           case 'PDF':
             this.generatePDF(devicesData, weeklyData, selectedPeriod);
@@ -136,7 +136,7 @@ export class ExportCard implements OnInit {
           default:
             console.error('Formato no soportado:', this.selectedFormat);
         }
-        
+
         this.isDownloading = false;
       },
       error: (error) => {
@@ -183,68 +183,68 @@ export class ExportCard implements OnInit {
       const doc = new jsPDF();
       const showDeviceRanking = selectedPeriod?.value === 'all' || selectedPeriod?.value === 'lastMonth';
       const showWeeklyConsumption = selectedPeriod?.value === 'all' || selectedPeriod?.value === 'lastWeek';
-      
-      // Título del documento
+
+      // Document title
       doc.setFontSize(20);
       doc.text('SEMS Energy Report', 20, 20);
-      
-      // Información del período
+
+      // Period information
       const periodLabel = this.translate.instant(selectedPeriod?.labelKey || '');
       doc.setFontSize(12);
       doc.text(`Period: ${periodLabel}`, 20, 35);
       doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, 45);
-      
+
       let currentY = 65;
-      
-      // Sección Device Ranking (solo si corresponde)
+
+      // Device Ranking section (only if applicable)
       if (showDeviceRanking && topDevices && topDevices.length > 0) {
         doc.setFontSize(16);
         doc.text('Device Ranking', 20, currentY);
-        
+
         const deviceTableData = topDevices.map((device, index) => [
           index + 1,
           device.deviceName || 'N/A',
           device.totalConsumption ? device.totalConsumption.toFixed(2) + ' kWh' : '0 kWh',
           device.deviceType || 'N/A'
         ]);
-        
+
         autoTable(doc, {
           head: [['Rank', 'Device Name', 'Consumption', 'Type']],
           body: deviceTableData,
           startY: currentY + 10,
           theme: 'striped'
         });
-        
+
         currentY = (doc as any).lastAutoTable?.finalY + 20 || currentY + 80;
       }
-      
-      // Sección Weekly Consumption (solo si corresponde)
+
+      // Weekly Consumption section (only if applicable)
       if (showWeeklyConsumption) {
-        console.log('=== GENERANDO SECCIÓN WEEKLY CONSUMPTION ===');
+        console.log('=== GENERATING WEEKLY CONSUMPTION SECTION ===');
         console.log('showWeeklyConsumption:', showWeeklyConsumption);
         console.log('weeklyConsumption recibido:', weeklyConsumption);
         console.log('weeklyConsumption length:', weeklyConsumption ? weeklyConsumption.length : 'undefined');
-        
+
         doc.setFontSize(16);
         doc.text('Weekly Consumption Trend', 20, currentY);
-        
+
         if (weeklyConsumption && weeklyConsumption.length > 0) {
-          console.log('✅ Hay datos de consumption, procesando...');
-          
+          console.log('Consumption data available, processing...');
+
           // Calcular promedio semanal
           const totalConsumption = weeklyConsumption.reduce((sum, item) => {
             console.log('Item para suma:', item, 'consumption:', item.consumption);
             return sum + (item.consumption || 0);
           }, 0);
           const averageConsumption = totalConsumption / weeklyConsumption.length;
-          
+
           console.log('Total consumption calculado:', totalConsumption);
           console.log('Average consumption calculado:', averageConsumption);
-          
+
           // Mostrar promedio
           doc.setFontSize(12);
           doc.text(`Weekly Average: ${averageConsumption.toFixed(2)} kWh`, 20, currentY + 20);
-          
+
           // Preparar datos para la tabla usando la estructura real
           const weeklyTableData = weeklyConsumption.map(item => {
             const day = item.day || item.dayName || item.label || 'Day';
@@ -252,41 +252,41 @@ export class ExportCard implements OnInit {
             console.log('Mapeando item:', { originalItem: item, day: day, consumption: consumption });
             return [day, consumption.toFixed(2) + ' kWh'];
           });
-          
+
           console.log('Datos finales para la tabla:', weeklyTableData);
-          
+
           autoTable(doc, {
             head: [['Day', 'Consumption']],
             body: weeklyTableData,
             startY: currentY + 30,
             theme: 'striped'
           });
-          
-          // Añadir resumen al final
+
+          // Add summary at the end
           const finalY = (doc as any).lastAutoTable?.finalY || currentY + 100;
           doc.setFontSize(12);
           doc.setFont('helvetica', 'bold');
           doc.text(`Total Weekly Consumption: ${totalConsumption.toFixed(2)} kWh`, 20, finalY + 15);
           doc.text(`Average Daily Consumption: ${averageConsumption.toFixed(2)} kWh`, 20, finalY + 25);
         } else {
-          console.log('❌ No hay datos de consumption disponibles');
+          console.log('No consumption data available');
           doc.setFontSize(12);
           doc.text('No weekly consumption data available', 20, currentY + 20);
         }
       } else {
-        console.log('❌ showWeeklyConsumption es false, no se muestra la sección');
+        console.log('showWeeklyConsumption is false, skipping section');
       }
-      
+
       // Descargar el archivo
       const fileName = `sems-report-${selectedPeriod?.value || 'data'}.pdf`;
       doc.save(fileName);
-      
+
       const successMessage = this.translate.instant('reports.export.alerts.downloadSuccess', {
         format: 'PDF',
         period: periodLabel
       });
       alert(successMessage);
-      
+
     } catch (error) {
       console.error('Error generating PDF:', error);
       const errorMessage = this.translate.instant('reports.export.alerts.downloadError');
@@ -300,7 +300,7 @@ export class ExportCard implements OnInit {
       const showDeviceRanking = selectedPeriod?.value === 'all' || selectedPeriod?.value === 'lastMonth';
       const showWeeklyConsumption = selectedPeriod?.value === 'all' || selectedPeriod?.value === 'lastWeek';
       const periodLabel = this.translate.instant(selectedPeriod?.labelKey || '');
-      
+
       // Hoja 1: Device Ranking (solo si corresponde)
       if (showDeviceRanking && topDevices && topDevices.length > 0) {
         const deviceData = [
@@ -310,7 +310,7 @@ export class ExportCard implements OnInit {
           [],
           ['Rank', 'Device Name', 'Consumption (kWh)', 'Type']
         ];
-        
+
         topDevices.forEach((device, index) => {
           deviceData.push([
             index + 1,
@@ -319,11 +319,11 @@ export class ExportCard implements OnInit {
             device.deviceType || 'N/A'
           ]);
         });
-        
+
         const deviceSheet = XLSX.utils.aoa_to_sheet(deviceData);
         XLSX.utils.book_append_sheet(workbook, deviceSheet, 'Device Ranking');
       }
-      
+
       // Hoja 2: Weekly Consumption (solo si corresponde)
       if (showWeeklyConsumption) {
         const weeklyData = [
@@ -333,22 +333,22 @@ export class ExportCard implements OnInit {
           [],
           ['Day', 'Consumption (kWh)']
         ];
-        
+
         console.log('Generando Excel para weekly consumption:', weeklyConsumption);
-        
+
         if (weeklyConsumption && weeklyConsumption.length > 0) {
           // Calcular promedio
           const totalConsumption = weeklyConsumption.reduce((sum, item) => sum + (item.consumption || 0), 0);
           const averageConsumption = totalConsumption / weeklyConsumption.length;
-          
+
           weeklyConsumption.forEach(item => {
             weeklyData.push([
               item.day || item.dayName || item.label || 'Day',
               item.consumption || 0
             ]);
           });
-          
-          // Añadir filas de resumen
+
+          // Add summary rows
           weeklyData.push([]);
           weeklyData.push(['SUMMARY']);
           weeklyData.push(['Total Weekly Consumption', totalConsumption.toFixed(2)]);
@@ -357,12 +357,12 @@ export class ExportCard implements OnInit {
         } else {
           weeklyData.push(['No weekly consumption data available', '']);
         }
-        
+
         const weeklySheet = XLSX.utils.aoa_to_sheet(weeklyData);
         XLSX.utils.book_append_sheet(workbook, weeklySheet, 'Weekly Consumption');
       }
-      
-      // Si no hay hojas, crear una hoja vacía con mensaje
+
+      // If no sheets, create empty sheet with message
       if (workbook.SheetNames.length === 0) {
         const emptyData = [
           ['SEMS Energy Report'],
@@ -374,17 +374,17 @@ export class ExportCard implements OnInit {
         const emptySheet = XLSX.utils.aoa_to_sheet(emptyData);
         XLSX.utils.book_append_sheet(workbook, emptySheet, 'Report');
       }
-      
+
       // Descargar el archivo
       const fileName = `sems-report-${selectedPeriod?.value || 'data'}.xlsx`;
       XLSX.writeFile(workbook, fileName);
-      
+
       const successMessage = this.translate.instant('reports.export.alerts.downloadSuccess', {
         format: 'Excel',
         period: periodLabel
       });
       alert(successMessage);
-      
+
     } catch (error) {
       console.error('Error generating Excel:', error);
       const errorMessage = this.translate.instant('reports.export.alerts.downloadError');
@@ -397,46 +397,46 @@ export class ExportCard implements OnInit {
       const periodLabel = this.translate.instant(selectedPeriod?.labelKey || '');
       const showDeviceRanking = selectedPeriod?.value === 'all' || selectedPeriod?.value === 'lastMonth';
       const showWeeklyConsumption = selectedPeriod?.value === 'all' || selectedPeriod?.value === 'lastWeek';
-      
+
       // Header del CSV
       let csvContent = `SEMS Energy Report\n`;
       csvContent += `Period: ${periodLabel}\n`;
       csvContent += `Generated on: ${new Date().toLocaleString()}\n\n`;
-      
+
       // Device Ranking Section (solo si corresponde)
       if (showDeviceRanking && topDevices && topDevices.length > 0) {
         csvContent += `Device Ranking\n`;
         csvContent += `Rank,Device Name,Consumption (kWh),Type\n`;
-        
+
         topDevices.forEach((device, index) => {
           const consumption = device.totalConsumption || 0;
           const type = (device.deviceType || 'N/A').replace(',', ';'); // Escapar comas
           const name = (device.deviceName || 'N/A').replace(',', ';');
           csvContent += `${index + 1},"${name}",${consumption},"${type}"\n`;
         });
-        
+
         csvContent += `\n`;
       }
-      
+
       // Weekly Consumption Section (solo si corresponde)
       if (showWeeklyConsumption) {
         csvContent += `Weekly Consumption Trend\n`;
         csvContent += `Day,Consumption (kWh)\n`;
-        
+
         console.log('Generando CSV para weekly consumption:', weeklyConsumption);
-        
+
         if (weeklyConsumption && weeklyConsumption.length > 0) {
           // Calcular promedio
           const totalConsumption = weeklyConsumption.reduce((sum, item) => sum + (item.consumption || 0), 0);
           const averageConsumption = totalConsumption / weeklyConsumption.length;
-          
+
           weeklyConsumption.forEach(item => {
             const day = (item.day || item.dayName || item.label || 'Day').replace(',', ';');
             const consumption = item.consumption || 0;
             csvContent += `"${day}",${consumption}\n`;
           });
-          
-          // Añadir resumen
+
+          // Add summary
           csvContent += `\n`;
           csvContent += `SUMMARY\n`;
           csvContent += `Total Weekly Consumption,${totalConsumption.toFixed(2)}\n`;
@@ -446,31 +446,31 @@ export class ExportCard implements OnInit {
           csvContent += `No weekly consumption data available\n`;
         }
       }
-      
+
       // Si no hay datos, agregar mensaje
       if (!showDeviceRanking && !showWeeklyConsumption) {
         csvContent += `No data available for the selected period\n`;
       }
-      
+
       // Crear y descargar el archivo
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement('a');
       const url = URL.createObjectURL(blob);
-      
+
       link.setAttribute('href', url);
       link.setAttribute('download', `sems-report-${selectedPeriod?.value || 'data'}.csv`);
       link.style.visibility = 'hidden';
-      
+
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
+
       const successMessage = this.translate.instant('reports.export.alerts.downloadSuccess', {
         format: 'CSV',
         period: periodLabel
       });
       alert(successMessage);
-      
+
     } catch (error) {
       console.error('Error generating CSV:', error);
       const errorMessage = this.translate.instant('reports.export.alerts.downloadError');

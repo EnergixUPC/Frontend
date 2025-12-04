@@ -1,12 +1,10 @@
-// Response de la API - puede devolver claves en inglés o español
 export interface DevicePreferenceResponse {
   id: number;
   userId: string;
-  preferences: any; // Flexible para aceptar ambos formatos
+  preferences: any;
   lastUpdated: string;
 }
 
-// Request esperado por la API: claves en español
 export interface DevicePreferenceRequest {
   userId?: string;
   preferences: {
