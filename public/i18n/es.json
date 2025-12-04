@@ -273,6 +273,7 @@
       "alerts": {
         "emailRequired": "Por favor ingresa una dirección de email válida",
         "downloadSuccess": "¡Reporte {{format}} para {{period}} descargado exitosamente!",
+        "downloadError": "Error al descargar el reporte. Inténtalo nuevamente.",
         "sendSuccess": "¡Reporte {{format}} para {{period}} enviado a {{email}} exitosamente!"
       }
     }

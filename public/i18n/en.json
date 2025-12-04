@@ -273,6 +273,7 @@
       "alerts": {
         "emailRequired": "Please enter a valid email address",
         "downloadSuccess": "{{format}} report for {{period}} downloaded successfully!",
+        "downloadError": "Error downloading report. Please try again.",
         "sendSuccess": "{{format}} report for {{period}} sent to {{email}} successfully!"
       }
     }
