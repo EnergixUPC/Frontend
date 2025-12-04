@@ -66,6 +66,27 @@ export class ProfileComponent implements OnInit {
 
         console.log('ProfileComponent - editableProfile created:', this.editableProfile);
 
+        // Actualizar el User en localStorage con la foto del perfil
+        if (this.user && profile.profilePhotoUrl) {
+          const updatedUser = new User(
+            this.user.id,
+            this.user.email,
+            this.user.firstName,
+            this.user.lastName,
+            this.user.role,
+            this.user.isActive,
+            this.user.createdAt,
+            this.user.lastLogin,
+            this.user.username,
+            this.user.phoneNumber,
+            this.user.address,
+            profile.profilePhotoUrl
+          );
+          
+          this.authService.updateCurrentUser(updatedUser);
+          console.log('ProfileComponent - User actualizado con foto del perfil');
+        }
+
         setTimeout(() => {
           this.profilePhotoUrl = profile.profilePhotoUrl || '/assets/default-avatar.png';
           this.isLoading = false;
@@ -74,6 +95,24 @@ export class ProfileComponent implements OnInit {
       },
       error: (error) => {
         console.error('ProfileComponent - Error cargando perfil:', error);
+        
+        // Si el perfil no existe (404), usar los datos del usuario para inicializarlo
+        if (error.status === 404 && this.user) {
+          console.log('ProfileComponent - Perfil no encontrado, inicializando con datos del usuario');
+          this.editableProfile = {
+            id: this.user.id,
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            email: this.user.email,
+            phoneNumber: this.user.phoneNumber,
+            address: this.user.address,
+            profilePhotoUrl: this.user.profilePhotoUrl
+          };
+          
+          this.profilePhotoUrl = this.user.profilePhotoUrl || '/assets/default-avatar.png';
+          console.log('ProfileComponent - editableProfile inicializado desde user:', this.editableProfile);
+        }
+        
         setTimeout(() => {
           this.isLoading = false;
           this.cdr.detectChanges();
@@ -144,12 +183,68 @@ export class ProfileComponent implements OnInit {
         this.profileService.updateProfile('me', profileResource).subscribe({
           next: (updatedProfile) => {
             console.log('ProfileComponent - Foto de perfil actualizada:', updatedProfile);
+            
+            // Actualizar el User y notificar a todos los suscriptores (incluyendo el header)
+            if (this.user) {
+              const updatedUser = new User(
+                this.user.id,
+                this.user.email,
+                this.user.firstName,
+                this.user.lastName,
+                this.user.role,
+                this.user.isActive,
+                this.user.createdAt,
+                this.user.lastLogin,
+                this.user.username,
+                this.user.phoneNumber,
+                this.user.address,
+                photoUrl.trim() // Nueva foto
+              );
+              
+              // Usar el nuevo método del AuthService para actualizar y notificar
+              this.authService.updateCurrentUser(updatedUser);
+              console.log('ProfileComponent - User actualizado y notificado a todos los componentes');
+            }
+            
             alert('Foto de perfil actualizada correctamente');
             this.loadProfileFromBackend();
           },
           error: (error) => {
             console.error('ProfileComponent - Error actualizando foto:', error);
-            alert('Error al actualizar la foto de perfil');
+            
+            // Si el perfil no existe (404), actualizar solo en localStorage
+            if (error.status === 404 && this.user) {
+              console.log('ProfileComponent - Perfil no encontrado en backend, actualizando solo localStorage');
+              
+              const updatedUser = new User(
+                this.user.id,
+                this.user.email,
+                this.user.firstName,
+                this.user.lastName,
+                this.user.role,
+                this.user.isActive,
+                this.user.createdAt,
+                this.user.lastLogin,
+                this.user.username,
+                this.user.phoneNumber,
+                this.user.address,
+                photoUrl.trim() // Nueva foto
+              );
+              
+              this.authService.updateCurrentUser(updatedUser);
+              this.profilePhotoUrl = photoUrl.trim();
+              
+              // Recreate editableProfile with new photo
+              this.editableProfile = {
+                ...this.editableProfile,
+                profilePhotoUrl: photoUrl.trim()
+              };
+              
+              alert('Foto de perfil actualizada (solo en el navegador)');
+              console.log('ProfileComponent - Foto actualizada localmente');
+            } else {
+              alert('Error al actualizar la foto de perfil');
+            }
           }
         });
       }

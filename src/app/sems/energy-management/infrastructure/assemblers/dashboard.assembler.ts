@@ -26,8 +26,12 @@ export class DashboardAssembler {
 
   static toDashboardStatsFromUnified(response: UnifiedDashboardResponse): DashboardStats {
     console.log('Mapping unified dashboard response to DashboardStats:', response);
+    
+    // Calculate total energy consumption from daily consumption
+    const totalEnergyConsumption = response.dailyConsumption?.reduce((sum, day) => sum + (day.kwh || 0), 0) || 0;
+    
     return new DashboardStats(
-      response.monthlySavingGoalKwh || 0,
+      totalEnergyConsumption, // Real consumption, not the goal
       response.estimatedSavingsPercent || 0,
       response.activeDevices || 0,
       response.estimatedBill || 0,
