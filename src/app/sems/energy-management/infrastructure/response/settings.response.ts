@@ -1,4 +1,3 @@
-// src/app/sems/energy-management/infrastructure/response/settings.response.ts
 export interface SettingsResponse {
   id: string;
   userId: string;
