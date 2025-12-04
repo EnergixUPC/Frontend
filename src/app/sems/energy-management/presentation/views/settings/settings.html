@@ -9,21 +9,21 @@
           <h2>{{ t('settings.autoSavingMode.title') }}</h2>
           <button mat-mini-fab color="primary" class="add-btn" (click)="onAddNewRule()">+</button>
         </div>
-        
+
         <!-- Loading state para rules -->
         <div *ngIf="isLoadingRules" class="loading-container">
           <p>Loading rules...</p>
         </div>
-        
+
         <!-- Content cuando no está cargando -->
         <div *ngIf="!isLoadingRules" class="toggles">
           <div *ngFor="let rule of rules; trackBy: trackByRuleId" class="rule-item" [class.updating]="updatingRules.has(rule.id)">
-            <mat-checkbox [checked]="rule.isEnabled" 
+            <mat-checkbox [checked]="rule.isEnabled"
                          [disabled]="updatingRules.has(rule.id)"
                          (change)="onToggleRule(rule)">
               {{ rule.name }}
             </mat-checkbox>
-            <button mat-icon-button color="warn" 
+            <button mat-icon-button color="warn"
                    [disabled]="updatingRules.has(rule.id)"
                    (click)="onDeleteRule(rule.id.toString())">
               <span class="material-icons">delete</span>
@@ -38,12 +38,12 @@
       <!-- Notifications -->
       <div class="card">
         <h2>{{ t('settings.notifications.title') }}</h2>
-        
+
         <!-- Loading state para notifications -->
         <div *ngIf="isLoadingSettings" class="loading-container">
           <p>Loading notifications...</p>
         </div>
-        
+
         <!-- Content cuando no está cargando -->
         <div *ngIf="!isLoadingSettings">
         <div class="toggles">
@@ -78,23 +78,6 @@
           <li><a (click)="supportsComponent?.openHelpModal()">{{ t('settings.support.contact') }}</a></li>
           <li><a (click)="supportsComponent?.openTutorialsModal()">{{ t('settings.support.tutorials') }}</a></li>
         </ul>
-      </div>
-
-      <!-- Security -->
-      <div class="card">
-        <h2>{{ t('settings.security.title') }}</h2>
-        <div class="security-item">
-          <span>{{ t('settings.security.changePassword') }}</span>
-          <button mat-stroked-button color="accent" class="edit-btn" (click)="onChangePassword()">
-            {{ t('settings.notifications.edit') }}
-          </button>
-        </div>
-        <div class="security-item">
-          <span>{{ t('settings.security.twoFA') }}</span>
-          <button mat-stroked-button color="accent" class="edit-btn" (click)="onEnable2FA()">
-            {{ t('settings.notifications.edit') }}
-          </button>
-        </div>
       </div>
     </div>
 
