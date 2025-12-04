@@ -11,13 +11,13 @@ import { environment } from '../../../../../environments/environments';
 export interface DeviceResponse {
   id?: number;
   userId?: string;
-  nombre: string;
-  categoria: string;
-  tipo: string;
-  estado: string;
-  ultimaActividad: string;
-  ubicacion: string;
-  activo: boolean;
+  name: string;
+  category: string;
+  type: string;
+  status: string;
+  lastActivity: string;
+  location: string;
+  active: boolean;
 }
 
 @Injectable({
@@ -87,10 +87,21 @@ export class DeviceRepositoryImpl implements DeviceRepository {
 
   createDevice(device: Device): Observable<Device> {
     const deviceDto = this.mapToDeviceResponse(device);
+    console.log('DeviceRepository - Creating device with data:', deviceDto);
+    console.log('DeviceRepository - API URL:', this.apiUrl);
+    console.log('DeviceRepository - Headers:', this.getHeaders());
+    
     // If the fake API (json-server) expects numeric ids, server may assign one. We keep id if provided.
     return this.http.post<DeviceResponse>(this.apiUrl, deviceDto, { headers: this.getHeaders() })
       .pipe(
-        map((response: DeviceResponse) => this.mapToDevice(response))
+        map((response: DeviceResponse) => {
+          console.log('DeviceRepository - Create response:', response);
+          return this.mapToDevice(response);
+        }),
+        catchError((error) => {
+          console.error('DeviceRepository - Create error:', error);
+          throw error;
+        })
       );
   }
 
@@ -113,30 +124,32 @@ export class DeviceRepositoryImpl implements DeviceRepository {
   private mapToDevice(response: DeviceResponse): Device {
     return {
       id: response.id?.toString() || '',
-      name: response.nombre,
-      category: response.categoria,
-      type: response.tipo,
+      name: response.name,
+      category: response.category,
+      type: response.type,
       brand: '',
       model: '',
-      status: (response.estado as unknown) as DeviceStatus,
-      realTimeStatus: response.estado,
-      lastActive: response.ultimaActividad,
+      status: (response.status as unknown) as DeviceStatus,
+      realTimeStatus: response.status,
+      lastActive: response.lastActivity,
       alertHistory: undefined,
       energyConsumption: undefined,
-      location: response.ubicacion,
-      isActive: response.activo ? 1 : 0
+      location: response.location,
+      isActive: response.active ? 1 : 0
     };
   }
 
   private mapToDeviceResponse(device: Device): any {
-    return {
-      nombre: device.name,
-      categoria: device.category,
-      tipo: device.type,
-      estado: device.status,
-      ultimaActividad: device.lastActive,
-      ubicacion: device.location,
-      activo: device.isActive === 1
+    const deviceDto = {
+      name: device.name,
+      category: device.category,
+      type: device.type,
+      status: device.status,
+      lastActivity: device.lastActive,
+      location: device.location,
+      active: device.isActive === 1
     };
+    console.log('DeviceRepository - Mapping device to DTO:', deviceDto);
+    return deviceDto;
   }
 }

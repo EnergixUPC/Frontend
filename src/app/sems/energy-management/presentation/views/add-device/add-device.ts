@@ -86,14 +86,17 @@ export class AddDevice {
       isActive: this.device.isActive ? 1 : 0
     };
 
+    console.log('AddDevice - Attempting to create device:', newDevice);
+
     this.devicesService.createDevice(newDevice).subscribe({
-      next: () => {
+      next: (createdDevice) => {
+        console.log('AddDevice - Device created successfully:', createdDevice);
         this.saving = false;
         // Navigate back to devices list (which will reload from API)
         this.router.navigate(['/devices']);
       },
       error: (err: any) => {
-        console.error('Error creating device:', err);
+        console.error('AddDevice - Error creating device:', err);
         this.saving = false;
         this.error = this.translateService.instant('dashboard.devices.addDeviceError');
       }
