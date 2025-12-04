@@ -265,7 +265,7 @@ export class ExportCard implements OnInit {
           // Añadir resumen al final
           const finalY = (doc as any).lastAutoTable?.finalY || currentY + 100;
           doc.setFontSize(12);
-          doc.setFont(undefined, 'bold');
+          doc.setFont('helvetica', 'bold');
           doc.text(`Total Weekly Consumption: ${totalConsumption.toFixed(2)} kWh`, 20, finalY + 15);
           doc.text(`Average Daily Consumption: ${averageConsumption.toFixed(2)} kWh`, 20, finalY + 25);
         } else {
