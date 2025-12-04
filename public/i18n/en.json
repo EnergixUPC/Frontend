@@ -100,12 +100,23 @@
       "byCategory": "By category",
       "monthlyComparison": "Monthly Consumption",
       "comparison": "Comparison",
+      "consumption": "Consumption",
+      "categoryConsumption": "Consumption by Category",
+      "noData": "No data available",
       "noConsumptionData": "No consumption data",
       "noConsumptionMessage": "Start using your devices to see energy consumption data here.",
       "noCategoryData": "No category data",
       "noCategoryMessage": "Register devices to see consumption by category.",
       "noMonthlyData": "No monthly data",
-      "noMonthlyMessage": "Use the system for a month to see consumption comparisons."
+      "noMonthlyMessage": "Use the system for a month to see consumption comparisons.",
+      "monthlyConsumption": "Monthly Consumption",
+      "noDeviceData": "No device data",
+      "noDeviceMessage": "No devices available"
+    },
+    "categories": {
+      "computer": "Computer",
+      "phone": "Phone",
+      "tv": "TV"
     },
     "months": {
       "Jan": "Jan",
@@ -125,6 +136,10 @@
       "kwh": "kWh",
       "currency": "S/.",
       "percentage": "%"
+    },
+    "axes": {
+      "time": "Time",
+      "consumption": "Consumption"
     },
     "devices": {
       "title": "My Devices",

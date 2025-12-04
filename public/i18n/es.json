@@ -100,12 +100,23 @@
       "byCategory": "Por categoría",
       "monthlyComparison": "Consumo Mensual",
       "comparison": "Comparación",
+      "consumption": "Consumo",
+      "categoryConsumption": "Consumo por Categoría",
+      "noData": "Sin datos disponibles",
       "noConsumptionData": "Sin datos de consumo",
       "noConsumptionMessage": "Comienza a usar tus dispositivos para ver los datos de consumo de energía aquí.",
       "noCategoryData": "Sin datos por categoría",
       "noCategoryMessage": "Registra dispositivos para ver el consumo por categoría.",
       "noMonthlyData": "Sin datos mensuales",
-      "noMonthlyMessage": "Usa el sistema durante un mes para ver comparaciones de consumo."
+      "noMonthlyMessage": "Usa el sistema durante un mes para ver comparaciones de consumo.",
+      "monthlyConsumption": "Consumo Mensual",
+      "noDeviceData": "Sin datos de dispositivo",
+      "noDeviceMessage": "No hay dispositivos disponibles"
+    },
+    "categories": {
+      "computer": "Computadora",
+      "phone": "Celular",
+      "tv": "Televisor"
     },
     "months": {
       "Jan": "Ene",
@@ -125,6 +136,10 @@
       "kwh": "kWh",
       "currency": "S/.",
       "percentage": "%"
+    },
+    "axes": {
+      "time": "Tiempo",
+      "consumption": "Consumo"
     },
     "devices": {
       "title": "Mis Dispositivos",
