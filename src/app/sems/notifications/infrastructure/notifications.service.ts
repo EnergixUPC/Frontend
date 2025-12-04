@@ -81,12 +81,12 @@ export class NotificationService {
           } as any;
         });
 
-        // filter by user id if available
+
         console.log('NotificationService - parsed entries (with _userId):', parsed.map(p => ({id: p.id, _userId: p._userId})));
         const filtered = userId != null ? parsed.filter(n => n._userId == userId) : parsed;
 
         // map to NotificationEntity shape
-        // Heuristic mapping to i18n keys based on message contents or device id/type.
+
         const mapToI18n = (rawMsg: string) => {
           if (!rawMsg) return { key: undefined, params: undefined };
           const lower = rawMsg.toLowerCase();
@@ -108,7 +108,7 @@ export class NotificationService {
             const m = rawMsg.match(/(\d+)%/);
             return { key: 'notifications.messages.usage_spike', params: { percent: m ? m[1] : '' } };
           }
-          // Default: no key
+
           return { key: undefined, params: undefined };
         };
 
