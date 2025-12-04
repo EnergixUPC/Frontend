@@ -30,7 +30,12 @@
 
         <div class="ntf-content">
           <div class="title">{{ notification.title }}</div>
-          <div class="message">{{ notification.message }}</div>
+          <div class="message">
+            <ng-container *ngIf="notification.messageKey; else rawMessage">
+              {{ notification.messageKey | translate: notification.messageParams }}
+            </ng-container>
+            <ng-template #rawMessage>{{ notification.message }}</ng-template>
+          </div>
           <div class="time">{{ notification.timestamp | date:'shortTime' }}</div>
         </div>
       </li>
