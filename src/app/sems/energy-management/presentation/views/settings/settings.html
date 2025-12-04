@@ -48,31 +48,6 @@
             {{ t('settings.notifications.edit') }}
           </button>
         </p>
-
-        <hr />
-        <h3>{{ t('settings.reports.title') }}</h3>
-        <div class="chip-group">
-          <button mat-button class="chip" [ngClass]="{'selected': selectedFrequencies.includes('Daily')}"
-            (click)="toggleFrequency('Daily')">
-            {{ t('settings.reports.daily') }}
-          </button>
-          <button mat-button class="chip" [ngClass]="{'selected': selectedFrequencies.includes('Weekly')}"
-            (click)="toggleFrequency('Weekly')">
-            {{ t('settings.reports.weekly') }}
-          </button>
-          <button mat-button class="chip" [ngClass]="{'selected': selectedFrequencies.includes('Monthly')}"
-            (click)="toggleFrequency('Monthly')">
-            {{ t('settings.reports.monthly') }}
-          </button>
-          <button mat-button class="chip" [ngClass]="{'selected': selectedFormats.includes('PDF')}"
-            (click)="toggleFormat('PDF')">
-            {{ t('settings.reports.pdf') }}
-          </button>
-          <button mat-button class="chip" [ngClass]="{'selected': selectedFormats.includes('CSV')}"
-            (click)="toggleFormat('CSV')">
-            {{ t('settings.reports.csv') }}
-          </button>
-        </div>
       </div>
 
       <!-- Support -->
