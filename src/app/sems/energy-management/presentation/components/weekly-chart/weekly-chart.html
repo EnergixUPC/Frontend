@@ -2,11 +2,11 @@
   <div class="chart-header">
     <h3>{{ 'reports.weeklyChart.title' | translate }}</h3>
   </div>
-  
+
   <!-- Loading State -->
   <div *ngIf="isLoading" class="loading-container">
     <div class="loading-spinner"></div>
-    <p>Loading data...</p>
+    <p>{{ 'common.loading' | translate }}</p>
   </div>
 
   <!-- Chart Content -->
@@ -18,30 +18,24 @@
 
     <!-- Chart with data -->
     <div *ngIf="weeklyData.length > 0">
-      <!-- Average line indicator -->
-      <div *ngIf="weeklyAverage > 0" class="average-line-container">
-        <div class="average-line" [style.bottom.%]="getAverageLinePosition()"></div>
-        <span class="average-label" [style.bottom.%]="getAverageLinePosition() + 2">
-          {{ 'reports.weeklyChart.weeklyAverage' | translate }}: {{ weeklyAverage | number:'1.1-1' }} kWh
-        </span>
-      </div>
-
       <!-- Chart bars -->
       <div class="chart-bars">
         <div class="bar-container" *ngFor="let data of weeklyData">
-          <div class="bar" 
+          <div class="bar"
                [style.height.%]="getBarHeight(data.consumption)"
                [style.opacity]="weeklyAverage > 0 ? 1 : 0"
                [title]="formatTooltip(data)">
           </div>
-          <span class="day-label">{{ ('reports.weeklyChart.days.' + data.day) | translate }}</span>
+          <span class="day-label">{{ getDayTranslation(data.day) }}</span>
         </div>
       </div>
     </div>
   </div>
 
   <div *ngIf="!isLoading && weeklyData.length > 0 && weeklyAverage > 0" class="chart-footer">
-    <p class="comparison-text">{{ 'reports.weeklyChart.comparison' | translate }}</p>
-    <p class="encouragement">{{ 'reports.weeklyChart.encouragement' | translate }}</p>
+    <p class="weekly-average-text">
+      {{ 'reports.weeklyChart.weeklyAverageMessage' | translate }}: 
+      <strong>{{ weeklyAverage | number:'1.1-1' }} kWh</strong>
+    </p>
   </div>
 </div>

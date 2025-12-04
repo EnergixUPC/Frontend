@@ -27,12 +27,6 @@
         </div>
 
         <div class="profile-item">
-          <label>{{ 'profile.username' | translate }}:</label>
-          <span *ngIf="!editable" class="value">{{ editableProfile.username }}</span>
-          <input *ngIf="editable" [(ngModel)]="editableProfile.username" class="input-edit" />
-        </div>
-
-        <div class="profile-item">
           <label>{{ 'profile.address' | translate }}:</label>
           <span *ngIf="!editable" class="value">{{ editableProfile.address }}</span>
           <input *ngIf="editable" [(ngModel)]="editableProfile.address" class="input-edit" />
@@ -69,19 +63,10 @@
       <button
         class="change-photo-btn"
         type="button"
-        (click)="fileInput.click()"
+        (click)="changePhoto()"
       >
         {{ 'profile.changePhotoButton' | translate }}
       </button>
-
-      <!-- Hidden file input -->
-      <input
-        #fileInput
-        type="file"
-        accept="image/*"
-        style="display: none"
-        (change)="onFileSelected($event)"
-      />
     </div>
   </div>
 </div>

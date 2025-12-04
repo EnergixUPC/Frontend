@@ -57,21 +57,6 @@
           </div>
         </div>
 
-        <!-- Username Field -->
-        <div class="form-field">
-          <label class="field-label">{{ 'auth.register.username' | translate }}</label>
-          <input
-            type="text"
-            formControlName="username"
-            [placeholder]="'auth.register.username' | translate"
-            autocomplete="username"
-            class="custom-input"
-            [class.error]="isFieldInvalid('username')">
-          <div *ngIf="isFieldInvalid('username')" class="error-message">
-            {{ getErrorMessage('username') }}
-          </div>
-        </div>
-
         <div class="form-row">
           <!-- Password Field -->
           <div class="form-field">

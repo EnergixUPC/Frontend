@@ -8,6 +8,8 @@
       "passwordPlaceholder": "Contraseña",
       "loginButton": "Iniciar Sesión",
       "loading": "Iniciando sesión...",
+      "noAccount": "¿No tienes una cuenta?",
+      "registerLink": "Regístrate aquí",
       "errors": {
         "required": "Este campo es obligatorio",
         "email": "Por favor ingrese un email válido",
@@ -71,6 +73,9 @@
       }
     }
   },
+  "header": {
+    "greeting": "Hola,"
+  },
   "dashboard": {
     "stats": {
       "energyConsumption": "Consumo de Energía",
@@ -92,15 +97,62 @@
     "charts": {
       "dailyConsumption": "Consumo Diario de Energía",
       "consumptionByCategory": "Consumo de Energía",
-      "byCategory": "por Categoría",
+      "byCategory": "Por categoría",
       "monthlyComparison": "Consumo Mensual",
       "comparison": "Comparación",
+      "consumption": "Consumo",
+      "categoryConsumption": "Consumo por Categoría",
+      "noData": "Sin datos disponibles",
       "noConsumptionData": "Sin datos de consumo",
       "noConsumptionMessage": "Comienza a usar tus dispositivos para ver los datos de consumo de energía aquí.",
       "noCategoryData": "Sin datos por categoría",
       "noCategoryMessage": "Registra dispositivos para ver el consumo por categoría.",
       "noMonthlyData": "Sin datos mensuales",
-      "noMonthlyMessage": "Usa el sistema durante un mes para ver comparaciones de consumo."
+      "noMonthlyMessage": "Usa el sistema durante un mes para ver comparaciones de consumo.",
+      "monthlyConsumption": "Consumo Mensual",
+      "noDeviceData": "Sin datos de dispositivo",
+      "noDeviceMessage": "No hay dispositivos disponibles"
+    },
+    "categories": {
+      "computer": "Computadora",
+      "phone": "Celular",
+      "tv": "Televisor"
+    },
+    "months": {
+      "Jan": "Ene",
+      "Feb": "Feb",
+      "Mar": "Mar",
+      "Apr": "Abr",
+      "May": "May",
+      "Jun": "Jun",
+      "Jul": "Jul",
+      "Aug": "Ago",
+      "Sep": "Sep",
+      "Oct": "Oct",
+      "Nov": "Nov",
+      "Dec": "Dic",
+      "january": "Enero",
+      "february": "Febrero",
+      "march": "Marzo",
+      "april": "Abril",
+      "may": "Mayo",
+      "june": "Junio",
+      "july": "Julio",
+      "august": "Agosto",
+      "september": "Septiembre",
+      "october": "Octubre",
+      "november": "Noviembre",
+      "december": "Diciembre",
+      "sept": "Septiembre"
+    },
+    "units": {
+      "kwh": "kWh",
+      "currency": "S/.",
+      "percentage": "%"
+    },
+    "axes": {
+      "time": "Tiempo",
+      "consumption": "Consumo"
     },
     "devices": {
       "title": "Mis Dispositivos",
@@ -133,7 +185,10 @@
         "heating_cooling": "Calefacción y Refrigeración",
         "major_appliances": "Electrodomésticos Principales",
         "electronics": "Electrónicos",
-        "other": "Otros"
+        "other": "Otros",
+        "computer": "Computadora",
+        "phone": "Celular",
+        "tv": "Televisor"
       },
       "addDeviceTitle": "Agregar un nuevo dispositivo",
       "addDeviceSave": "Guardar Dispositivo",
@@ -146,6 +201,8 @@
         "name": "Nombre del Dispositivo",
         "category": "Categoría",
         "type": "Tipo",
+        "brand": "Marca",
+        "model": "Modelo",
         "status": "Estado",
         "lastActive": "Última Actividad",
         "alertHistory": "Historial de Alertas",
@@ -198,6 +255,7 @@
     "weeklyChart": {
       "title": "Tendencia de Consumo Semanal",
       "weeklyAverage": "Promedio Semanal",
+      "weeklyAverageMessage": "Promedio de consumo semanal",
       "comparison": "Tu consumo esta semana es 5% menor que la semana pasada.",
       "encouragement": "¡Sigue así!",
       "noData": "No hay datos de consumo disponibles",
@@ -218,6 +276,10 @@
       "devices": {
         "airConditioning": "Aire Acondicionado",
         "refrigerator": "Refrigerador",
+        "tv": "Televisor",
+        "laptop": "Portátil",
+        "smartSpeaker": "Altavoz Inteligente",
+        "microwave": "Microondas",
         "desktopPC": "PC de Escritorio"
       }
     },
@@ -239,6 +301,7 @@
       "alerts": {
         "emailRequired": "Por favor ingresa una dirección de email válida",
         "downloadSuccess": "¡Reporte {{format}} para {{period}} descargado exitosamente!",
+        "downloadError": "Error al descargar el reporte. Inténtalo nuevamente.",
         "sendSuccess": "¡Reporte {{format}} para {{period}} enviado a {{email}} exitosamente!"
       }
     }
@@ -248,6 +311,7 @@
     "profile": "Perfil",
     "devices": "Dispositivos",
     "reports": "Reportes",
+    "payments": "Pagos",
     "settings": "Configuración",
     "logout": "Cerrar Sesión"
   },
@@ -257,6 +321,8 @@
     "spanish": "Español",
     "close": "Cerrar",
     "loading": "Cargando...",
+    "saving": "Guardando...",
+    "retry": "Reintentar",
     "error": "Error",
     "success": "Éxito",
     "status": {
@@ -311,7 +377,7 @@
   "profile": {
     "title": "Mi Perfil",
     "firstName": "Nombre",
-    "lastName": "Apellido", 
+    "lastName": "Apellido",
     "email": "Correo Electrónico",
     "username": "Nombre de Usuario",
     "address": "Dirección",
@@ -322,5 +388,70 @@
     "changePhotoButton": "Cambiar Foto",
     "loading": "Cargando perfil...",
     "noUser": "No se encontró información del usuario"
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "newNotifications": "nuevas",
+    "noNotifications": "No hay notificaciones",
+    "types": {
+      "success": "Éxito",
+      "warning": "Advertencia",
+      "info": "Información"
+    },
+    "messages": {
+      "maintenance": "El dispositivo requiere mantenimiento preventivo.",
+      "uptime_warning": "Tu dispositivo ha estado encendido por más de 24 horas. Considera apagarlo para ahorrar energía.",
+      "updated": "El sistema operativo se ha actualizado correctamente.",
+      "optimized": "El dispositivo ha optimizado su consumo, ahorrando {{percent}}% de energía.",
+      "usage_spike": "Se ha detectado un pico de uso del {{percent}}% en las ltimas horas."
+    }
+  },
+  "payments": {
+    "title": "Pagos",
+    "subtitle": "Gestiona tus pagos de facturas de energía",
+    "form": {
+      "title": "Realizar Pago",
+      "estimatedBill": "Factura Estimada",
+      "amount": "Monto a Pagar",
+      "amountPlaceholder": "Ingrese el monto",
+      "useEstimated": "Usar Factura Estimada",
+      "payButton": "Proceder al Pago",
+      "processing": "Procesando...",
+      "info": "Serás redirigido a una página segura de pago de Stripe. El pago se abrirá en una nueva pestaña.",
+      "errors": {
+        "required": "El monto es requerido",
+        "minAmount": "El monto debe ser mayor a $1"
+      }
+    },
+    "history": {
+      "title": "Historial de Pagos",
+      "noPayments": "No hay pagos registrados",
+      "status": {
+        "succeeded": "Exitoso",
+        "pending": "Pendiente",
+        "failed": "Fallido",
+        "completed": "Completado"
+      }
+    },
+    "messages": {
+      "redirecting": "Redirigiendo a la página de pago...",
+      "error": "Error al crear la sesión de pago. Por favor intenta nuevamente.",
+      "close": "Cerrar"
+    },
+    "success": {
+      "title": "¡Pago Exitoso!",
+      "message": "Tu pago ha sido procesado correctamente. Gracias por tu compra.",
+      "sessionId": "ID de Sesión",
+      "goToHome": "Ir al Inicio",
+      "viewHistory": "Ver Historial",
+      "info": "Recibirás un correo de confirmación en breve. El pago se reflejará en tu historial."
+    },
+    "cancel": {
+      "title": "Pago Cancelado",
+      "message": "Has cancelado el proceso de pago. No se ha realizado ningún cargo.",
+      "tryAgain": "Intentar Nuevamente",
+      "goToHome": "Ir al Inicio",
+      "info": "Si experimentaste algún problema, por favor contacta con soporte."
+    }
   }
 }

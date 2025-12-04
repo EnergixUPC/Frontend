@@ -6,9 +6,9 @@
   <!-- Loading State -->
   <div *ngIf="isLoading" class="loading-container">
     <div class="loading-spinner"></div>
-    <p>Loading data...</p>
+    <p>{{ 'common.loading' | translate }}</p>
   </div>
-  
+
   <!-- Chart Content -->
   <div *ngIf="!isLoading" class="chart-content">
     <!-- No Data Message -->
@@ -29,7 +29,7 @@
       <div class="chart-area">
         <!-- X-axis grid lines -->
         <div class="grid-lines">
-          <div class="grid-line" *ngFor="let label of getXAxisLabels(); let i = index" 
+          <div class="grid-line" *ngFor="let label of getXAxisLabels(); let i = index"
                [style.left.%]="(i / (getXAxisLabels().length - 1)) * 100">
           </div>
         </div>
@@ -37,7 +37,7 @@
         <!-- Device bars -->
       <div class="bars-container">
         <div class="bar-row" *ngFor="let device of devices">
-          <div class="bar" 
+          <div class="bar"
                [style.width.%]="getBarWidth(device.consumption)"
                [style.background-color]="device.color"
                [title]="device.displayName + ': ' + formatConsumption(device.consumption)">
@@ -47,7 +47,7 @@
 
       <!-- X-axis labels -->
       <div class="x-axis">
-        <span class="x-label" *ngFor="let label of getXAxisLabels(); let i = index" 
+        <span class="x-label" *ngFor="let label of getXAxisLabels(); let i = index"
               [style.left.%]="(i / (getXAxisLabels().length - 1)) * 100">
           {{ label }} kWh
         </span>

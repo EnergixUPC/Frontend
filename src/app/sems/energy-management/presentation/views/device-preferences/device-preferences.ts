@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DevicePreference, PreferenceSettings } from '../../../domain/model/entities/device-preference.entity';
@@ -19,11 +19,12 @@ interface PreferenceGroup {
 
 @Component({
   selector: 'app-device-preferences',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './device-preferences.html',
   styleUrl: './device-preferences.css'
 })
 export class DevicePreferences implements OnInit, OnDestroy {
+
   devicePreferences: DevicePreference | null = null;
   originalPreferences: DevicePreference | null = null;
   loading = true;
@@ -32,17 +33,18 @@ export class DevicePreferences implements OnInit, OnDestroy {
   saving = false;
   saveSuccess = false;
   hasUnsavedChanges = false;
-  
-  private destroy$ = new Subject<void>();
 
-  // Group structure only 
+  private destroy$ = new Subject<void>();
+  private readonly currentUserId = '1'; // Numeric ID expected by API
+
+  // Group structure only
   private readonly groupStructure = [
     {
       title: 'Monitoring Settings',
       keys: ['enableEnergyMonitoring', 'receiveHighUsageAlerts', 'monitorHeatingCooling']
     },
     {
-      title: 'Device Categories', 
+      title: 'Device Categories',
       keys: ['monitorMajorAppliances', 'monitorElectronics', 'monitorKitchenDevices']
     },
     {
@@ -60,7 +62,7 @@ export class DevicePreferences implements OnInit, OnDestroy {
     private readonly translateService: TranslateService,
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadDevicePreferences();
@@ -75,18 +77,20 @@ export class DevicePreferences implements OnInit, OnDestroy {
     this.loading = true;
     this.error = null;
 
-    this.devicePreferenceService.getDevicePreferences('user1')
+    this.devicePreferenceService.getDevicePreferences(this.currentUserId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (preferences) => {
-          console.log('Loaded preferences from DB:', preferences);
-          
+
+          // Asegurar userId correcto
+          preferences.userId = this.currentUserId;
+
           this.devicePreferences = preferences;
           this.originalPreferences = JSON.parse(JSON.stringify(preferences));
           this.buildPreferenceGroupsFromData();
           this.hasUnsavedChanges = false;
           this.loading = false;
-          
+
           this.cdr.detectChanges();
         },
         error: (error) => {
@@ -103,13 +107,14 @@ export class DevicePreferences implements OnInit, OnDestroy {
 
     this.preferenceGroups = this.groupStructure.map(group => ({
       title: group.title,
-      preferences: group.keys.map(key => ({
-        key: key,
-        enabled: this.devicePreferences!.preferences[key as keyof PreferenceSettings] || false
-      }))
+      preferences: group.keys.map(key => {
+        const value = this.devicePreferences!.preferences[key as keyof PreferenceSettings];
+        return {
+          key: key,
+          enabled: value ?? false
+        };
+      })
     }));
-
-    console.log('Built preference groups from DB data:', this.preferenceGroups);
   }
 
   onPreferenceChange(key: string, enabled: boolean): void {
@@ -127,10 +132,10 @@ export class DevicePreferences implements OnInit, OnDestroy {
 
     // Update the UI groups
     this.updatePreferenceInGroups(key, enabled);
-    
+
     // Check for unsaved changes
     this.checkForUnsavedChanges();
-    
+
     this.cdr.detectChanges();
   }
 
@@ -145,9 +150,9 @@ export class DevicePreferences implements OnInit, OnDestroy {
 
   private checkForUnsavedChanges(): void {
     if (!this.devicePreferences || !this.originalPreferences) return;
-    
-    this.hasUnsavedChanges = JSON.stringify(this.devicePreferences.preferences) !== 
-                            JSON.stringify(this.originalPreferences.preferences);
+
+    this.hasUnsavedChanges = JSON.stringify(this.devicePreferences.preferences) !==
+      JSON.stringify(this.originalPreferences.preferences);
   }
 
   onResetToDefault(): void {
@@ -155,9 +160,10 @@ export class DevicePreferences implements OnInit, OnDestroy {
 
     // Get defaults (all false)
     const defaults = this.devicePreferenceService.resetToDefaults();
-    
-    const updatedPreferences = {
+
+    const updatedPreferences: DevicePreference = {
       ...this.devicePreferences,
+      userId: this.currentUserId, // Asegurar userId correcto
       preferences: defaults,
       lastUpdated: new Date().toISOString()
     };
@@ -167,7 +173,6 @@ export class DevicePreferences implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (saved) => {
-          console.log('Reset to defaults saved:', saved);
           this.devicePreferences = saved;
           this.originalPreferences = JSON.parse(JSON.stringify(saved));
           this.buildPreferenceGroupsFromData();
@@ -187,27 +192,27 @@ export class DevicePreferences implements OnInit, OnDestroy {
   onSavePreferences(): void {
     if (!this.devicePreferences) return;
 
+    // Asegurar userId correcto antes de enviar
+    this.devicePreferences.userId = this.currentUserId;
+
     this.saving = true;
     this.saveSuccess = false;
     this.error = null;
     this.cdr.detectChanges();
 
-    console.log('Saving preferences:', this.devicePreferences);
-
     this.devicePreferenceService.updateDevicePreferences(this.devicePreferences)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (updated) => {
-          console.log('Preferences saved successfully:', updated);
-          
+
           this.devicePreferences = updated;
           this.originalPreferences = JSON.parse(JSON.stringify(updated));
           this.saving = false;
           this.saveSuccess = true;
           this.hasUnsavedChanges = false;
-          
+
           this.cdr.detectChanges();
-          
+
           // Hide success message after 3 seconds
           setTimeout(() => {
             this.saveSuccess = false;
@@ -216,12 +221,12 @@ export class DevicePreferences implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.error('Error saving preferences:', error);
-          
+
           this.saving = false;
           this.error = 'Error guardando preferencias';
-          
+
           this.cdr.detectChanges();
-          
+
           // Hide error after 5 seconds
           setTimeout(() => {
             this.error = null;

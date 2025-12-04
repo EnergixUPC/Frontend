@@ -6,7 +6,8 @@ import {
   DailyConsumptionResponse,
   ConsumptionByCategoryResponse,
   MonthlyComparisonResponse,
-  DeviceResponse
+  DeviceResponse,
+  UnifiedDashboardResponse
 } from '../response/dashboard.response';
 import {
   DashboardStatsRequest,
@@ -24,21 +25,31 @@ export class DashboardResource {
 
   constructor(
     private readonly http: HttpClient
-  ) {}
+  ) { }
 
   private getHeaders(): HttpHeaders {
     const token = localStorage.getItem(environment.tokenKey);
-    console.log('🔑 Dashboard API Token check:', token ? 'Token found' : 'No token found');
-    console.log('🔑 Token preview:', token ? `${token.substring(0, 20)}...` : 'N/A');
-    
+    console.log('Dashboard API Token check:', token ? 'Token found' : 'No token found');
+    console.log('Token preview:', token ? `${token.substring(0, 20)}...` : 'N/A');
+
     return new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': token ? `Bearer ${token}` : ''
     });
   }
 
-  getDashboardStats(request: DashboardStatsRequest): Observable<DashboardStatsResponse> {
-    return this.http.get<DashboardStatsResponse>(`${environment.apiUrl}/api/v1/dashboard/stats`, { headers: this.getHeaders() });
+  getDashboardStats(request: DashboardStatsRequest): Observable<UnifiedDashboardResponse> {
+    console.log('Making API call to fetch dashboard data:', `${environment.apiUrl}/api/v1/dashboard`);
+    return this.http.get<UnifiedDashboardResponse>(`${environment.apiUrl}/api/v1/dashboard`, { headers: this.getHeaders() }).pipe(
+      tap((response: UnifiedDashboardResponse) => {
+        console.log('Dashboard API FULL response:', JSON.stringify(response, null, 2));
+        console.log('Devices from API:', response.devices);
+      }),
+      catchError((error: any) => {
+        console.error('Error fetching dashboard:', error);
+        throw error;
+      })
+    );
   }
 
   getDailyConsumption(request: DailyConsumptionRequest): Observable<DailyConsumptionResponse> {
@@ -55,14 +66,14 @@ export class DashboardResource {
   }
 
   getDevices(request: DevicesRequest): Observable<DeviceResponse[]> {
-    console.log('🌐 Making API call to fetch devices:', `${environment.apiUrl}/api/v1/devices`);
+    console.log('Making API call to fetch devices:', `${environment.apiUrl}/api/v1/devices`);
     return this.http.get<DeviceResponse[]>(`${environment.apiUrl}/api/v1/devices`, { headers: this.getHeaders() }).pipe(
       tap((response: DeviceResponse[]) => {
-        console.log('🌐 Devices API response:', response);
-        console.log('🌐 Number of devices returned:', response?.length || 0);
+        console.log('Devices API response:', response);
+        console.log('Number of devices returned:', response?.length || 0);
       }),
       catchError((error: any) => {
-        console.error('🌐 Error fetching devices from API:', error);
+        console.error('Error fetching devices from API:', error);
         return of([]);
       })
     );

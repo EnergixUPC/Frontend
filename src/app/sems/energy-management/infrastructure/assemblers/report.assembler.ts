@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { 
   Report, 
   ReportData, 
-  WeeklyConsumptionData, 
+  WeeklyConsumptionData,
+  DailyConsumptionData, 
   DeviceRankingData, 
   ReportMetadata,
   ReportType,
@@ -12,7 +13,8 @@ import {
 import { 
   ReportResponse, 
   ReportDataResponse, 
-  WeeklyConsumptionResponse, 
+  WeeklyConsumptionResponse,
+  DailyConsumptionResponse, 
   DeviceRankingResponse, 
   ReportMetadataResponse 
 } from '../response/report.response';
@@ -80,10 +82,14 @@ export class ReportAssembler {
 
   private toWeeklyConsumptionEntity(response: WeeklyConsumptionResponse): WeeklyConsumptionData {
     return {
-      week: response.week,
-      consumption: response.consumption,
-      date: new Date(response.date),
-      efficiency: response.efficiency
+      dailyConsumptions: response.dailyConsumptions.map(daily => ({
+        date: new Date(daily.date),
+        dayName: daily.dayName,
+        consumption: daily.consumption
+      })),
+      totalWeeklyConsumption: response.totalWeeklyConsumption,
+      weekStartDate: new Date(response.weekStartDate),
+      weekEndDate: new Date(response.weekEndDate)
     };
   }
 
@@ -91,10 +97,10 @@ export class ReportAssembler {
     return {
       deviceId: response.deviceId,
       deviceName: response.deviceName,
-      consumption: response.consumption,
-      percentage: response.percentage,
-      category: response.category,
-      status: response.status
+      deviceType: response.deviceType,
+      deviceCategory: response.deviceCategory,
+      totalConsumption: response.totalConsumption,
+      period: response.period
     };
   }
 

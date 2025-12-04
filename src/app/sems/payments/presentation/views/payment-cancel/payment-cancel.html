@@ -1,0 +1,32 @@
+<div class="payment-cancel-container">
+  <mat-card class="cancel-card">
+    <mat-card-content>
+      <div class="cancel-content">
+        <div class="cancel-icon">
+          <mat-icon>cancel</mat-icon>
+        </div>
+
+        <h1>{{ 'payments.cancel.title' | translate }}</h1>
+        <p class="cancel-message">{{ 'payments.cancel.message' | translate }}</p>
+
+        <div class="action-buttons">
+          <button mat-raised-button color="primary" (click)="tryAgain()">
+            <mat-icon>replay</mat-icon>
+            {{ 'payments.cancel.tryAgain' | translate }}
+          </button>
+
+          <button mat-stroked-button (click)="goToHome()">
+            <mat-icon>home</mat-icon>
+            {{ 'payments.cancel.goToHome' | translate }}
+          </button>
+        </div>
+
+        <div class="info-message">
+          <mat-icon>info</mat-icon>
+          <p>{{ 'payments.cancel.info' | translate }}</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+

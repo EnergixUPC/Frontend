@@ -1,12 +1,9 @@
 export interface ProfileResponse {
-  id: string;
-  username?: string;
+  id: number;
   email: string;
   firstName: string;
   lastName: string;
-  role?: string;
-  address?: string;
-  phoneNumber?: string;
-  profilePhotoUrl?: string;
-  createdAt?: string;
+  phone: string;
+  address: string;
+  profilePhotoUrl?: string | null;
 }

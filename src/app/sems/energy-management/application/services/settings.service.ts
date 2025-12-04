@@ -5,7 +5,7 @@ import { map, tap } from 'rxjs/operators';
 import { SettingsRepositoryImpl } from '../../infrastructure/repositories/settings-repository.impl';
 import { SettingsStore } from '../state/settings.store';
 import { SettingsAssembler } from '../../infrastructure/assemblers/settings.assembler';
-import { SettingsResource } from '../../infrastructure/resources/settings.resource';
+import { SettingsResource, SavingRule } from '../../infrastructure/resources/settings.resource';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class SettingsService {
     private repo: SettingsRepositoryImpl,
     private store: SettingsStore,
     private assembler: SettingsAssembler
-  ) {}
+  ) { }
 
   loadUserSettings(userId: string): Observable<SettingsResource> {
     return this.repo.getUserSettings(userId).pipe(
@@ -27,9 +27,26 @@ export class SettingsService {
   updateSettings(userId: string, resource: Partial<SettingsResource>): Observable<SettingsResource> {
     const req = this.assembler.toRequest(resource);
     return this.repo.updateSettings(userId, req).pipe(
-      map(dto => this.assembler.toResource(dto)),
+      map(dto => {
+        const responseResource = this.assembler.toResource(dto);
+        // Optimistic update: Merge request data over response to ensure UI reflects changes
+        // even if backend returns stale data.
+        return { ...responseResource, ...resource };
+      }),
       tap(res => this.store.updateActiveSettings(res))
     );
+  }
+
+  createRule(rule: Partial<SavingRule>): Observable<SavingRule> {
+    return this.repo.createRule(rule);
+  }
+
+  updateRule(ruleId: string, rule: Partial<SavingRule>): Observable<SavingRule> {
+    return this.repo.updateRule(ruleId, rule);
+  }
+
+  deleteRule(ruleId: string): Observable<void> {
+    return this.repo.deleteRule(ruleId);
   }
 
   resetToDefaults(userId: string): Observable<SettingsResource> {
@@ -46,4 +63,5 @@ export class SettingsService {
   enableTwoFactor(userId: string): Observable<{ qrCode: string; secret: string }> {
     return this.repo.enableTwoFactor(userId);
   }
+
 }

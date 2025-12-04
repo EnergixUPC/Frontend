@@ -1,0 +1,152 @@
+<div class="modal-overlay" *ngIf="showFaqModal || showHelpModal || showTutorialsModal" (click)="closeAllModals()"></div>
+
+<!-- Modal FAQ -->
+<div class="modal-container" *ngIf="showFaqModal" (click)="$event.stopPropagation()">
+  <div class="modal-header">
+    <h2>Frequently Asked Questions</h2>
+    <button class="close-btn" (click)="closeFaqModal()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let faq of faqs" class="faq-panel">
+        <mat-expansion-panel-header>
+          <span class="faq-question">{{ faq.question }}</span>
+        </mat-expansion-panel-header>
+        <p class="faq-answer">{{ faq.answer }}</p>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>
+
+<!-- Modal Centro de Ayuda -->
+<div class="modal-container" *ngIf="showHelpModal" (click)="$event.stopPropagation()">
+  <div class="modal-header help-header">
+    <h2>Help Center</h2>
+    <button class="close-btn" (click)="closeHelpModal()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="form-section">
+      <h3>How can we help you?</h3>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Describe your problem</mat-label>
+        <textarea matInput [(ngModel)]="helpMessage" rows="4" placeholder="Write your message here...">
+        </textarea>
+      </mat-form-field>
+      <button mat-raised-button color="primary" class="send-btn" (click)="sendHelpMessage()">
+        <mat-icon>send</mat-icon>
+        Send Message
+      </button>
+    </div>
+
+    <div class="contact-section">
+      <h3>Contact us directly</h3>
+
+      <div class="contact-item">
+        <mat-icon>email</mat-icon>
+        <div class="contact-details">
+          <span class="contact-label">Email</span>
+          <span class="contact-value">{{ contactInfo.email }}</span>
+        </div>
+        <button mat-icon-button (click)="copyToClipboard(contactInfo.email, 'Email')">
+          <mat-icon>content_copy</mat-icon>
+        </button>
+      </div>
+
+      <div class="contact-item">
+        <mat-icon>phone</mat-icon>
+        <div class="contact-details">
+          <span class="contact-label">Phone</span>
+          <span class="contact-value">{{ contactInfo.phone }}</span>
+        </div>
+        <button mat-icon-button (click)="copyToClipboard(contactInfo.phone, 'Phone')">
+          <mat-icon>content_copy</mat-icon>
+        </button>
+      </div>
+
+      <div class="contact-item">
+        <mat-icon>whatsapp</mat-icon>
+        <div class="contact-details">
+          <span class="contact-label">WhatsApp</span>
+          <span class="contact-value">{{ contactInfo.whatsapp }}</span>
+        </div>
+        <button mat-icon-button (click)="openWhatsApp()">
+          <mat-icon>open_in_new</mat-icon>
+        </button>
+      </div>
+
+      <div class="social-section">
+        <h4>Follow us on social media</h4>
+        <div class="social-icons">
+          <a [href]="contactInfo.socials.facebook" target="_blank" class="social-link facebook">
+            <mat-icon>facebook</mat-icon>
+          </a>
+          <a [href]="contactInfo.socials.twitter" target="_blank" class="social-link twitter">
+            <mat-icon>alternate_email</mat-icon>
+          </a>
+          <a [href]="contactInfo.socials.instagram" target="_blank" class="social-link instagram">
+            <mat-icon>photo_camera</mat-icon>
+          </a>
+          <a [href]="contactInfo.socials.linkedin" target="_blank" class="social-link linkedin">
+            <mat-icon>business</mat-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Tutoriales -->
+<div class="modal-container" *ngIf="showTutorialsModal" (click)="$event.stopPropagation()">
+  <div class="modal-header tutorials-header">
+    <h2>Tutorials</h2>
+    <button class="close-btn" (click)="closeTutorialsModal()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="tutorial-list">
+      <div class="tutorial-item">
+        <mat-icon>play_circle_outline</mat-icon>
+        <div class="tutorial-info">
+          <h4>System Introduction</h4>
+          <p>Learn the basics of the energy management system</p>
+        </div>
+        <button mat-stroked-button color="primary">Watch</button>
+      </div>
+
+      <div class="tutorial-item">
+        <mat-icon>play_circle_outline</mat-icon>
+        <div class="tutorial-info">
+          <h4>Configure saving mode</h4>
+          <p>How to activate and customize automatic saving</p>
+        </div>
+        <button mat-stroked-button color="primary">Watch</button>
+      </div>
+
+      <div class="tutorial-item">
+        <mat-icon>play_circle_outline</mat-icon>
+        <div class="tutorial-info">
+          <h4>Read consumption reports</h4>
+          <p>Understand your charts and statistics</p>
+        </div>
+        <button mat-stroked-button color="primary">Watch</button>
+      </div>
+
+      <div class="tutorial-item">
+        <mat-icon>play_circle_outline</mat-icon>
+        <div class="tutorial-info">
+          <h4>Conectar dispositivos</h4>
+          <p>Agrega y controla nuevos dispositivos</p>
+        </div>
+        <button mat-stroked-button color="primary">Watch</button>
+      </div>
+    </div>
+  </div>
+</div>

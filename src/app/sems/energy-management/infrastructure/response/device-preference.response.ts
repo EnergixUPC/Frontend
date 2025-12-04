@@ -1,37 +1,25 @@
 export interface DevicePreferenceResponse {
   id: number;
   userId: string;
-  preferences: {
-    enableEnergyMonitoring: boolean;
-    receiveHighUsageAlerts: boolean;
-    monitorHeatingCooling: boolean;
-    monitorMajorAppliances: boolean;
-    monitorElectronics: boolean;
-    monitorKitchenDevices: boolean;
-    includeOutdoorLighting: boolean;
-    trackStandbyPower: boolean;
-    dailySummaryEmails: boolean;
-    weeklyProgressReports: boolean;
-    suggestSavingAutomations: boolean;
-    alertsForUnpluggedDevices: boolean;
-  };
+  preferences: any;
   lastUpdated: string;
 }
 
 export interface DevicePreferenceRequest {
-  userId: string;
+  userId?: string;
   preferences: {
-    enableEnergyMonitoring: boolean;
-    receiveHighUsageAlerts: boolean;
-    monitorHeatingCooling: boolean;
-    monitorMajorAppliances: boolean;
-    monitorElectronics: boolean;
-    monitorKitchenDevices: boolean;
-    includeOutdoorLighting: boolean;
-    trackStandbyPower: boolean;
-    dailySummaryEmails: boolean;
-    weeklyProgressReports: boolean;
-    suggestSavingAutomations: boolean;
-    alertsForUnpluggedDevices: boolean;
+    habilitarMonitoreoEnergia: boolean;
+    recibirAlertasAltoConsumo: boolean;
+    monitorearCalefaccionRefrigeracion: boolean;
+    monitorearElectrodomesticosPrincipales: boolean;
+    monitorearElectronicos: boolean;
+    monitorearDispositivosCocina: boolean;
+    incluirIluminacionExterior: boolean;
+    rastrearEnergiaEspera: boolean;
+    emailsResumenDiario: boolean;
+    reportesProgresoSemanal: boolean;
+    sugerirAutomatizacionesAhorro: boolean;
+    alertasDispositivosDesconectados: boolean;
   };
 }
+

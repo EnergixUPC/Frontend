@@ -20,21 +20,25 @@ export interface ReportDataResponse {
 }
 
 export interface WeeklyConsumptionResponse {
-  week: string;
+  dailyConsumptions: DailyConsumptionResponse[];
+  totalWeeklyConsumption: number;
+  weekStartDate: string;
+  weekEndDate: string;
+}
+
+export interface DailyConsumptionResponse {
+  date: string;
+  dayName: string;
   consumption: number;
-  date: string; // ISO date string
-  efficiency: number;
-  trend: 'up' | 'down' | 'stable';
 }
 
 export interface DeviceRankingResponse {
-  deviceId: string;
+  deviceId: number;
   deviceName: string;
-  consumption: number;
-  percentage: number;
-  category: string;
-  status: 'active' | 'inactive' | 'maintenance';
-  lastUpdated: string; // ISO date string
+  deviceType: string;
+  deviceCategory: string;
+  totalConsumption: number;
+  period: string;
 }
 
 export interface ReportMetadataResponse {

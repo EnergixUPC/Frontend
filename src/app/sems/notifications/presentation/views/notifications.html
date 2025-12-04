@@ -8,12 +8,12 @@
 
   <div class="notification-popup">
     <div class="notification-header">
-      <span>Notificaciones</span>
-      <span class="count" *ngIf="unreadCount > 0">{{ unreadCount }} nuevas</span>
+      <span>{{ 'notifications.title' | translate }}</span>
+      <span class="count" *ngIf="unreadCount > 0">{{ unreadCount }} {{ 'notifications.newNotifications' | translate }}</span>
     </div>
 
     <div *ngIf="notifications.length === 0" class="empty">
-      No hay notificaciones
+      {{ 'notifications.noNotifications' | translate }}
     </div>
 
     <ul *ngIf="notifications.length > 0">
@@ -30,7 +30,12 @@
 
         <div class="ntf-content">
           <div class="title">{{ notification.title }}</div>
-          <div class="message">{{ notification.message }}</div>
+          <div class="message">
+            <ng-container *ngIf="notification.messageKey; else rawMessage">
+              {{ notification.messageKey | translate: notification.messageParams }}
+            </ng-container>
+            <ng-template #rawMessage>{{ notification.message }}</ng-template>
+          </div>
           <div class="time">{{ notification.timestamp | date:'shortTime' }}</div>
         </div>
       </li>

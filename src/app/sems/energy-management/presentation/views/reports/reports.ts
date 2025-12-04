@@ -28,7 +28,7 @@ interface InsightCard {
 export class Reports implements OnInit {
   insightCards: InsightCard[] = [];
 
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.initializeInsightCards();
@@ -40,14 +40,14 @@ export class Reports implements OnInit {
         type: 'success',
         titleKey: 'reports.insights.greatMonth.title',
         messageKey: 'reports.insights.greatMonth.message',
-        icon: '🎉',
+        icon: '',
         color: '#4A90E2'
       },
       {
         type: 'tip',
         titleKey: 'reports.insights.tip.title',
         messageKey: 'reports.insights.tip.message',
-        icon: '💡',
+        icon: '',
         color: '#5B9BD5'
       }
     ];

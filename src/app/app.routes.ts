@@ -64,7 +64,7 @@ export const routes: Routes = [
         loadComponent: () => import('./sems/energy-management/presentation/views/profile/profile').then(m => m.ProfileComponent)
       },
       {
-        path: 'devices', 
+        path: 'devices',
         loadComponent: () => import('./sems/energy-management/presentation/views/devices/devices').then(m => m.Devices)
       },
       {
@@ -82,6 +82,22 @@ export const routes: Routes = [
       {
         path: 'settings',
         loadComponent: () => import('./sems/energy-management/presentation/views/settings/settings').then(m => m.Settings)
+      },
+      {
+        path: 'settings-suports',
+        loadComponent: () => import('./sems/energy-management/presentation/views/settings-suports/settings-suports').then(m => m.SettingsSuports)
+      },
+      {
+        path: 'payments',
+        loadComponent: () => import('./sems/payments/presentation/views/payments/payments').then(m => m.Payments)
+      },
+      {
+        path: 'payment-success',
+        loadComponent: () => import('./sems/payments/presentation/views/payment-success/payment-success').then(m => m.PaymentSuccess)
+      },
+      {
+        path: 'payment-cancel',
+        loadComponent: () => import('./sems/payments/presentation/views/payment-cancel/payment-cancel').then(m => m.PaymentCancel)
       }
     ]
   },

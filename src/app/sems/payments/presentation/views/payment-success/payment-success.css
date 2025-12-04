@@ -1,0 +1,144 @@
+.payment-success-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.success-card {
+  max-width: 600px;
+  width: 100%;
+  padding: 2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.success-content {
+  text-align: center;
+}
+
+.success-icon {
+  margin-bottom: 2rem;
+  animation: scaleIn 0.5s ease-out;
+}
+
+.success-icon mat-icon {
+  font-size: 120px;
+  width: 120px;
+  height: 120px;
+  color: #4caf50;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.success-message {
+  font-size: 1.125rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.session-info {
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.session-label {
+  font-size: 0.875rem;
+  color: #999;
+  margin-bottom: 0.5rem;
+}
+
+.session-id {
+  font-family: monospace;
+  font-size: 0.875rem;
+  color: #333;
+  word-break: break-all;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.action-buttons button {
+  min-width: 180px;
+}
+
+.action-buttons button mat-icon {
+  margin-right: 0.5rem;
+}
+
+.info-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: #e3f2fd;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.info-message mat-icon {
+  color: #1976d2;
+  font-size: 1.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.125rem;
+}
+
+.info-message p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #1565c0;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .payment-success-container {
+    padding: 1rem;
+  }
+
+  .success-card {
+    padding: 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .success-icon mat-icon {
+    font-size: 80px;
+    width: 80px;
+    height: 80px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-buttons button {
+    width: 100%;
+  }
+}
+

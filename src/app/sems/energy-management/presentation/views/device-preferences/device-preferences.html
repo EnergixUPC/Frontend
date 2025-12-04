@@ -13,7 +13,7 @@
   @if (loading) {
     <div class="loading-container">
       <div class="loading-spinner"></div>
-      <p>Loading preferences...</p>
+      <p>{{ 'common.loading' | translate }}</p>
     </div>
   }
 
@@ -22,7 +22,7 @@
     <div class="error-container">
       <p class="error-message">{{ error }}</p>
       <button class="retry-button" (click)="loadDevicePreferences()">
-        Retry
+        {{ 'common.retry' | translate }}
       </button>
     </div>
   }
@@ -30,12 +30,12 @@
   <!-- Main Content -->
   @if (devicePreferences && !loading && !error) {
     <div class="preferences-content">
-      
+
       <!-- Preference Groups -->
       @for (group of preferenceGroups; track group.title) {
         <div class="preference-group">
           <h3 class="group-title">{{ group.title }}</h3>
-          
+
           <div class="preferences-list">
             @for (preference of group.preferences; track preference.key) {
               <div class="preference-item">
@@ -44,17 +44,17 @@
                     {{ getPreferenceLabel(preference.key) }}
                   </label>
                 </div>
-                
+
                 <div class="toggle-container">
-                  <input 
+                  <input
                     type="checkbox"
                     class="toggle-input"
                     [id]="preference.key"
                     [checked]="preference.enabled"
                     (change)="onPreferenceChange(preference.key, $event.target.checked)"
                   />
-                  <label 
-                    class="toggle-label" 
+                  <label
+                    class="toggle-label"
                     [for]="preference.key"
                     [class.enabled]="preference.enabled"
                   >
@@ -69,24 +69,24 @@
 
       <!-- Action Buttons -->
       <div class="actions-container">
-        <button 
-          class="reset-button" 
+        <button
+          class="reset-button"
           (click)="onResetToDefault()"
           [disabled]="saving"
           type="button"
         >
           {{ resetToDefaultText }}
         </button>
-        
-        <button 
-          class="save-button" 
+
+        <button
+          class="save-button"
           (click)="onSavePreferences()"
           [disabled]="saving || !hasUnsavedChanges"
           [class.has-changes]="hasUnsavedChanges"
           type="button"
         >
           @if (saving) {
-            <span class="loading-text">Saving...</span>
+            <span class="loading-text">{{ 'common.saving' | translate }}</span>
           } @else {
             {{ savePreferencesText }}
           }
@@ -99,7 +99,7 @@
            {{ saveSuccessText }}
         </div>
       }
-      
+
       @if (error && !loading) {
         <div class="error-message">
            {{ error }}

@@ -1,25 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Device, DeviceStatus } from '../../domain/model/device.entity';
 import { DeviceRepository } from '../../domain/model/repositories/device.repository';
 import { environment } from '../../../../../environments/environments';
+import { TokenService } from '../../../authentication/infrastructure/services/token.service';
 
-// DTO para la comunicación con la API
+// DTO for API communication
 export interface DeviceResponse {
-  id: string;
+  id?: number;
+  userId?: string;
   name: string;
   category: string;
   type: string;
   status: string;
-  realTimeStatus: string;
-  lastActive: string;
-  alertHistory: string;
-  energyConsumption: string;
+  lastActivity: string;
   location: string;
-  isActive: boolean;
+  active: boolean;
 }
 
 @Injectable({
@@ -28,21 +27,58 @@ export interface DeviceResponse {
 export class DeviceRepositoryImpl implements DeviceRepository {
   private readonly apiUrl = `${environment.apiUrl}/api/v1/devices`;
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient,
+    private readonly tokenService: TokenService
+  ) { }
 
   private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem(environment.tokenKey);
-    return new HttpHeaders({
+    console.log('DeviceRepository - Getting headers...');
+    
+    // First try TokenService
+    let token = this.tokenService.getAccessToken();
+    console.log('DeviceRepository - Token from TokenService:', token ? 'Present' : 'Not found');
+    console.log('DeviceRepository - Token expired?', this.tokenService.isTokenExpired());
+    
+    // If no token from service, try localStorage directly
+    if (!token) {
+      token = localStorage.getItem(environment.tokenKey);
+      console.log('DeviceRepository - Token from localStorage:', token ? 'Present' : 'Not found');
+    }
+    
+    if (!token) {
+      console.error('DeviceRepository - No token available');
+      console.log('DeviceRepository - All localStorage keys:', Object.keys(localStorage));
+      return new HttpHeaders({
+        'Content-Type': 'application/json'
+      });
+    }
+    
+    const headers = {
       'Content-Type': 'application/json',
-      'Authorization': token ? `Bearer ${token}` : ''
-    });
+      'Authorization': `Bearer ${token}`
+    };
+    
+    console.log('DeviceRepository - Final headers Authorization:', `Bearer ${token.substring(0, 20)}...`);
+    return new HttpHeaders(headers);
   }
 
   getAllDevices(): Observable<Device[]> {
+    console.log('DeviceRepository - Getting all devices...');
+    console.log('DeviceRepository - API URL:', this.apiUrl);
+    
     return this.http.get<DeviceResponse[]>(this.apiUrl, { headers: this.getHeaders() })
       .pipe(
-        map((responses: DeviceResponse[]) => responses.map((response: DeviceResponse) => this.mapToDevice(response))),
-        catchError(() => of([]))
+        map((responses: DeviceResponse[]) => {
+          console.log('DeviceRepository - Raw API response:', responses);
+          const devices = responses.map((response: DeviceResponse) => this.mapToDevice(response));
+          console.log('DeviceRepository - Mapped devices:', devices);
+          return devices;
+        }),
+        catchError((error) => {
+          console.error('DeviceRepository - Error:', error);
+          return of([]);
+        })
       );
   }
 
@@ -81,19 +117,72 @@ export class DeviceRepositoryImpl implements DeviceRepository {
 
   createDevice(device: Device): Observable<Device> {
     const deviceDto = this.mapToDeviceResponse(device);
+    console.log('DeviceRepository - Creating device with data:', deviceDto);
+    console.log('DeviceRepository - API URL:', this.apiUrl);
+    console.log('DeviceRepository - Headers:', this.getHeaders());
+    
     // If the fake API (json-server) expects numeric ids, server may assign one. We keep id if provided.
     return this.http.post<DeviceResponse>(this.apiUrl, deviceDto, { headers: this.getHeaders() })
       .pipe(
-        map((response: DeviceResponse) => this.mapToDevice(response))
+        map((response: DeviceResponse) => {
+          console.log('DeviceRepository - Create response:', response);
+          return this.mapToDevice(response);
+        }),
+        catchError((error) => {
+          console.error('DeviceRepository - Create error:', error);
+          throw error;
+        })
       );
   }
 
   deleteDevice(id: string): Observable<boolean> {
-    return this.http.delete(`${this.apiUrl}/${id}`, { headers: this.getHeaders() })
-      .pipe(
-        map(() => true),
-        catchError(() => of(false))
-      );
+    // Convert string ID to number for the API endpoint
+    const numericId = parseInt(id, 10);
+    
+    if (isNaN(numericId)) {
+      console.error('DeviceRepository - Invalid device ID:', id);
+      return of(false);
+    }
+    
+    console.log('DeviceRepository - Deleting device with ID:', numericId);
+    console.log('DeviceRepository - Delete URL:', `${this.apiUrl}/${numericId}`);
+    
+    const headers = this.getHeaders();
+    console.log('DeviceRepository - Headers for DELETE:');
+    headers.keys().forEach(key => {
+      console.log(`DeviceRepository - Header ${key}:`, headers.get(key)?.substring(0, 50) + '...');
+    });
+    
+    return this.http.delete(`${this.apiUrl}/${numericId}`, { 
+      headers: headers,
+      responseType: 'text' as 'json'
+    }).pipe(
+      map((response: any) => {
+        console.log('DeviceRepository - Delete successful:', response);
+        return true;
+      }),
+      catchError((error) => {
+        console.error('DeviceRepository - Delete error:', error);
+        console.error('DeviceRepository - Error details:', {
+          status: error.status,
+          statusText: error.statusText,
+          url: error.url,
+          message: error.message,
+          error: error.error
+        });
+        
+        if (error.status === 401) {
+          console.log('DeviceRepository - 401 Error: Insufficient permissions for DELETE operation');
+          console.log('DeviceRepository - This suggests the user role may not have delete permissions');
+        } else if (error.status === 403) {
+          console.log('DeviceRepository - 403 Error: Forbidden - User explicitly denied access');
+        } else if (error.status === 404) {
+          console.log('DeviceRepository - 404 Error: Device not found');
+        }
+        
+        return of(false);
+      })
+    );
   }
 
   toggleDevice(id: string): Observable<Device> {
@@ -106,34 +195,33 @@ export class DeviceRepositoryImpl implements DeviceRepository {
   // Mappers
   private mapToDevice(response: DeviceResponse): Device {
     return {
-      id: response.id,
+      id: response.id?.toString() || '',
       name: response.name,
       category: response.category,
       type: response.type,
-      // Cast the incoming string to DeviceStatus enum safely
+      brand: '',
+      model: '',
       status: (response.status as unknown) as DeviceStatus,
-      realTimeStatus: response.realTimeStatus,
-      lastActive: response.lastActive,
-      alertHistory: response.alertHistory,
-      energyConsumption: response.energyConsumption,
+      realTimeStatus: response.status,
+      lastActive: response.lastActivity,
+      alertHistory: undefined,
+      energyConsumption: undefined,
       location: response.location,
-      isActive: response.isActive
+      isActive: response.active ? 1 : 0
     };
   }
 
-  private mapToDeviceResponse(device: Device): DeviceResponse {
-    return {
-      id: device.id,
+  private mapToDeviceResponse(device: Device): any {
+    const deviceDto = {
       name: device.name,
       category: device.category,
       type: device.type,
       status: device.status,
-      realTimeStatus: device.realTimeStatus,
-      lastActive: device.lastActive,
-      alertHistory: device.alertHistory,
-      energyConsumption: device.energyConsumption,
+      lastActivity: device.lastActive,
       location: device.location,
-      isActive: device.isActive
+      active: device.isActive === 1
     };
+    console.log('DeviceRepository - Mapping device to DTO:', deviceDto);
+    return deviceDto;
   }
 }

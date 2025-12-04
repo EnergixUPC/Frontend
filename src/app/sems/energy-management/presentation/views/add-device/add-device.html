@@ -41,23 +41,13 @@
       </div>
 
       <div class="form-group">
-        <label>{{ 'dashboard.devices.form.alertHistory' | translate }}</label>
-        <input type="text" [(ngModel)]="device.alertHistory" />
-      </div>
-
-      <div class="form-group">
-        <label>{{ 'dashboard.devices.form.energyConsumption' | translate }}</label>
-        <input type="text" [(ngModel)]="device.energyConsumption" />
-      </div>
-
-      <div class="form-group">
         <label>{{ 'dashboard.devices.form.location' | translate }}</label>
         <input type="text" [(ngModel)]="device.location" />
       </div>
 
       <div class="form-group checkbox-group">
         <label class="checkbox-label">
-          <input type="checkbox" [(ngModel)]="device.isActive" /> 
+          <input type="checkbox" [(ngModel)]="isActive" /> 
           <span class="checkbox-text">{{ 'dashboard.devices.form.isActive' | translate }}</span>
         </label>
       </div>

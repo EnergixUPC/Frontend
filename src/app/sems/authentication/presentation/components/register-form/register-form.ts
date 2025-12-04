@@ -17,7 +17,6 @@ export interface RegisterCommand {
   firstName: string;
   lastName: string;
   email: string;
-  username: string;
   password: string;
   phoneNumber: string;
   address: string;
@@ -79,7 +78,6 @@ export class RegisterForm implements OnInit, OnDestroy {
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
-      username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(6), this.strongPasswordValidator]],
       confirmPassword: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required, this.phoneValidator]],
@@ -97,25 +95,25 @@ export class RegisterForm implements OnInit, OnDestroy {
     const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
 
     const valid = hasNumber && hasUpper && hasLower && password.length >= 8;
-    
+
     if (!valid) {
       return { strongPassword: true };
     }
-    
+
     return null;
   }
 
   private phoneValidator(control: AbstractControl): ValidationErrors | null {
     const phone = control.value;
     if (!phone) return null;
-    
+
     // Validar formato de teléfono peruano (+51 seguido de 9 dígitos)
     const phonePattern = /^\+51\s?[0-9]{9}$/;
-    
+
     if (!phonePattern.test(phone)) {
       return { phone: true };
     }
-    
+
     return null;
   }
 
@@ -148,7 +146,7 @@ export class RegisterForm implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(state => {
         this.authState = state;
-        
+
         if (state.error) {
           this.onRegisterError.emit(
             this.translate.instant(state.error) || 'Error en el registro. Intenta nuevamente.'
@@ -158,58 +156,31 @@ export class RegisterForm implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    console.log('📝 RegisterForm - Submit button clicked');
-    console.log('✅ RegisterForm - Form valid:', this.registerForm.valid);
-    console.log('⏳ RegisterForm - Currently loading:', this.authState.isLoading);
-    
     if (this.registerForm.valid && !this.authState.isLoading) {
       const formValue = this.registerForm.value;
       const registerCommand: RegisterCommand = {
         firstName: formValue.firstName.trim(),
         lastName: formValue.lastName.trim(),
         email: formValue.email.trim().toLowerCase(),
-        username: formValue.username.trim(),
         password: formValue.password,
         phoneNumber: formValue.phoneNumber.trim(),
         address: formValue.address.trim()
       };
 
-      console.log('📤 RegisterForm - Sending registration command:', {
-        ...registerCommand,
-        password: '***'
-      });
-
       this.authController.register(registerCommand)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
-          next: (result) => {
-            console.log('🎉 RegisterForm - Registration successful!', result);
-            console.log('👤 RegisterForm - Registered user:', result.user?.email);
-            console.log('🔑 RegisterForm - Tokens received:', result.tokens ? 'Yes' : 'No');
-            
+          next: () => {
             this.onRegisterSuccess.emit();
           },
           error: (error) => {
-            console.error('❌ RegisterForm - Registration failed:', error);
-            console.error('❌ RegisterForm - Error message:', error.message);
-            
+            console.error('Register error:', error);
             this.onRegisterError.emit(
               error.message || this.translate.instant('auth.register.failed') || 'Error en el registro'
             );
           }
         });
     } else {
-      console.log('⚠️ RegisterForm - Form not valid or currently loading');
-      if (!this.registerForm.valid) {
-        console.log('❌ RegisterForm - Form errors:', this.registerForm.errors);
-        Object.keys(this.registerForm.controls).forEach(key => {
-          const control = this.registerForm.get(key);
-          if (control?.errors) {
-            console.log(`❌ RegisterForm - Field '${key}' errors:`, control.errors);
-          }
-        });
-      }
-      
       // Mark all fields as touched to show validation errors
       Object.keys(this.registerForm.controls).forEach(key => {
         this.registerForm.get(key)?.markAsTouched();
@@ -219,38 +190,38 @@ export class RegisterForm implements OnInit, OnDestroy {
 
   getErrorMessage(fieldName: string): string {
     const control = this.registerForm.get(fieldName);
-    
+
     if (control?.errors && control.touched) {
       if (control.errors['required']) {
         return this.translate.instant(`auth.register.errors.${fieldName}.required`) || `${fieldName} es requerido`;
       }
-      
+
       if (control.errors['email']) {
         return this.translate.instant('auth.register.errors.email.invalid') || 'Email inválido';
       }
-      
+
       if (control.errors['minlength']) {
         const requiredLength = control.errors['minlength'].requiredLength;
-        return this.translate.instant(`auth.register.errors.${fieldName}.minlength`) || 
+        return this.translate.instant(`auth.register.errors.${fieldName}.minlength`) ||
                `Mínimo ${requiredLength} caracteres`;
       }
-      
+
       if (control.errors['strongPassword']) {
-        return this.translate.instant('auth.register.errors.password.weak') || 
+        return this.translate.instant('auth.register.errors.password.weak') ||
                'La contraseña debe tener al menos 8 caracteres, mayúsculas, minúsculas y números';
       }
-      
+
       if (control.errors['passwordMismatch']) {
-        return this.translate.instant('auth.register.errors.confirmPassword.mismatch') || 
+        return this.translate.instant('auth.register.errors.confirmPassword.mismatch') ||
                'Las contraseñas no coinciden';
       }
-      
+
       if (control.errors['phone']) {
-        return this.translate.instant('auth.register.errors.phone.invalid') || 
+        return this.translate.instant('auth.register.errors.phone.invalid') ||
                'Formato: +51 seguido de 9 dígitos';
       }
     }
-    
+
     return '';
   }
 

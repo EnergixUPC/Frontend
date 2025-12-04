@@ -1,0 +1,37 @@
+<div class="payment-success-container">
+  <mat-card class="success-card">
+    <mat-card-content>
+      <div class="success-content">
+        <div class="success-icon">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+
+        <h1>{{ 'payments.success.title' | translate }}</h1>
+        <p class="success-message">{{ 'payments.success.message' | translate }}</p>
+
+        <div class="session-info" *ngIf="sessionId">
+          <p class="session-label">{{ 'payments.success.sessionId' | translate }}</p>
+          <p class="session-id">{{ sessionId }}</p>
+        </div>
+
+        <div class="action-buttons">
+          <button mat-raised-button color="primary" (click)="goToHome()">
+            <mat-icon>home</mat-icon>
+            {{ 'payments.success.goToHome' | translate }}
+          </button>
+
+          <button mat-stroked-button (click)="goToPayments()">
+            <mat-icon>history</mat-icon>
+            {{ 'payments.success.viewHistory' | translate }}
+          </button>
+        </div>
+
+        <div class="info-message">
+          <mat-icon>info</mat-icon>
+          <p>{{ 'payments.success.info' | translate }}</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+

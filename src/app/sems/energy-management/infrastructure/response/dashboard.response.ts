@@ -7,6 +7,31 @@ export interface DashboardStatsResponse {
   currency: string;
 }
 
+export interface UnifiedDashboardResponse {
+  monthlySavingGoalKwh: number;
+  estimatedSavingsPercent: number;
+  activeDevices: number;
+  estimatedBill: number;
+  todaysConsumptionKwh: number;
+  dailyConsumption: Array<{
+    timestamp: string;
+    kwh: number;
+  }>;
+  categoryConsumption: Array<{
+    category: string;
+    kwh: number;
+  }>;
+  devices: Array<{
+    id: number;
+    name: string;
+    category: string;
+  }>;
+  alerts: Array<{
+    level: string;
+    message: string;
+  }>;
+}
+
 export interface ConsumptionDataPointResponse {
   time: string;
   value: number;
@@ -49,6 +74,8 @@ export interface DeviceResponse {
   name: string;
   location: string;
   type: string;
+  brand?: string;
+  model?: string;
   status: string;
   lastActive?: string;
   consumption?: number;

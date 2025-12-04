@@ -1,15 +1,17 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Device } from '../../../domain/model/device.entity';
+import { DashboardService } from '../../../application/services/dashboard.service';
 import { DevicesService } from '../../../application/services/devices.service';
+import { AuthControllerService } from '../../../../authentication/application/services/auth-controller.service';
 
 @Component({
   selector: 'app-devices',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './devices.html',
   styleUrl: './devices.css'
 })
@@ -17,17 +19,34 @@ export class Devices implements OnInit, OnDestroy {
   devices: Device[] = [];
   loading = true;
   error: string | null = null;
-  
+
   private destroy$ = new Subject<void>();
 
   constructor(
+    private readonly dashboardService: DashboardService,
     private readonly devicesService: DevicesService,
     private readonly translateService: TranslateService,
     private readonly router: Router,
-    private readonly cdr: ChangeDetectorRef
-  ) {}
+    private readonly cdr: ChangeDetectorRef,
+    private readonly authController: AuthControllerService
+  ) { }
 
   ngOnInit(): void {
+    console.log('Devices - Component initialized');
+    
+    // Check authentication status
+    const currentUser = this.authController.getCurrentUser();
+    const isAuthenticated = this.authController.isAuthenticated();
+    
+    console.log('Devices - Current user:', currentUser);
+    console.log('Devices - Is authenticated:', isAuthenticated);
+    
+    if (!isAuthenticated) {
+      console.warn('Devices - User not authenticated, redirecting to login');
+      this.router.navigate(['/login']);
+      return;
+    }
+    
     // Force change detection
     this.cdr.detectChanges();
     this.loadDevices();
@@ -40,17 +59,30 @@ export class Devices implements OnInit, OnDestroy {
 
   private loadDevices(): void {
     this.loading = true;
-    this.devicesService.getAllDevices()
+    // Cargar el dashboard unificado que incluye los dispositivos filtrados por usuario
+    this.dashboardService.loadUnifiedDashboard()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (devices) => {
-          this.devices = devices;
-          this.loading = false;
+        next: () => {
+          // Obtener los dispositivos del estado del dashboard
+          this.dashboardService.getDashboardState()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(state => {
+              console.log('Devices loaded from unified dashboard:', state.devices);
+              setTimeout(() => {
+                this.devices = state.devices || [];
+                this.loading = false;
+                this.cdr.detectChanges();
+              }, 50);
+            });
         },
         error: (error) => {
           console.error('Error loading devices:', error);
-          this.error = 'Error loading devices';
-          this.loading = false;
+          setTimeout(() => {
+            this.error = 'Error loading devices';
+            this.loading = false;
+            this.cdr.detectChanges();
+          }, 50);
         }
       });
   }
@@ -89,6 +121,10 @@ export class Devices implements OnInit, OnDestroy {
   }
 
   getStatusText(status: string): string {
+    if (!status) {
+      return 'N/A';
+    }
+
     switch (status.toLowerCase()) {
       case 'on':
         return this.translateService.instant('dashboard.devices.status.on');
@@ -104,22 +140,27 @@ export class Devices implements OnInit, OnDestroy {
   }
 
   getCategoryText(category: string): string {
-    // Debug: Ver qué categoría está llegando
+    // Debug: See what category is arriving
     console.log('Category received in devices:', category);
-    
+
+    // Handle undefined or null
+    if (!category) {
+      return 'N/A';
+    }
+
     // Convertir "Heating & Cooling" a "heating_cooling"
     const categoryKey = category.toLowerCase()
       .replace(/\s*&\s*/g, '_')  // Reemplazar " & " con "_"
       .replace(/\s+/g, '_');     // Reemplazar espacios con "_"
-    
+
     console.log('Category key generated:', categoryKey);
-    
+
     const translationKey = `dashboard.devices.categories.${categoryKey}`;
     const translated = this.translateService.instant(translationKey);
-    
+
     console.log('Translation result:', translated);
-    
-    // Si la traducción devuelve la misma clave, significa que no encontró la traducción
+
+    // If translation returns the same key, it means translation was not found
     return translated !== translationKey ? translated : category;
   }
 
@@ -145,22 +186,54 @@ export class Devices implements OnInit, OnDestroy {
     const confirmed = confirm(
       this.translateService.instant('dashboard.devices.deleteConfirmation', { name: deviceName })
     );
-    
+
     if (confirmed) {
+      console.log('Devices - Attempting to delete device:', deviceId, deviceName);
+      
+      // Check token status and user role before deletion
+      const currentUser = this.authController.getCurrentUser();
+      const isAuthenticated = this.authController.isAuthenticated();
+      console.log('Devices - Auth check before delete - User:', currentUser?.email);
+      console.log('Devices - Auth check before delete - User role:', currentUser?.role);
+      console.log('Devices - Auth check before delete - Authenticated:', isAuthenticated);
+      
+      if (!isAuthenticated) {
+        console.error('Devices - User not authenticated, redirecting to login');
+        this.router.navigate(['/login']);
+        return;
+      }
+      
+      // Check if user has admin role
+      if (currentUser?.role !== 'admin' && currentUser?.role !== 'ADMIN') {
+        console.warn('Devices - User role is not admin:', currentUser?.role);
+        alert('Solo los administradores pueden eliminar dispositivos.');
+        return;
+      }
+      
       this.devicesService.deleteDevice(deviceId)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
-          next: (success) => {
+          next: (success: boolean) => {
+            console.log('Devices - Delete result:', success);
             if (success) {
+              console.log('Devices - Device deleted successfully, reloading list');
               // Reload the devices list
               this.loadDevices();
             } else {
+              console.error('Devices - Delete failed');
               alert(this.translateService.instant('dashboard.devices.deleteError'));
             }
           },
           error: (error: any) => {
-            console.error('Error deleting device:', error);
-            alert(this.translateService.instant('dashboard.devices.deleteError'));
+            console.error('Devices - Error deleting device:', error);
+            
+            // If it's a 401 error, provide more specific feedback
+            if (error.status === 401) {
+              console.log('Devices - 401 error, checking if user has proper permissions');
+              alert('No tienes permisos suficientes para eliminar este dispositivo. Contacta al administrador.');
+            } else {
+              alert(this.translateService.instant('dashboard.devices.deleteError'));
+            }
           }
         });
     }

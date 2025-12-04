@@ -10,7 +10,7 @@ import { environment } from '../../../../environments/environments';
 export class ApiService {
   private readonly baseUrl = `${environment.apiUrl}/api`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
@@ -50,7 +50,7 @@ export class ApiService {
     );
   }
 
-  // Método especial para login que busca directamente en users
+  // Special method for login that searches directly in users
   login(username: string, password: string): Observable<any> {
     return this.http.get<any[]>(`${environment.apiUrl}/users?username=${username}&password=${password}`, {
       headers: this.getHeaders()

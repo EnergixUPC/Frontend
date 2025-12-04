@@ -3,14 +3,16 @@
   name: string;
   category: string;
   type: string;
+  brand: string;
+  model: string;
   status: DeviceStatus;
   realTimeStatus: string;
   lastActive: string;
-  alertHistory: string;
-  energyConsumption: string;
-  energyConsumptionValue?: number; // Valor numérico para cálculos
+  alertHistory?: string;
+  energyConsumption?: string;
+  energyConsumptionValue?: number; // Numeric value for calculations
   location: string;
-  isActive: boolean;
+  isActive: number;
 }
 
 export enum DeviceStatus {

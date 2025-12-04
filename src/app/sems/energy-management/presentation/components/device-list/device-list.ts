@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Device } from '../../../domain/model/device.entity';
 
 @Component({
@@ -11,7 +11,8 @@ import { Device } from '../../../domain/model/device.entity';
   imports: [
     CommonModule,
     MatCardModule,
-    MatIconModule
+    MatIconModule,
+    TranslateModule
   ],
   templateUrl: './device-list.html',
   styleUrl: './device-list.css'
@@ -19,7 +20,7 @@ import { Device } from '../../../domain/model/device.entity';
 export class DeviceList {
   @Input() devices: Device[] = [];
 
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslateService) { }
 
   // Getter para mostrar solo los primeros 3 dispositivos
   get limitedDevices(): Device[] {
@@ -27,32 +28,38 @@ export class DeviceList {
   }
 
   getCategoryText(category: string): string {
-    // Debug más detallado
+    // Detailed debug
     console.log('=== DEBUG CATEGORY TRANSLATION ===');
     console.log('Input category:', category);
     console.log('Current language:', this.translate.currentLang);
     console.log('Default language:', this.translate.defaultLang);
-    
+
+    // Handle undefined or null category
+    if (!category) {
+      console.log('Category is undefined or null, using default');
+      return this.translate.instant('dashboard.devices.categories.other');
+    }
+
     // Transformar "Heating & Cooling" a "heating_cooling"
     const categoryKey = category.toLowerCase()
       .replace(/\s*&\s*/g, '_')  // Reemplazar " & " con "_"
       .replace(/\s+/g, '_');     // Reemplazar espacios con "_"
-    
+
     console.log('Generated key:', categoryKey);
-    
+
     const translationKey = `dashboard.devices.categories.${categoryKey}`;
     console.log('Full translation key:', translationKey);
-    
+
     const translated = this.translate.instant(translationKey);
     console.log('Translation result:', translated);
     console.log('Translation matches key?', translated === translationKey);
-    
-    // Probar traducción directa para debugging
+
+    // Test direct translation for debugging
     const directTest = this.translate.instant('dashboard.devices.categories.heating_cooling');
     console.log('Direct test heating_cooling:', directTest);
-    
+
     console.log('=== END DEBUG ===');
-    
+
     return translated !== translationKey ? translated : category;
   }
 

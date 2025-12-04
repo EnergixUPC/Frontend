@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, delay } from 'rxjs';
 import { environment } from '../../../../../environments/environments';
 import { ReportRepositoryImpl } from '../../infrastructure/repositories/report-repository.impl';
+import { ReportResource } from '../../infrastructure/resources/report.resource';
 import { Report, ReportType, ReportFormat, ReportPeriod } from '../../domain/model/entities/report.entity';
 import { ReportGenerationParams } from '../../domain/model/repositories/report.repository';
 
@@ -13,8 +14,9 @@ export class ReportService {
 
   constructor(
     private reportRepository: ReportRepositoryImpl,
+    private reportResource: ReportResource,
     private http: HttpClient
-  ) {}
+  ) { }
 
   generateWeeklyConsumptionReport(format: ReportFormat = ReportFormat.PDF): Observable<Report> {
     return this.reportRepository.generateReport(
@@ -87,22 +89,47 @@ export class ReportService {
     ];
   }
 
-  // Métodos para obtener datos de gráficos desde la API
+  // Methods to get chart data from API
   getWeeklyConsumption(): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/api/v1/reports/weeklyConsumption`).pipe(
-      delay(200) // Pequeño delay para simular latencia real
+    const userId = this.getCurrentUserId();
+    console.log('Getting weekly consumption from backend for userId:', userId);
+
+    return this.reportResource.getWeeklyConsumption(userId).pipe(
+      delay(200)
     );
   }
 
-  getDeviceRanking(): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/deviceRanking`).pipe(
-      delay(200) // Pequeño delay para simular latencia real
+  getTopDevices(): Observable<any> {
+    const userId = this.getCurrentUserId();
+    console.log('Getting top devices from backend for userId:', userId);
+
+    return this.reportResource.getTopDevices(userId).pipe(
+      delay(200)
     );
+  }
+
+  private getCurrentUserId(): number | undefined {
+    try {
+      const userStr = localStorage.getItem(environment.userKey);
+      console.log('Content of userKey in localStorage:', userStr);
+
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        console.log('Current user complete:', user);
+        console.log('User ID:', user.id);
+        return user.id;
+      } else {
+        console.warn('No user in localStorage');
+      }
+    } catch (error) {
+      console.error('Error getting userId:', error);
+    }
+    return undefined;
   }
 
   getReportSummary(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/reportSummary`).pipe(
-      delay(200) // Pequeño delay para simular latencia real
+      delay(200) // Small delay to simulate real latency
     );
   }
 }

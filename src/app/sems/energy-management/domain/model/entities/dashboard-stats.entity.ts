@@ -5,8 +5,8 @@ export class DashboardStats {
     public readonly activeDevices: number,
     public readonly estimatedBill: number,
     public readonly todayConsumption: number,
-    public readonly currency: string = 'S/.'
-  ) {}
+    public currency: string = 'S/.'
+  ) { }
 
   static fromJson(json: any): DashboardStats {
     return new DashboardStats(

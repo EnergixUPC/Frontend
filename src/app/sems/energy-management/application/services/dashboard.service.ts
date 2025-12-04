@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, tap, catchError, of } from 'rxjs';
+import { Observable, tap, catchError, of, map } from 'rxjs';
 import { DashboardStore } from '../state/dashboard.store';
 import { DashboardRepositoryImpl } from '../../infrastructure/repositories/dashboard-repository.impl';
 import { DashboardStats } from '../../domain/model/entities/dashboard-stats.entity';
@@ -15,7 +15,26 @@ export class DashboardService {
   constructor(
     private readonly dashboardRepository: DashboardRepositoryImpl,
     private readonly dashboardStore: DashboardStore
-  ) {}
+  ) { }
+
+  loadUnifiedDashboard(): Observable<{ alerts: any[] }> {
+    console.log('Loading unified dashboard data...');
+    return this.dashboardRepository.getUnifiedDashboard().pipe(
+      tap(data => {
+        console.log('Unified dashboard data loaded successfully');
+        this.dashboardStore.setStats(data.stats);
+        this.dashboardStore.setDailyConsumption(data.dailyConsumption);
+        this.dashboardStore.setConsumptionByCategory(data.categoryConsumption);
+        this.dashboardStore.setDevices(data.devices);
+      }),
+      map(data => ({ alerts: data.alerts })),
+      catchError(error => {
+        console.error('Error loading unified dashboard:', error);
+        this.dashboardStore.setError(error.message || 'Error loading dashboard');
+        throw error;
+      })
+    );
+  }
 
   loadDashboardStats(): Observable<DashboardStats> {
     return this.dashboardRepository.getDashboardStats().pipe(

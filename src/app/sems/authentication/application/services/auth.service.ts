@@ -1,4 +1,3 @@
-// typescript
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { map, catchError, switchMap, tap } from 'rxjs/operators';
@@ -41,166 +40,78 @@ export class AuthService {
   }
 
   private initializeAuthState(): void {
-    console.log('🚀 AuthService - Initializing auth state...');
-    
+    const user = this.tokenService.getUser();
+    const token = this.tokenService.getAccessToken();
     const hasValidToken = this.tokenService.hasValidToken();
-    
-    console.log('🔑 AuthService - Has valid token:', hasValidToken);
-    
-    if (hasValidToken) {
-      console.log('✅ AuthService - Token valid, fetching user profile from backend...');
-      // Si hay token válido, obtener el perfil del usuario desde el backend
-      this.getUserProfile().subscribe({
-        next: (user) => {
-          console.log('✅ AuthService - Profile loaded successfully:', user);
-          this.updateAuthState({
-            user,
-            isAuthenticated: true,
-            isLoading: false,
-            error: null
-          });
-        },
-        error: (error) => {
-          console.error('❌ AuthService - Failed to load profile:', error);
-          this.clearAuthState();
-        }
-      });
-    } else {
-      console.log('❌ AuthService - No valid token, setting unauthenticated state');
+
+    if (user && hasValidToken && token) {
+      // Use cached user data
+      console.log('AuthService - Using cached user data:', user);
       this.updateAuthState({
-        user: null,
-        isAuthenticated: false,
+        user,
+        isAuthenticated: true,
         isLoading: false,
         error: null
       });
     }
   }
 
-  private getUserProfile(): Observable<User> {
-    const token = this.tokenService.getAccessToken();
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    return this.http.get<any>(`${environment.apiUrl}/api/v1/auth/profile`, { headers }).pipe(
-      map(userData => {
-        console.log('🔄 AuthService - Processing profile data from backend:', userData);
-        
-        const user = new User(
-          (userData.id ?? 0).toString(),
-          userData.email,
-          userData.firstName,
-          userData.lastName,
-          userData.role,
-          true,
-          new Date(userData.createdAt || new Date()),
-          new Date(),
-          userData.username,
-          userData.phoneNumber,
-          userData.address,
-          userData.profilePhotoUrl
-        );
-
-        console.log('✨ AuthService - User object created from profile:', {
-          id: user.id,
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          username: user.username,
-          phoneNumber: user.phoneNumber,
-          address: user.address
-        });
-
-        // Save user to localStorage for offline access
-        this.tokenService.saveUser(user);
-
-        return user;
-      })
-    );
-  }
-
   login(username: string, password: string): Observable<{ user: User; tokens: TokenPair }> {
-    console.log('🔐 AuthService - Starting login process');
-    console.log('👤 AuthService - Username:', username);
-    console.log('🔒 AuthService - Password length:', password.length);
-    
     this.updateAuthState({
       ...this.authStateSubject.value,
       isLoading: true,
       error: null
     });
 
-    const apiUrl = `${environment.apiUrl}/api/v1/auth/login`;
-    const loginPayload = { email: username, password };
-    
-    console.log('📡 AuthService - Making login POST request to:', apiUrl);
-    console.log('📤 AuthService - Login payload:', { email: username, password: '***' });
-
     // Use API to validate credentials
-    return this.http.post<any>(apiUrl, loginPayload).pipe(
-      tap(response => {
-        console.log('✅ AuthService - Login API response received');
-        console.log('📋 AuthService - Response keys:', Object.keys(response));
-        console.log('🔍 AuthService - Full response:', response);
-      }),
+    return this.http.post<any>(`${environment.apiUrl}/api/v1/authentication/sign-in`, { email: username, password }).pipe(
       map(response => {
-        console.log('🔄 AuthService - Processing login response...');
-        console.log('🔍 AuthService - Response structure:', JSON.stringify(response, null, 2));
-        
-        const userData = response.user || response;
-        console.log('👤 AuthService - User data extracted:', JSON.stringify(userData, null, 2));
-        console.log('📝 AuthService - userData.firstName:', userData.firstName);
-        console.log('📝 AuthService - userData.lastName:', userData.lastName);
-        console.log('📝 AuthService - userData.email:', userData.email);
-        console.log('📝 AuthService - userData.username:', userData.username);
-        console.log('📝 AuthService - userData.phoneNumber:', userData.phoneNumber);
-        console.log('📝 AuthService - userData.address:', userData.address);
-        
-        const user = new User(
-          (userData.id ?? 0).toString(),
-          userData.email,
-          userData.firstName,
-          userData.lastName,
-          userData.role,
-          true,
-          new Date(userData.createdAt || new Date()),
-          new Date(),
-          userData.username,
-          userData.phoneNumber,
-          userData.address,
-          userData.profilePhotoUrl
-        );
+        console.log('AuthService - Full API response:', JSON.stringify(response, null, 2));
 
-        console.log('✨ AuthService - User object created:', JSON.stringify({
-          id: user.id,
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          username: user.username,
-          phoneNumber: user.phoneNumber,
-          address: user.address
-        }, null, 2));
+        // Extract token - could be 'token', 'accessToken', or 'access_token'
+        const token = response.token || response.accessToken || response.access_token;
+        const refreshToken = response.refreshToken || response.refresh_token;
+
+        console.log('AuthService - Extracted token:', token);
+        console.log('AuthService - Extracted refreshToken:', refreshToken);
 
         const tokens = new TokenPair(
-          response.accessToken,
-          response.refreshToken || undefined,
-          response.expiresIn
+          token,
+          refreshToken || undefined,
+          response.expiresIn || 3600
         );
 
-        console.log('🔑 AuthService - Token pair created');
-        console.log('🔑 Access Token preview:', response.accessToken ? response.accessToken.substring(0, 20) + '...' : 'No access token');
-        console.log('🔄 Refresh Token:', response.refreshToken ? 'Present' : 'Not present');
-
-        // Save tokens and user
-        console.log('💾 AuthService - Saving tokens to localStorage...');
+        // Save tokens first
         this.tokenService.saveTokens(tokens);
-        
-        console.log('💾 AuthService - Saving user to localStorage...');
-        this.tokenService.saveUser(user);
 
-        // Verify saved data
-        const savedToken = this.tokenService.getAccessToken();
-        const savedUser = this.tokenService.getUser();
-        console.log('✅ AuthService - Verification - Token saved:', savedToken ? 'Yes' : 'No');
-        console.log('✅ AuthService - Verification - User saved:', savedUser ? 'Yes' : 'No');
+        // Extract user data from response.user object
+        const userFromResponse = response.user;
+        console.log('AuthService - User object from response:', userFromResponse);
+
+        if (!userFromResponse) {
+          throw new Error('No user data received from server');
+        }
+
+        // Create user from response.user
+        const user = new User(
+          (userFromResponse.id ?? 0).toString(),
+          userFromResponse.email || username,
+          userFromResponse.name || 'User',
+          userFromResponse.lastName || '',
+          'USER',
+          true,
+          new Date(),
+          new Date(),
+          undefined,
+          userFromResponse.phone,
+          userFromResponse.address,
+          userFromResponse.profilePhotoUrl
+        );
+
+        console.log('AuthService - Created user object:', user);
+
+        // Save user
+        this.tokenService.saveUser(user);
 
         // Update auth state
         this.updateAuthState({
@@ -210,20 +121,14 @@ export class AuthService {
           error: null
         });
 
-        console.log('🎉 AuthService - Auth state updated successfully!');
-        console.log('👤 AuthService - Current user in state:', this.authStateSubject.value.user?.email);
-        console.log('🔐 AuthService - Is authenticated:', this.authStateSubject.value.isAuthenticated);
+        console.log('AuthService - Auth state updated with user:', user);
 
         return { user, tokens };
       }),
       catchError(error => {
-        console.error('❌ AuthService - Login error occurred:', error);
-        console.error('❌ Login error status:', error.status);
-        console.error('❌ Login error message:', error.message);
-        console.error('❌ Full login error:', JSON.stringify(error, null, 2));
-        
+        console.error('AuthService - Login error:', error);
         const errorMessage = this.getErrorMessage(error);
-        
+
         this.updateAuthState({
           ...this.authStateSubject.value,
           isLoading: false,
@@ -231,6 +136,38 @@ export class AuthService {
         });
 
         return throwError(() => error);
+      })
+    );
+  }
+
+  private getUserProfile(token: string): Observable<User> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.get<any>(`${environment.apiUrl}/api/v1/auth/profile`, { headers }).pipe(
+      map(userData => {
+        const user = new User(
+          (userData.id ?? 0).toString(),
+          userData.email,
+          userData.firstName,
+          userData.lastName,
+          userData.role,
+          true,
+          new Date(userData.createdAt || new Date()),
+          new Date()
+        );
+
+        this.tokenService.saveUser(user);
+
+        this.updateAuthState({
+          user,
+          isAuthenticated: true,
+          isLoading: false,
+          error: null
+        });
+
+        console.log('AuthService - Auth state updated with user:', user);
+
+        return user;
       })
     );
   }
@@ -297,46 +234,68 @@ export class AuthService {
     );
   }
 
-  register(command: { firstName: string; lastName: string; email: string; username: string; password: string; phoneNumber: string; address: string }): Observable<{ user: User; tokens: TokenPair }> {
-    console.log('🚀 AuthService - Starting registration process with command:', command);
-    
+  register(command: { firstName: string; lastName: string; email: string; password: string; phoneNumber: string; address: string }): Observable<{ user: User; tokens: TokenPair }> {
     this.updateAuthState({
       ...this.authStateSubject.value,
       isLoading: true,
       error: null
     });
 
-    const apiUrl = `${environment.apiUrl}/api/v1/auth/register`;
-    console.log('📡 AuthService - Making POST request to:', apiUrl);
-    console.log('📤 AuthService - Request payload:', JSON.stringify(command, null, 2));
+    // Transform to match backend expected format
+    const requestBody = {
+      email: command.email,
+      password: command.password,
+      name: command.firstName,
+      lastName: command.lastName,
+      phone: command.phoneNumber.replace(/\s+/g, ''), // Remove all spaces from phone
+      address: command.address
+    };
 
-    // Register user via API
-    return this.http.post<any>(apiUrl, command).pipe(
-      tap(response => {
-        console.log('✅ AuthService - Registration successful, response received:', response);
-        console.log('📋 AuthService - Response structure:', Object.keys(response));
-      }),
+    // Log the request payload
+    console.log('AuthService - Register payload:', JSON.stringify(requestBody, null, 2));
+    console.log('AuthService - Register URL:', `${environment.apiUrl}/api/v1/authentication/sign-up`);
+
+    // Register user via API with text response type to capture error details
+    return this.http.post<any>(`${environment.apiUrl}/api/v1/authentication/sign-up`, requestBody, {
+      observe: 'response',
+      responseType: 'json' as 'json'
+    }).pipe(
+      map(response => response.body),
       switchMap(response => {
-        console.log('🔄 AuthService - Now attempting auto-login with email:', command.email);
-        
+        console.log('AuthService - User registered successfully:', response);
+
         // After registration, automatically login to get tokens
         return this.login(command.email, command.password);
       }),
       catchError(error => {
-        console.error('❌ AuthService - Registration error occurred:', error);
-        console.error('❌ Error status:', error.status);
-        console.error('❌ Error message:', error.message);
-        console.error('❌ Full error:', JSON.stringify(error, null, 2));
+        console.error('AuthService - Register error:', error);
+        console.error('AuthService - Register error status:', error.status);
+        console.error('AuthService - Register error body:', error.error);
+        console.error('AuthService - Register error message:', error.message);
         
-        const errorMessage = this.getErrorMessage(error);
+        // Try to extract meaningful error message
+        let errorMessage = 'Error en el registro. Por favor verifica que el email no esté ya registrado.';
+        if (error.error) {
+          if (typeof error.error === 'string') {
+            errorMessage = error.error;
+          } else if (error.error.message) {
+            errorMessage = error.error.message;
+          } else if (error.error.error) {
+            errorMessage = error.error.error;
+          } else if (error.error.details) {
+            errorMessage = error.error.details;
+          }
+        }
         
+        console.error('AuthService - Extracted error message:', errorMessage);
+
         this.updateAuthState({
           ...this.authStateSubject.value,
           isLoading: false,
           error: errorMessage
         });
 
-        return throwError(() => error);
+        return throwError(() => new Error(errorMessage));
       })
     );
   }
@@ -421,6 +380,18 @@ export class AuthService {
 
   private updateAuthState(state: AuthState): void {
     this.authStateSubject.next(state);
+  }
+
+  // Public method to update user data (e.g., when profile is updated)
+  public updateCurrentUser(user: User): void {
+    this.tokenService.saveUser(user);
+    this.updateAuthState({
+      user,
+      isAuthenticated: true,
+      isLoading: false,
+      error: null
+    });
+    console.log('AuthService - User updated and state notified');
   }
 
   private clearAuthState(): void {

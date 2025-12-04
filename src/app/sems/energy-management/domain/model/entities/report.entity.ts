@@ -18,19 +18,25 @@ export interface ReportData {
 }
 
 export interface WeeklyConsumptionData {
-  week: string;
-  consumption: number;
+  dailyConsumptions: DailyConsumptionData[];
+  totalWeeklyConsumption: number;
+  weekStartDate: Date;
+  weekEndDate: Date;
+}
+
+export interface DailyConsumptionData {
   date: Date;
-  efficiency: number;
+  dayName: string;
+  consumption: number;
 }
 
 export interface DeviceRankingData {
-  deviceId: string;
+  deviceId: number;
   deviceName: string;
-  consumption: number;
-  percentage: number;
-  category: string;
-  status: 'active' | 'inactive' | 'maintenance';
+  deviceType: string;
+  deviceCategory: string;
+  totalConsumption: number;
+  period: string;
 }
 
 export interface ReportMetadata {

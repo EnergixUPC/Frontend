@@ -15,10 +15,30 @@ import { DashboardAssembler } from '../assemblers/dashboard.assembler';
 export class DashboardRepositoryImpl implements DashboardRepository {
   constructor(private readonly dashboardResource: DashboardResource) {}
 
+  getUnifiedDashboard(): Observable<{
+    stats: DashboardStats;
+    dailyConsumption: DailyConsumption;
+    categoryConsumption: ConsumptionByCategory;
+    devices: Device[];
+    alerts: any[];
+  }> {
+    return this.dashboardResource
+      .getDashboardStats({})
+      .pipe(
+        map(response => ({
+          stats: DashboardAssembler.toDashboardStatsFromUnified(response),
+          dailyConsumption: DashboardAssembler.toDailyConsumptionFromUnified(response),
+          categoryConsumption: DashboardAssembler.toConsumptionByCategoryFromUnified(response),
+          devices: DashboardAssembler.toDevicesFromUnified(response),
+          alerts: DashboardAssembler.toAlertsFromUnified(response)
+        }))
+      );
+  }
+
   getDashboardStats(): Observable<DashboardStats> {
     return this.dashboardResource
       .getDashboardStats({})
-      .pipe(map(response => DashboardAssembler.toDashboardStats(response)));
+      .pipe(map(response => DashboardAssembler.toDashboardStatsFromUnified(response)));
   }
 
   getDailyConsumption(date: Date): Observable<DailyConsumption> {

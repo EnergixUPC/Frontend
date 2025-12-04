@@ -5,7 +5,7 @@ import { ProfileRepository } from '../../../energy-management/domain/model/repos
 import { ProfileResponse } from '../../infrastructure/response/profile.response';
 import { environment } from '../../../../../environments/environments';
 
-const BASE_URL = `${environment.apiUrl}/api/profile`;
+const BASE_URL = `${environment.apiUrl}/api/v1/profiles`;
 
 @Injectable({
   providedIn: 'root'
@@ -22,12 +22,12 @@ export class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   loadProfile(userId: string): Observable<ProfileResponse> {
-    return this.http.get<ProfileResponse>(`${BASE_URL}/${userId}`, { headers: this.getHeaders() });
+    return this.http.get<ProfileResponse>(`${BASE_URL}/me`, { headers: this.getHeaders() });
   }
 
   updateProfile(userId: string, request: any): Observable<ProfileResponse> {
     const headers = this.getHeaders();
-    return this.http.put<ProfileResponse>(`${BASE_URL}/${userId}`, request, { headers });
+    return this.http.put<ProfileResponse>(`${BASE_URL}/me`, request, { headers });
   }
 
 }

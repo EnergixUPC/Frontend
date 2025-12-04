@@ -1,18 +1,22 @@
 // src/app/sems/energy-management/infrastructure/request/settings.request.ts
 export interface SettingsRequest {
-  autoSavingMode?: {
-    turnOffPatio?: boolean;
-    turnOffDevices?: boolean;
-    unplugWeekdays?: boolean;
-    runDishwasher?: boolean;
-  };
-  notifications?: {
-    highConsumption?: boolean;
-    summary?: boolean;
-    scheduleStart?: string;
-    scheduleEnd?: string;
-  };
-  reportFrequencies?: string[];
-  reportFormats?: string[];
+  id?: number;
+  userId?: number;
+  notificationsEnabled?: boolean;
+  highConsumptionAlerts?: boolean;
+  dailyWeeklySummary?: boolean;
+  notificationScheduleStart?: string;
+  notificationScheduleEnd?: string;
+  reportDaily?: boolean;
+  reportWeekly?: boolean;
+  reportMonthly?: boolean;
+  reportFormatPdf?: boolean;
+  reportFormatCsv?: boolean;
   twoFactorEnabled?: boolean;
+  lastPasswordChange?: string;
+  savingRules?: {
+    id?: number;
+    name?: string;
+    isEnabled?: boolean;
+  }[];
 }

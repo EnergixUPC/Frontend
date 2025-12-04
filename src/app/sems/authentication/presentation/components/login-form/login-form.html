@@ -7,7 +7,7 @@
 
     <mat-card-content class="login-content">
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-        
+
         <!-- Email Field -->
         <div class="form-field">
           <label class="field-label">{{ emailLabel }}</label>
@@ -65,17 +65,17 @@
           type="submit"
           class="login-button"
           [disabled]="authState.isLoading || loginForm.invalid">
-          
-          <mat-spinner 
-            *ngIf="authState.isLoading" 
-            diameter="20" 
+
+          <mat-spinner
+            *ngIf="authState.isLoading"
+            diameter="20"
             class="button-spinner">
           </mat-spinner>
-          
+
           <span *ngIf="!authState.isLoading">
             {{ loginButtonText }}
           </span>
-          
+
           <span *ngIf="authState.isLoading">
             {{ loadingText }}
           </span>
@@ -84,8 +84,8 @@
         <!-- Register Link -->
         <div class="register-link-section">
           <p class="register-text">
-            ¿No tienes una cuenta? 
-            <a routerLink="/register" class="register-link">Regístrate aquí</a>
+            {{ 'auth.login.noAccount' | translate }}
+            <a routerLink="/register" class="register-link">{{ 'auth.login.registerLink' | translate }}</a>
           </p>
         </div>
       </form>

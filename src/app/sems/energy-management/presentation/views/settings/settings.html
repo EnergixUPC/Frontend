@@ -1,55 +1,58 @@
-<!-- settings.html - VERSIÓN CORRECTA CON BINDINGS -->
 <div class="settings-content">
   <section class="settings-container">
     <h1>{{ t('settings.title') }}</h1>
 
     <div class="settings-grid">
-      <!-- Modo de ahorro automático -->
+      <!-- Automatic Saving Mode -->
       <div class="card">
         <div class="card-header">
           <h2>{{ t('settings.autoSavingMode.title') }}</h2>
           <button mat-mini-fab color="primary" class="add-btn" (click)="onAddNewRule()">+</button>
         </div>
-        <div class="toggles">
-          <!-- ⬇️ CONECTADO CON [checked] y (change) -->
-          <mat-checkbox
-            [checked]="editableSettings.autoSavingMode?.turnOffPatio"
-            (change)="onAutoSavingModeChange('turnOffPatio', $event.checked)">
-            {{ t('settings.autoSavingMode.turnOffPatio') }}
-          </mat-checkbox>
-
-          <mat-checkbox
-            [checked]="editableSettings.autoSavingMode?.turnOffDevices"
-            (change)="onAutoSavingModeChange('turnOffDevices', $event.checked)">
-            {{ t('settings.autoSavingMode.turnOffDevices') }}
-          </mat-checkbox>
-
-          <mat-checkbox
-            [checked]="editableSettings.autoSavingMode?.unplugWeekdays"
-            (change)="onAutoSavingModeChange('unplugWeekdays', $event.checked)">
-            {{ t('settings.autoSavingMode.unplugWeekdays') }}
-          </mat-checkbox>
-
-          <mat-checkbox
-            [checked]="editableSettings.autoSavingMode?.runDishwasher"
-            (change)="onAutoSavingModeChange('runDishwasher', $event.checked)">
-            {{ t('settings.autoSavingMode.runDishwasher') }}
-          </mat-checkbox>
+        
+        <!-- Loading state para rules -->
+        <div *ngIf="isLoadingRules" class="loading-container">
+          <p>Loading rules...</p>
+        </div>
+        
+        <!-- Content cuando no está cargando -->
+        <div *ngIf="!isLoadingRules" class="toggles">
+          <div *ngFor="let rule of rules; trackBy: trackByRuleId" class="rule-item" [class.updating]="updatingRules.has(rule.id)">
+            <mat-checkbox [checked]="rule.isEnabled" 
+                         [disabled]="updatingRules.has(rule.id)"
+                         (change)="onToggleRule(rule)">
+              {{ rule.name }}
+            </mat-checkbox>
+            <button mat-icon-button color="warn" 
+                   [disabled]="updatingRules.has(rule.id)"
+                   (click)="onDeleteRule(rule.id.toString())">
+              <span class="material-icons">delete</span>
+            </button>
+          </div>
+          <div *ngIf="rules.length === 0" class="no-rules">
+            <p>No active rules. Add one to start saving energy!</p>
+          </div>
         </div>
       </div>
 
-      <!-- Notificaciones -->
+      <!-- Notifications -->
       <div class="card">
         <h2>{{ t('settings.notifications.title') }}</h2>
+        
+        <!-- Loading state para notifications -->
+        <div *ngIf="isLoadingSettings" class="loading-container">
+          <p>Loading notifications...</p>
+        </div>
+        
+        <!-- Content cuando no está cargando -->
+        <div *ngIf="!isLoadingSettings">
         <div class="toggles">
-          <mat-checkbox
-            [checked]="editableSettings.notifications?.highConsumption"
+          <mat-checkbox [checked]="editableSettings.highConsumptionAlerts"
             (change)="onNotificationChange('highConsumption', $event.checked)">
             {{ t('settings.notifications.highConsumption') }}
           </mat-checkbox>
 
-          <mat-checkbox
-            [checked]="editableSettings.notifications?.summary"
+          <mat-checkbox [checked]="editableSettings.dailyWeeklySummary"
             (change)="onNotificationChange('summary', $event.checked)">
             {{ t('settings.notifications.summary') }}
           </mat-checkbox>
@@ -57,66 +60,27 @@
 
         <p class="schedule">
           {{ t('settings.notifications.schedule', {
-          start: editableSettings.notifications?.scheduleStart || '05:00 AM',
-          end: editableSettings.notifications?.scheduleEnd || '22:00 PM'
-        }) }}
+          start: editableSettings.notificationScheduleStart || '09:00',
+          end: editableSettings.notificationScheduleEnd || '18:00'
+          }) }}
           <button mat-stroked-button color="accent" class="edit-btn" (click)="onEditSchedule()">
             {{ t('settings.notifications.edit') }}
           </button>
         </p>
-
-        <hr />
-        <h3>{{ t('settings.reports.title') }}</h3>
-        <div class="chip-group">
-          <button
-            mat-button
-            class="chip"
-            [ngClass]="{'selected': selectedFrequencies.includes('Daily')}"
-            (click)="toggleFrequency('Daily')">
-            {{ t('settings.reports.daily') }}
-          </button>
-          <button
-            mat-button
-            class="chip"
-            [ngClass]="{'selected': selectedFrequencies.includes('Weekly')}"
-            (click)="toggleFrequency('Weekly')">
-            {{ t('settings.reports.weekly') }}
-          </button>
-          <button
-            mat-button
-            class="chip"
-            [ngClass]="{'selected': selectedFrequencies.includes('Monthly')}"
-            (click)="toggleFrequency('Monthly')">
-            {{ t('settings.reports.monthly') }}
-          </button>
-          <button
-            mat-button
-            class="chip"
-            [ngClass]="{'selected': selectedFormats.includes('PDF')}"
-            (click)="toggleFormat('PDF')">
-            {{ t('settings.reports.pdf') }}
-          </button>
-          <button
-            mat-button
-            class="chip"
-            [ngClass]="{'selected': selectedFormats.includes('CSV')}"
-            (click)="toggleFormat('CSV')">
-            {{ t('settings.reports.csv') }}
-          </button>
         </div>
       </div>
 
-      <!-- Soporte -->
+      <!-- Support -->
       <div class="card">
         <h2>{{ t('settings.support.title') }}</h2>
         <ul>
-          <li><a href="#">{{ t('settings.support.helpCenter') }}</a></li>
-          <li><a href="#">{{ t('settings.support.contact') }}</a></li>
-          <li><a href="#">{{ t('settings.support.tutorials') }}</a></li>
+          <li><a (click)="supportsComponent?.openFaqModal()">{{ t('settings.support.helpCenter') }}</a></li>
+          <li><a (click)="supportsComponent?.openHelpModal()">{{ t('settings.support.contact') }}</a></li>
+          <li><a (click)="supportsComponent?.openTutorialsModal()">{{ t('settings.support.tutorials') }}</a></li>
         </ul>
       </div>
 
-      <!-- Seguridad -->
+      <!-- Security -->
       <div class="card">
         <h2>{{ t('settings.security.title') }}</h2>
         <div class="security-item">
@@ -134,25 +98,17 @@
       </div>
     </div>
 
-    <!-- ⬇️ BOTONES CON (click) Y [disabled] -->
     <div class="actions">
-      <button
-        mat-raised-button
-        color="primary"
-        class="save-btn"
-        [disabled]="!hasChanges"
-        (click)="saveSettings()">
+      <button mat-raised-button color="primary" class="save-btn" [disabled]="!hasChanges" (click)="saveSettings()">
         {{ t('settings.actions.save') }}
       </button>
 
-      <button
-        mat-button
-        color="warn"
-        class="cancel-btn"
-        [disabled]="!hasChanges"
-        (click)="cancelChanges()">
+      <button mat-button color="warn" class="cancel-btn" [disabled]="!hasChanges" (click)="cancelChanges()">
         {{ t('settings.actions.cancel') }}
       </button>
     </div>
   </section>
+
+  <!-- Modals Component -->
+  <app-settings-suports #supportsComponent></app-settings-suports>
 </div>

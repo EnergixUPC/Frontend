@@ -2,8 +2,6 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ReportService } from '../../../application/services/report.service';
-import { DevicesService } from '../../../application/services/devices.service';
-import { Device } from '../../../domain/model/device.entity';
 
 interface DeviceData {
   nameKey: string;
@@ -11,6 +9,10 @@ interface DeviceData {
   consumption: number;
   color: string;
   percentage: number;
+  deviceType?: string;
+  deviceCategory?: string;
+  deviceId?: number;
+  period?: string;
 }
 
 @Component({
@@ -31,12 +33,11 @@ export class DeviceChart implements OnInit {
   constructor(
     private translate: TranslateService,
     private reportService: ReportService,
-    private devicesService: DevicesService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    // Asegurar que el componente esté completamente inicializado
+    // Ensure component is fully initialized
     setTimeout(() => {
       this.loadDeviceData();
     }, 100);
@@ -45,78 +46,71 @@ export class DeviceChart implements OnInit {
   loadDeviceData(): void {
     this.isLoading = true;
     this.hasError = false;
-    
-    this.devicesService.getAllDevices().subscribe({
-      next: (devices: Device[]) => {
+
+    console.log('Loading top devices data...');
+
+    this.reportService.getTopDevices().subscribe({
+      next: (devices: any[]) => {
+        console.log('Devices data received:', devices);
+
+        if (!Array.isArray(devices)) {
+          console.warn('Data is not an array:', devices);
+          this.devices = [];
+          this.isLoading = false;
+          this.cdr.detectChanges();
+          return;
+        }
+
         if (devices.length === 0) {
+          console.log('No devices available');
           this.devices = [];
         } else {
-          // Convertir los dispositivos a datos de consumo para la gráfica
-          this.devices = devices.map((device, index) => ({
-            nameKey: this.getDeviceNameKey(device.name),
-            displayName: device.name,
-            consumption: this.generateConsumptionForDevice(device, index),
+          // Convert backend devices to chart data
+          this.devices = devices.slice(0, 3).map((device, index) => ({
+            nameKey: this.getDeviceNameKey(device.deviceName),
+            displayName: device.deviceName,
+            consumption: device.totalConsumption,
             color: this.getDeviceColor(index),
-            percentage: 0 // Se calculará después
+            percentage: 0, // Will be calculated later
+            deviceType: device.deviceType,
+            deviceCategory: device.deviceCategory,
+            deviceId: device.deviceId,
+            period: device.period
           }));
-          
-          // Ordenar por consumo descendente y tomar solo los 3 mejores
-          this.devices.sort((a, b) => b.consumption - a.consumption);
-          this.devices = this.devices.slice(0, 3);
-          
+
+          console.log('Processed devices:', this.devices);
+
           this.calculateMetrics();
         }
         this.isLoading = false;
         this.cdr.detectChanges();
       },
       error: (error) => {
-        console.error('Error loading device data:', error);
+        console.error('Error loading devices data:', error);
+        console.error('Status:', error.status);
+        console.error('Message:', error.message);
+        console.error('URL:', error.url);
+
+        let errorMessage = 'No se pudieron cargar los datos';
+
+        if (error.status === 401) {
+          errorMessage = 'Authentication error. Please login again.';
+          console.error('Error 401: User not authenticated');
+        } else if (error.status === 403) {
+          errorMessage = 'No tiene permisos para acceder a estos datos.';
+        } else if (error.status === 404) {
+          errorMessage = 'No se encontraron dispositivos para este usuario.';
+        } else if (error.status === 0) {
+          errorMessage = 'Connection error. Check your internet connection.';
+        }
+
         this.devices = [];
         this.isLoading = false;
-        this.hasError = false;
+        this.hasError = true;
+        this.errorMessage = `Error ${error.status}: ${errorMessage}`;
         this.cdr.detectChanges();
       }
     });
-  }
-
-  private generateConsumptionForDevice(device: Device, index: number): number {
-    // Generar consumo basado en el tipo de dispositivo y su estado
-    const baseConsumptions: { [key: string]: number } = {
-      'REFRIGERATOR': 120,
-      'AIR_CONDITIONER': 100,
-      'TV': 45,
-      'WASHING_MACHINE': 80,
-      'MICROWAVE': 35,
-      'LAPTOP': 25,
-      'DESKTOP_PC': 60,
-      'SMART_SPEAKER': 15,
-      'SMART_LAMP': 10
-    };
-    
-    let baseConsumption = baseConsumptions[device.type] || 30;
-    
-    // Usar el ID del dispositivo para generar una variación consistente
-    const deviceIdHash = this.hashString(device.id);
-    const variation = 0.8 + (deviceIdHash % 40) / 100; // Variación entre 0.8 y 1.2
-    
-    // Ajustar según el estado del dispositivo
-    if (device.status === 'OFF' || device.status === 'STANDBY') {
-      baseConsumption *= 0.1; // Consumo mínimo cuando está apagado
-    } else if (device.status === 'ON') {
-      baseConsumption *= variation; // Variación determinística
-    }
-    
-    return Math.round(baseConsumption);
-  }
-
-  private hashString(str: string): number {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      const char = str.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
-      hash = hash & hash; // Convert to 32-bit integer
-    }
-    return Math.abs(hash);
   }
 
   private getDeviceColor(index: number): string {
@@ -126,14 +120,24 @@ export class DeviceChart implements OnInit {
 
   private getDeviceNameKey(deviceName: string): string {
     const nameKeyMapping: { [key: string]: string } = {
-      'Refrigerator': 'reports.deviceChart.devices.refrigerator',
-      'Air Conditioner': 'reports.deviceChart.devices.airConditioning',
-      'TV': 'reports.deviceChart.devices.tv',
-      'Laptop': 'reports.deviceChart.devices.laptop',
-      'Smart Speaker': 'reports.deviceChart.devices.smartSpeaker',
-      'Microwave': 'reports.deviceChart.devices.microwave'
+      // English names
+      'Refrigerator': 'refrigerator',
+      'Air Conditioner': 'airConditioning',
+      'TV': 'tv',
+      'Laptop': 'laptop',
+      'Smart Speaker': 'smartSpeaker',
+      'Microwave': 'microwave',
+      'Desktop PC': 'desktopPC',
+      // Spanish names
+      'Refrigerador': 'refrigerator',
+      'Aire Acondicionado': 'airConditioning',
+      'Televisor': 'tv',
+
+      'Altavoz Inteligente': 'smartSpeaker',
+      'Microondas': 'microwave',
+      'PC de Escritorio': 'desktopPC'
     };
-    return nameKeyMapping[deviceName] || `reports.deviceChart.devices.${deviceName.toLowerCase().replace(' ', '')}`;
+    return nameKeyMapping[deviceName] || deviceName.toLowerCase().replace(/\s+/g, '');
   }
 
   private calculateMetrics(): void {
@@ -143,10 +147,10 @@ export class DeviceChart implements OnInit {
       this.topThreePercentage = 0;
       return;
     }
-    
+
     this.totalConsumption = this.devices.reduce((sum, device) => sum + device.consumption, 0);
     this.maxConsumption = Math.max(...this.devices.map(device => device.consumption));
-    
+
     // Calcular porcentajes
     this.devices.forEach(device => {
       device.percentage = this.totalConsumption > 0 ? (device.consumption / this.totalConsumption) * 100 : 0;
@@ -160,10 +164,8 @@ export class DeviceChart implements OnInit {
   }
 
   getBarWidth(consumption: number): number {
-    if (consumption === 0) return 0;
-    const percentage = (consumption / this.maxConsumption) * 100;
-    // Asegurar un ancho mínimo del 5% para valores muy pequeños
-    return Math.max(percentage, 5);
+    if (consumption === 0 || this.maxConsumption === 0) return 0;
+    return (consumption / this.maxConsumption) * 100;
   }
 
   formatConsumption(consumption: number): string {
@@ -171,12 +173,35 @@ export class DeviceChart implements OnInit {
   }
 
   getXAxisLabels(): number[] {
-    // Generar etiquetas basadas en el consumo máximo real
-    const max = Math.ceil(this.maxConsumption / 10) * 10; // Redondear hacia arriba a la decena más cercana
-    const step = max / 6; // 6 divisiones
+    // If no max consumption, return default scale
+    if (this.maxConsumption === 0) {
+      return [0, 1, 2, 3, 4, 5];
+    }
+
+    let maxRounded;
+    let step;
+
+    // For small values (<= 5), use smaller increments
+    if (this.maxConsumption <= 5) {
+      maxRounded = Math.ceil(this.maxConsumption);
+      step = Math.max(maxRounded / 5, 0.2); // Minimum step of 0.2
+    }
+    // Para valores medianos (5-20), usar incrementos de 1
+    else if (this.maxConsumption <= 20) {
+      maxRounded = Math.ceil(this.maxConsumption / 5) * 5;
+      step = maxRounded / 5;
+    }
+    // For large values, use original method
+    else {
+      maxRounded = Math.ceil(this.maxConsumption / 10) * 10;
+      step = maxRounded / 5;
+    }
+
     const labels = [];
-    for (let i = 0; i <= 6; i++) {
-      labels.push(Math.round(i * step));
+    for (let i = 0; i <= 5; i++) {
+      const value = i * step;
+      // Redondear a 1 decimal para evitar problemas de punto flotante
+      labels.push(Math.round(value * 10) / 10);
     }
     return labels;
   }

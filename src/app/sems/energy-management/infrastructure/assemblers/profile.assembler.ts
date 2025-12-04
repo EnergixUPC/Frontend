@@ -12,11 +12,9 @@ export class ProfileAssembler {
       email: dto.email ?? '',
       firstName: dto.firstName ?? '',
       lastName: dto.lastName ?? '',
-      role: dto.role,
-      address: dto.address,
-      phoneNumber: dto.phoneNumber,
-      profilePhotoUrl: dto.profilePhotoUrl,
-      createdAt: dto.createdAt ? new Date(dto.createdAt) : undefined,
+      address: dto.address ?? '',
+      phoneNumber: dto.phone ?? '',
+      profilePhotoUrl: dto.profilePhotoUrl ?? undefined,
       fullName: `${dto.firstName ?? ''} ${dto.lastName ?? ''}`.trim()
     };
   }
@@ -26,7 +24,7 @@ export class ProfileAssembler {
       email: resource.email,
       firstName: resource.firstName,
       lastName: resource.lastName,
-      phoneNumber: resource.phoneNumber,
+      phone: resource.phoneNumber,
       address: resource.address,
       profilePhotoUrl: resource.profilePhotoUrl
     };
