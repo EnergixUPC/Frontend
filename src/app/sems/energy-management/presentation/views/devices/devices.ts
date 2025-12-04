@@ -190,7 +190,7 @@ export class Devices implements OnInit, OnDestroy {
     if (confirmed) {
       console.log('Devices - Attempting to delete device:', deviceId, deviceName);
       
-      // Check token status and user role before deletion
+      // Check authentication status
       const currentUser = this.authController.getCurrentUser();
       const isAuthenticated = this.authController.isAuthenticated();
       console.log('Devices - Auth check before delete - User:', currentUser?.email);
@@ -203,13 +203,7 @@ export class Devices implements OnInit, OnDestroy {
         return;
       }
       
-      // Check if user has admin role
-      if (currentUser?.role !== 'admin' && currentUser?.role !== 'ADMIN') {
-        console.warn('Devices - User role is not admin:', currentUser?.role);
-        alert('Solo los administradores pueden eliminar dispositivos.');
-        return;
-      }
-      
+      // Proceed with deletion - backend will validate permissions
       this.devicesService.deleteDevice(deviceId)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
