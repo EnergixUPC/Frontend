@@ -27,7 +27,12 @@ export class SettingsService {
   updateSettings(userId: string, resource: Partial<SettingsResource>): Observable<SettingsResource> {
     const req = this.assembler.toRequest(resource);
     return this.repo.updateSettings(userId, req).pipe(
-      map(dto => this.assembler.toResource(dto)),
+      map(dto => {
+        const responseResource = this.assembler.toResource(dto);
+        // Optimistic update: Merge request data over response to ensure UI reflects changes
+        // even if backend returns stale data.
+        return { ...responseResource, ...resource };
+      }),
       tap(res => this.store.updateActiveSettings(res))
     );
   }
