@@ -1,26 +1,25 @@
 // src/app/sems/energy-management/domain/model/entities/user-settings.entity.ts
-export interface AutoSavingModeConfig {
-  turnOffPatio: boolean;
-  turnOffDevices: boolean;
-  unplugWeekdays: boolean;
-  runDishwasher: boolean;
-}
 
-export interface NotificationConfig {
-  highConsumption: boolean;
-  summary: boolean;
-  scheduleStart: string;
-  scheduleEnd: string;
+export interface SavingRule {
+  id: number;
+  name: string;
+  isEnabled: boolean;
 }
 
 export interface UserSettingsEntity {
-  id: string;
-  userId: string;
-  autoSavingMode: AutoSavingModeConfig;
-  notifications: NotificationConfig;
-  reportFrequencies: string[];
-  reportFormats: string[];
+  id: number;
+  userId: number;
+  notificationsEnabled: boolean;
+  highConsumptionAlerts: boolean;
+  dailyWeeklySummary: boolean;
+  notificationScheduleStart: string;
+  notificationScheduleEnd: string;
+  reportDaily: boolean;
+  reportWeekly: boolean;
+  reportMonthly: boolean;
+  reportFormatPdf: boolean;
+  reportFormatCsv: boolean;
   twoFactorEnabled: boolean;
-  createdAt: string;
-  updatedAt: string;
+  lastPasswordChange: string;
+  savingRules?: SavingRule[];
 }
