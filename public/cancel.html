@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Payment Cancel Redirect</title>
+  <meta name="robots" content="noindex, nofollow">
+</head>
+<body>
+  <p>Redirecting to payment cancel...</p>
+
+  <script>
+    (function() {
+      try {
+        var params = new URLSearchParams(window.location.search || '');
+        var sessionId = params.get('session_id') || params.get('sessionId') || params.get('id');
+        var target = '/payment-cancel';
+
+        if (sessionId) {
+          window.location.replace(window.location.origin + target + '?session_id=' + encodeURIComponent(sessionId));
+        } else {
+          window.location.replace(window.location.origin + target);
+        }
+      } catch (e) {
+        try { console.error('Redirect error:', e); } catch(err) {}
+      }
+    })();
+  </script>
+
+  <noscript>
+    <meta http-equiv="refresh" content="0; url=/payment-cancel">
+    <p>If you are not redirected automatically, <a href="/payment-cancel">click here</a>.</p>
+  </noscript>
+
+  <p>If you are not redirected automatically, <a id="fallback-cancel" href="/payment-cancel">go to payment cancel</a>.</p>
+
+  <script>
+    (function(){
+      try {
+        var link = document.getElementById('fallback-cancel');
+        if(link && link.style) link.style.display = 'none';
+      } catch(e) {}
+    })();
+  </script>
+</body>
+</html>
