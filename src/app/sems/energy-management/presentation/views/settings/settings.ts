@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Subject, takeUntil, filter } from 'rxjs';
+import { Subject, takeUntil, filter, finalize } from 'rxjs';
 
 import { SettingsService } from '../../../application/services/settings.service';
 import { SettingsStore } from '../../../application/state/settings.store';
@@ -38,6 +38,9 @@ export class Settings implements OnInit, OnDestroy {
   rules: SavingRule[] = [];
   hasChanges = false;
   currentUserId: string | null = null;
+  isLoadingSettings = false;
+  isLoadingRules = false;
+  updatingRules = new Set<number>(); // Track which rules are being updated
 
   constructor(
     private translate: TranslateService,
@@ -53,6 +56,10 @@ export class Settings implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     console.log('Settings ngOnInit');
+    
+    // Inicializar estados de carga
+    this.isLoadingSettings = true;
+    this.isLoadingRules = true;
 
     // Subscribe to auth state to handle page refreshes where user might not be immediately available
     this.authService.authState$
@@ -95,20 +102,38 @@ export class Settings implements OnInit, OnDestroy {
     if (!this.currentUserId) return;
 
     console.log('Loading settings for user:', this.currentUserId);
+    
+    // Activar indicadores de carga
+    this.isLoadingSettings = true;
+    this.isLoadingRules = true;
 
     this.settingsService.loadUserSettings(this.currentUserId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (settings) => {
           console.log('Settings loaded:', settings);
+          
+          // Desactivar indicador de settings
+          this.isLoadingSettings = false;
+          
           if (settings.savingRules) {
             this.rules = settings.savingRules;
             console.log('Rules updated:', this.rules);
+            // Desactivar indicador de rules
+            this.isLoadingRules = false;
+          } else {
+            this.isLoadingRules = false;
           }
+          
           this.cdr.detectChanges(); // Force change detection
         },
         error: (error) => {
           console.error('Failed to load settings:', error);
+          
+          // Desactivar indicadores en caso de error
+          this.isLoadingSettings = false;
+          this.isLoadingRules = false;
+          
           // Solo mostrar error si no es un 404 (que se maneja automáticamente creando defaults)
           if (error.status === 401) {
             this.showError('Unauthorized. Please log in again.');
@@ -224,12 +249,26 @@ export class Settings implements OnInit, OnDestroy {
 
   onDeleteRule(ruleId: string): void {
     console.log('Delete rule clicked:', ruleId);
+    
+    // Agregar a updating para prevenir clics múltiples
+    const numericRuleId = Number(ruleId);
+    this.updatingRules.add(numericRuleId);
+    
     this.settingsService.deleteRule(ruleId)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => {
+          // Remover del set de updating cuando termine
+          this.updatingRules.delete(numericRuleId);
+        })
+      )
       .subscribe({
         next: () => {
-          console.log('Rule deleted');
-          this.rules = this.rules.filter(r => r.id.toString() !== ruleId);
+          console.log('Rule deleted successfully');
+          
+          // Recargar completamente los settings para asegurar consistencia
+          this.loadSettings();
+          
           this.showSuccess('Rule deleted successfully');
         },
         error: (err) => {
@@ -240,25 +279,41 @@ export class Settings implements OnInit, OnDestroy {
   }
 
   onToggleRule(rule: SavingRule): void {
+    const ruleId = Number(rule.id);
+    
+    // Prevenir clics múltiples en la misma regla
+    if (this.updatingRules.has(ruleId)) {
+      console.log('Rule update already in progress for:', ruleId);
+      return;
+    }
+    
     console.log('Toggle rule:', rule.id, !rule.isEnabled);
+    
+    // Marcar como en proceso de actualización
+    this.updatingRules.add(ruleId);
+    
     const updatedRule = { ...rule, isEnabled: !rule.isEnabled };
 
     this.settingsService.updateRule(rule.id.toString(), updatedRule)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => {
+          // Remover del set de updating cuando termine (éxito o error)
+          this.updatingRules.delete(ruleId);
+        })
+      )
       .subscribe({
         next: (res) => {
-          console.log('Rule updated:', res);
-          const index = this.rules.findIndex(r => r.id === rule.id);
-          if (index !== -1) {
-            this.rules[index] = res;
-          }
+          console.log('Rule updated successfully:', res);
+          
+          // En lugar de modificar el array, recargar completamente los datos
+          this.loadSettings();
+          
           this.showSuccess('Rule updated successfully');
         },
         error: (err) => {
           console.error('Failed to update rule:', err);
           this.showError('Failed to update rule');
-          // Revert change in UI if needed, but here we rely on the list refresh or optimistic update
-          rule.isEnabled = !rule.isEnabled; // Revert
         }
       });
   }

@@ -9,12 +9,23 @@
           <h2>{{ t('settings.autoSavingMode.title') }}</h2>
           <button mat-mini-fab color="primary" class="add-btn" (click)="onAddNewRule()">+</button>
         </div>
-        <div class="toggles">
-          <div *ngFor="let rule of rules; trackBy: trackByRuleId" class="rule-item">
-            <mat-checkbox [checked]="rule.isEnabled" (change)="onToggleRule(rule)">
+        
+        <!-- Loading state para rules -->
+        <div *ngIf="isLoadingRules" class="loading-container">
+          <p>Loading rules...</p>
+        </div>
+        
+        <!-- Content cuando no está cargando -->
+        <div *ngIf="!isLoadingRules" class="toggles">
+          <div *ngFor="let rule of rules; trackBy: trackByRuleId" class="rule-item" [class.updating]="updatingRules.has(rule.id)">
+            <mat-checkbox [checked]="rule.isEnabled" 
+                         [disabled]="updatingRules.has(rule.id)"
+                         (change)="onToggleRule(rule)">
               {{ rule.name }}
             </mat-checkbox>
-            <button mat-icon-button color="warn" (click)="onDeleteRule(rule.id.toString())">
+            <button mat-icon-button color="warn" 
+                   [disabled]="updatingRules.has(rule.id)"
+                   (click)="onDeleteRule(rule.id.toString())">
               <span class="material-icons">delete</span>
             </button>
           </div>
@@ -27,6 +38,14 @@
       <!-- Notifications -->
       <div class="card">
         <h2>{{ t('settings.notifications.title') }}</h2>
+        
+        <!-- Loading state para notifications -->
+        <div *ngIf="isLoadingSettings" class="loading-container">
+          <p>Loading notifications...</p>
+        </div>
+        
+        <!-- Content cuando no está cargando -->
+        <div *ngIf="!isLoadingSettings">
         <div class="toggles">
           <mat-checkbox [checked]="editableSettings.highConsumptionAlerts"
             (change)="onNotificationChange('highConsumption', $event.checked)">
@@ -48,6 +67,7 @@
             {{ t('settings.notifications.edit') }}
           </button>
         </p>
+        </div>
       </div>
 
       <!-- Support -->
