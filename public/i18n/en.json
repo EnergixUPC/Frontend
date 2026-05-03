@@ -313,64 +313,47 @@
       "usage_spike": "A usage spike of {{percent}}% was detected in the last hours."
     }
   },
-  "payments": {
-    "plans": {
-      "title": "Plans",
-      "subtitle": "Get full access and start saving today.",
-      "cta": "Subscribe",
-      "basic": {
-        "title": "Basic",
-        "tagline": "Perfect for your home",
-        "price": "S/15",
-        "period": "/month",
-        "features": {
-          "monitoring": "Real-time consumption monitoring",
-          "alerts": "Excess consumption alerts",
-          "reports": "Monthly savings reports",
-          "support": "Email support"
-        }
-      },
-      "premium": {
-        "title": "Premium",
-        "tagline": "For demanding users",
-        "badge": "Premium",
-        "price": "S/25",
-        "period": "/month",
-        "features": {
-          "includesBasic": "Everything in the Basic plan",
-          "deviceAnalysis": "Detailed device analysis",
-          "savingsTips": "Personalized savings recommendations",
-          "comparisons": "Comparisons with similar homes",
-          "prioritySupport": "Priority support 24/7"
-        }
-      },
-      "annual": {
-        "title": "Annual",
-        "tagline": "The complete solution",
-        "price": "S/160",
-        "period": "/year",
-        "features": {
-          "includesPremium": "All Premium features for a full year",
-          "savings": "Save more than 30%",
-          "earlyAccess": "Early access to new features",
-          "freeInstall": "Free smart device installation"
-        }
+  "plans": {
+    "title": "Plans",
+    "subtitle": "Get full access and start saving today.",
+    "cta": "Subscribe",
+    "basic": {
+      "title": "Basic",
+      "tagline": "Perfect for your home",
+      "price": "S/15",
+      "period": "/month",
+      "features": {
+        "monitoring": "Real-time consumption monitoring",
+        "alerts": "Excess consumption alerts",
+        "reports": "Monthly savings reports",
+        "support": "Email support"
       }
     },
-    "success": {
-      "title": "Payment Successful!",
-      "message": "Your payment has been processed successfully. Thank you for your purchase.",
-      "sessionId": "Session ID",
-      "goToHome": "Go to Home",
-      "viewHistory": "View History",
-      "info": "You will receive a confirmation email shortly. The payment will be reflected in your history."
+    "premium": {
+      "title": "Premium",
+      "tagline": "For demanding users",
+      "badge": "Premium",
+      "price": "S/25",
+      "period": "/month",
+      "features": {
+        "includesBasic": "Everything in the Basic plan",
+        "deviceAnalysis": "Detailed device analysis",
+        "savingsTips": "Personalized savings recommendations",
+        "comparisons": "Comparisons with similar homes",
+        "prioritySupport": "Priority support 24/7"
+      }
     },
-    "cancel": {
-      "title": "Payment Cancelled",
-      "message": "You have cancelled the payment process. No charges have been made.",
-      "tryAgain": "Try Again",
-      "goToHome": "Go to Home",
-      "info": "If you experienced any issues, please contact support."
+    "annual": {
+      "title": "Annual",
+      "tagline": "The complete solution",
+      "price": "S/160",
+      "period": "/year",
+      "features": {
+        "includesPremium": "All Premium features for a full year",
+        "savings": "Save more than 30%",
+        "earlyAccess": "Early access to new features",
+        "freeInstall": "Free smart device installation"
+      }
     }
   }
 }

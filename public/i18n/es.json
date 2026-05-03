@@ -313,64 +313,47 @@
       "usage_spike": "Se ha detectado un pico de uso del {{percent}}% en las ltimas horas."
     }
   },
-  "payments": {
-    "plans": {
-      "title": "Planes",
-      "subtitle": "Obtén acceso completo y comienza a ahorrar hoy mismo.",
-      "cta": "Suscribirse",
-      "basic": {
-        "title": "Básico",
-        "tagline": "Perfecto para tu hogar",
-        "price": "S/15",
-        "period": "/mes",
-        "features": {
-          "monitoring": "Monitoreo de consumo en tiempo real",
-          "alerts": "Alertas de consumo excesivo",
-          "reports": "Reportes mensuales de ahorro",
-          "support": "Soporte por correo electrónico"
-        }
-      },
-      "premium": {
-        "title": "Premium",
-        "tagline": "Para usuarios exigentes",
-        "badge": "Premium",
-        "price": "S/25",
-        "period": "/mes",
-        "features": {
-          "includesBasic": "Todo lo del plan Básico",
-          "deviceAnalysis": "Análisis detallado por dispositivo",
-          "savingsTips": "Recomendaciones personalizadas de ahorro",
-          "comparisons": "Comparativas con hogares similares",
-          "prioritySupport": "Soporte prioritario 24/7"
-        }
-      },
-      "annual": {
-        "title": "Anual",
-        "tagline": "La solución completa",
-        "price": "S/160",
-        "period": "/año",
-        "features": {
-          "includesPremium": "Todo lo del plan Premium por un año",
-          "savings": "Ahorra más de un 30%",
-          "earlyAccess": "Acceso anticipado a nuevas funcionalidades",
-          "freeInstall": "Instalación de un dispositivo inteligente gratis"
-        }
+  "plans": {
+    "title": "Planes",
+    "subtitle": "Obtén acceso completo y comienza a ahorrar hoy mismo.",
+    "cta": "Suscribirse",
+    "basic": {
+      "title": "Básico",
+      "tagline": "Perfecto para tu hogar",
+      "price": "S/15",
+      "period": "/mes",
+      "features": {
+        "monitoring": "Monitoreo de consumo en tiempo real",
+        "alerts": "Alertas de consumo excesivo",
+        "reports": "Reportes mensuales de ahorro",
+        "support": "Soporte por correo electrónico"
       }
     },
-    "success": {
-      "title": "¡Pago Exitoso!",
-      "message": "Tu pago ha sido procesado correctamente. Gracias por tu compra.",
-      "sessionId": "ID de Sesión",
-      "goToHome": "Ir al Inicio",
-      "viewHistory": "Ver Historial",
-      "info": "Recibirás un correo de confirmación en breve. El pago se reflejará en tu historial."
+    "premium": {
+      "title": "Premium",
+      "tagline": "Para usuarios exigentes",
+      "badge": "Premium",
+      "price": "S/25",
+      "period": "/mes",
+      "features": {
+        "includesBasic": "Todo lo del plan Básico",
+        "deviceAnalysis": "Análisis detallado por dispositivo",
+        "savingsTips": "Recomendaciones personalizadas de ahorro",
+        "comparisons": "Comparativas con hogares similares",
+        "prioritySupport": "Soporte prioritario 24/7"
+      }
     },
-    "cancel": {
-      "title": "Pago Cancelado",
-      "message": "Has cancelado el proceso de pago. No se ha realizado ningún cargo.",
-      "tryAgain": "Intentar Nuevamente",
-      "goToHome": "Ir al Inicio",
-      "info": "Si experimentaste algún problema, por favor contacta con soporte."
+    "annual": {
+      "title": "Anual",
+      "tagline": "La solución completa",
+      "price": "S/160",
+      "period": "/año",
+      "features": {
+        "includesPremium": "Todo lo del plan Premium por un año",
+        "savings": "Ahorra más de un 30%",
+        "earlyAccess": "Acceso anticipado a nuevas funcionalidades",
+        "freeInstall": "Instalación de un dispositivo inteligente gratis"
+      }
     }
   }
 }

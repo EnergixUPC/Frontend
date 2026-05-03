@@ -31,26 +31,26 @@ export class PaymentResource {
 
   getPaymentHistory(userId: string): Observable<PaymentHistoryResponse> {
     return this.http.get<PaymentHistoryResponse>(
-      `${this.baseUrl}/api/payments/history/${userId}`
+      `${this.baseUrl}/api/plans/history/${userId}`
     );
   }
 
   getPaymentById(paymentId: string): Observable<PaymentResponse> {
     return this.http.get<PaymentResponse>(
-      `${this.baseUrl}/api/payments/${paymentId}`
+      `${this.baseUrl}/api/plans/${paymentId}`
     );
   }
 
   createPaymentIntent(request: CreatePaymentIntentRequest): Observable<PaymentIntentResponse> {
     return this.http.post<PaymentIntentResponse>(
-      `${this.baseUrl}/api/payments/create-intent`,
+      `${this.baseUrl}/api/plans/create-intent`,
       request.toJson()
     );
   }
 
   confirmPayment(request: ConfirmPaymentRequest): Observable<any> {
     return this.http.post<any>(
-      `${this.baseUrl}/api/payments/confirm`,
+      `${this.baseUrl}/api/plans/confirm`,
       request.toJson()
     );
   }
