@@ -1,7 +1,6 @@
 {
   "auth": {
     "login": {
-      "title": "SEMS",
       "email": "Correo Electrónico",
       "password": "Contraseña",
       "emailPlaceholder": "Correo Electrónico",
@@ -13,9 +12,7 @@
       "errors": {
         "required": "Este campo es obligatorio",
         "email": "Por favor ingrese un email válido",
-        "minLength": "Mínimo {{length}} caracteres requeridos",
-        "invalidCredentials": "Usuario o contraseña incorrectos",
-        "networkError": "Error de red. Por favor intente nuevamente."
+        "minLength": "Mínimo {{length}} caracteres requeridos"
       },
       "success": "Inicio de sesión exitoso"
     },
@@ -25,7 +22,6 @@
       "firstName": "Nombre",
       "lastName": "Apellido",
       "email": "Correo Electrónico",
-      "username": "Nombre de Usuario",
       "password": "Contraseña",
       "confirmPassword": "Confirmar Contraseña",
       "phoneNumber": "Teléfono",
@@ -46,25 +42,17 @@
           "minlength": "El apellido debe tener al menos 2 caracteres"
         },
         "email": {
-          "required": "El correo electrónico es requerido",
-          "email": "Por favor ingrese un correo válido"
-        },
-        "username": {
-          "required": "El nombre de usuario es requerido",
-          "minlength": "El nombre de usuario debe tener al menos 3 caracteres"
+          "required": "El correo electrónico es requerido"
         },
         "password": {
           "required": "La contraseña es requerida",
-          "minlength": "La contraseña debe tener al menos 6 caracteres",
-          "strongPassword": "La contraseña debe contener al menos: 8 caracteres, 1 mayúscula, 1 minúscula y 1 número"
+          "minlength": "La contraseña debe tener al menos 6 caracteres"
         },
         "confirmPassword": {
-          "required": "Confirma tu contraseña",
-          "passwordMismatch": "Las contraseñas no coinciden"
+          "required": "Confirma tu contraseña"
         },
         "phoneNumber": {
-          "required": "El teléfono es requerido",
-          "phone": "Formato inválido. Usa: +51 987654321"
+          "required": "El teléfono es requerido"
         },
         "address": {
           "required": "La dirección es requerida",
@@ -86,27 +74,19 @@
       "monthlySavingGoal": "Meta de ahorro mensual",
       "consumption": "Consumo",
       "devices": "Dispositivos",
-      "noData": "Sin datos disponibles",
-      "noDevices": "Sin dispositivos registrados",
       "extraConsumption": "consumo extra",
       "noSavings": "Sin ahorros",
       "saved": "ahorrado",
-      "active": "activos",
-      "weeklyPeriod": "semanal"
+      "active": "activos"
     },
     "charts": {
       "dailyConsumption": "Consumo Diario de Energía",
-      "consumptionByCategory": "Consumo de Energía",
-      "byCategory": "Por categoría",
       "monthlyComparison": "Consumo Mensual",
       "comparison": "Comparación",
       "consumption": "Consumo",
       "categoryConsumption": "Consumo por Categoría",
       "noData": "Sin datos disponibles",
       "noConsumptionData": "Sin datos de consumo",
-      "noConsumptionMessage": "Comienza a usar tus dispositivos para ver los datos de consumo de energía aquí.",
-      "noCategoryData": "Sin datos por categoría",
-      "noCategoryMessage": "Registra dispositivos para ver el consumo por categoría.",
       "noMonthlyData": "Sin datos mensuales",
       "noMonthlyMessage": "Usa el sistema durante un mes para ver comparaciones de consumo.",
       "monthlyConsumption": "Consumo Mensual",
@@ -119,18 +99,6 @@
       "tv": "Televisor"
     },
     "months": {
-      "Jan": "Ene",
-      "Feb": "Feb",
-      "Mar": "Mar",
-      "Apr": "Abr",
-      "May": "May",
-      "Jun": "Jun",
-      "Jul": "Jul",
-      "Aug": "Ago",
-      "Sep": "Sep",
-      "Oct": "Oct",
-      "Nov": "Nov",
-      "Dec": "Dic",
       "january": "Enero",
       "february": "Febrero",
       "march": "Marzo",
@@ -142,8 +110,7 @@
       "september": "Septiembre",
       "october": "Octubre",
       "november": "Noviembre",
-      "december": "Diciembre",
-      "sept": "Septiembre"
+      "december": "Diciembre"
     },
     "units": {
       "kwh": "kWh",
@@ -151,8 +118,7 @@
       "percentage": "%"
     },
     "axes": {
-      "time": "Tiempo",
-      "consumption": "Consumo"
+      "time": "Tiempo"
     },
     "devices": {
       "title": "Mis Dispositivos",
@@ -170,12 +136,6 @@
         "off": "Apagado",
         "standby": "En espera",
         "charging": "Cargando"
-      },
-      "lastActiveTime": {
-        "now": "Ahora",
-        "minutesAgo": "hace {{minutes}} minutos",
-        "hourAgo": "hace 1 hora",
-        "hoursAgo": "hace {{hours}} horas"
       },
       "alerts": {
         "noAlerts": "Sin alertas",
@@ -201,12 +161,8 @@
         "name": "Nombre del Dispositivo",
         "category": "Categoría",
         "type": "Tipo",
-        "brand": "Marca",
-        "model": "Modelo",
         "status": "Estado",
         "lastActive": "Última Actividad",
-        "alertHistory": "Historial de Alertas",
-        "energyConsumption": "Consumo de Energía",
         "location": "Ubicación",
         "isActive": "Activo"
       }
@@ -254,10 +210,7 @@
     },
     "weeklyChart": {
       "title": "Tendencia de Consumo Semanal",
-      "weeklyAverage": "Promedio Semanal",
       "weeklyAverageMessage": "Promedio de consumo semanal",
-      "comparison": "Tu consumo esta semana es 5% menor que la semana pasada.",
-      "encouragement": "¡Sigue así!",
       "noData": "No hay datos de consumo disponibles",
       "days": {
         "MON": "LUN",
@@ -272,16 +225,7 @@
     "deviceChart": {
       "title": "Ranking de Dispositivos",
       "summary": "Mostrando tus 3 dispositivos principales con el mayor consumo energético este mes.",
-      "noData": "No hay datos de dispositivos disponibles",
-      "devices": {
-        "airConditioning": "Aire Acondicionado",
-        "refrigerator": "Refrigerador",
-        "tv": "Televisor",
-        "laptop": "Portátil",
-        "smartSpeaker": "Altavoz Inteligente",
-        "microwave": "Microondas",
-        "desktopPC": "PC de Escritorio"
-      }
+      "noData": "No hay datos de dispositivos disponibles"
     },
     "export": {
       "title": "Exportar Reporte",
@@ -291,18 +235,13 @@
         "lastMonth": "Último Mes",
         "lastWeek": "Última Semana"
       },
-      "emailPlaceholder": "Ingresa dirección de email",
       "buttons": {
         "download": "Descargar",
-        "sendReport": "Enviar Reporte",
-        "downloading": "Descargando...",
-        "sending": "Enviando..."
+        "downloading": "Descargando..."
       },
       "alerts": {
-        "emailRequired": "Por favor ingresa una dirección de email válida",
         "downloadSuccess": "¡Reporte {{format}} para {{period}} descargado exitosamente!",
-        "downloadError": "Error al descargar el reporte. Inténtalo nuevamente.",
-        "sendSuccess": "¡Reporte {{format}} para {{period}} enviado a {{email}} exitosamente!"
+        "downloadError": "Error al descargar el reporte. Inténtalo nuevamente."
       }
     }
   },
@@ -311,35 +250,24 @@
     "profile": "Perfil",
     "devices": "Dispositivos",
     "reports": "Reportes",
-    "payments": "Pagos",
+    "payments": "Planes",
     "settings": "Configuración",
     "logout": "Cerrar Sesión"
   },
   "common": {
-    "language": "Idioma",
-    "english": "Inglés",
-    "spanish": "Español",
     "close": "Cerrar",
     "loading": "Cargando...",
     "saving": "Guardando...",
     "retry": "Reintentar",
-    "error": "Error",
-    "success": "Éxito",
     "status": {
       "on": "ENCENDIDO",
-      "off": "APAGADO",
-      "active": "Activo",
-      "inactive": "Inactivo"
+      "off": "APAGADO"
     }
   },
   "settings": {
     "title": "Configuración",
     "autoSavingMode": {
-      "title": "Modo de Ahorro Automático",
-      "turnOffPatio": "Apagar luces del patio a las 12 AM",
-      "turnOffDevices": "Apagar dispositivos al salir de casa",
-      "unplugWeekdays": "Desconectar electrónicos entre semana a las 10 PM",
-      "runDishwasher": "Usar lavavajillas en horas valle"
+      "title": "Modo de Ahorro Automático"
     },
     "notifications": {
       "title": "Notificaciones y Alertas",
@@ -348,26 +276,11 @@
       "schedule": "Horario de notificaciones: {{start}} - {{end}}",
       "edit": "Editar"
     },
-    "reports": {
-      "title": "Reportes Personalizados",
-      "frequency": "Frecuencia del reporte",
-      "daily": "Diario",
-      "weekly": "Semanal",
-      "monthly": "Mensual",
-      "format": "Formato",
-      "pdf": "PDF",
-      "csv": "CSV"
-    },
     "support": {
       "title": "Soporte y Ayuda",
       "helpCenter": "Centro de ayuda / Preguntas frecuentes",
       "contact": "Contactar Soporte",
       "tutorials": "Tutoriales y Guías"
-    },
-    "security": {
-      "title": "Seguridad y Privacidad",
-      "changePassword": "Cambiar Contraseña",
-      "twoFA": "Autenticación 2FA"
     },
     "actions": {
       "save": "Guardar",
@@ -379,7 +292,6 @@
     "firstName": "Nombre",
     "lastName": "Apellido",
     "email": "Correo Electrónico",
-    "username": "Nombre de Usuario",
     "address": "Dirección",
     "phoneNumber": "Teléfono",
     "editButton": "Editar Perfil",
@@ -393,11 +305,6 @@
     "title": "Notificaciones",
     "newNotifications": "nuevas",
     "noNotifications": "No hay notificaciones",
-    "types": {
-      "success": "Éxito",
-      "warning": "Advertencia",
-      "info": "Información"
-    },
     "messages": {
       "maintenance": "El dispositivo requiere mantenimiento preventivo.",
       "uptime_warning": "Tu dispositivo ha estado encendido por más de 24 horas. Considera apagarlo para ahorrar energía.",
@@ -407,36 +314,48 @@
     }
   },
   "payments": {
-    "title": "Pagos",
-    "subtitle": "Gestiona tus pagos de facturas de energía",
-    "form": {
-      "title": "Realizar Pago",
-      "estimatedBill": "Factura Estimada",
-      "amount": "Monto a Pagar",
-      "amountPlaceholder": "Ingrese el monto",
-      "useEstimated": "Usar Factura Estimada",
-      "payButton": "Proceder al Pago",
-      "processing": "Procesando...",
-      "info": "Serás redirigido a una página segura de pago de Stripe. El pago se abrirá en una nueva pestaña.",
-      "errors": {
-        "required": "El monto es requerido",
-        "minAmount": "El monto debe ser mayor a $1"
+    "plans": {
+      "title": "Planes",
+      "subtitle": "Obtén acceso completo y comienza a ahorrar hoy mismo.",
+      "cta": "Suscribirse",
+      "basic": {
+        "title": "Básico",
+        "tagline": "Perfecto para tu hogar",
+        "price": "S/15",
+        "period": "/mes",
+        "features": {
+          "monitoring": "Monitoreo de consumo en tiempo real",
+          "alerts": "Alertas de consumo excesivo",
+          "reports": "Reportes mensuales de ahorro",
+          "support": "Soporte por correo electrónico"
+        }
+      },
+      "premium": {
+        "title": "Premium",
+        "tagline": "Para usuarios exigentes",
+        "badge": "Premium",
+        "price": "S/25",
+        "period": "/mes",
+        "features": {
+          "includesBasic": "Todo lo del plan Básico",
+          "deviceAnalysis": "Análisis detallado por dispositivo",
+          "savingsTips": "Recomendaciones personalizadas de ahorro",
+          "comparisons": "Comparativas con hogares similares",
+          "prioritySupport": "Soporte prioritario 24/7"
+        }
+      },
+      "annual": {
+        "title": "Anual",
+        "tagline": "La solución completa",
+        "price": "S/160",
+        "period": "/año",
+        "features": {
+          "includesPremium": "Todo lo del plan Premium por un año",
+          "savings": "Ahorra más de un 30%",
+          "earlyAccess": "Acceso anticipado a nuevas funcionalidades",
+          "freeInstall": "Instalación de un dispositivo inteligente gratis"
+        }
       }
-    },
-    "history": {
-      "title": "Historial de Pagos",
-      "noPayments": "No hay pagos registrados",
-      "status": {
-        "succeeded": "Exitoso",
-        "pending": "Pendiente",
-        "failed": "Fallido",
-        "completed": "Completado"
-      }
-    },
-    "messages": {
-      "redirecting": "Redirigiendo a la página de pago...",
-      "error": "Error al crear la sesión de pago. Por favor intenta nuevamente.",
-      "close": "Cerrar"
     },
     "success": {
       "title": "¡Pago Exitoso!",

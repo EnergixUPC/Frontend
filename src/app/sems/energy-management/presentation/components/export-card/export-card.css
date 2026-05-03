@@ -80,25 +80,6 @@
   white-space: nowrap;
 }
 
-.email-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.email-input {
-  width: 250px;
-  max-width: 100%;
-  min-width: 150px;
-  padding: 10px 16px;
-  border: 2px solid #000000 !important;
-  border-radius: 6px;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.3s ease;
-  flex: none;
-}
 
 .download-button {
   padding: 10px 24px;
@@ -117,22 +98,6 @@
   white-space: nowrap;
 }
 
-.send-button {
-  padding: 10px 20px;
-  background: #1976d2;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 120px;
-  white-space: nowrap;
-}
 
 .loading-text {
   display: flex;
@@ -155,16 +120,6 @@
   }
 }
 
-.send-button:hover:not(:disabled) {
-  background: #1565c0;
-  transform: translateY(-1px);
-}
-
-.send-button:disabled {
-  background: #bdc3c7;
-  cursor: not-allowed;
-  transform: none;
-}
 
 .download-button:hover:not(:disabled) {
   background: #333333;
@@ -207,13 +162,6 @@
   font-weight: bold;
 }
 
-.email-input:focus {
-  border-color: #000000 !important;
-}
-
-.email-input.invalid {
-  border-color: #e74c3c !important;
-}
 
 .format-dropdown:focus {
   border-color: #000000 !important;
@@ -279,17 +227,6 @@
     justify-content: flex-start;
   }
 
-  .email-row {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .email-input {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-
-  .send-button,
   .download-button {
     width: 100%;
     min-width: auto;
@@ -328,12 +265,6 @@
     font-size: 13px;
   }
 
-  .email-input {
-    padding: 8px 12px;
-    font-size: 13px;
-  }
-
-  .send-button,
   .download-button {
     padding: 8px 16px;
     font-size: 13px;
@@ -366,19 +297,4 @@
     min-width: 300px;
   }
 
-  .email-row {
-    flex-direction: row;
-    width: 100%;
-  }
-
-  .email-input {
-    flex: 1;
-    width: auto !important;
-    max-width: none !important;
-  }
-
-  .send-button {
-    width: auto;
-    min-width: 120px;
-  }
 }
