@@ -33,7 +33,7 @@ export class Sidebar implements OnInit {
     { labelKey: 'sidebar.profile', icon: 'person', route: '/profile', active: false },
     { labelKey: 'sidebar.devices', icon: 'devices', route: '/devices', active: false },
     { labelKey: 'sidebar.reports', icon: 'assessment', route: '/reports', active: false },
-    { labelKey: 'sidebar.payments', icon: 'payment', route: '/payments', active: false },
+    { labelKey: 'sidebar.plans', icon: 'payment', route: '/plans', active: false },
     { labelKey: 'sidebar.settings', icon: 'settings', route: '/settings', active: false }
   ];
 
