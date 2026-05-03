@@ -250,7 +250,7 @@
     "profile": "Profile",
     "devices": "Devices",
     "reports": "Reports",
-    "payments": "Payments",
+    "payments": "Plans",
     "settings": "Settings",
     "logout": "Log out"
   },
@@ -314,36 +314,48 @@
     }
   },
   "payments": {
-    "title": "Payments",
-    "subtitle": "Manage your energy bill payments",
-    "form": {
-      "title": "Make Payment",
-      "estimatedBill": "Estimated Bill",
-      "amount": "Amount to Pay",
-      "amountPlaceholder": "Enter amount",
-      "useEstimated": "Use Estimated Bill",
-      "payButton": "Proceed to Payment",
-      "processing": "Processing...",
-      "info": "You will be redirected to a secure Stripe payment page. The payment will open in a new tab.",
-      "errors": {
-        "required": "Amount is required",
-        "minAmount": "Amount must be greater than $1"
+    "plans": {
+      "title": "Plans",
+      "subtitle": "Get full access and start saving today.",
+      "cta": "Subscribe",
+      "basic": {
+        "title": "Basic",
+        "tagline": "Perfect for your home",
+        "price": "S/15",
+        "period": "/month",
+        "features": {
+          "monitoring": "Real-time consumption monitoring",
+          "alerts": "Excess consumption alerts",
+          "reports": "Monthly savings reports",
+          "support": "Email support"
+        }
+      },
+      "premium": {
+        "title": "Premium",
+        "tagline": "For demanding users",
+        "badge": "Premium",
+        "price": "S/25",
+        "period": "/month",
+        "features": {
+          "includesBasic": "Everything in the Basic plan",
+          "deviceAnalysis": "Detailed device analysis",
+          "savingsTips": "Personalized savings recommendations",
+          "comparisons": "Comparisons with similar homes",
+          "prioritySupport": "Priority support 24/7"
+        }
+      },
+      "annual": {
+        "title": "Annual",
+        "tagline": "The complete solution",
+        "price": "S/160",
+        "period": "/year",
+        "features": {
+          "includesPremium": "All Premium features for a full year",
+          "savings": "Save more than 30%",
+          "earlyAccess": "Early access to new features",
+          "freeInstall": "Free smart device installation"
+        }
       }
-    },
-    "history": {
-      "title": "Payment History",
-      "noPayments": "No payments recorded",
-      "status": {
-        "succeeded": "Successful",
-        "pending": "Pending",
-        "failed": "Failed",
-        "completed": "Completed"
-      }
-    },
-    "messages": {
-      "redirecting": "Redirecting to payment page...",
-      "error": "Error creating payment session. Please try again.",
-      "close": "Close"
     },
     "success": {
       "title": "Payment Successful!",
