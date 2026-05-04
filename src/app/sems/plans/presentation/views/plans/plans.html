@@ -29,8 +29,13 @@
         </ul>
       </div>
 
-      <button class="plan-cta" type="button">
-        {{ 'plans.cta' | translate }}
+      <button
+        class="plan-cta"
+        type="button"
+        [class.is-current]="plan.type === 'basic'"
+        [disabled]="plan.type === 'basic'"
+        (click)="onSubscribe(plan)">
+        {{ (plan.type === 'basic' ? 'plans.currentPlan' : 'plans.cta') | translate }}
       </button>
     </div>
   </div>

@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 interface PlanCard {
+  type: 'basic' | 'premium' | 'annual';
   titleKey: string;
   taglineKey: string;
   priceKey: string;
@@ -27,6 +29,7 @@ interface PlanCard {
 export class Plans {
   plans: PlanCard[] = [
     {
+      type: 'basic',
       titleKey: 'plans.basic.title',
       taglineKey: 'plans.basic.tagline',
       priceKey: 'plans.basic.price',
@@ -39,6 +42,7 @@ export class Plans {
       ]
     },
     {
+      type: 'premium',
       titleKey: 'plans.premium.title',
       taglineKey: 'plans.premium.tagline',
       priceKey: 'plans.premium.price',
@@ -54,6 +58,7 @@ export class Plans {
       ]
     },
     {
+      type: 'annual',
       titleKey: 'plans.annual.title',
       taglineKey: 'plans.annual.tagline',
       priceKey: 'plans.annual.price',
@@ -66,4 +71,12 @@ export class Plans {
       ]
     }
   ];
+
+  constructor(private router: Router) {}
+
+  onSubscribe(plan: PlanCard): void {
+    if (plan.type === 'premium' || plan.type === 'annual') {
+      this.router.navigate(['/plans/payments'], { queryParams: { plan: plan.type } });
+    }
+  }
 }

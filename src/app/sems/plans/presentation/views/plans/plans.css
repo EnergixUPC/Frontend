@@ -155,6 +155,20 @@
   transform: translateY(-1px);
 }
 
+.plan-cta.is-current,
+.plan-cta:disabled {
+  background: #8199dc;
+  color: #1f2937;
+  cursor: default;
+  transform: none;
+}
+
+.plan-cta.is-current:hover,
+.plan-cta:disabled:hover {
+  background: #8199dc;
+  transform: none;
+}
+
 .plan-card.featured .plan-cta {
   background: #1f3a8a;
 }
