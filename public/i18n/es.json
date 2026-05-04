@@ -250,7 +250,7 @@
     "profile": "Perfil",
     "devices": "Dispositivos",
     "reports": "Reportes",
-    "plans": "Planes",
+    "payments": "Pagos",
     "settings": "Configuración",
     "logout": "Cerrar Sesión"
   },
@@ -311,6 +311,54 @@
       "updated": "El sistema operativo se ha actualizado correctamente.",
       "optimized": "El dispositivo ha optimizado su consumo, ahorrando {{percent}}% de energía.",
       "usage_spike": "Se ha detectado un pico de uso del {{percent}}% en las ltimas horas."
+    }
+  },
+  "payments": {
+    "title": "Pagos",
+    "subtitle": "Gestiona tus pagos de facturas de energía",
+    "form": {
+      "title": "Realizar Pago",
+      "estimatedBill": "Factura Estimada",
+      "amount": "Monto a Pagar",
+      "amountPlaceholder": "Ingrese el monto",
+      "useEstimated": "Usar Factura Estimada",
+      "payButton": "Proceder al Pago",
+      "processing": "Procesando...",
+      "info": "Serás redirigido a una página segura de pago de Stripe. El pago se abrirá en una nueva pestaña.",
+      "errors": {
+        "required": "El monto es requerido",
+        "minAmount": "El monto debe ser mayor a $1"
+      }
+    },
+    "history": {
+      "title": "Historial de Pagos",
+      "noPayments": "No hay pagos registrados",
+      "status": {
+        "succeeded": "Exitoso",
+        "pending": "Pendiente",
+        "failed": "Fallido",
+        "completed": "Completado"
+      }
+    },
+    "messages": {
+      "redirecting": "Redirigiendo a la página de pago...",
+      "error": "Error al crear la sesión de pago. Por favor intenta nuevamente.",
+      "close": "Cerrar"
+    },
+    "success": {
+      "title": "¡Pago Exitoso!",
+      "message": "Tu pago ha sido procesado correctamente. Gracias por tu compra.",
+      "sessionId": "ID de Sesión",
+      "goToHome": "Ir al Inicio",
+      "viewHistory": "Ver Historial",
+      "info": "Recibirás un correo de confirmación en breve. El pago se reflejará en tu historial."
+    },
+    "cancel": {
+      "title": "Pago Cancelado",
+      "message": "Has cancelado el proceso de pago. No se ha realizado ningún cargo.",
+      "tryAgain": "Intentar Nuevamente",
+      "goToHome": "Ir al Inicio",
+      "info": "Si experimentaste algún problema, por favor contacta con soporte."
     }
   },
   "plans": {

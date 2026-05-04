@@ -16,7 +16,7 @@ export interface PaymentResponse {
 }
 
 export interface PaymentHistoryResponse {
-  plans: PaymentResponse[];
+  payments: PaymentResponse[];
 }
 
 export interface PaymentIntentResponse {

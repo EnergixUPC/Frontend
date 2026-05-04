@@ -250,7 +250,7 @@
     "profile": "Profile",
     "devices": "Devices",
     "reports": "Reports",
-    "plans": "Plans",
+    "payments": "Payments",
     "settings": "Settings",
     "logout": "Log out"
   },
@@ -311,6 +311,54 @@
       "updated": "The operating system has been updated successfully.",
       "optimized": "The device optimized its consumption, saving {{percent}}% energy.",
       "usage_spike": "A usage spike of {{percent}}% was detected in the last hours."
+    }
+  },
+  "payments": {
+    "title": "Payments",
+    "subtitle": "Manage your energy bill payments",
+    "form": {
+      "title": "Make Payment",
+      "estimatedBill": "Estimated Bill",
+      "amount": "Amount to Pay",
+      "amountPlaceholder": "Enter amount",
+      "useEstimated": "Use Estimated Bill",
+      "payButton": "Proceed to Payment",
+      "processing": "Processing...",
+      "info": "You will be redirected to a secure Stripe payment page. The payment will open in a new tab.",
+      "errors": {
+        "required": "Amount is required",
+        "minAmount": "Amount must be greater than $1"
+      }
+    },
+    "history": {
+      "title": "Payment History",
+      "noPayments": "No payments recorded",
+      "status": {
+        "succeeded": "Successful",
+        "pending": "Pending",
+        "failed": "Failed",
+        "completed": "Completed"
+      }
+    },
+    "messages": {
+      "redirecting": "Redirecting to payment page...",
+      "error": "Error creating payment session. Please try again.",
+      "close": "Close"
+    },
+    "success": {
+      "title": "Payment Successful!",
+      "message": "Your payment has been processed successfully. Thank you for your purchase.",
+      "sessionId": "Session ID",
+      "goToHome": "Go to Home",
+      "viewHistory": "View History",
+      "info": "You will receive a confirmation email shortly. The payment will be reflected in your history."
+    },
+    "cancel": {
+      "title": "Payment Cancelled",
+      "message": "You have cancelled the payment process. No charges have been made.",
+      "tryAgain": "Try Again",
+      "goToHome": "Go to Home",
+      "info": "If you experienced any issues, please contact support."
     }
   },
   "plans": {

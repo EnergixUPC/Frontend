@@ -31,7 +31,7 @@ export class PaymentRepositoryImpl extends PaymentRepository {
 
   getPaymentHistory(userId: string): Observable<Payment[]> {
     return this.paymentResource.getPaymentHistory(userId).pipe(
-      map(response => this.paymentAssembler.toPaymentEntityList(response.plans))
+      map(response => this.paymentAssembler.toPaymentEntityList(response.payments))
     );
   }
 
