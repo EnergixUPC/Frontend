@@ -1,0 +1,106 @@
+<div class="payments-container">
+  <div class="payments-header">
+    <h1>{{ 'payments.title' | translate }}</h1>
+    <p class="subtitle">{{ 'payments.subtitle' | translate }}</p>
+  </div>
+
+  <div class="content-grid">
+    <!-- Payment Form -->
+    <mat-card class="payment-card">
+      <mat-card-header>
+        <mat-card-title>{{ 'payments.form.title' | translate }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+          <div class="form-section">
+            <div class="estimated-bill-info">
+              <mat-icon>receipt</mat-icon>
+              <div class="bill-details">
+                <span class="bill-label">{{ 'payments.form.estimatedBill' | translate }}</span>
+                <span class="bill-amount">{{ estimatedBill | currency:'USD':'symbol':'1.2-2' }}</span>
+              </div>
+              <button
+                type="button"
+                mat-raised-button
+                color="accent"
+                (click)="useEstimatedBill()"
+                [disabled]="loading">
+                {{ 'payments.form.useEstimated' | translate }}
+              </button>
+            </div>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ 'payments.form.amount' | translate }}</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="amount"
+                [placeholder]="'payments.form.amountPlaceholder' | translate"
+                step="0.01"
+                min="1">
+              <span matPrefix>$&nbsp;</span>
+              <mat-error *ngIf="paymentForm.get('amount')?.hasError('required')">
+                {{ 'payments.form.errors.required' | translate }}
+              </mat-error>
+              <mat-error *ngIf="paymentForm.get('amount')?.hasError('min')">
+                {{ 'payments.form.errors.minAmount' | translate }}
+              </mat-error>
+            </mat-form-field>
+
+            <button
+              type="submit"
+              mat-raised-button
+              color="primary"
+              class="submit-button"
+              [disabled]="paymentForm.invalid || loading">
+              <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+              <span *ngIf="!loading">
+                <mat-icon>payment</mat-icon>
+                {{ 'payments.form.payButton' | translate }}
+              </span>
+              <span *ngIf="loading">{{ 'payments.form.processing' | translate }}</span>
+            </button>
+          </div>
+        </form>
+
+        <div class="payment-info">
+          <mat-icon>info</mat-icon>
+          <p>{{ 'payments.form.info' | translate }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Payment History -->
+    <mat-card class="history-card">
+      <mat-card-header>
+        <mat-card-title>{{ 'payments.history.title' | translate }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="history-list" *ngIf="paymentHistory.length > 0; else noHistory">
+          <div class="history-item" *ngFor="let payment of paymentHistory">
+            <div class="payment-icon">
+              <mat-icon [style.color]="getStatusColor(payment.status)">
+                {{ payment.status === 'succeeded' ? 'check_circle' : 'pending' }}
+              </mat-icon>
+            </div>
+            <div class="payment-details">
+              <div class="payment-amount">{{ payment.amount / 100 | currency:'USD':'symbol':'1.2-2' }}</div>
+              <div class="payment-date">{{ payment.createdAt | date:'short' }}</div>
+              <div class="payment-description" *ngIf="payment.description">{{ payment.description }}</div>
+            </div>
+            <div class="payment-status" [style.color]="getStatusColor(payment.status)">
+              {{ 'payments.history.status.' + payment.status | translate }}
+            </div>
+          </div>
+        </div>
+        <ng-template #noHistory>
+          <div class="no-history">
+            <mat-icon>history</mat-icon>
+            <p>{{ 'payments.history.noPayments' | translate }}</p>
+          </div>
+        </ng-template>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+

@@ -1,0 +1,311 @@
+.payments-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.payments-header {
+  margin-bottom: 2rem;
+}
+
+.payments-header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 1rem;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 968px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.payment-card,
+.history-card {
+  height: fit-content;
+  width: 100%;
+}
+
+mat-card-header {
+  margin-bottom: 1.5rem;
+}
+
+mat-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.estimated-bill-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  border-left: 4px solid #1976d2;
+}
+
+.estimated-bill-info mat-icon {
+  color: #1976d2;
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+}
+
+.bill-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.bill-label {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.bill-amount {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1976d2;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 0.75rem 0;
+  font-size: 1rem;
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.submit-button mat-icon {
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+.submit-button mat-spinner {
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+.payment-info {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: #fff3cd;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.payment-info mat-icon {
+  color: #856404;
+  font-size: 1.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.payment-info p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #856404;
+}
+
+/* Payment History */
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.history-item:hover {
+  background-color: #f0f0f0;
+}
+
+.payment-icon mat-icon {
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+}
+
+.payment-details {
+  flex: 1;
+}
+
+.payment-amount {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.payment-date {
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
+.payment-description {
+  font-size: 0.875rem;
+  color: #888;
+  margin-top: 0.25rem;
+}
+
+.payment-status {
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+}
+
+.no-history {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #999;
+}
+
+.no-history mat-icon {
+  font-size: 4rem;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.no-history p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Loading state */
+button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsive tweaks for smaller screens */
+@media (max-width: 720px) {
+  .payments-container {
+    padding: 1rem;
+  }
+
+  .payments-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+  }
+
+  .estimated-bill-info {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: left;
+    gap: 0.75rem;
+  }
+
+  .estimated-bill-info mat-icon {
+    font-size: 1.75rem;
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .bill-amount {
+    font-size: 1.25rem;
+  }
+
+  .estimated-bill-info button {
+    align-self: flex-end;
+    width: auto;
+  }
+
+  .payment-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .history-list {
+    max-height: 400px;
+  }
+}
+
+/* Extra small screens (mobile narrow) */
+@media (max-width: 420px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .estimated-bill-info {
+    padding: 0.75rem;
+    border-left-width: 3px;
+  }
+
+  .estimated-bill-info button {
+    width: 100%;
+    align-self: stretch;
+  }
+
+  .submit-button {
+    padding: 0.75rem 0;
+    font-size: 1rem;
+  }
+
+  .bill-amount {
+    font-size: 1.15rem;
+  }
+
+  .payment-amount {
+    font-size: 1rem;
+  }
+
+  .history-item {
+    padding: 0.75rem;
+  }
+}
+
+/* Ensure mat-card uses full width on small screens and has consistent padding */
+mat-card {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Make action buttons readable and centered on tiny screens */
+@media (max-width: 420px) {
+  .submit-button,
+  .estimated-bill-info button {
+    font-weight: 600;
+  }
+}
