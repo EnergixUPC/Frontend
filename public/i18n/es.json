@@ -368,13 +368,13 @@
     "basic": {
       "title": "Básico",
       "tagline": "Perfecto para tu hogar",
-      "price": "S/15",
+      "price": "S/0",
       "period": "/mes",
       "features": {
         "monitoring": "Monitoreo de consumo en tiempo real",
         "alerts": "Alertas de consumo excesivo",
         "reports": "Reportes mensuales de ahorro",
-        "support": "Soporte por correo electrónico"
+        "deviceManagement": "Administración de dispositivos"
       }
     },
     "premium": {

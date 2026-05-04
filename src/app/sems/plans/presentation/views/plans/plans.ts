@@ -35,7 +35,7 @@ export class Plans {
         'plans.basic.features.monitoring',
         'plans.basic.features.alerts',
         'plans.basic.features.reports',
-        'plans.basic.features.support'
+        'plans.basic.features.deviceManagement'
       ]
     },
     {

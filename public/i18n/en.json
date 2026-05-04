@@ -368,13 +368,13 @@
     "basic": {
       "title": "Basic",
       "tagline": "Perfect for your home",
-      "price": "S/15",
+      "price": "S/0",
       "period": "/month",
       "features": {
         "monitoring": "Real-time consumption monitoring",
         "alerts": "Excess consumption alerts",
         "reports": "Monthly savings reports",
-        "support": "Email support"
+        "deviceManagement": "Device management"
       }
     },
     "premium": {
