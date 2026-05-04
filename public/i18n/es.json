@@ -250,7 +250,7 @@
     "profile": "Perfil",
     "devices": "Dispositivos",
     "reports": "Reportes",
-    "payments": "Planes",
+    "plans": "Planes",
     "settings": "Configuración",
     "logout": "Cerrar Sesión"
   },
@@ -314,48 +314,36 @@
     }
   },
   "payments": {
-    "plans": {
-      "title": "Planes",
-      "subtitle": "Obtén acceso completo y comienza a ahorrar hoy mismo.",
-      "cta": "Suscribirse",
-      "basic": {
-        "title": "Básico",
-        "tagline": "Perfecto para tu hogar",
-        "price": "S/15",
-        "period": "/mes",
-        "features": {
-          "monitoring": "Monitoreo de consumo en tiempo real",
-          "alerts": "Alertas de consumo excesivo",
-          "reports": "Reportes mensuales de ahorro",
-          "support": "Soporte por correo electrónico"
-        }
-      },
-      "premium": {
-        "title": "Premium",
-        "tagline": "Para usuarios exigentes",
-        "badge": "Premium",
-        "price": "S/25",
-        "period": "/mes",
-        "features": {
-          "includesBasic": "Todo lo del plan Básico",
-          "deviceAnalysis": "Análisis detallado por dispositivo",
-          "savingsTips": "Recomendaciones personalizadas de ahorro",
-          "comparisons": "Comparativas con hogares similares",
-          "prioritySupport": "Soporte prioritario 24/7"
-        }
-      },
-      "annual": {
-        "title": "Anual",
-        "tagline": "La solución completa",
-        "price": "S/160",
-        "period": "/año",
-        "features": {
-          "includesPremium": "Todo lo del plan Premium por un año",
-          "savings": "Ahorra más de un 30%",
-          "earlyAccess": "Acceso anticipado a nuevas funcionalidades",
-          "freeInstall": "Instalación de un dispositivo inteligente gratis"
-        }
+    "title": "Pagos",
+    "subtitle": "Gestiona tus pagos de facturas de energía",
+    "form": {
+      "title": "Realizar Pago",
+      "estimatedBill": "Factura Estimada",
+      "amount": "Monto a Pagar",
+      "amountPlaceholder": "Ingrese el monto",
+      "useEstimated": "Usar Factura Estimada",
+      "payButton": "Proceder al Pago",
+      "processing": "Procesando...",
+      "info": "Serás redirigido a una página segura de pago de Stripe. El pago se abrirá en una nueva pestaña.",
+      "errors": {
+        "required": "El monto es requerido",
+        "minAmount": "El monto debe ser mayor a $1"
       }
+    },
+    "history": {
+      "title": "Historial de Pagos",
+      "noPayments": "No hay pagos registrados",
+      "status": {
+        "succeeded": "Exitoso",
+        "pending": "Pendiente",
+        "failed": "Fallido",
+        "completed": "Completado"
+      }
+    },
+    "messages": {
+      "redirecting": "Redirigiendo a la página de pago...",
+      "error": "Error al crear la sesión de pago. Por favor intenta nuevamente.",
+      "close": "Cerrar"
     },
     "success": {
       "title": "¡Pago Exitoso!",
@@ -371,6 +359,50 @@
       "tryAgain": "Intentar Nuevamente",
       "goToHome": "Ir al Inicio",
       "info": "Si experimentaste algún problema, por favor contacta con soporte."
+    }
+  },
+  "plans": {
+    "title": "Planes",
+    "subtitle": "Obtén acceso completo y comienza a ahorrar hoy mismo.",
+    "cta": "Suscribirse",
+    "currentPlan": "Plan Actual",
+    "basic": {
+      "title": "Básico",
+      "tagline": "Perfecto para tu hogar",
+      "price": "S/0",
+      "period": "/mes",
+      "features": {
+        "monitoring": "Monitoreo de consumo en tiempo real",
+        "alerts": "Alertas de consumo excesivo",
+        "reports": "Reportes mensuales de ahorro",
+        "deviceManagement": "Administración de dispositivos"
+      }
+    },
+    "premium": {
+      "title": "Premium",
+      "tagline": "Para usuarios exigentes",
+      "badge": "Premium",
+      "price": "S/25",
+      "period": "/mes",
+      "features": {
+        "includesBasic": "Todo lo del plan Básico",
+        "deviceAnalysis": "Análisis detallado por dispositivo",
+        "savingsTips": "Recomendaciones personalizadas de ahorro",
+        "comparisons": "Comparativas con hogares similares",
+        "prioritySupport": "Soporte prioritario 24/7"
+      }
+    },
+    "annual": {
+      "title": "Anual",
+      "tagline": "La solución completa",
+      "price": "S/160",
+      "period": "/año",
+      "features": {
+        "includesPremium": "Todo lo del plan Premium por un año",
+        "savings": "Ahorra más de un 30%",
+        "earlyAccess": "Acceso anticipado a nuevas funcionalidades",
+        "freeInstall": "Instalación de un dispositivo inteligente gratis"
+      }
     }
   }
 }
