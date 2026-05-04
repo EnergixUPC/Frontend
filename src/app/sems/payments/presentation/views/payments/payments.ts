@@ -10,6 +10,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 import { PaymentService } from '../../../application/services/payment.service';
 import { DashboardStore } from '../../../../energy-management/application/state/dashboard.store';
 import { Payment } from '../../../domain/model/entities/payment.entity';
@@ -37,12 +38,14 @@ export class Payments implements OnInit, OnDestroy {
   loading = false;
   estimatedBill = 0;
   paymentHistory: Payment[] = [];
+  private selectedPlanAmount: number | null = null;
   private destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
     private paymentService: PaymentService,
     private dashboardStore: DashboardStore,
+    private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private translate: TranslateService
   ) {
@@ -52,11 +55,27 @@ export class Payments implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.route.queryParamMap
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        const plan = params.get('plan');
+        const planAmount = this.getPlanAmount(plan);
+
+        if (planAmount !== null) {
+          this.selectedPlanAmount = planAmount;
+          this.estimatedBill = planAmount;
+          this.paymentForm.patchValue({ amount: planAmount });
+        }
+      });
+
     // Get estimated bill from dashboard
     this.dashboardStore.dashboardState$
       .pipe(takeUntil(this.destroy$))
       .subscribe(state => {
         if (state.stats) {
+          if (this.selectedPlanAmount !== null) {
+            return;
+          }
           this.estimatedBill = state.stats.estimatedBill;
           this.paymentForm.patchValue({ amount: this.estimatedBill });
         }
@@ -118,6 +137,17 @@ export class Payments implements OnInit, OnDestroy {
 
   useEstimatedBill(): void {
     this.paymentForm.patchValue({ amount: this.estimatedBill });
+  }
+
+  private getPlanAmount(plan: string | null): number | null {
+    switch (plan) {
+      case 'premium':
+        return 25;
+      case 'annual':
+        return 160;
+      default:
+        return null;
+    }
   }
 
   private showSuccess(message: string): void {

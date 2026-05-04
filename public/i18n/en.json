@@ -365,6 +365,7 @@
     "title": "Plans",
     "subtitle": "Get full access and start saving today.",
     "cta": "Subscribe",
+    "currentPlan": "Current Plan",
     "basic": {
       "title": "Basic",
       "tagline": "Perfect for your home",
