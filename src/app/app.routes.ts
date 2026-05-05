@@ -94,6 +94,14 @@ export const routes: Routes = [
       {
         path: 'plans/payments',
         loadComponent: () => import('./sems/payments/presentation/views/payments/payments').then(m => m.Payments)
+      },
+      {
+        path: 'payment-success',
+        loadComponent: () => import('./sems/payments/presentation/views/payment-success/payment-success').then(m => m.PaymentSuccess)
+      },
+      {
+        path: 'payment-cancel',
+        loadComponent: () => import('./sems/payments/presentation/views/payment-cancel/payment-cancel').then(m => m.PaymentCancel)
       }
     ]
   },

@@ -4,5 +4,5 @@ export const environment = {
   tokenKey: 'sems_token',
   refreshTokenKey: 'sems_refresh_token',
   userKey: 'sems_user',
-  stripeapiurl: 'https://apistripefinal.onrender.com',
+  stripeapiurl: 'http://localhost:3001',
 };

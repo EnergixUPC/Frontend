@@ -37,6 +37,6 @@ export class PaymentSuccess implements OnInit {
   }
 
   goToPayments(): void {
-    this.router.navigate(['/payments']);
+    this.router.navigate(['plans/payments']);
   }
 }
