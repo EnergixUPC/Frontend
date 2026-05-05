@@ -50,7 +50,7 @@
         <!-- Error Message -->
         <div *ngIf="authState.error" class="error-message general-error">
           <mat-icon class="error-icon">error</mat-icon>
-          <span>{{ authState.error }}</span>
+          <span>{{ 'auth.login.errors.invalidCredentials' | translate }}</span>
           <button
             type="button"
             mat-icon-button

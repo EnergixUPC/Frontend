@@ -43,8 +43,9 @@ export class Login implements OnInit {
     }, 1000);
   }
 
-  onLoginError(error: string): void {
-    this.snackBar.open(error, this.translate.instant('common.close') || 'Close', {
+  onLoginError(_error: string): void {
+    const errorMessage = this.translate.instant('auth.login.errors.invalidCredentials') || 'Incorrect credentials';
+    this.snackBar.open(errorMessage, this.translate.instant('common.close') || 'Close', {
       duration: 5000,
       panelClass: ['error-snackbar']
     });

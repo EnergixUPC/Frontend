@@ -12,7 +12,8 @@
       "errors": {
         "required": "Este campo es obligatorio",
         "email": "Por favor ingrese un email válido",
-        "minLength": "Mínimo {{length}} caracteres requeridos"
+        "minLength": "Mínimo {{length}} caracteres requeridos",
+        "invalidCredentials": "Correo o contraseña incorrectos"
       },
       "success": "Inicio de sesión exitoso"
     },
