@@ -1,4 +1,3 @@
-/* ==== General Layout ==== */
 .profile-container {
   display: flex;
   flex-direction: column;
@@ -8,7 +7,6 @@
   min-height: calc(100vh - 100px);
 }
 
-/* ==== Page Header ==== */
 .page-header {
   width: 100%;
   display: flex;
@@ -23,7 +21,6 @@
   margin: 0;
 }
 
-/* ==== Profile Card ==== */
 .profile-card {
   display: flex;
   flex-direction: row;
@@ -36,14 +33,8 @@
   padding: 40px;
   width: 900px;
   max-width: 100%;
-  transition: box-shadow 0.3s ease;
 }
 
-.profile-card:hover {
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
-}
-
-/* ==== Photo Section ==== */
 .profile-photo-section {
   display: flex;
   flex-direction: column;
@@ -59,6 +50,30 @@
   border: 4px solid #0077ff;
 }
 
+.profile-avatar-initials {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background-color: #9ca3af;
+  border: 4px solid #0077ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 2px;
+  user-select: none;
+}
+
+.photo-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
 .change-photo-btn {
   background-color: #e7f1ff;
   color: #0077ff;
@@ -68,6 +83,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
+  width: 100%;
 }
 
 .change-photo-btn:hover {
@@ -75,7 +91,33 @@
   color: white;
 }
 
-/* ==== Info Section ==== */
+.remove-photo-btn {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.remove-photo-btn:hover {
+  background-color: #dc2626;
+  color: white;
+}
+
+.photo-error {
+  color: #dc2626;
+  font-size: 13px;
+  text-align: center;
+  background-color: #fee2e2;
+  border-radius: 6px;
+  padding: 6px 10px;
+  max-width: 180px;
+}
+
 .profile-info-section {
   flex: 1;
   display: flex;
@@ -108,58 +150,6 @@
   font-weight: 500;
 }
 
-/* ==== Editable Inputs ==== */
-.input-edit {
-  width: 100%;
-  padding: 8px 10px;
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  font-size: 14px;
-  color: #1f2937;
-}
-
-.input-edit:focus {
-  border-color: #0077ff;
-  outline: none;
-}
-
-/* ==== Actions ==== */
-.profile-actions {
-  margin-top: 30px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.edit-btn,
-.save-btn {
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.edit-btn {
-  background-color: #0077ff;
-  color: white;
-}
-
-.edit-btn:hover {
-  background-color: #005ec2;
-}
-
-.save-btn {
-  background-color: #22c55e;
-  color: white;
-}
-
-.save-btn:hover {
-  background-color: #16a34a;
-}
-
-/* ==== Empty State ==== */
 .profile-empty {
   text-align: center;
   color: #6b7280;
@@ -167,7 +157,6 @@
   padding: 40px;
 }
 
-/* Tablet Responsive */
 @media (max-width: 1024px) {
   .profile-card {
     width: 100%;
@@ -176,7 +165,6 @@
   }
 }
 
-/* Mobile Responsive */
 @media (max-width: 768px) {
   .profile-container {
     padding: 20px 16px;
@@ -203,24 +191,17 @@
     padding-bottom: 20px;
   }
 
-  .profile-photo {
+  .profile-photo,
+  .profile-avatar-initials {
     width: 120px;
     height: 120px;
   }
 
+  .profile-avatar-initials {
+    font-size: 40px;
+  }
+
   .profile-info-section {
     width: 100%;
-  }
-
-  .profile-actions {
-    justify-content: center;
-    margin-top: 20px;
-  }
-
-  .edit-btn,
-  .save-btn,
-  .cancel-btn {
-    width: 100%;
-    text-align: center;
   }
 }
