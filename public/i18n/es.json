@@ -43,21 +43,28 @@
           "minlength": "El apellido debe tener al menos 2 caracteres"
         },
         "email": {
-          "required": "El correo electrónico es requerido"
+          "required": "El correo electrónico es requerido",
+          "invalid": "Por favor ingrese un correo electrónico válido"
         },
         "password": {
           "required": "La contraseña es requerida",
-          "minlength": "La contraseña debe tener al menos 6 caracteres"
+          "minlength": "La contraseña debe tener al menos 6 caracteres",
+          "weak": "La contraseña es demasiado débil"
         },
         "confirmPassword": {
-          "required": "Confirma tu contraseña"
+          "required": "Confirma tu contraseña",
+          "mismatch": "Contraseña no coincide"
         },
         "phoneNumber": {
           "required": "El teléfono es requerido"
         },
+          "phone": {
+            "invalid": "Por favor ingrese un número de teléfono válido"
+          },
         "address": {
           "required": "La dirección es requerida",
-          "minlength": "La dirección debe tener al menos 10 caracteres"
+          "minlength": "La dirección debe tener al menos 10 caracteres",
+          "invalid": "Por favor ingrese una dirección válida"
         }
       }
     }
