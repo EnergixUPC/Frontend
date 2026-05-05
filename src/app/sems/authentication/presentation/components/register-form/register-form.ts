@@ -81,7 +81,7 @@ export class RegisterForm implements OnInit, OnDestroy {
       password: ['', [Validators.required, Validators.minLength(6), this.strongPasswordValidator]],
       confirmPassword: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required, this.phoneValidator]],
-      address: ['', [Validators.required, Validators.minLength(10)]]
+      address: ['', [Validators.required, Validators.minLength(10), this.addressValidator]]
     }, { validators: this.passwordMatchValidator });
   }
 
@@ -112,6 +112,19 @@ export class RegisterForm implements OnInit, OnDestroy {
 
     if (!phonePattern.test(phone)) {
       return { phone: true };
+    }
+
+    return null;
+  }
+
+  private addressValidator(control: AbstractControl): ValidationErrors | null {
+    const address = control.value;
+    if (!address) return null;
+
+    const addressPattern = /^[A-Za-z0-9\s.,#\/-]+$/;
+
+    if (!addressPattern.test(address)) {
+      return { addressInvalid: true };
     }
 
     return null;
@@ -219,6 +232,11 @@ export class RegisterForm implements OnInit, OnDestroy {
       if (control.errors['phone']) {
         return this.translate.instant('auth.register.errors.phone.invalid') ||
                'Formato: +51 seguido de 9 dígitos';
+      }
+
+      if (control.errors['addressInvalid']) {
+        return this.translate.instant('auth.register.errors.address.invalid') ||
+               'no please enter a valid address.';
       }
     }
 

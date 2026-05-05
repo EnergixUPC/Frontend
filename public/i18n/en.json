@@ -43,21 +43,28 @@
           "minlength": "Last name must be at least 2 characters"
         },
         "email": {
-          "required": "Email is required"
+          "required": "Email is required",
+          "invalid": "Please enter a valid email"
         },
         "password": {
           "required": "Password is required",
-          "minlength": "Password must be at least 6 characters"
+          "minlength": "Password must be at least 6 characters",
+          "weak": "Password is too weak"
         },
         "confirmPassword": {
-          "required": "Please confirm your password"
+          "required": "Please confirm your password",
+          "mismatch": "Passwords do not match"
         },
         "phoneNumber": {
           "required": "Phone number is required"
         },
+        "phone": {
+          "invalid": "Please enter a valid phone number"
+        },
         "address": {
           "required": "Address is required",
-          "minlength": "Address must be at least 10 characters"
+          "minlength": "Address must be at least 10 characters",
+          "invalid": "Please enter a valid address"
         }
       }
     }
