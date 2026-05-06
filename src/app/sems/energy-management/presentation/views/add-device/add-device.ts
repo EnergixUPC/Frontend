@@ -1,48 +1,84 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { DevicesService } from '../../../application/services/devices.service';
+import { DashboardService } from '../../../application/services/dashboard.service';
 import { Device, DeviceStatus } from '../../../domain/model/device.entity';
 
 @Component({
   selector: 'app-add-device',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './add-device.html',
   styleUrl: './add-device.css'
 })
-export class AddDevice {
-  device: Partial<Device> = {
-    id: '',
-    name: '',
-    category: '',
-    type: '',
-    brand: '',
-    model: '',
-    status: DeviceStatus.OFF,
-    realTimeStatus: 'Off',
-    lastActive: 'Now',
-    location: '',
-    isActive: 0
-  };
-
+export class AddDevice implements OnInit {
+  deviceForm!: FormGroup;
   saving = false;
   error: string | null = null;
+  uniqueCategories: string[] = [];
+  isStatusDropdownOpen = false;
+  isCategoryDropdownOpen = false;
+  filteredCategories: string[] = [];
 
   constructor(
+    private readonly fb: FormBuilder,
     private readonly devicesService: DevicesService,
+    private readonly dashboardService: DashboardService,
     private readonly router: Router,
     private readonly translateService: TranslateService
   ) {}
 
-  get isActive(): boolean {
-    return this.device.isActive === 1;
+  ngOnInit(): void {
+    this.initForm();
+    this.loadCategories();
   }
 
-  set isActive(value: boolean) {
-    this.device.isActive = value ? 1 : 0;
+  private initForm(): void {
+    this.deviceForm = this.fb.group({
+      name: ['', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(50),
+        Validators.pattern(/^[a-zA-Z0-9 áéíóúÁÉÍÓÚñÑ\-]+$/)
+      ]],
+      category: ['', [
+        Validators.required,
+        Validators.maxLength(25),
+        Validators.pattern(/^[a-zA-Z0-9 áéíóúÁÉÍÓÚñÑ\-]+$/)
+      ]],
+      status: [DeviceStatus.OFF, [Validators.required]],
+      power: [null, [
+        Validators.required,
+        Validators.min(0),
+        Validators.max(20000)
+      ]],
+      isActive: [false]
+    });
+
+    this.deviceForm.get('category')?.valueChanges.subscribe(value => {
+      if (!value) {
+        this.filteredCategories = [...this.uniqueCategories];
+      } else {
+        const lower = value.toLowerCase();
+        this.filteredCategories = this.uniqueCategories.filter(c =>
+          c.toLowerCase().includes(lower)
+        );
+      }
+    });
+  }
+
+  private loadCategories(): void {
+    this.dashboardService.getDashboardState().subscribe(state => {
+      const devices = state.devices || [];
+      const cats = devices
+        .map(d => d.category)
+        .filter((c): c is string => !!c && c.trim().length > 0);
+      this.uniqueCategories = [...new Set(cats)];
+      this.filteredCategories = [...this.uniqueCategories];
+    });
   }
 
   get titleText(): string {
@@ -57,46 +93,56 @@ export class AddDevice {
     return this.translateService.instant('dashboard.devices.addDeviceCancel');
   }
 
+  toggleStatusDropdown(): void {
+    this.isStatusDropdownOpen = !this.isStatusDropdownOpen;
+  }
+
+  selectStatus(status: string): void {
+    this.deviceForm.patchValue({ status: status });
+    this.isStatusDropdownOpen = false;
+  }
+
+  selectCategory(cat: string): void {
+    this.deviceForm.patchValue({ category: cat });
+    this.isCategoryDropdownOpen = false;
+  }
+
   onCancel(): void {
     this.router.navigate(['/devices']);
   }
 
   onSave(): void {
-    // Basic validation
-    if (!this.device.name || !this.device.category || !this.device.type) {
-      this.error = this.translateService.instant('dashboard.devices.addDeviceValidation');
+    if (this.deviceForm.invalid) {
+      this.deviceForm.markAllAsTouched();
       return;
     }
 
     this.saving = true;
     this.error = null;
 
-    // Ensure id: try to use timestamp if none provided
+    const formVal = this.deviceForm.value;
+
     const newDevice: Device = {
-      id: this.device.id && this.device.id.toString() || Date.now().toString(),
-      name: this.device.name as string,
-      category: this.device.category as string,
-      type: (this.device.type as string) || 'UNKNOWN',
-      brand: '',
-      model: '',
-      status: (this.device.status as any) || 'OFF',
-      realTimeStatus: (this.device.realTimeStatus as string) || 'Off',
-      lastActive: (this.device.lastActive as string) || 'Now',
-      location: (this.device.location as string) || '',
-      isActive: this.device.isActive ? 1 : 0
+      id: Date.now().toString(),
+      name: formVal.name,
+      category: formVal.category,
+      type: 'UNKNOWN',
+      brand: 'Sin asignar',
+      model: 'Sin asignar',
+      status: formVal.status as DeviceStatus,
+      realTimeStatus: formVal.status,
+      lastActive: 'Now',
+      location: 'Sin asignar',
+      isActive: formVal.isActive ? 1 : 0,
+      power: formVal.power ?? undefined
     };
 
-    console.log('AddDevice - Attempting to create device:', newDevice);
-
     this.devicesService.createDevice(newDevice).subscribe({
-      next: (createdDevice) => {
-        console.log('AddDevice - Device created successfully:', createdDevice);
+      next: () => {
         this.saving = false;
-        // Navigate back to devices list (which will reload from API)
         this.router.navigate(['/devices']);
       },
-      error: (err: any) => {
-        console.error('AddDevice - Error creating device:', err);
+      error: () => {
         this.saving = false;
         this.error = this.translateService.instant('dashboard.devices.addDeviceError');
       }

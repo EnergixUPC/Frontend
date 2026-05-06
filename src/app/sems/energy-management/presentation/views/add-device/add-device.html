@@ -10,58 +10,153 @@
 
   <div class="add-device-content">
     <div class="add-device-form">
-      <div class="form-group">
-        <label>{{ 'dashboard.devices.form.name' | translate }}</label>
-        <input type="text" [(ngModel)]="device.name" />
-      </div>
+      <form [formGroup]="deviceForm" (ngSubmit)="onSave()">
 
-      <div class="form-group">
-        <label>{{ 'dashboard.devices.form.category' | translate }}</label>
-        <input type="text" [(ngModel)]="device.category" />
-      </div>
+        <!-- Name -->
+        <div class="form-group">
+          <label>{{ 'dashboard.devices.form.name' | translate }}</label>
+          <input type="text" formControlName="name" />
 
-      <div class="form-group">
-        <label>{{ 'dashboard.devices.form.type' | translate }}</label>
-        <input type="text" [(ngModel)]="device.type" />
-      </div>
+          @if (deviceForm.get('name')?.errors?.['required'] && deviceForm.get('name')?.touched) {
+            <div class="error-message">
+              {{ 'dashboard.devices.addDeviceValidation' | translate }}
+            </div>
+          }
+          @if (deviceForm.get('name')?.errors?.['minlength'] && deviceForm.get('name')?.touched) {
+            <div class="error-message">
+              {{ 'dashboard.devices.nameMinLength' | translate }}
+            </div>
+          }
+          @if (deviceForm.get('name')?.errors?.['maxlength'] && deviceForm.get('name')?.touched) {
+            <div class="error-message">
+              {{ 'dashboard.devices.nameMaxLength' | translate }}
+            </div>
+          }
+          @if (deviceForm.get('name')?.errors?.['pattern'] && deviceForm.get('name')?.touched) {
+            <div class="error-message">
+              {{ 'dashboard.devices.namePattern' | translate }}
+            </div>
+          }
+        </div>
 
-      <div class="form-group">
-        <label>{{ 'dashboard.devices.form.status' | translate }}</label>
-        <select [(ngModel)]="device.status">
-          <option value="ON">{{ 'dashboard.devices.status.on' | translate }}</option>
-          <option value="OFF">{{ 'dashboard.devices.status.off' | translate }}</option>
-          <option value="STANDBY">{{ 'dashboard.devices.status.standby' | translate }}</option>
-          <option value="CHARGING">{{ 'dashboard.devices.status.charging' | translate }}</option>
-        </select>
-      </div>
+        <!-- Category with Autocomplete -->
+        <div class="form-group">
+          <label>{{ 'dashboard.devices.form.category' | translate }}</label>
+          <div class="custom-select-container">
+            <input
+              type="text"
+              formControlName="category"
+              autocomplete="off"
+              (focus)="isCategoryDropdownOpen = true"
+              (blur)="isCategoryDropdownOpen = false"
+            />
+            @if (isCategoryDropdownOpen && filteredCategories.length > 0) {
+              <div class="custom-select-options">
+                @for (cat of filteredCategories; track cat) {
+                  <div class="custom-option" (mousedown)="$event.preventDefault(); selectCategory(cat)">
+                    {{ cat }}
+                  </div>
+                }
+              </div>
+            }
+          </div>
 
-      <div class="form-group">
-        <label>{{ 'dashboard.devices.form.lastActive' | translate }}</label>
-        <input type="text" [(ngModel)]="device.lastActive" />
-      </div>
+          @if (deviceForm.get('category')?.errors?.['required'] && deviceForm.get('category')?.touched) {
+            <div class="error-message">
+              {{ 'dashboard.devices.addDeviceValidation' | translate }}
+            </div>
+          }
+          @if (deviceForm.get('category')?.errors?.['pattern'] && deviceForm.get('category')?.touched) {
+            <div class="error-message">
+              {{ 'dashboard.devices.categoryPattern' | translate }}
+            </div>
+          }
+          @if (deviceForm.get('category')?.errors?.['maxlength'] && deviceForm.get('category')?.touched) {
+            <div class="error-message">
+              {{ 'dashboard.devices.categoryMaxLength' | translate }}
+            </div>
+          }
+        </div>
 
-      <div class="form-group">
-        <label>{{ 'dashboard.devices.form.location' | translate }}</label>
-        <input type="text" [(ngModel)]="device.location" />
-      </div>
+        <!-- Status -->
+        <div class="form-group">
+          <label>{{ 'dashboard.devices.form.status' | translate }}</label>
 
-      <div class="form-group checkbox-group">
-        <label class="checkbox-label">
-          <input type="checkbox" [(ngModel)]="isActive" /> 
-          <span class="checkbox-text">{{ 'dashboard.devices.form.isActive' | translate }}</span>
-        </label>
-      </div>
+          <div class="custom-select-container">
+            <div class="custom-select-trigger" [class.open]="isStatusDropdownOpen" (click)="toggleStatusDropdown()">
+              {{ 'dashboard.devices.status.' + (deviceForm.get('status')?.value | lowercase) | translate }}
+              <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
 
-      @if (error) {
-        <div class="error-message">{{ error }}</div>
-      }
+            <!-- List -->
+            @if (isStatusDropdownOpen) {
+              <div class="custom-select-options">
+                <div class="custom-option" (click)="selectStatus('ON')">
+                  {{ 'dashboard.devices.status.on' | translate }}
+                </div>
+                <div class="custom-option" (click)="selectStatus('OFF')">
+                  {{ 'dashboard.devices.status.off' | translate }}
+                </div>
+                <div class="custom-option" (click)="selectStatus('STANDBY')">
+                  {{ 'dashboard.devices.status.standby' | translate }}
+                </div>
+                <div class="custom-option" (click)="selectStatus('CHARGING')">
+                  {{ 'dashboard.devices.status.charging' | translate }}
+                </div>
+              </div>
+            }
+          </div>
+        </div>
 
-      <div class="actions-container">
-        <button class="reset-button" (click)="onCancel()">{{ cancelText }}</button>
-        <button class="save-button" (click)="onSave()" [disabled]="saving">
-          {{ saving ? ('common.loading' | translate) : saveText }}
-        </button>
-      </div>
+        <!-- Power (Watts/h) -->
+        <div class="form-group">
+          <label>{{ 'dashboard.devices.form.power' | translate }}</label>
+          <input
+            type="number"
+            formControlName="power"
+            min="0"
+            max="20000"
+            step="1"
+            [placeholder]="'dashboard.devices.form.powerPlaceholder' | translate"
+          />
+          @if (deviceForm.get('power')?.hasError('required') && deviceForm.get('power')?.touched) {
+            <div class="error-message">
+              {{ 'dashboard.devices.powerRequired' | translate }}
+            </div>
+          }
+          @if (deviceForm.get('power')?.errors?.['min'] && deviceForm.get('power')?.touched) {
+            <div class="error-message">
+              {{ 'dashboard.devices.powerMin' | translate }}
+            </div>
+          }
+          @if (deviceForm.get('power')?.errors?.['max'] && deviceForm.get('power')?.touched) {
+            <div class="error-message">
+              {{ 'dashboard.devices.powerMax' | translate }}
+            </div>
+          }
+        </div>
+
+        <!-- Active -->
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="isActive" />
+            <span class="checkbox-text">{{ 'dashboard.devices.form.isActive' | translate }}</span>
+          </label>
+        </div>
+
+        @if (error) {
+          <div class="error-message">{{ error }}</div>
+        }
+
+        <div class="actions-container">
+          <button type="button" class="reset-button" (click)="onCancel()">{{ cancelText }}</button>
+          <button type="submit" class="save-button" [disabled]="saving">
+            {{ saving ? ('common.loading' | translate) : saveText }}
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
