@@ -139,6 +139,9 @@
       "lastActive": "Última Actividad",
       "alertHistory": "Historial de Alertas",
       "energyConsumption": "Consumo de Energía",
+      "namePattern": "Solo se permiten letras, números, espacios y guiones.",
+      "nameMinLength": "Mínimo 2 caracteres.",
+      "nameMaxLength": "Máximo 50 caracteres.",
       "status": {
         "on": "Encendido",
         "off": "Apagado",
@@ -162,6 +165,11 @@
       "addDeviceSave": "Guardar Dispositivo",
       "addDeviceCancel": "Cancelar",
       "addDeviceValidation": "Por favor ingresa al menos un nombre y una categoría para el dispositivo.",
+      "categoryPattern": "Solo se permiten letras, números y espacios y guiones.",
+      "categoryMaxLength": "Máximo 25 caracteres.",
+      "powerRequired": "La potencia es obligatoria.",
+      "powerMin": "El valor debe ser mayor o igual a 0.",
+      "powerMax": "El valor no puede superar los 20,000 W.",
       "addDeviceError": "Hubo un error al guardar el dispositivo. Inténtalo de nuevo.",
       "deleteConfirmation": "¿Estás seguro de que quieres eliminar '{{name}}'? Esta acción no se puede deshacer.",
       "deleteError": "Hubo un error al eliminar el dispositivo. Por favor inténtalo de nuevo.",
@@ -172,7 +180,9 @@
         "status": "Estado",
         "lastActive": "Última Actividad",
         "location": "Ubicación",
-        "isActive": "Activo"
+        "isActive": "Activo",
+        "power": "Potencia (W/h)",
+        "powerPlaceholder": "Ej: 150"
       }
     },
     "alerts": {

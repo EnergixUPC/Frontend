@@ -139,6 +139,9 @@
       "lastActive": "Last Active",
       "alertHistory": "Alert History",
       "energyConsumption": "Energy Consumption",
+      "namePattern": "Only letters, numbers, spaces, and hyphens are allowed.",
+      "nameMinLength": "Minimum 2 characters.",
+      "nameMaxLength": "Maximum 50 characters.",
       "status": {
         "on": "On",
         "off": "Off",
@@ -162,6 +165,11 @@
       "addDeviceSave": "Save Device",
       "addDeviceCancel": "Cancel",
       "addDeviceValidation": "Please provide at least a name and category for the device.",
+      "categoryPattern": "Only letters, numbers, spaces, and hyphens are allowed.",
+      "categoryMaxLength": "Maximum 25 characters.",
+      "powerRequired": "Power is required.",
+      "powerMin": "The value must be greater than or equal to 0.",
+      "powerMax": "The value cannot exceed 20,000 W.",
       "addDeviceError": "There was an error saving the device. Try again.",
       "deleteConfirmation": "Are you sure you want to delete '{{name}}'? This action cannot be undone.",
       "deleteError": "There was an error deleting the device. Please try again.",
@@ -172,7 +180,9 @@
         "status": "Status",
         "lastActive": "Last Active",
         "location": "Location",
-        "isActive": "Active"
+        "isActive": "Active",
+        "power": "Power (W/h)",
+        "powerPlaceholder": "Ej: 150"
       }
     },
     "alerts": {
