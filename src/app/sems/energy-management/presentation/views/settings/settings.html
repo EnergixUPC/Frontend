@@ -1,93 +1,117 @@
-<div class="settings-content">
+<div class="settings-content-wrapper">
   <section class="settings-container">
-    <h1>{{ t('settings.title') }}</h1>
-
-    <div class="settings-grid">
-      <!-- Automatic Saving Mode -->
-      <div class="card">
-        <div class="card-header">
-          <h2>{{ t('settings.autoSavingMode.title') }}</h2>
-          <button mat-mini-fab color="primary" class="add-btn" (click)="onAddNewRule()">+</button>
-        </div>
-
-        <!-- Loading state para rules -->
-        <div *ngIf="isLoadingRules" class="loading-container">
-          <p>Loading rules...</p>
-        </div>
-
-        <!-- Content cuando no está cargando -->
-        <div *ngIf="!isLoadingRules" class="toggles">
-          <div *ngFor="let rule of rules; trackBy: trackByRuleId" class="rule-item" [class.updating]="updatingRules.has(rule.id)">
-            <mat-checkbox [checked]="rule.isEnabled"
-                         [disabled]="updatingRules.has(rule.id)"
-                         (change)="onToggleRule(rule)">
-              {{ rule.name }}
-            </mat-checkbox>
-            <button mat-icon-button color="warn"
-                   [disabled]="updatingRules.has(rule.id)"
-                   (click)="onDeleteRule(rule.id.toString())">
-              <span class="material-icons">delete</span>
-            </button>
-          </div>
-          <div *ngIf="rules.length === 0" class="no-rules">
-            <p>No active rules. Add one to start saving energy!</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Notifications -->
-      <div class="card">
-        <h2>{{ t('settings.notifications.title') }}</h2>
-
-        <!-- Loading state para notifications -->
-        <div *ngIf="isLoadingSettings" class="loading-container">
-          <p>Loading notifications...</p>
-        </div>
-
-        <!-- Content cuando no está cargando -->
-        <div *ngIf="!isLoadingSettings">
-        <div class="toggles">
-          <mat-checkbox [checked]="editableSettings.highConsumptionAlerts"
-            (change)="onNotificationChange('highConsumption', $event.checked)">
-            {{ t('settings.notifications.highConsumption') }}
-          </mat-checkbox>
-
-          <mat-checkbox [checked]="editableSettings.dailyWeeklySummary"
-            (change)="onNotificationChange('summary', $event.checked)">
-            {{ t('settings.notifications.summary') }}
-          </mat-checkbox>
-        </div>
-
-        <p class="schedule">
-          {{ t('settings.notifications.schedule', {
-          start: editableSettings.notificationScheduleStart || '09:00',
-          end: editableSettings.notificationScheduleEnd || '18:00'
-          }) }}
-          <button mat-stroked-button color="accent" class="edit-btn" (click)="onEditSchedule()">
-            {{ t('settings.notifications.edit') }}
-          </button>
-        </p>
-        </div>
-      </div>
-
-      <!-- Support -->
-      <div class="card">
-        <h2>{{ t('settings.support.title') }}</h2>
-        <ul>
-          <li><a (click)="supportsComponent?.openFaqModal()">{{ t('settings.support.helpCenter') }}</a></li>
-          <li><a (click)="supportsComponent?.openHelpModal()">{{ t('settings.support.contact') }}</a></li>
-          <li><a (click)="supportsComponent?.openTutorialsModal()">{{ t('settings.support.tutorials') }}</a></li>
-        </ul>
-      </div>
+    <div class="settings-header">
+      <h1 class="settings-title">{{ t('settings.title') }}</h1>
     </div>
 
-    <div class="actions">
-      <button mat-raised-button color="primary" class="save-btn" [disabled]="!hasChanges" (click)="saveSettings()">
-        {{ t('settings.actions.save') }}
-      </button>
+    <div class="settings-grid">
 
-      <button mat-button color="warn" class="cancel-btn" [disabled]="!hasChanges" (click)="cancelChanges()">
+      <!-- Card: Notificaciones y Alertas -->
+      <div class="settings-card">
+        <div class="card-header">
+          <h2 class="card-title">{{ t('settings.notifications.title') }}</h2>
+        </div>
+
+        <!-- Loading State -->
+        @if (isLoadingSettings) {
+          <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>Loading notifications...</p>
+          </div>
+        }
+
+        <!-- Content -->
+        @if (!isLoadingSettings) {
+          <div class="card-body">
+            <div class="setting-item">
+              <label class="custom-checkbox">
+                <input type="checkbox"
+                       #chkHighCons
+                       [checked]="editableSettings.highConsumptionAlerts"
+                       (change)="onNotificationChange('highConsumption', chkHighCons.checked)" />
+                <span class="checkmark"></span>
+                <span class="label-text">{{ t('settings.notifications.highConsumption') }}</span>
+              </label>
+            </div>
+
+            <div class="setting-item">
+              <label class="custom-checkbox">
+                <input type="checkbox"
+                       #chkSummary
+                       [checked]="editableSettings.dailyWeeklySummary"
+                       (change)="onNotificationChange('summary', chkSummary.checked)" />
+                <span class="checkmark"></span>
+                <span class="label-text">{{ t('settings.notifications.summary') }}</span>
+              </label>
+            </div>
+
+            <div class="schedule-section">
+              @if (!isEditingSchedule) {
+                <!-- Modo Vista Normal -->
+                <p class="schedule-text">
+                  {{ t('settings.notifications.schedule', {
+                  start: editableSettings.notificationScheduleStart || '05:00',
+                  end: editableSettings.notificationScheduleEnd || '22:00'
+                }) }}
+                </p>
+                <button class="secondary-btn" (click)="onEditSchedule()">
+                  {{ t('settings.notifications.edit') }}
+                </button>
+              } @else {
+                <!-- Modo Edición en Línea -->
+                <div class="inline-edit-schedule">
+                  <div class="time-inputs">
+                    <input type="time" [(ngModel)]="tempScheduleStart" class="time-input" lang="en-GB" />
+                    <span class="time-separator">-</span>
+                    <input type="time" [(ngModel)]="tempScheduleEnd" class="time-input" lang="en-GB" />
+                  </div>
+                <div class="inline-actions">
+                  <button class="small-btn cancel" (click)="cancelEditSchedule()">
+                    {{ t('settings.actions.cancel') }}
+                  </button>
+                  <button class="small-btn save" (click)="saveSchedule()">
+                    {{ t('settings.actions.accept') }}
+                  </button>
+                </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Card: Soporte y Ayuda -->
+      <div class="settings-card">
+        <div class="card-header">
+          <h2 class="card-title">{{ t('settings.support.title') }}</h2>
+        </div>
+        <div class="card-body">
+          <div class="support-links">
+            <a (click)="supportsComponent?.openFaqModal()" class="support-link">
+              <span>{{ t('settings.support.helpCenter') }}</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <a (click)="supportsComponent?.openHelpModal()" class="support-link">
+              <span>{{ t('settings.support.contact') }}</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <a (click)="supportsComponent?.openTutorialsModal()" class="support-link">
+              <span>{{ t('settings.support.tutorials') }}</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Actions Footer -->
+    <div class="actions-container">
+      <button type="button" class="reset-button" [disabled]="!hasChanges" (click)="cancelChanges()">
         {{ t('settings.actions.cancel') }}
+      </button>
+      <button type="button" class="save-button" [disabled]="!hasChanges" (click)="saveSettings()">
+        {{ t('settings.actions.save') }}
       </button>
     </div>
   </section>

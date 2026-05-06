@@ -302,7 +302,17 @@
     },
     "actions": {
       "save": "Guardar",
-      "cancel": "Cancelar"
+      "cancel": "Cancelar",
+      "accept": "Aceptar"
+    },
+    "messages": {
+      "unauthorized": "No autorizado. Por favor, inicie sesión nuevamente.",
+      "loadError": "Error al cargar la configuración:",
+      "scheduleRequired": "Ambos horarios son requeridos.",
+      "scheduleUpdated": "Horario actualizado temporalmente. ¡No olvides guardar los cambios abajo!",
+      "saveSuccess": "¡Configuración guardada exitosamente!",
+      "saveError": "Error al guardar la configuración.",
+      "close": "Cerrar"
     }
   },
   "profile": {
