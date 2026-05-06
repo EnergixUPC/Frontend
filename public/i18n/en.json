@@ -307,7 +307,10 @@
     "cancelButton": "Cancel",
     "changePhotoButton": "Change Photo",
     "loading": "Loading profile...",
-    "noUser": "User information not found"
+    "noUser": "User information not found",
+    "removePhotoButton": "Remove Photo",
+    "photoUrlPrompt": "Enter the URL of your profile photo:",
+    "photoUrlError": "Invalid URL. Please enter a direct link to an image (jpg, png, gif, webp, etc.)."
   },
   "notifications": {
     "title": "Notifications",
