@@ -302,7 +302,17 @@
     },
     "actions": {
       "save": "Save",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "accept": "Accept"
+    },
+    "messages": {
+      "unauthorized": "Unauthorized. Please log in again.",
+      "loadError": "Failed to load settings:",
+      "scheduleRequired": "Both schedules are required.",
+      "scheduleUpdated": "Schedule updated temporarily. Don't forget to save changes below!",
+      "saveSuccess": "Settings saved successfully!",
+      "saveError": "Failed to save settings.",
+      "close": "Close"
     }
   },
   "profile": {
