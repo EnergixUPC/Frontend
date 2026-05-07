@@ -25,6 +25,7 @@ type Period = 'weekly' | 'monthly';
 })
 export class ConsumptionChart implements OnInit, OnChanges {
   @Input() devices?: Device[];
+  @Input() deviceConsumptions?: Record<string, DeviceConsumptionSummary>;
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   chartStyle: ChartStyle = 'bar';
@@ -63,7 +64,7 @@ export class ConsumptionChart implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['devices']) {
+    if (changes['devices'] || changes['deviceConsumptions']) {
       this.updateChartData();
     }
   }
@@ -131,15 +132,22 @@ export class ConsumptionChart implements OnInit, OnChanges {
     }
 
     const deviceTotals = this.devices
-      .map(device => ({
-        label: this.getDeviceLabel(device),
-        weekly: this.getWeeklyConsumption(device)
-      }))
-      .filter(device => device.weekly > 0);
+      .map(device => {
+        const weekly = this.getWeeklyConsumption(device);
+        const monthly = this.getMonthlyConsumption(device, weekly);
+        return {
+          label: this.getDeviceLabel(device),
+          weekly,
+          monthly
+        };
+      })
+      .filter(device => device.weekly > 0 || device.monthly > 0);
 
     const totalWeekly = deviceTotals.reduce((sum, device) => sum + device.weekly, 0);
+    const totalMonthly = deviceTotals.reduce((sum, device) => sum + device.monthly, 0);
+    const periodTotal = this.period === 'monthly' ? totalMonthly : totalWeekly;
 
-    if (totalWeekly <= 0) {
+    if (periodTotal <= 0) {
       this.clearChartData();
       return;
     }
@@ -149,9 +157,12 @@ export class ConsumptionChart implements OnInit, OnChanges {
     this.pieChartOptions = this.getPieOptions();
 
     if (this.chartStyle === 'pie') {
-      this.applyPieData(deviceTotals, totalWeekly);
+      const periodValues = deviceTotals.map(device =>
+        this.period === 'monthly' ? device.monthly : device.weekly
+      );
+      this.applyPieData(deviceTotals, periodValues);
     } else {
-      this.applyTimeSeriesData(totalWeekly);
+      this.applyTimeSeriesData(periodTotal);
     }
 
     setTimeout(() => {
@@ -187,9 +198,11 @@ export class ConsumptionChart implements OnInit, OnChanges {
     };
   }
 
-  private applyPieData(deviceTotals: Array<{ label: string; weekly: number }>, totalWeekly: number): void {
-    const multiplier = this.period === 'monthly' ? 4 : 1;
-    const data = deviceTotals.map(device => device.weekly * multiplier);
+  private applyPieData(
+    deviceTotals: Array<{ label: string; weekly: number; monthly: number }>,
+    periodValues: number[]
+  ): void {
+    const data = periodValues;
     const colors = this.buildPalette(data.length);
 
     if (data.reduce((sum, value) => sum + value, 0) <= 0) {
@@ -358,6 +371,11 @@ export class ConsumptionChart implements OnInit, OnChanges {
   }
 
   private getWeeklyConsumption(device: Device): number {
+    const summary = this.deviceConsumptions?.[device.id];
+    if (summary?.weekly !== undefined) {
+      return summary.weekly;
+    }
+
     if (device.energyConsumptionValue && device.energyConsumptionValue > 0) {
       return device.energyConsumptionValue;
     }
@@ -370,6 +388,19 @@ export class ConsumptionChart implements OnInit, OnChanges {
     }
 
     return this.getEstimatedConsumption(device);
+  }
+
+  private getMonthlyConsumption(device: Device, weeklyFallback: number): number {
+    const summary = this.deviceConsumptions?.[device.id];
+    if (summary?.monthly !== undefined) {
+      return summary.monthly;
+    }
+
+    if (weeklyFallback > 0) {
+      return weeklyFallback * 4;
+    }
+
+    return 0;
   }
 
   private getEstimatedConsumption(device: Device): number {
@@ -414,4 +445,10 @@ export class ConsumptionChart implements OnInit, OnChanges {
       labels: []
     };
   }
+}
+
+interface DeviceConsumptionSummary {
+  daily?: number;
+  weekly?: number;
+  monthly?: number;
 }
