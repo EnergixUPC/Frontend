@@ -1,18 +1,20 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, NavigationEnd } from '@angular/router';
-import { Subject, filter, takeUntil, interval } from 'rxjs';
+import { Router } from '@angular/router';
+import { Subject, filter, takeUntil, forkJoin, of, map, catchError, finalize, take } from 'rxjs';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { StatsCard } from '../../components/stats-card/stats-card';
 import { ConsumptionChart } from '../../components/consumption-chart/consumption-chart';
 import { DeviceList } from '../../components/device-list/device-list';
 import { Device } from '../../../domain/model/device.entity';
+import { DeviceConsumption } from '../../../domain/model/entities/device-consumption.entity';
 import { DashboardStats } from '../../../domain/model/entities/dashboard-stats.entity';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { DashboardService } from '../../../application/services/dashboard.service';
 import { AuthService } from '../../../../authentication/application/services/auth.service';
 import { MockDataService } from '../../../infrastructure/services/mock-data.service';
+import { HomeRefreshService } from '../../../../../shared/application/services/home-refresh.service';
 
 @Component({
   selector: 'app-home',
@@ -31,10 +33,16 @@ import { MockDataService } from '../../../infrastructure/services/mock-data.serv
 export class Home implements OnInit, OnDestroy {
   dashboardStats: DashboardStats = new DashboardStats(0, 0, 0, 0, 0, 'S/.');
   devices: Device[] = [];
+  deviceConsumptions: Record<string, DeviceConsumptionSummary> = {};
   alerts: any[] = [];
   isLoading = false;
 
   private readonly destroy$ = new Subject<void>();
+  private isLoadingBackend = false;
+  private isFetchingConsumptions = false;
+  private lastConsumptionFetchAt = 0;
+  private lastConsumptionDeviceKey = '';
+  private readonly consumptionRefreshMs = 60000;
 
   constructor(
     private translate: TranslateService,
@@ -42,7 +50,8 @@ export class Home implements OnInit, OnDestroy {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private authService: AuthService,
-    private mockDataService: MockDataService
+    private mockDataService: MockDataService,
+    private homeRefreshService: HomeRefreshService
   ) { }
 
   ngOnInit(): void {
@@ -53,23 +62,12 @@ export class Home implements OnInit, OnDestroy {
 
     this.loadDashboardData();
 
-    // Setup auto-refresh every 30 seconds
-    interval(30000)
+    this.homeRefreshService.onRefresh()
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
-        console.log('Auto-refreshing dashboard data...');
-        this.loadBackendData();
-      });
-
-    this.router.events.pipe(
-      filter((e): e is NavigationEnd => e instanceof NavigationEnd),
-      takeUntil(this.destroy$)
-    ).subscribe(evt => {
-      if (evt.urlAfterRedirects === '/home' || evt.url === '/home') {
-        console.log('Home - navigation end to /home, reloading dashboard data');
+        console.log('Home - refresh requested by menu click');
         this.loadDashboardData();
-      }
-    });
+      });
   }
 
   ngOnDestroy(): void {
@@ -80,25 +78,26 @@ export class Home implements OnInit, OnDestroy {
   private loadDashboardData(): void {
     this.isLoading = true;
 
-    this.authService.authState$.subscribe(authState => {
-      console.log('Home - Authentication state changed:', authState);
+    this.authService.authState$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(authState => !authState.isLoading),
+        take(1)
+      )
+      .subscribe(authState => {
+        console.log('Home - Authentication state changed:', authState);
 
-      if (authState.isLoading) {
-        console.log('Home - Auth still loading, waiting...');
-        return;
-      }
+        if (!authState.isAuthenticated || !authState.user) {
+          console.warn('Home - User not authenticated, redirecting to login');
+          this.router.navigate(['/login']);
+          return;
+        }
 
-      if (!authState.isAuthenticated || !authState.user) {
-        console.warn('Home - User not authenticated, redirecting to login');
-        this.router.navigate(['/login']);
-        return;
-      }
+        const currentUser = authState.user;
+        console.log('Home - User authenticated - Loading dashboard for user:', currentUser.id, currentUser.email);
 
-      const currentUser = authState.user;
-      console.log('Home - User authenticated - Loading dashboard for user:', currentUser.id, currentUser.email);
-
-      this.loadBackendData();
-    });
+        this.loadBackendData();
+      });
   }
 
   private updateChartData(): void {
@@ -126,46 +125,116 @@ export class Home implements OnInit, OnDestroy {
     }, 100);
   }
 
+  private loadDeviceConsumptions(devices: Device[]): void {
+    if (!devices || devices.length === 0) {
+      this.deviceConsumptions = {};
+      return;
+    }
+
+    const deviceIdsKey = devices.map(device => device.id).sort().join('|');
+    const now = Date.now();
+    const hasRecentData = deviceIdsKey === this.lastConsumptionDeviceKey
+      && Object.keys(this.deviceConsumptions).length > 0
+      && (now - this.lastConsumptionFetchAt) < this.consumptionRefreshMs;
+
+    if (this.isFetchingConsumptions || hasRecentData) {
+      return;
+    }
+
+    this.isFetchingConsumptions = true;
+    this.lastConsumptionDeviceKey = deviceIdsKey;
+
+    const requests = devices.map(device =>
+      this.dashboardService.loadDeviceConsumptions(device.id).pipe(
+        map(consumptions => ({
+          deviceId: device.id,
+          summary: this.toConsumptionSummary(consumptions)
+        })),
+        catchError(() => of({ deviceId: device.id, summary: {} as DeviceConsumptionSummary }))
+      )
+    );
+
+    forkJoin(requests)
+      .pipe(finalize(() => {
+        this.isFetchingConsumptions = false;
+        this.lastConsumptionFetchAt = Date.now();
+      }))
+      .subscribe(results => {
+        const consumptionMap: Record<string, DeviceConsumptionSummary> = {};
+        results.forEach(result => {
+          consumptionMap[result.deviceId] = result.summary;
+        });
+        this.deviceConsumptions = consumptionMap;
+        this.cdr.detectChanges();
+      });
+  }
+
+  private toConsumptionSummary(consumptions: DeviceConsumption[]): DeviceConsumptionSummary {
+    return consumptions.reduce<DeviceConsumptionSummary>((summary, item) => {
+      if (item.period === 'daily') {
+        summary.daily = item.consumption;
+      }
+      if (item.period === 'weekly') {
+        summary.weekly = item.consumption;
+      }
+      if (item.period === 'monthly') {
+        summary.monthly = item.consumption;
+      }
+      return summary;
+    }, {});
+  }
+
   private loadBackendData(): void {
+    if (this.isLoadingBackend) {
+      return;
+    }
+
+    this.isLoadingBackend = true;
     console.log('Loading unified dashboard data from backend...');
 
-    this.dashboardService.loadUnifiedDashboard().subscribe({
-      next: (data) => {
-        console.log('Unified dashboard data loaded successfully');
+    this.dashboardService.loadUnifiedDashboard()
+      .pipe(finalize(() => {
+        this.isLoadingBackend = false;
+        this.isLoading = false;
+      }))
+      .subscribe({
+        next: (data) => {
+          console.log('Unified dashboard data loaded successfully');
 
-        // Update alerts from unified response
-        if (data.alerts) {
-          this.alerts = data.alerts;
-          console.log('Alerts loaded from unified dashboard:', this.alerts);
+          // Update alerts from unified response
+          if (data.alerts) {
+            this.alerts = data.alerts;
+            console.log('Alerts loaded from unified dashboard:', this.alerts);
+          }
+
+          this.dashboardService.getDashboardState()
+            .pipe(takeUntil(this.destroy$), take(1))
+            .subscribe(state => {
+              if (state.stats) {
+                this.dashboardStats = state.stats;
+                console.log('Dashboard stats:', state.stats);
+              }
+
+              if (state.devices) {
+                this.devices = state.devices || [];
+                console.log('Devices loaded from unified dashboard:', this.devices.length);
+                this.updateChartData();
+                this.loadDeviceConsumptions(this.devices);
+              }
+            });
+        },
+        error: (error: any) => {
+          console.error('Error loading dashboard:', error);
+          this.dashboardStats = new DashboardStats(0, 0, 0, 0, 0, 'S/.');
+          this.devices = [];
+          this.deviceConsumptions = {};
+          this.alerts = [];
+
+          setTimeout(() => {
+            this.cdr.detectChanges();
+          }, 50);
         }
-
-        this.dashboardService.getDashboardState().subscribe(state => {
-          if (state.stats) {
-            this.dashboardStats = state.stats;
-            console.log('Dashboard stats:', state.stats);
-          }
-
-          if (state.devices) {
-            this.devices = state.devices || [];
-            console.log('Devices loaded from unified dashboard:', this.devices.length);
-            this.updateChartData();
-          }
-        });
-      },
-      error: (error: any) => {
-        console.error('Error loading dashboard:', error);
-        this.dashboardStats = new DashboardStats(0, 0, 0, 0, 0, 'S/.');
-        this.devices = [];
-        this.alerts = [];
-
-        setTimeout(() => {
-          this.isLoading = false;
-          this.cdr.detectChanges();
-        }, 50);
-      }
-    });
-
-    this.isLoading = false;
+      });
   }
 
   getCalculatedEnergyConsumption(): string {
@@ -283,4 +352,10 @@ export class Home implements OnInit, OnDestroy {
   getTranslation(key: string): string {
     return this.translate.instant(key);
   }
+}
+
+interface DeviceConsumptionSummary {
+  daily?: number;
+  weekly?: number;
+  monthly?: number;
 }

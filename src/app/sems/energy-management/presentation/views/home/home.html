@@ -20,7 +20,10 @@
   <!-- Charts Row -->
   <div class="charts-row">
     <div class="chart-full">
-      <app-consumption-chart [devices]="devices"></app-consumption-chart>
+      <app-consumption-chart
+        [devices]="devices"
+        [deviceConsumptions]="deviceConsumptions">
+      </app-consumption-chart>
     </div>
   </div>
 
