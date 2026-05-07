@@ -6,6 +6,7 @@ import { DashboardStats } from '../../domain/model/entities/dashboard-stats.enti
 import { DailyConsumption } from '../../domain/model/entities/daily-consumption.entity';
 import { ConsumptionByCategory } from '../../domain/model/entities/consumption-by-category.entity';
 import { MonthlyComparison } from '../../domain/model/entities/monthly-comparison.entity';
+import { DeviceConsumption } from '../../domain/model/entities/device-consumption.entity';
 import { Device } from '../../domain/model/device.entity';
 
 @Injectable({
@@ -91,6 +92,15 @@ export class DashboardService {
       }),
       catchError(error => {
         this.dashboardStore.setError(error.message || 'Error loading devices');
+        throw error;
+      })
+    );
+  }
+
+  loadDeviceConsumptions(deviceId: string): Observable<DeviceConsumption[]> {
+    return this.dashboardRepository.getDeviceConsumptions(deviceId).pipe(
+      catchError(error => {
+        this.dashboardStore.setError(error.message || 'Error loading device consumptions');
         throw error;
       })
     );
