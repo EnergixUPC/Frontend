@@ -1,0 +1,111 @@
+.chart-card {
+  border-radius: 12px;
+  height: 100%;
+}
+
+mat-card {
+  background: white;
+}
+
+mat-card-header {
+  padding: 1.5rem 1.5rem 0;
+}
+
+mat-card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #333;
+}
+
+mat-card-content {
+  padding: 1.5rem !important;
+}
+
+.chart-controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.control-label {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.button-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.toggle-button {
+  border: 1px solid #d6dce5;
+  background: #f5f7fb;
+  color: #50607a;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-button:hover {
+  border-color: #1976d2;
+  color: #1976d2;
+}
+
+.toggle-button.active {
+  background: #1976d2;
+  border-color: #1976d2;
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(25, 118, 210, 0.2);
+}
+
+.chart-container {
+  height: 360px;
+  position: relative;
+}
+
+.no-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  color: #999;
+  gap: 12px;
+}
+
+.no-data mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #bbb;
+}
+
+.no-data p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .chart-controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .chart-container {
+    height: 280px;
+  }
+}

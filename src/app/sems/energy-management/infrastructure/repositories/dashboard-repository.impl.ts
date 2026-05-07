@@ -5,6 +5,7 @@ import { DashboardStats } from '../../domain/model/entities/dashboard-stats.enti
 import { DailyConsumption } from '../../domain/model/entities/daily-consumption.entity';
 import { ConsumptionByCategory } from '../../domain/model/entities/consumption-by-category.entity';
 import { MonthlyComparison } from '../../domain/model/entities/monthly-comparison.entity';
+import { DeviceConsumption } from '../../domain/model/entities/device-consumption.entity';
 import { Device } from '../../domain/model/device.entity';
 import { DashboardResource } from '../resources/dashboard.resource';
 import { DashboardAssembler } from '../assemblers/dashboard.assembler';
@@ -64,6 +65,12 @@ export class DashboardRepositoryImpl implements DashboardRepository {
     return this.dashboardResource
       .getDevices({})
       .pipe(map(responses => DashboardAssembler.toDevices(responses)));
+  }
+
+  getDeviceConsumptions(deviceId: string): Observable<DeviceConsumption[]> {
+    return this.dashboardResource
+      .getDeviceConsumptions(deviceId)
+      .pipe(map(response => DashboardAssembler.toDeviceConsumptions(response)));
   }
 
   getAlerts(): Observable<any[]> {

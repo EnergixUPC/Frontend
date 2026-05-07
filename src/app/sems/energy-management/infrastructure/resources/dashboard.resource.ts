@@ -6,6 +6,7 @@ import {
   DailyConsumptionResponse,
   ConsumptionByCategoryResponse,
   MonthlyComparisonResponse,
+  DeviceConsumptionResponse,
   DeviceResponse,
   UnifiedDashboardResponse
 } from '../response/dashboard.response';
@@ -76,6 +77,13 @@ export class DashboardResource {
         console.error('Error fetching devices from API:', error);
         return of([]);
       })
+    );
+  }
+
+  getDeviceConsumptions(deviceId: string): Observable<DeviceConsumptionResponse[]> {
+    return this.http.get<DeviceConsumptionResponse[]>(
+      `${environment.apiUrl}/api/v1/devices/${deviceId}/consumption`,
+      { headers: this.getHeaders() }
     );
   }
 

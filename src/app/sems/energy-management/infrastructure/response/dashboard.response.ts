@@ -69,6 +69,13 @@ export interface MonthlyComparisonResponse {
   previousMonthComparison: number;
 }
 
+export interface DeviceConsumptionResponse {
+  id: number;
+  deviceId: number;
+  period: 'daily' | 'weekly' | 'monthly';
+  consumption: number;
+}
+
 export interface DeviceResponse {
   id: string;
   name: string;
