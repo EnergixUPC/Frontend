@@ -4,14 +4,9 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Subject, filter, takeUntil, interval } from 'rxjs';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { StatsCard } from '../../components/stats-card/stats-card';
-import { DailyChart } from '../../components/daily-chart/daily-chart';
-import { CategoryChart } from '../../components/category-chart/category-chart';
-import { MonthlyChart } from '../../components/monthly-chart/monthly-chart';
+import { ConsumptionChart } from '../../components/consumption-chart/consumption-chart';
 import { DeviceList } from '../../components/device-list/device-list';
-import { Device, DeviceStatus } from '../../../domain/model/device.entity';
-import { DailyConsumption } from '../../../domain/model/entities/daily-consumption.entity';
-import { ConsumptionByCategory } from '../../../domain/model/entities/consumption-by-category.entity';
-import { MonthlyComparison } from '../../../domain/model/entities/monthly-comparison.entity';
+import { Device } from '../../../domain/model/device.entity';
 import { DashboardStats } from '../../../domain/model/entities/dashboard-stats.entity';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,9 +20,7 @@ import { MockDataService } from '../../../infrastructure/services/mock-data.serv
     CommonModule,
     TranslateModule,
     StatsCard,
-    DailyChart,
-    CategoryChart,
-    MonthlyChart,
+    ConsumptionChart,
     DeviceList,
     MatCardModule,
     MatIconModule
@@ -37,9 +30,6 @@ import { MockDataService } from '../../../infrastructure/services/mock-data.serv
 })
 export class Home implements OnInit, OnDestroy {
   dashboardStats: DashboardStats = new DashboardStats(0, 0, 0, 0, 0, 'S/.');
-  dailyConsumption?: DailyConsumption;
-  consumptionByCategory?: ConsumptionByCategory;
-  monthlyComparison?: MonthlyComparison;
   devices: Device[] = [];
   alerts: any[] = [];
   isLoading = false;
@@ -155,16 +145,6 @@ export class Home implements OnInit, OnDestroy {
             console.log('Dashboard stats:', state.stats);
           }
 
-          if (state.dailyConsumption) {
-            this.dailyConsumption = state.dailyConsumption;
-            console.log('Daily consumption:', state.dailyConsumption);
-          }
-
-          if (state.consumptionByCategory) {
-            this.consumptionByCategory = state.consumptionByCategory;
-            console.log('Category consumption:', state.consumptionByCategory);
-          }
-
           if (state.devices) {
             this.devices = state.devices || [];
             console.log('Devices loaded from unified dashboard:', this.devices.length);
@@ -247,20 +227,6 @@ export class Home implements OnInit, OnDestroy {
     console.log('hasDevices check:', hasDevices, '- Device count:', this.devices?.length || 0);
     return hasDevices;
   }
-
-  get hasConsumptionData(): boolean {
-    return this.dailyConsumption?.dataPoints ? this.dailyConsumption.dataPoints.length > 0 : false;
-  }
-
-  get hasCategoryData(): boolean {
-    return this.consumptionByCategory?.categories ? this.consumptionByCategory.categories.length > 0 : false;
-  }
-
-  get hasMonthlyData(): boolean {
-    // Always show monthly chart with static data
-    return true;
-  }
-
 
   get energyConsumptionLabel(): string {
     return this.translate.instant('dashboard.stats.energyConsumption');

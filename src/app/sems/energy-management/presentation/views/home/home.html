@@ -19,38 +19,9 @@
 
   <!-- Charts Row -->
   <div class="charts-row">
-    <div class="chart-large">
-      <app-daily-chart [devices]="devices"></app-daily-chart>
+    <div class="chart-full">
+      <app-consumption-chart [devices]="devices"></app-consumption-chart>
     </div>
-    <div class="chart-small">
-      <app-category-chart
-        *ngIf="hasDevices; else noCategoryData"
-        [devices]="devices">
-      </app-category-chart>
-
-      <ng-template #noCategoryData>
-        <div class="no-data-message">
-          <mat-icon>pie_chart</mat-icon>
-          <h3>{{ 'dashboard.charts.noDeviceData' | translate }}</h3>
-          <p>{{ 'dashboard.charts.noDeviceMessage' | translate }}</p>
-        </div>
-      </ng-template>
-    </div>
-
-  </div>
-
-  <!-- Monthly Chart Row -->
-  <div class="monthly-row chart-container">
-    <app-monthly-chart *ngIf="hasMonthlyData; else noMonthlyData" [monthlyComparison]="monthlyComparison">
-    </app-monthly-chart>
-
-    <ng-template #noMonthlyData>
-      <div class="no-data-message">
-        <mat-icon>bar_chart</mat-icon>
-        <h3>{{ 'dashboard.charts.noMonthlyData' | translate }}</h3>
-        <p>{{ 'dashboard.charts.noMonthlyMessage' | translate }}</p>
-      </div>
-    </ng-template>
   </div>
 
 

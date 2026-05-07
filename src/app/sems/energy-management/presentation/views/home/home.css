@@ -30,18 +30,12 @@
   width: 100%;
 }
 
-.chart-large,
-.chart-small,
+.chart-full,
 .chart-container {
   position: relative;
 }
 
-.chart-large {
-  flex: 2;
-  min-width: 0;
-}
-
-.chart-small {
+.chart-full {
   flex: 1;
   min-width: 0;
 }
@@ -62,12 +56,6 @@
   box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
   z-index: 10;
   backdrop-filter: blur(4px);
-}
-
-/* Monthly Row */
-.monthly-row {
-  width: 100%;
-  position: relative;
 }
 
 /* Info Row (Alerts & Devices) */
@@ -200,8 +188,7 @@
     flex-direction: column;
   }
   
-  .chart-large,
-  .chart-small {
+  .chart-full {
     flex: 1;
   }
 }
