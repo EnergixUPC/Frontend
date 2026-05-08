@@ -94,7 +94,8 @@ export class DashboardAssembler {
       id: response.id,
       deviceId: response.deviceId,
       period: response.period,
-      consumption: response.consumption
+      consumption: response.consumption,
+      createdAt: response.createdAt
     }));
   }
 

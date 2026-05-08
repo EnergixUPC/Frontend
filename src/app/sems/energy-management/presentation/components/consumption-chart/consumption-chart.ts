@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartData, ChartOptions } from 'chart.js';
+import { DeviceConsumption } from '../../../domain/model/entities/device-consumption.entity';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Device } from '../../../domain/model/device.entity';
 
@@ -25,7 +26,7 @@ type Period = 'weekly' | 'monthly';
 })
 export class ConsumptionChart implements OnInit, OnChanges {
   @Input() devices?: Device[];
-  @Input() deviceConsumptions?: Record<string, DeviceConsumptionSummary>;
+  @Input() deviceConsumptions?: Record<string, DeviceConsumption[]>;
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   chartStyle: ChartStyle = 'bar';
@@ -131,23 +132,8 @@ export class ConsumptionChart implements OnInit, OnChanges {
       return;
     }
 
-    const deviceTotals = this.devices
-      .map(device => {
-        const weekly = this.getWeeklyConsumption(device);
-        const monthly = this.getMonthlyConsumption(device, weekly);
-        return {
-          label: this.getDeviceLabel(device),
-          weekly,
-          monthly
-        };
-      })
-      .filter(device => device.weekly > 0 || device.monthly > 0);
-
-    const totalWeekly = deviceTotals.reduce((sum, device) => sum + device.weekly, 0);
-    const totalMonthly = deviceTotals.reduce((sum, device) => sum + device.monthly, 0);
-    const periodTotal = this.period === 'monthly' ? totalMonthly : totalWeekly;
-
-    if (periodTotal <= 0) {
+    const grouped = this.groupConsumptionsByDevice();
+    if (grouped.deviceTotals.length === 0 || grouped.series.labels.length === 0) {
       this.clearChartData();
       return;
     }
@@ -157,12 +143,9 @@ export class ConsumptionChart implements OnInit, OnChanges {
     this.pieChartOptions = this.getPieOptions();
 
     if (this.chartStyle === 'pie') {
-      const periodValues = deviceTotals.map(device =>
-        this.period === 'monthly' ? device.monthly : device.weekly
-      );
-      this.applyPieData(deviceTotals, periodValues);
+      this.applyPieData(grouped.deviceTotals, grouped.deviceTotals.map(device => device.total));
     } else {
-      this.applyTimeSeriesData(periodTotal);
+      this.applyTimeSeriesData(grouped.series);
     }
 
     setTimeout(() => {
@@ -172,12 +155,7 @@ export class ConsumptionChart implements OnInit, OnChanges {
     }, 0);
   }
 
-  private applyTimeSeriesData(totalWeekly: number): void {
-    const periodTotal = this.period === 'monthly' ? totalWeekly * 4 : totalWeekly;
-    const series = this.period === 'monthly'
-      ? this.buildMonthlySeries(periodTotal)
-      : this.buildWeeklySeries(periodTotal);
-
+  private applyTimeSeriesData(series: ChartSeries): void {
     const colors = this.chartStyle === 'bar'
       ? this.buildPalette(series.values.length)
       : ['#1976d2'];
@@ -198,11 +176,7 @@ export class ConsumptionChart implements OnInit, OnChanges {
     };
   }
 
-  private applyPieData(
-    deviceTotals: Array<{ label: string; weekly: number; monthly: number }>,
-    periodValues: number[]
-  ): void {
-    const data = periodValues;
+  private applyPieData(deviceTotals: Array<{ label: string; total: number }>, data: number[]): void {
     const colors = this.buildPalette(data.length);
 
     if (data.reduce((sum, value) => sum + value, 0) <= 0) {
@@ -219,37 +193,6 @@ export class ConsumptionChart implements OnInit, OnChanges {
         borderWidth: 2
       }]
     };
-  }
-
-  private buildWeeklySeries(totalWeekly: number): { labels: string[]; values: number[] } {
-    const dayKeys = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
-    const labels = dayKeys.map(key => this.translate.instant(`reports.weeklyChart.days.${key}`));
-    const pattern = [0.12, 0.11, 0.13, 0.14, 0.15, 0.18, 0.17];
-    const sumPattern = pattern.reduce((sum, value) => sum + value, 0);
-    const values = pattern.map(value => (value / sumPattern) * totalWeekly);
-
-    return { labels, values };
-  }
-
-  private buildMonthlySeries(totalMonthly: number): { labels: string[]; values: number[] } {
-    const now = new Date();
-    const monthKeys = [
-      'january', 'february', 'march', 'april', 'may', 'june',
-      'july', 'august', 'september', 'october', 'november', 'december'
-    ];
-
-    const labels: string[] = [];
-    for (let i = 2; i >= 0; i--) {
-      const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      const monthKey = monthKeys[date.getMonth()];
-      labels.push(this.translate.instant(`dashboard.months.${monthKey}`));
-    }
-
-    const factors = [0.95, 1.0, 1.05];
-    const sumFactors = factors.reduce((sum, value) => sum + value, 0);
-    const values = factors.map(value => (value / sumFactors) * totalMonthly);
-
-    return { labels, values };
   }
 
   private getCartesianOptions(): ChartOptions<'bar' | 'line'> {
@@ -278,53 +221,6 @@ export class ConsumptionChart implements OnInit, OnChanges {
                 return '';
               }
               return `${value.toFixed(2)} kWh`;
-            }
-          }
-        }
-      },
-      scales: {
-        x: {
-          grid: {
-            display: false
-          },
-          title: {
-            display: true,
-            text: this.translate.instant('dashboard.axes.time'),
-            font: {
-              size: 12,
-              weight: 'bold'
-            }
-          },
-          ticks: {
-            font: {
-              size: 11
-            },
-            color: '#666'
-          }
-        },
-        y: {
-          beginAtZero: true,
-          grid: {
-            color: 'rgba(0, 0, 0, 0.05)'
-          },
-          title: {
-            display: true,
-            text: this.translate.instant('dashboard.units.kwh'),
-            font: {
-              size: 12,
-              weight: 'bold'
-            }
-          },
-          ticks: {
-            font: {
-              size: 11
-            },
-            color: '#666',
-            callback: (value) => {
-              if (typeof value === 'number') {
-                return value.toFixed(1);
-              }
-              return value;
             }
           }
         }
@@ -370,51 +266,140 @@ export class ConsumptionChart implements OnInit, OnChanges {
     };
   }
 
-  private getWeeklyConsumption(device: Device): number {
-    const summary = this.deviceConsumptions?.[device.id];
-    if (summary?.weekly !== undefined) {
-      return summary.weekly;
+  private groupConsumptionsByDevice(): { series: ChartSeries; deviceTotals: Array<{ label: string; total: number }> } {
+    const records = this.buildRecords();
+    if (records.length === 0) {
+      return { series: { labels: [], values: [] }, deviceTotals: [] };
     }
 
-    if (device.energyConsumptionValue && device.energyConsumptionValue > 0) {
-      return device.energyConsumptionValue;
-    }
+    const { labels, values } = this.buildSeries(records);
+    const totalsByDevice: Record<string, number> = {};
 
-    if (device.energyConsumption) {
-      const match = device.energyConsumption.match(/(\d+\.?\d*)/);
-      if (match) {
-        return parseFloat(match[1]);
-      }
-    }
+    records.forEach(record => {
+      totalsByDevice[record.deviceLabel] = (totalsByDevice[record.deviceLabel] || 0) + record.consumption;
+    });
 
-    return this.getEstimatedConsumption(device);
+    const deviceTotals = Object.entries(totalsByDevice)
+      .map(([label, total]) => ({ label, total }))
+      .filter(item => item.total > 0);
+
+    return { series: { labels, values }, deviceTotals };
   }
 
-  private getMonthlyConsumption(device: Device, weeklyFallback: number): number {
-    const summary = this.deviceConsumptions?.[device.id];
-    if (summary?.monthly !== undefined) {
-      return summary.monthly;
+  private buildRecords(): ConsumptionRecord[] {
+    if (!this.devices || this.devices.length === 0) {
+      return [];
     }
 
-    if (weeklyFallback > 0) {
-      return weeklyFallback * 4;
+    const range = this.buildDateRange();
+    if (range.length === 0) {
+      return [];
     }
 
-    return 0;
+    const deviceRecords: ConsumptionRecord[] = [];
+
+    this.devices.forEach(device => {
+      const entries = (this.deviceConsumptions?.[device.id] || [])
+        .filter(entry => entry.period === 'daily' && !!entry.createdAt)
+        .map(entry => ({
+          deviceId: device.id,
+          deviceLabel: this.getDeviceLabel(device),
+          dateKey: this.toDateKey(new Date(entry.createdAt)),
+          consumption: entry.consumption
+        }))
+        .filter(entry => range.includes(entry.dateKey));
+
+      deviceRecords.push(...entries);
+    });
+
+    return deviceRecords;
   }
 
-  private getEstimatedConsumption(device: Device): number {
-    const estimatedWeeklyConsumption: { [key: string]: number } = {
-      'Major Appliances': 12.0,
-      'Heating & Cooling': 25.0,
-      'Electronics': 3.5,
-      'Lighting': 2.0,
-      'Kitchen Appliances': 5.0,
-      'Other': 2.0
-    };
+  private buildSeries(records: ConsumptionRecord[]): ChartSeries {
+    const range = this.buildDateRange();
+    if (range.length === 0) {
+      return { labels: [], values: [] };
+    }
 
-    const baseConsumption = estimatedWeeklyConsumption[device.category] || 2.0;
-    return device.isActive ? baseConsumption : baseConsumption * 0.1;
+    const totalsByDate: Record<string, number> = {};
+    records.forEach(record => {
+      totalsByDate[record.dateKey] = (totalsByDate[record.dateKey] || 0) + record.consumption;
+    });
+
+    const earliest = this.getEarliestDateKey(records);
+    const filteredRange = earliest
+      ? range.filter(dateKey => dateKey >= earliest)
+      : range;
+
+    const labels = filteredRange.map(dateKey => this.formatLabel(dateKey));
+    const values = filteredRange.map(dateKey => totalsByDate[dateKey] || 0);
+
+    return { labels, values };
+  }
+
+  private buildDateRange(): string[] {
+    const today = new Date();
+    if (this.period === 'weekly') {
+      return this.buildRecentDates(today, 7);
+    }
+
+    return this.buildMonthDates(today);
+  }
+
+  private buildRecentDates(reference: Date, days: number): string[] {
+    const dates: string[] = [];
+    for (let i = days - 1; i >= 0; i--) {
+      const date = new Date(reference.getFullYear(), reference.getMonth(), reference.getDate() - i);
+      dates.push(this.toDateKey(date));
+    }
+    return dates;
+  }
+
+  private buildMonthDates(reference: Date): string[] {
+    const dates: string[] = [];
+    const year = reference.getFullYear();
+    const month = reference.getMonth();
+    const today = reference.getDate();
+
+    for (let day = 1; day <= today; day++) {
+      dates.push(this.toDateKey(new Date(year, month, day)));
+    }
+
+    return dates;
+  }
+
+  private getEarliestDateKey(records: ConsumptionRecord[]): string | null {
+    if (records.length === 0) {
+      return null;
+    }
+
+    return records.reduce((earliest, record) =>
+      record.dateKey < earliest ? record.dateKey : earliest
+    , records[0].dateKey);
+  }
+
+  private toDateKey(date: Date): string {
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const day = `${date.getDate()}`.padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  private formatLabel(dateKey: string): string {
+    const [year, month, day] = dateKey.split('-').map(value => parseInt(value, 10));
+    const date = new Date(year, month - 1, day);
+
+    if (this.period === 'weekly') {
+      const dayKey = this.getWeekdayKey(date.getDay());
+      return this.translate.instant(`reports.weeklyChart.days.${dayKey}`);
+    }
+
+    return `${day}`;
+  }
+
+  private getWeekdayKey(dayIndex: number): string {
+    const keys = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    return keys[dayIndex] || 'MON';
   }
 
   private getDeviceLabel(device: Device): string {
@@ -447,8 +432,14 @@ export class ConsumptionChart implements OnInit, OnChanges {
   }
 }
 
-interface DeviceConsumptionSummary {
-  daily?: number;
-  weekly?: number;
-  monthly?: number;
+interface ConsumptionRecord {
+  deviceId: string;
+  deviceLabel: string;
+  dateKey: string;
+  consumption: number;
+}
+
+interface ChartSeries {
+  labels: string[];
+  values: number[];
 }

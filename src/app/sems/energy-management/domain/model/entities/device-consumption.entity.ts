@@ -3,4 +3,5 @@ export interface DeviceConsumption {
   deviceId: number;
   period: 'daily' | 'weekly' | 'monthly';
   consumption: number;
+  createdAt: string;
 }
