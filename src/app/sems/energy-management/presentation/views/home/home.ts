@@ -33,7 +33,7 @@ import { HomeRefreshService } from '../../../../../shared/application/services/h
 export class Home implements OnInit, OnDestroy {
   dashboardStats: DashboardStats = new DashboardStats(0, 0, 0, 0, 0, 'S/.');
   devices: Device[] = [];
-  deviceConsumptions: Record<string, DeviceConsumptionSummary> = {};
+  deviceConsumptions: Record<string, DeviceConsumption[]> = {};
   alerts: any[] = [];
   isLoading = false;
 
@@ -148,9 +148,9 @@ export class Home implements OnInit, OnDestroy {
       this.dashboardService.loadDeviceConsumptions(device.id).pipe(
         map(consumptions => ({
           deviceId: device.id,
-          summary: this.toConsumptionSummary(consumptions)
+          consumptions
         })),
-        catchError(() => of({ deviceId: device.id, summary: {} as DeviceConsumptionSummary }))
+        catchError(() => of({ deviceId: device.id, consumptions: [] as DeviceConsumption[] }))
       )
     );
 
@@ -160,28 +160,13 @@ export class Home implements OnInit, OnDestroy {
         this.lastConsumptionFetchAt = Date.now();
       }))
       .subscribe(results => {
-        const consumptionMap: Record<string, DeviceConsumptionSummary> = {};
+        const consumptionMap: Record<string, DeviceConsumption[]> = {};
         results.forEach(result => {
-          consumptionMap[result.deviceId] = result.summary;
+          consumptionMap[result.deviceId] = result.consumptions;
         });
         this.deviceConsumptions = consumptionMap;
         this.cdr.detectChanges();
       });
-  }
-
-  private toConsumptionSummary(consumptions: DeviceConsumption[]): DeviceConsumptionSummary {
-    return consumptions.reduce<DeviceConsumptionSummary>((summary, item) => {
-      if (item.period === 'daily') {
-        summary.daily = item.consumption;
-      }
-      if (item.period === 'weekly') {
-        summary.weekly = item.consumption;
-      }
-      if (item.period === 'monthly') {
-        summary.monthly = item.consumption;
-      }
-      return summary;
-    }, {});
   }
 
   private loadBackendData(): void {
@@ -277,20 +262,6 @@ export class Home implements OnInit, OnDestroy {
     return `${savingsValue}${percentSymbol} ${this.translate.instant('dashboard.stats.saved')}`;
   }
 
-  private getEstimatedConsumption(device: Device): number {
-    const estimatedWeeklyConsumption: { [key: string]: number } = {
-      'Major Appliances': 12.0,
-      'Heating & Cooling': 25.0,
-      'Electronics': 3.5,
-      'Lighting': 2.0,
-      'Kitchen Appliances': 5.0,
-      'Other': 2.0
-    };
-
-    const baseConsumption = estimatedWeeklyConsumption[device.category] || 2.0;
-    return device.isActive ? baseConsumption : baseConsumption * 0.1;
-  }
-
   get hasDevices(): boolean {
     const hasDevices = this.devices && this.devices.length > 0;
     console.log('hasDevices check:', hasDevices, '- Device count:', this.devices?.length || 0);
@@ -354,8 +325,3 @@ export class Home implements OnInit, OnDestroy {
   }
 }
 
-interface DeviceConsumptionSummary {
-  daily?: number;
-  weekly?: number;
-  monthly?: number;
-}

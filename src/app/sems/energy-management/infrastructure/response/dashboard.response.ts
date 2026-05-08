@@ -74,6 +74,7 @@ export interface DeviceConsumptionResponse {
   deviceId: number;
   period: 'daily' | 'weekly' | 'monthly';
   consumption: number;
+  createdAt: string;
 }
 
 export interface DeviceResponse {
