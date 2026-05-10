@@ -106,7 +106,8 @@ export class AuthService {
           undefined,
           userFromResponse.phone,
           userFromResponse.address,
-          userFromResponse.profilePhotoUrl
+          userFromResponse.profilePhotoUrl,
+          userFromResponse.plan || 'basic'
         );
 
         console.log('AuthService - Created user object:', user);
@@ -155,7 +156,12 @@ export class AuthService {
           userData.role,
           true,
           new Date(userData.createdAt || new Date()),
-          new Date()
+          new Date(),
+          undefined,
+          userData.phoneNumber,
+          userData.address,
+          userData.profilePhotoUrl,
+          userData.plan || 'basic'
         );
 
         this.tokenService.saveUser(user);
@@ -378,6 +384,39 @@ export class AuthService {
       ...this.authStateSubject.value,
       error: null
     });
+  }
+
+  updateUserPlan(userId: string, plan: string): Observable<void> {
+    const token = this.tokenService.getAccessToken();
+    const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
+
+    return this.http.put<void>(
+      `${environment.apiUrl}/api/v1/users/${userId}/plan`,
+      { plan },
+      headers ? { headers } : {}
+    ).pipe(
+      tap(() => {
+        const currentUser = this.getCurrentUser();
+        if (currentUser && currentUser.id === userId) {
+          const updatedUser = new User(
+            currentUser.id,
+            currentUser.email,
+            currentUser.firstName,
+            currentUser.lastName,
+            currentUser.role,
+            currentUser.isActive,
+            currentUser.createdAt,
+            currentUser.lastLogin,
+            currentUser.username,
+            currentUser.phoneNumber,
+            currentUser.address,
+            currentUser.profilePhotoUrl,
+            plan
+          );
+          this.updateCurrentUser(updatedUser);
+        }
+      })
+    );
   }
 
   private updateAuthState(state: AuthState): void {

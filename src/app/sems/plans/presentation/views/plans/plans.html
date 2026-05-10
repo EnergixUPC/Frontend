@@ -32,10 +32,11 @@
       <button
         class="plan-cta"
         type="button"
-        [class.is-current]="plan.type === 'basic'"
-        [disabled]="plan.type === 'basic'"
-        (click)="onSubscribe(plan)">
-        {{ (plan.type === 'basic' ? 'plans.currentPlan' : 'plans.cta') | translate }}
+        [class.is-current]="plan.type === currentPlan && currentPlan === 'basic'"
+        [class.is-cancel]="plan.type === currentPlan && currentPlan !== 'basic'"
+        [disabled]="plan.type === currentPlan && currentPlan === 'basic'"
+        (click)="plan.type === currentPlan && currentPlan !== 'basic' ? onCancelPlan() : onSubscribe(plan)">
+        {{ (plan.type === currentPlan ? (currentPlan === 'basic' ? 'plans.currentPlan' : 'plans.cancelPlan') : 'plans.cta') | translate }}
       </button>
     </div>
   </div>

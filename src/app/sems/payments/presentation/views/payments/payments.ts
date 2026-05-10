@@ -14,6 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PaymentService } from '../../../application/services/payment.service';
 import { DashboardStore } from '../../../../energy-management/application/state/dashboard.store';
 import { Payment } from '../../../domain/model/entities/payment.entity';
+import { AuthService } from '../../../../authentication/application/services/auth.service';
 
 @Component({
   selector: 'app-payments',
@@ -39,6 +40,7 @@ export class Payments implements OnInit, OnDestroy {
   estimatedBill = 0;
   paymentHistory: Payment[] = [];
   private selectedPlanAmount: number | null = null;
+  private selectedPlanName: string | null = null;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -47,7 +49,8 @@ export class Payments implements OnInit, OnDestroy {
     private dashboardStore: DashboardStore,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private authService: AuthService
   ) {
     this.paymentForm = this.fb.group({
       amount: [{ value: 0, disabled: false }, [Validators.required, Validators.min(1)]]
@@ -59,6 +62,7 @@ export class Payments implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(params => {
         const plan = params.get('plan');
+        this.selectedPlanName = plan;
         const planAmount = this.getPlanAmount(plan);
 
         if (planAmount !== null) {
@@ -120,6 +124,16 @@ export class Payments implements OnInit, OnDestroy {
 
           // Automatically open the payment URL
           this.paymentService.openPaymentUrl(session.url);
+
+          // Update user plan on success
+          if (this.selectedPlanName) {
+            const currentUser = this.authService.getCurrentUser();
+            if (currentUser) {
+              this.authService.updateUserPlan(currentUser.id, this.selectedPlanName).subscribe({
+                error: err => console.error('Error updating user plan:', err)
+              });
+            }
+          }
 
           // Optionally reload payment history after a delay
           setTimeout(() => {
