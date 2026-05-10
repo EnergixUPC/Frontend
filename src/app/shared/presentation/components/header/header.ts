@@ -72,12 +72,14 @@ export class Header implements OnInit, OnDestroy {
   }
 
   getDayOfWeek(): string {
-    const day = this.currentDate.toLocaleDateString(this.translate.currentLang, { weekday: 'long' });
+    const lang = this.translate.currentLang || this.translate.defaultLang || 'es';
+    const day = this.currentDate.toLocaleDateString(lang, { weekday: 'long' });
     return day.charAt(0).toUpperCase() + day.slice(1);
   }
 
   getFormattedDate(): string {
-    const dateStr = this.currentDate.toLocaleDateString(this.translate.currentLang, {
+    const lang = this.translate.currentLang || this.translate.defaultLang || 'es';
+    const dateStr = this.currentDate.toLocaleDateString(lang, {
       month: 'short', day: 'numeric', year: 'numeric'
     });
     return dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
