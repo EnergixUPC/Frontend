@@ -5,7 +5,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Device } from '../../../domain/model/device.entity';
-import { DashboardService } from '../../../application/services/dashboard.service';
 import { DevicesService } from '../../../application/services/devices.service';
 import { AuthControllerService } from '../../../../authentication/application/services/auth-controller.service';
 
@@ -23,7 +22,6 @@ export class Devices implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(
-    private readonly dashboardService: DashboardService,
     private readonly devicesService: DevicesService,
     private readonly translateService: TranslateService,
     private readonly router: Router,
@@ -48,26 +46,18 @@ export class Devices implements OnInit, OnDestroy {
 
   private loadDevices(): void {
     this.loading = true;
-    this.dashboardService.loadUnifiedDashboard()
+    this.devicesService.getAllDevices()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: () => {
-          this.dashboardService.getDashboardState()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(state => {
-              setTimeout(() => {
-                this.devices = state.devices || [];
-                this.loading = false;
-                this.cdr.detectChanges();
-              }, 50);
-            });
+        next: (devices) => {
+          this.devices = devices;
+          this.loading = false;
+          this.cdr.detectChanges();
         },
         error: () => {
-          setTimeout(() => {
-            this.error = 'Error loading devices';
-            this.loading = false;
-            this.cdr.detectChanges();
-          }, 50);
+          this.error = 'Error loading devices';
+          this.loading = false;
+          this.cdr.detectChanges();
         }
       });
   }

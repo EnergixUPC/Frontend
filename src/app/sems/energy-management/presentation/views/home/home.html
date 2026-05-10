@@ -1,7 +1,10 @@
 <div class="dashboard-container">
   <!-- Stats Cards Row -->
   <div class="stats-row">
-    <app-stats-card [title]="energyConsumptionLabel" [value]="getCalculatedEnergyConsumption()" subtitle="">
+    <app-stats-card
+      [title]="energyConsumptionLabel"
+      [value]="getCalculatedEnergyConsumption()"
+      [subtitle]="getEnergyConsumptionSubtitle()">
     </app-stats-card>
 
     <app-stats-card [title]="estimatedSavingsLabel" [value]="getCalculatedSavings()" subtitle="">
@@ -10,7 +13,10 @@
     <app-stats-card [title]="activeDevicesLabel" [value]="getCalculatedActiveDevices()" subtitle="">
     </app-stats-card>
 
-    <app-stats-card [title]="estimatedBillLabel" [value]="getCalculatedEstimatedBill()" subtitle="">
+    <app-stats-card
+      [title]="estimatedBillLabel"
+      [value]="getCalculatedEstimatedBill()"
+      [subtitle]="getEstimatedBillSubtitle()">
     </app-stats-card>
 
     <app-stats-card [title]="todayConsumptionLabel" [value]="getCalculatedTodayConsumption()" subtitle="">
