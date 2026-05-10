@@ -2,15 +2,15 @@
   <div class="card-header">
     <h3>{{ 'reports.export.title' | translate }}</h3>
   </div>
-  
+
   <div class="card-content">
     <!-- Single row layout -->
     <div class="export-controls-row">
       <!-- Export Format -->
       <div class="format-section">
         <label class="section-label">{{ 'reports.export.format' | translate }}</label>
-        <select 
-          [(ngModel)]="selectedFormat" 
+        <select
+          [(ngModel)]="selectedFormat"
           (change)="onFormatChange($event)"
           class="format-dropdown">
           <option *ngFor="let format of exportFormats" [value]="format.value">
@@ -23,8 +23,8 @@
       <div class="checkboxes-section">
         <div class="checkbox-group" *ngFor="let period of exportPeriods">
           <label class="checkbox-label">
-            <input 
-              type="checkbox" 
+            <input
+              type="checkbox"
               [checked]="period.checked"
               (change)="onPeriodChange(period)"
               class="checkbox-input">
@@ -35,7 +35,7 @@
       </div>
 
       <!-- Download Button -->
-      <button 
+      <button
         (click)="onDownload()"
         [disabled]="isDownloading"
         class="download-button">
@@ -47,24 +47,5 @@
       </button>
     </div>
 
-    <!-- Email row -->
-    <div class="email-row">
-      <input 
-        type="email" 
-        [(ngModel)]="email"
-        [placeholder]="'reports.export.emailPlaceholder' | translate"
-        class="email-input"
-        [class.invalid]="!isValidEmail() && email.length > 0">
-      <button 
-        (click)="onSendReport()"
-        [disabled]="isSending || !isValidEmail()"
-        class="send-button">
-        <span *ngIf="!isSending">{{ 'reports.export.buttons.sendReport' | translate }}</span>
-        <span *ngIf="isSending" class="loading-text">
-          <span class="spinner"></span>
-          {{ 'reports.export.buttons.sending' | translate }}
-        </span>
-      </button>
-    </div>
   </div>
 </div>

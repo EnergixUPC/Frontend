@@ -1,23 +1,22 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, NavigationEnd } from '@angular/router';
-import { Subject, filter, takeUntil, interval } from 'rxjs';
+import { Router } from '@angular/router';
+import { Subject, filter, takeUntil, forkJoin, of, map, catchError, finalize, take } from 'rxjs';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { StatsCard } from '../../components/stats-card/stats-card';
-import { DailyChart } from '../../components/daily-chart/daily-chart';
-import { CategoryChart } from '../../components/category-chart/category-chart';
-import { MonthlyChart } from '../../components/monthly-chart/monthly-chart';
+import { ConsumptionChart } from '../../components/consumption-chart/consumption-chart';
 import { DeviceList } from '../../components/device-list/device-list';
-import { Device, DeviceStatus } from '../../../domain/model/device.entity';
-import { DailyConsumption } from '../../../domain/model/entities/daily-consumption.entity';
-import { ConsumptionByCategory } from '../../../domain/model/entities/consumption-by-category.entity';
-import { MonthlyComparison } from '../../../domain/model/entities/monthly-comparison.entity';
+import { Device } from '../../../domain/model/device.entity';
+import { DeviceConsumption } from '../../../domain/model/entities/device-consumption.entity';
 import { DashboardStats } from '../../../domain/model/entities/dashboard-stats.entity';
+import { UserWeeklyConsumptionResponse } from '../../../infrastructure/response/dashboard.response';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { DashboardService } from '../../../application/services/dashboard.service';
 import { AuthService } from '../../../../authentication/application/services/auth.service';
 import { MockDataService } from '../../../infrastructure/services/mock-data.service';
+import { HomeRefreshService } from '../../../../../shared/application/services/home-refresh.service';
+import { DevicesService } from '../../../application/services/devices.service';
 
 @Component({
   selector: 'app-home',
@@ -25,9 +24,7 @@ import { MockDataService } from '../../../infrastructure/services/mock-data.serv
     CommonModule,
     TranslateModule,
     StatsCard,
-    DailyChart,
-    CategoryChart,
-    MonthlyChart,
+    ConsumptionChart,
     DeviceList,
     MatCardModule,
     MatIconModule
@@ -37,14 +34,20 @@ import { MockDataService } from '../../../infrastructure/services/mock-data.serv
 })
 export class Home implements OnInit, OnDestroy {
   dashboardStats: DashboardStats = new DashboardStats(0, 0, 0, 0, 0, 'S/.');
-  dailyConsumption?: DailyConsumption;
-  consumptionByCategory?: ConsumptionByCategory;
-  monthlyComparison?: MonthlyComparison;
   devices: Device[] = [];
+  deviceConsumptions: Record<string, DeviceConsumption[]> = {};
   alerts: any[] = [];
   isLoading = false;
+  weeklyConsumption: UserWeeklyConsumptionResponse | null = null;
 
+  private readonly KWH_RATE_SOL = 0.6034;
+  private currentUserId: string | null = null;
   private readonly destroy$ = new Subject<void>();
+  private isLoadingBackend = false;
+  private isFetchingConsumptions = false;
+  private lastConsumptionFetchAt = 0;
+  private lastConsumptionDeviceKey = '';
+  private readonly consumptionRefreshMs = 60000;
 
   constructor(
     private translate: TranslateService,
@@ -52,7 +55,9 @@ export class Home implements OnInit, OnDestroy {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private authService: AuthService,
-    private mockDataService: MockDataService
+    private mockDataService: MockDataService,
+    private homeRefreshService: HomeRefreshService,
+    private devicesService: DevicesService
   ) { }
 
   ngOnInit(): void {
@@ -63,23 +68,12 @@ export class Home implements OnInit, OnDestroy {
 
     this.loadDashboardData();
 
-    // Setup auto-refresh every 30 seconds
-    interval(30000)
+    this.homeRefreshService.onRefresh()
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
-        console.log('Auto-refreshing dashboard data...');
-        this.loadBackendData();
-      });
-
-    this.router.events.pipe(
-      filter((e): e is NavigationEnd => e instanceof NavigationEnd),
-      takeUntil(this.destroy$)
-    ).subscribe(evt => {
-      if (evt.urlAfterRedirects === '/home' || evt.url === '/home') {
-        console.log('Home - navigation end to /home, reloading dashboard data');
+        console.log('Home - refresh requested by menu click');
         this.loadDashboardData();
-      }
-    });
+      });
   }
 
   ngOnDestroy(): void {
@@ -90,25 +84,27 @@ export class Home implements OnInit, OnDestroy {
   private loadDashboardData(): void {
     this.isLoading = true;
 
-    this.authService.authState$.subscribe(authState => {
-      console.log('Home - Authentication state changed:', authState);
+    this.authService.authState$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(authState => !authState.isLoading),
+        take(1)
+      )
+      .subscribe(authState => {
+        console.log('Home - Authentication state changed:', authState);
 
-      if (authState.isLoading) {
-        console.log('Home - Auth still loading, waiting...');
-        return;
-      }
+        if (!authState.isAuthenticated || !authState.user) {
+          console.warn('Home - User not authenticated, redirecting to login');
+          this.router.navigate(['/login']);
+          return;
+        }
 
-      if (!authState.isAuthenticated || !authState.user) {
-        console.warn('Home - User not authenticated, redirecting to login');
-        this.router.navigate(['/login']);
-        return;
-      }
+        const currentUser = authState.user;
+        console.log('Home - User authenticated - Loading dashboard for user:', currentUser.id, currentUser.email);
 
-      const currentUser = authState.user;
-      console.log('Home - User authenticated - Loading dashboard for user:', currentUser.id, currentUser.email);
-
-      this.loadBackendData();
-    });
+        this.currentUserId = currentUser.id;
+        this.loadBackendData();
+      });
   }
 
   private updateChartData(): void {
@@ -136,80 +132,163 @@ export class Home implements OnInit, OnDestroy {
     }, 100);
   }
 
+  private loadDeviceConsumptions(devices: Device[]): void {
+    if (!devices || devices.length === 0) {
+      this.deviceConsumptions = {};
+      return;
+    }
+
+    const deviceIdsKey = devices.map(device => device.id).sort().join('|');
+    const now = Date.now();
+    const hasRecentData = deviceIdsKey === this.lastConsumptionDeviceKey
+      && Object.keys(this.deviceConsumptions).length > 0
+      && (now - this.lastConsumptionFetchAt) < this.consumptionRefreshMs;
+
+    if (this.isFetchingConsumptions || hasRecentData) {
+      return;
+    }
+
+    this.isFetchingConsumptions = true;
+    this.lastConsumptionDeviceKey = deviceIdsKey;
+
+    const requests = devices.map(device =>
+      this.dashboardService.loadDeviceConsumptions(device.id).pipe(
+        map(consumptions => ({
+          deviceId: device.id,
+          consumptions
+        })),
+        catchError(() => of({ deviceId: device.id, consumptions: [] as DeviceConsumption[] }))
+      )
+    );
+
+    forkJoin(requests)
+      .pipe(finalize(() => {
+        this.isFetchingConsumptions = false;
+        this.lastConsumptionFetchAt = Date.now();
+      }))
+      .subscribe(results => {
+        const consumptionMap: Record<string, DeviceConsumption[]> = {};
+        results.forEach(result => {
+          consumptionMap[result.deviceId] = result.consumptions;
+        });
+        this.deviceConsumptions = consumptionMap;
+        this.cdr.detectChanges();
+      });
+  }
+
   private loadBackendData(): void {
+    if (this.isLoadingBackend) {
+      return;
+    }
+
+    this.isLoadingBackend = true;
     console.log('Loading unified dashboard data from backend...');
 
-    this.dashboardService.loadUnifiedDashboard().subscribe({
-      next: (data) => {
-        console.log('Unified dashboard data loaded successfully');
+    this.dashboardService.loadUnifiedDashboard()
+      .pipe(finalize(() => {
+        this.isLoadingBackend = false;
+        this.isLoading = false;
+      }))
+      .subscribe({
+        next: (data) => {
+          console.log('Unified dashboard data loaded successfully');
 
-        // Update alerts from unified response
-        if (data.alerts) {
-          this.alerts = data.alerts;
-          console.log('Alerts loaded from unified dashboard:', this.alerts);
+          if (data.alerts) {
+            this.alerts = data.alerts;
+          }
+
+          this.dashboardService.getDashboardState()
+            .pipe(takeUntil(this.destroy$), take(1))
+            .subscribe(state => {
+              if (state.stats) {
+                this.dashboardStats = state.stats;
+              }
+            });
+
+          this.devicesService.getAllDevices()
+            .pipe(takeUntil(this.destroy$), catchError(() => of([])))
+            .subscribe(devices => {
+              this.devices = devices;
+              this.updateChartData();
+              this.loadDeviceConsumptions(this.devices);
+              this.cdr.detectChanges();
+            });
+        },
+        error: (error: any) => {
+          console.error('Error loading dashboard:', error);
+          this.dashboardStats = new DashboardStats(0, 0, 0, 0, 0, 'S/.');
+          this.devices = [];
+          this.deviceConsumptions = {};
+          this.alerts = [];
+
+          setTimeout(() => {
+            this.cdr.detectChanges();
+          }, 50);
         }
+      });
 
-        this.dashboardService.getDashboardState().subscribe(state => {
-          if (state.stats) {
-            this.dashboardStats = state.stats;
-            console.log('Dashboard stats:', state.stats);
-          }
-
-          if (state.dailyConsumption) {
-            this.dailyConsumption = state.dailyConsumption;
-            console.log('Daily consumption:', state.dailyConsumption);
-          }
-
-          if (state.consumptionByCategory) {
-            this.consumptionByCategory = state.consumptionByCategory;
-            console.log('Category consumption:', state.consumptionByCategory);
-          }
-
-          if (state.devices) {
-            this.devices = state.devices || [];
-            console.log('Devices loaded from unified dashboard:', this.devices.length);
-            this.updateChartData();
-          }
-        });
-      },
-      error: (error: any) => {
-        console.error('Error loading dashboard:', error);
-        this.dashboardStats = new DashboardStats(0, 0, 0, 0, 0, 'S/.');
-        this.devices = [];
-        this.alerts = [];
-
-        setTimeout(() => {
-          this.isLoading = false;
+    if (this.currentUserId) {
+      this.dashboardService.loadWeeklyConsumption(this.currentUserId)
+        .pipe(catchError(() => of(null)))
+        .subscribe(data => {
+          this.weeklyConsumption = data;
           this.cdr.detectChanges();
-        }, 50);
-      }
-    });
-
-    this.isLoading = false;
+        });
+    }
   }
 
   getCalculatedEnergyConsumption(): string {
-    console.log('Getting energy consumption from API:', this.dashboardStats.energyConsumption);
     const unit = this.translate.instant('dashboard.units.kwh');
+    if (this.weeklyConsumption) {
+      return `${this.weeklyConsumption.totalWeeklyConsumptionKwh.toFixed(2)} ${unit}`;
+    }
     return `${this.dashboardStats.energyConsumption.toFixed(1)} ${unit}`;
   }
 
+  getEnergyConsumptionSubtitle(): string {
+    if (!this.weeklyConsumption) return '';
+    const currency = this.translate.instant('dashboard.units.currency');
+    const weeklyCost = this.weeklyConsumption.totalWeeklyConsumptionKwh * this.KWH_RATE_SOL;
+    return `${currency} ${weeklyCost.toFixed(2)} esta semana`;
+  }
+
   getCalculatedTodayConsumption(): string {
-    console.log('Getting today consumption from API:', this.dashboardStats.todayConsumption);
     const unit = this.translate.instant('dashboard.units.kwh');
     return `${this.dashboardStats.todayConsumption.toFixed(2)} ${unit}`;
   }
 
   getCalculatedEstimatedBill(): string {
-    console.log('Getting estimated bill from API:', this.dashboardStats.estimatedBill);
     const currency = this.translate.instant('dashboard.units.currency');
+    if (this.weeklyConsumption) {
+      const bill = this.getProjectedMonthlyBill();
+      return `${currency} ${bill.toFixed(2)}`;
+    }
     return `${currency} ${this.dashboardStats.estimatedBill.toFixed(2)}`;
   }
 
+  getEstimatedBillSubtitle(): string {
+    if (!this.weeklyConsumption) return '';
+    const projected = this.getProjectedMonthlyKwh();
+    const unit = this.translate.instant('dashboard.units.kwh');
+    return `${projected.toFixed(1)} ${unit} proyectados`;
+  }
+
+  private getProjectedMonthlyKwh(): number {
+    if (!this.weeklyConsumption) return 0;
+    const dailyAvg = this.weeklyConsumption.totalWeeklyConsumptionKwh / 7;
+    const now = new Date();
+    const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    return dailyAvg * daysInMonth;
+  }
+
+  private getProjectedMonthlyBill(): number {
+    return this.getProjectedMonthlyKwh() * this.KWH_RATE_SOL;
+  }
+
   getCalculatedActiveDevices(): string {
-    console.log('Getting active devices from API:', this.dashboardStats.activeDevices);
-    const totalDevicesCount = this.devices.length || this.dashboardStats.activeDevices;
-    return `${this.dashboardStats.activeDevices} ${this.translate.instant('dashboard.stats.active')} / ${totalDevicesCount} ${this.devicesLabel}`;
+    const activeCount = this.devices.filter(d => d.status === 'ON' || d.status === 'CHARGING').length;
+    const totalCount = this.devices.length;
+    return `${activeCount} ${this.translate.instant('dashboard.stats.active')} / ${totalCount} ${this.devicesLabel}`;
   }
 
   getCalculatedSavings(): string {
@@ -228,39 +307,11 @@ export class Home implements OnInit, OnDestroy {
     return `${savingsValue}${percentSymbol} ${this.translate.instant('dashboard.stats.saved')}`;
   }
 
-  private getEstimatedConsumption(device: Device): number {
-    const estimatedWeeklyConsumption: { [key: string]: number } = {
-      'Major Appliances': 12.0,
-      'Heating & Cooling': 25.0,
-      'Electronics': 3.5,
-      'Lighting': 2.0,
-      'Kitchen Appliances': 5.0,
-      'Other': 2.0
-    };
-
-    const baseConsumption = estimatedWeeklyConsumption[device.category] || 2.0;
-    return device.isActive ? baseConsumption : baseConsumption * 0.1;
-  }
-
   get hasDevices(): boolean {
     const hasDevices = this.devices && this.devices.length > 0;
     console.log('hasDevices check:', hasDevices, '- Device count:', this.devices?.length || 0);
     return hasDevices;
   }
-
-  get hasConsumptionData(): boolean {
-    return this.dailyConsumption?.dataPoints ? this.dailyConsumption.dataPoints.length > 0 : false;
-  }
-
-  get hasCategoryData(): boolean {
-    return this.consumptionByCategory?.categories ? this.consumptionByCategory.categories.length > 0 : false;
-  }
-
-  get hasMonthlyData(): boolean {
-    // Always show monthly chart with static data
-    return true;
-  }
-
 
   get energyConsumptionLabel(): string {
     return this.translate.instant('dashboard.stats.energyConsumption');
@@ -318,3 +369,4 @@ export class Home implements OnInit, OnDestroy {
     return this.translate.instant(key);
   }
 }
+

@@ -13,6 +13,7 @@
   energyConsumptionValue?: number; // Numeric value for calculations
   location: string;
   isActive: number;
+  power?: number; // Watts per hour
 }
 
 export enum DeviceStatus {

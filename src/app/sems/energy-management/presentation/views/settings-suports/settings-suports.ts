@@ -7,10 +7,16 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 interface FAQ {
   question: string;
   answer: string;
+}
+
+interface Tutorial {
+  title: string;
+  description: string;
 }
 
 @Component({
@@ -24,7 +30,8 @@ interface FAQ {
     MatExpansionModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    TranslateModule
   ],
   templateUrl: './settings-suports.html',
   styleUrl: './settings-suports.css'
@@ -34,20 +41,10 @@ export class SettingsSuports {
   showHelpModal = false;
   showTutorialsModal = false;
 
-  faqs: FAQ[] = [
-    {
-      question: 'How can I reduce my energy consumption?',
-      answer: 'You can activate the automatic saving mode, configure schedules for your devices, and regularly review your consumption reports.'
-    },
-    {
-      question: 'What do high consumption notifications mean?',
-      answer: 'These notifications alert you when your consumption exceeds the usual average, helping you identify possible issues or waste.'
-    },
-    {
-      question: 'How do automatic reports work?',
-      answer: 'Reports are generated according to the frequency you choose and are sent to your email in the selected format.'
-    }
-  ];
+  // Kept as placeholders so *ngFor can iterate; labels come from i18n
+  faqs: FAQ[] = [{}, {}, {}] as FAQ[];
+
+  tutorials: Tutorial[] = [{}, {}, {}, {}] as Tutorial[];
 
   contactInfo = {
     email: 'soporte@energysems.com',
@@ -63,46 +60,35 @@ export class SettingsSuports {
 
   helpMessage = '';
 
-  constructor(private snackBar: MatSnackBar) { }
+  constructor(private snackBar: MatSnackBar, private translate: TranslateService) { }
 
-  openFaqModal(): void {
-    this.showFaqModal = true;
+  t(key: string): string {
+    return this.translate.instant(key);
   }
 
-  closeFaqModal(): void {
-    this.showFaqModal = false;
-  }
-
-  openHelpModal(): void {
-    this.showHelpModal = true;
-  }
-
-  closeHelpModal(): void {
-    this.showHelpModal = false;
-    this.helpMessage = '';
-  }
-
-  openTutorialsModal(): void {
-    this.showTutorialsModal = true;
-  }
-
-  closeTutorialsModal(): void {
-    this.showTutorialsModal = false;
-  }
+  openFaqModal(): void { this.showFaqModal = true; }
+  closeFaqModal(): void { this.showFaqModal = false; }
+  openHelpModal(): void { this.showHelpModal = true; }
+  closeHelpModal(): void { this.showHelpModal = false; this.helpMessage = ''; }
+  openTutorialsModal(): void { this.showTutorialsModal = true; }
+  closeTutorialsModal(): void { this.showTutorialsModal = false; }
 
   sendHelpMessage(): void {
     if (!this.helpMessage.trim()) {
-      this.snackBar.open('Por favor escribe un mensaje', 'Close', { duration: 3000 });
+      this.snackBar.open(this.t('settings.support.help.emptyMessage'), this.t('common.close'), { duration: 3000 });
       return;
     }
-
-    this.snackBar.open('Mensaje enviado correctamente. Te responderemos pronto.', 'Close', { duration: 3000 });
+    this.snackBar.open(this.t('settings.support.help.successMessage'), this.t('common.close'), { duration: 3000 });
     this.closeHelpModal();
   }
 
   copyToClipboard(text: string, type: string): void {
     navigator.clipboard.writeText(text);
-    this.snackBar.open(`${type} copiado al portapapeles`, 'Close', { duration: 2000 });
+    this.snackBar.open(
+      this.translate.instant('settings.support.help.copiedMessage', { type }),
+      this.t('common.close'),
+      { duration: 2000 }
+    );
   }
 
   openWhatsApp(): void {

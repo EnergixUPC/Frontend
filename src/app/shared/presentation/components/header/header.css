@@ -89,18 +89,6 @@
   min-width: 0;
 }
 
-.user-info .greeting {
-  order: 1;
-}
-
-.user-info .username {
-  order: 2;
-}
-
-.user-info .user-avatar {
-  order: 3;
-}
-
 .greeting {
   color: #666;
   font-size: 0.9rem;
@@ -133,6 +121,23 @@
   border-color: #1976d2;
 }
 
+.user-avatar-initials {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: #9ca3af;
+  border: 2px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  flex-shrink: 0;
+  letter-spacing: 1px;
+  user-select: none;
+}
+
 /* Tablet responsive */
 @media (max-width: 1024px) {
   .header {
@@ -155,7 +160,6 @@
     min-height: 60px;
   }
 
-  /* Hide date-time section on mobile */
   .header-left {
     display: none;
   }
@@ -168,12 +172,12 @@
 
   /* Order for mobile: Notifications -> Hello, Iker -> Photo -> ES/EN */
   .notification-button {
-    order: 2;
+    order: 1;
   }
 
   .user-info {
     gap: 0.5rem;
-    order: 3;
+    order: 2;
   }
 
   .greeting {
@@ -185,16 +189,19 @@
     max-width: 100px;
   }
 
-  .user-avatar {
+  .user-avatar,
+  .user-avatar-initials {
     width: 38px;
     height: 38px;
   }
 
-  .language-switcher {
-    order: 1;
+  .user-avatar-initials {
+    font-size: 13px;
   }
 
-
+  .language-switcher {
+    order: 3;
+  }
 }
 
 /* Small mobile responsive */
@@ -235,8 +242,13 @@
     max-width: 80px;
   }
 
-  .user-avatar {
+  .user-avatar,
+  .user-avatar-initials {
     width: 35px;
     height: 35px;
+  }
+
+  .user-avatar-initials {
+    font-size: 12px;
   }
 }

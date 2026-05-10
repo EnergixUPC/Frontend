@@ -88,7 +88,11 @@ export const routes: Routes = [
         loadComponent: () => import('./sems/energy-management/presentation/views/settings-suports/settings-suports').then(m => m.SettingsSuports)
       },
       {
-        path: 'payments',
+        path: 'plans',
+        loadComponent: () => import('./sems/plans/presentation/views/plans/plans').then(m => m.Plans)
+      },
+      {
+        path: 'plans/payments',
         loadComponent: () => import('./sems/payments/presentation/views/payments/payments').then(m => m.Payments)
       },
       {

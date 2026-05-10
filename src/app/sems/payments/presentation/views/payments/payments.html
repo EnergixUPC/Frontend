@@ -17,7 +17,7 @@
               <mat-icon>receipt</mat-icon>
               <div class="bill-details">
                 <span class="bill-label">{{ 'payments.form.estimatedBill' | translate }}</span>
-                <span class="bill-amount">{{ estimatedBill | currency:'USD':'symbol':'1.2-2' }}</span>
+                <span class="bill-amount">{{ estimatedBill | currency:'PEN':'symbol':'1.2-2' }}</span>
               </div>
               <button
                 type="button"
@@ -38,7 +38,7 @@
                 [placeholder]="'payments.form.amountPlaceholder' | translate"
                 step="0.01"
                 min="1">
-              <span matPrefix>$&nbsp;</span>
+              <span matPrefix>S/&nbsp;</span>
               <mat-error *ngIf="paymentForm.get('amount')?.hasError('required')">
                 {{ 'payments.form.errors.required' | translate }}
               </mat-error>
@@ -84,7 +84,7 @@
               </mat-icon>
             </div>
             <div class="payment-details">
-              <div class="payment-amount">{{ payment.amount / 100 | currency:'USD':'symbol':'1.2-2' }}</div>
+              <div class="payment-amount">{{ payment.amount / 100 | currency:'PEN':'symbol':'1.2-2' }}</div>
               <div class="payment-date">{{ payment.createdAt | date:'short' }}</div>
               <div class="payment-description" *ngIf="payment.description">{{ payment.description }}</div>
             </div>

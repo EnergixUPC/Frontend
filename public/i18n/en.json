@@ -1,7 +1,6 @@
 {
   "auth": {
     "login": {
-      "title": "SEMS",
       "email": "Email",
       "password": "Password",
       "emailPlaceholder": "Email",
@@ -14,8 +13,7 @@
         "required": "This field is required",
         "email": "Please enter a valid email",
         "minLength": "Minimum {{length}} characters required",
-        "invalidCredentials": "Invalid username or password",
-        "networkError": "Network error. Please try again."
+        "invalidCredentials": "Incorrect email or password"
       },
       "success": "Login successful"
     },
@@ -25,7 +23,6 @@
       "firstName": "First Name",
       "lastName": "Last Name",
       "email": "Email",
-      "username": "Username",
       "password": "Password",
       "confirmPassword": "Confirm Password",
       "phoneNumber": "Phone",
@@ -47,28 +44,27 @@
         },
         "email": {
           "required": "Email is required",
-          "email": "Please enter a valid email"
-        },
-        "username": {
-          "required": "Username is required",
-          "minlength": "Username must be at least 3 characters"
+          "invalid": "Please enter a valid email"
         },
         "password": {
           "required": "Password is required",
           "minlength": "Password must be at least 6 characters",
-          "strongPassword": "Password must contain at least: 8 characters, 1 uppercase, 1 lowercase and 1 number"
+          "weak": "Password is too weak"
         },
         "confirmPassword": {
           "required": "Please confirm your password",
-          "passwordMismatch": "Passwords do not match"
+          "mismatch": "Passwords do not match"
         },
         "phoneNumber": {
-          "required": "Phone number is required",
-          "phone": "Invalid format. Use: +51 987654321"
+          "required": "Phone number is required"
+        },
+        "phone": {
+          "invalid": "Please enter a valid phone number"
         },
         "address": {
           "required": "Address is required",
-          "minlength": "Address must be at least 10 characters"
+          "minlength": "Address must be at least 10 characters",
+          "invalid": "Please enter a valid address"
         }
       }
     }
@@ -86,27 +82,27 @@
       "monthlySavingGoal": "Monthly saving goal",
       "consumption": "Consumption",
       "devices": "Devices",
-      "noData": "No data available",
-      "noDevices": "No devices registered",
       "extraConsumption": "extra consumption",
       "noSavings": "No savings",
       "saved": "saved",
-      "active": "active",
-      "weeklyPeriod": "weekly"
+      "active": "active"
     },
     "charts": {
       "dailyConsumption": "Daily Energy Consumption",
-      "consumptionByCategory": "Energy Consumption",
-      "byCategory": "By category",
       "monthlyComparison": "Monthly Consumption",
       "comparison": "Comparison",
       "consumption": "Consumption",
       "categoryConsumption": "Consumption by Category",
+      "deviceConsumption": "Device Consumption",
+      "period": "Period",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "chartType": "Chart Type",
+      "bars": "Bars",
+      "pie": "Pie",
+      "area": "Area",
       "noData": "No data available",
       "noConsumptionData": "No consumption data",
-      "noConsumptionMessage": "Start using your devices to see energy consumption data here.",
-      "noCategoryData": "No category data",
-      "noCategoryMessage": "Register devices to see consumption by category.",
       "noMonthlyData": "No monthly data",
       "noMonthlyMessage": "Use the system for a month to see consumption comparisons.",
       "monthlyConsumption": "Monthly Consumption",
@@ -119,18 +115,6 @@
       "tv": "TV"
     },
     "months": {
-      "Jan": "Jan",
-      "Feb": "Feb",
-      "Mar": "Mar",
-      "Apr": "Apr",
-      "May": "May",
-      "Jun": "Jun",
-      "Jul": "Jul",
-      "Aug": "Aug",
-      "Sep": "Sep",
-      "Oct": "Oct",
-      "Nov": "Nov",
-      "Dec": "Dec",
       "january": "January",
       "february": "February",
       "march": "March",
@@ -142,8 +126,7 @@
       "september": "September",
       "october": "October",
       "november": "November",
-      "december": "December",
-      "sept": "September"
+      "december": "December"
     },
     "units": {
       "kwh": "kWh",
@@ -151,8 +134,7 @@
       "percentage": "%"
     },
     "axes": {
-      "time": "Time",
-      "consumption": "Consumption"
+      "time": "Time"
     },
     "devices": {
       "title": "My Devices",
@@ -165,17 +147,14 @@
       "lastActive": "Last Active",
       "alertHistory": "Alert History",
       "energyConsumption": "Energy Consumption",
+      "namePattern": "Only letters, numbers, spaces, and hyphens are allowed.",
+      "nameMinLength": "Minimum 2 characters.",
+      "nameMaxLength": "Maximum 50 characters.",
       "status": {
         "on": "On",
         "off": "Off",
         "standby": "Standby",
         "charging": "Charging"
-      },
-      "lastActiveTime": {
-        "now": "Now",
-        "minutesAgo": "{{minutes}} minutes ago",
-        "hourAgo": "1 hour ago",
-        "hoursAgo": "{{hours}} hours ago"
       },
       "alerts": {
         "noAlerts": "No alerts",
@@ -194,6 +173,11 @@
       "addDeviceSave": "Save Device",
       "addDeviceCancel": "Cancel",
       "addDeviceValidation": "Please provide at least a name and category for the device.",
+      "categoryPattern": "Only letters, numbers, spaces, and hyphens are allowed.",
+      "categoryMaxLength": "Maximum 25 characters.",
+      "powerRequired": "Power is required.",
+      "powerMin": "The value must be greater than or equal to 0.",
+      "powerMax": "The value cannot exceed 20,000 W.",
       "addDeviceError": "There was an error saving the device. Try again.",
       "deleteConfirmation": "Are you sure you want to delete '{{name}}'? This action cannot be undone.",
       "deleteError": "There was an error deleting the device. Please try again.",
@@ -201,14 +185,12 @@
         "name": "Device Name",
         "category": "Category",
         "type": "Type",
-        "brand": "Brand",
-        "model": "Model",
         "status": "Status",
         "lastActive": "Last Active",
-        "alertHistory": "Alert History",
-        "energyConsumption": "Energy Consumption",
         "location": "Location",
-        "isActive": "Active"
+        "isActive": "Active",
+        "power": "Power (W/h)",
+        "powerPlaceholder": "Ej: 150"
       }
     },
     "alerts": {
@@ -254,10 +236,7 @@
     },
     "weeklyChart": {
       "title": "Weekly Consumption Trend",
-      "weeklyAverage": "Weekly Average",
       "weeklyAverageMessage": "Average weekly consumption",
-      "comparison": "Your consumption this week is 5% lower than the last week.",
-      "encouragement": "Keep up the great work!",
       "noData": "No consumption data available",
       "days": {
         "MON": "MON",
@@ -272,16 +251,7 @@
     "deviceChart": {
       "title": "Device Ranking",
       "summary": "Showing your top 3 devices with the highest energy consumption this month.",
-      "noData": "No device data available",
-      "devices": {
-        "airConditioning": "Air Conditioning",
-        "refrigerator": "Refrigerator",
-        "tv": "TV",
-        "laptop": "Laptop",
-        "smartSpeaker": "Smart Speaker",
-        "microwave": "Microwave",
-        "desktopPC": "Desktop PC"
-      }
+      "noData": "No device data available"
     },
     "export": {
       "title": "Export Report",
@@ -291,18 +261,13 @@
         "lastMonth": "Last Month",
         "lastWeek": "Last Week"
       },
-      "emailPlaceholder": "Enter email address",
       "buttons": {
         "download": "Download",
-        "sendReport": "Send Report",
-        "downloading": "Downloading...",
-        "sending": "Sending..."
+        "downloading": "Downloading..."
       },
       "alerts": {
-        "emailRequired": "Please enter a valid email address",
         "downloadSuccess": "{{format}} report for {{period}} downloaded successfully!",
-        "downloadError": "Error downloading report. Please try again.",
-        "sendSuccess": "{{format}} report for {{period}} sent to {{email}} successfully!"
+        "downloadError": "Error downloading report. Please try again."
       }
     }
   },
@@ -311,35 +276,24 @@
     "profile": "Profile",
     "devices": "Devices",
     "reports": "Reports",
-    "payments": "Payments",
+    "plans": "Plans",
     "settings": "Settings",
     "logout": "Log out"
   },
   "common": {
-    "language": "Language",
-    "english": "English",
-    "spanish": "Spanish",
     "close": "Close",
     "loading": "Loading...",
     "saving": "Saving...",
     "retry": "Retry",
-    "error": "Error",
-    "success": "Success",
     "status": {
       "on": "ON",
-      "off": "OFF",
-      "active": "Active",
-      "inactive": "Inactive"
+      "off": "OFF"
     }
   },
   "settings": {
     "title": "Settings",
     "autoSavingMode": {
-      "title": "Automatic Saving Mode",
-      "turnOffPatio": "Turn off patio lights at 12 AM",
-      "turnOffDevices": "Turn off devices when leaving home",
-      "unplugWeekdays": "Unplug electronics on weekdays at 10 PM",
-      "runDishwasher": "Run the dishwasher during off-peak hours"
+      "title": "Automatic Saving Mode"
     },
     "notifications": {
       "title": "Notifications and Alerts",
@@ -348,30 +302,79 @@
       "schedule": "Notification Schedule: {{start}} - {{end}}",
       "edit": "Edit"
     },
-    "reports": {
-      "title": "Personalized Reports",
-      "frequency": "Report Frequency",
-      "daily": "Daily",
-      "weekly": "Weekly",
-      "monthly": "Monthly",
-      "format": "Format",
-      "pdf": "PDF",
-      "csv": "CSV"
-    },
     "support": {
       "title": "Support and Help",
       "helpCenter": "Help Center / FAQs",
       "contact": "Contact Support",
-      "tutorials": "Tutorials and Guides"
-    },
-    "security": {
-      "title": "Security and Privacy",
-      "changePassword": "Change Password",
-      "twoFA": "2FA Authentication"
+      "tutorials": "Tutorials and Guides",
+      "faq": {
+        "title": "Frequently Asked Questions",
+        "questions": [
+          {
+            "question": "How can I reduce my energy consumption?",
+            "answer": "You can activate the automatic saving mode, configure schedules for your devices, and regularly review your consumption reports."
+          },
+          {
+            "question": "What do high consumption notifications mean?",
+            "answer": "These notifications alert you when your consumption exceeds the usual average, helping you identify possible issues or waste."
+          },
+          {
+            "question": "How do automatic reports work?",
+            "answer": "Reports are generated according to the frequency you choose and are sent to your email in the selected format."
+          }
+        ]
+      },
+      "help": {
+        "title": "Help Center",
+        "subtitle": "How can we help you?",
+        "describeLabel": "Describe your problem",
+        "placeholder": "Write your message here...",
+        "sendButton": "Send Message",
+        "contactTitle": "Contact us directly",
+        "emailLabel": "Email",
+        "phoneLabel": "Phone",
+        "whatsappLabel": "WhatsApp",
+        "socialTitle": "Follow us on social media",
+        "emptyMessage": "Please write a message",
+        "successMessage": "Message sent successfully. We will respond soon.",
+        "copiedMessage": "{{type}} copied to clipboard"
+      },
+      "tutorial": {
+        "title": "Tutorials and Guides",
+        "watchButton": "Watch",
+        "items": [
+          {
+            "title": "System Introduction",
+            "description": "Learn the basics of the energy management system"
+          },
+          {
+            "title": "Configure saving mode",
+            "description": "How to activate and customize automatic saving"
+          },
+          {
+            "title": "Read consumption reports",
+            "description": "Understand your charts and statistics"
+          },
+          {
+            "title": "Connect devices",
+            "description": "Add and control new devices"
+          }
+        ]
+      }
     },
     "actions": {
       "save": "Save",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "accept": "Accept"
+    },
+    "messages": {
+      "unauthorized": "Unauthorized. Please log in again.",
+      "loadError": "Failed to load settings:",
+      "scheduleRequired": "Both schedules are required.",
+      "scheduleUpdated": "Schedule updated temporarily. Don't forget to save changes below!",
+      "saveSuccess": "Settings saved successfully!",
+      "saveError": "Failed to save settings.",
+      "close": "Close"
     }
   },
   "profile": {
@@ -379,7 +382,6 @@
     "firstName": "First Name",
     "lastName": "Last Name",
     "email": "Email",
-    "username": "Username",
     "address": "Address",
     "phoneNumber": "Phone Number",
     "editButton": "Edit Profile",
@@ -387,17 +389,15 @@
     "cancelButton": "Cancel",
     "changePhotoButton": "Change Photo",
     "loading": "Loading profile...",
-    "noUser": "User information not found"
+    "noUser": "User information not found",
+    "removePhotoButton": "Remove Photo",
+    "photoUrlPrompt": "Enter the URL of your profile photo:",
+    "photoUrlError": "Invalid URL. Please enter a direct link to an image (jpg, png, gif, webp, etc.)."
   },
   "notifications": {
     "title": "Notifications",
     "newNotifications": "new",
     "noNotifications": "No notifications",
-    "types": {
-      "success": "Success",
-      "warning": "Warning",
-      "info": "Information"
-    },
     "messages": {
       "maintenance": "Your device requires preventive maintenance.",
       "uptime_warning": "Your device has been on for over 24 hours. Consider turning it off to save energy.",
@@ -452,6 +452,51 @@
       "tryAgain": "Try Again",
       "goToHome": "Go to Home",
       "info": "If you experienced any issues, please contact support."
+    }
+  },
+  "plans": {
+    "title": "Plans",
+    "subtitle": "Get full access and start saving today.",
+    "cta": "Subscribe",
+    "currentPlan": "Current Plan",
+    "cancelPlan": "Cancel Plan",
+    "basic": {
+      "title": "Basic",
+      "tagline": "Perfect for your home",
+      "price": "S/0",
+      "period": "/month",
+      "features": {
+        "monitoring": "Real-time consumption monitoring",
+        "alerts": "Excess consumption alerts",
+        "reports": "Monthly savings reports",
+        "deviceManagement": "Device management"
+      }
+    },
+    "premium": {
+      "title": "Premium",
+      "tagline": "For demanding users",
+      "badge": "Premium",
+      "price": "S/25",
+      "period": "/month",
+      "features": {
+        "includesBasic": "Everything in the Basic plan",
+        "deviceAnalysis": "Detailed device analysis",
+        "savingsTips": "Personalized savings recommendations",
+        "comparisons": "Comparisons with similar homes",
+        "prioritySupport": "Priority support 24/7"
+      }
+    },
+    "annual": {
+      "title": "Annual",
+      "tagline": "The complete solution",
+      "price": "S/160",
+      "period": "/year",
+      "features": {
+        "includesPremium": "All Premium features for a full year",
+        "savings": "Save more than 30%",
+        "earlyAccess": "Early access to new features",
+        "freeInstall": "Free smart device installation"
+      }
     }
   }
 }

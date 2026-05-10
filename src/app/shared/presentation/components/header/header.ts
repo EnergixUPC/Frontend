@@ -9,18 +9,12 @@ import { AuthControllerService } from '../../../../sems/authentication/applicati
 import { LangSwitcher } from '../lang-switcher/lang-switcher';
 import { NotificationsComponent } from '../../../../sems/notifications/presentation/views/notifications';
 
-
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
-    CommonModule,
-    TranslateModule,
-    MatIconModule,
-    MatBadgeModule,
-    MatButtonModule,
-    LangSwitcher,
-    NotificationsComponent
+    CommonModule, TranslateModule, MatIconModule,
+    MatBadgeModule, MatButtonModule, LangSwitcher, NotificationsComponent
   ],
   templateUrl: './header.html',
   styleUrl: './header.css'
@@ -28,7 +22,8 @@ import { NotificationsComponent } from '../../../../sems/notifications/presentat
 export class Header implements OnInit, OnDestroy {
   currentDate: Date = new Date();
   userName: string = 'User';
-  userAvatarUrl: string = 'assets/default-avatar.png';
+  userAvatarUrl: string | null = null;
+  userInitials: string = '?';
   notificationCount: number = 2;
   showNotifications = false;
 
@@ -38,47 +33,33 @@ export class Header implements OnInit, OnDestroy {
   constructor(
     private authController: AuthControllerService,
     private translate: TranslateService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.updateDateTime();
     this.timeSubscription = interval(1000).subscribe(() => this.updateDateTime());
+    this.translate.onLangChange.subscribe(() => this.updateDateTime());
 
-    // Update date when language changes
-    this.translate.onLangChange.subscribe(() => {
-      this.updateDateTime();
-    });
-
-    // Subscribe only to authentication state
     this.combinedSubscription = this.authController.getCurrentAuthState()
       .subscribe(authState => {
-        console.log('Header - Auth state received:', authState);
-
         if (authState?.user) {
           const user = authState.user;
-          console.log('Header - User found:', {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            id: user.id
-          });
-
           this.userName = user.firstName && user.lastName
             ? `${user.firstName} ${user.lastName}`
             : user.email;
 
-          this.userAvatarUrl = user.profilePhotoUrl || 'assets/default-avatar.png';
+          const photo = user.profilePhotoUrl;
+          this.userAvatarUrl = photo && photo.trim() !== '' ? photo : null;
 
-          console.log('Header - userName set to:', this.userName);
-          console.log('Header - userAvatarUrl set to:', this.userAvatarUrl);
+          const first = (user.firstName || '').charAt(0).toUpperCase();
+          const last = (user.lastName || '').charAt(0).toUpperCase();
+          this.userInitials = first + last || '?';
         } else {
-          console.log('Header - No user found, using defaults');
           this.userName = 'User';
-          this.userAvatarUrl = 'assets/default-avatar.png';
+          this.userAvatarUrl = null;
+          this.userInitials = '?';
         }
       });
-
-
   }
 
   ngOnDestroy(): void {
@@ -97,18 +78,14 @@ export class Header implements OnInit, OnDestroy {
 
   getFormattedDate(): string {
     const dateStr = this.currentDate.toLocaleDateString(this.translate.currentLang, {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
+      month: 'short', day: 'numeric', year: 'numeric'
     });
     return dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
   }
 
   getFormattedTime(): string {
     return this.currentDate.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
+      hour: '2-digit', minute: '2-digit', hour12: true
     });
   }
 
@@ -116,22 +93,15 @@ export class Header implements OnInit, OnDestroy {
     this.showNotifications = !this.showNotifications;
   }
 
+  onAvatarError(): void {
+    this.userAvatarUrl = null;
+  }
+
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
-    // If notifications are not shown, do nothing
     if (!this.showNotifications) return;
-
     const target = event.target as HTMLElement;
-
-    // Check if click is inside the notification button
-    const isInsideButton = target.closest('.notification-button');
-
-    // Check if click is inside the notification popup (which is inside app-notifications)
-    // We need to check for the app-notifications element or its children
-    const isInsidePopup = target.closest('app-notifications');
-
-    // If click is outside both, close notifications
-    if (!isInsideButton && !isInsidePopup) {
+    if (!target.closest('.notification-button') && !target.closest('app-notifications')) {
       this.showNotifications = false;
     }
   }

@@ -1,0 +1,80 @@
+<mat-card class="chart-card">
+  <mat-card-header>
+    <mat-card-title>{{ chartTitle }}</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="chart-controls">
+      <div class="control-group">
+        <span class="control-label">{{ periodLabel }}</span>
+        <div class="button-group">
+          <button
+            type="button"
+            class="toggle-button"
+            [class.active]="period === 'weekly'"
+            (click)="setPeriod('weekly')">
+            {{ weeklyLabel }}
+          </button>
+          <button
+            type="button"
+            class="toggle-button"
+            [class.active]="period === 'monthly'"
+            (click)="setPeriod('monthly')">
+            {{ monthlyLabel }}
+          </button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <span class="control-label">{{ chartTypeLabel }}</span>
+        <div class="button-group">
+          <button
+            type="button"
+            class="toggle-button"
+            [class.active]="chartStyle === 'bar'"
+            (click)="setChartStyle('bar')">
+            {{ barsLabel }}
+          </button>
+          <button
+            type="button"
+            class="toggle-button"
+            [class.active]="chartStyle === 'pie'"
+            (click)="setChartStyle('pie')">
+            {{ pieLabel }}
+          </button>
+          <button
+            type="button"
+            class="toggle-button"
+            [class.active]="chartStyle === 'area'"
+            (click)="setChartStyle('area')">
+            {{ areaLabel }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-container" *ngIf="hasChartData(); else noData">
+      <canvas
+        *ngIf="chartStyle !== 'pie'"
+        baseChart
+        [data]="cartesianChartData"
+        [options]="cartesianChartOptions"
+        [type]="cartesianChartType">
+      </canvas>
+      <canvas
+        *ngIf="chartStyle === 'pie'"
+        baseChart
+        [data]="pieChartData"
+        [options]="pieChartOptions"
+        [type]="pieChartType">
+      </canvas>
+    </div>
+
+    <ng-template #noData>
+      <div class="no-data">
+        <mat-icon>show_chart</mat-icon>
+        <p>{{ 'dashboard.charts.noData' | translate }}</p>
+      </div>
+    </ng-template>
+  </mat-card-content>
+</mat-card>

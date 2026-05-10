@@ -2,12 +2,14 @@ import { DashboardStats } from '../../domain/model/entities/dashboard-stats.enti
 import { DailyConsumption } from '../../domain/model/entities/daily-consumption.entity';
 import { ConsumptionByCategory } from '../../domain/model/entities/consumption-by-category.entity';
 import { MonthlyComparison } from '../../domain/model/entities/monthly-comparison.entity';
+import { DeviceConsumption } from '../../domain/model/entities/device-consumption.entity';
 import { Device } from '../../domain/model/device.entity';
 import {
   DashboardStatsResponse,
   DailyConsumptionResponse,
   ConsumptionByCategoryResponse,
   MonthlyComparisonResponse,
+  DeviceConsumptionResponse,
   DeviceResponse,
   UnifiedDashboardResponse
 } from '../response/dashboard.response';
@@ -85,6 +87,16 @@ export class DashboardAssembler {
 
   static toDevices(responses: DeviceResponse[]): Device[] {
     return responses.map(response => this.toDevice(response));
+  }
+
+  static toDeviceConsumptions(responses: DeviceConsumptionResponse[]): DeviceConsumption[] {
+    return responses.map(response => ({
+      id: response.id,
+      deviceId: response.deviceId,
+      period: response.period,
+      consumption: response.consumption,
+      createdAt: response.createdAt
+    }));
   }
 
   static toDevicesFromUnified(response: UnifiedDashboardResponse): Device[] {

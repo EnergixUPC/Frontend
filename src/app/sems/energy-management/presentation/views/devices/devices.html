@@ -2,10 +2,6 @@
   <div class="devices-header">
     <h1 class="devices-title">{{ myDevicesText }}</h1>
     <div class="devices-actions">
-      <button class="preferences-btn" (click)="goToPreferences()">
-        <span class="preferences-icon">+</span>
-        {{ preferencesText }}
-      </button>
       <button class="add-device-btn" (click)="goToAddDevice()">
         <span class="add-icon">+</span>
         {{ addDeviceText }}
@@ -48,23 +44,15 @@
           <div class="device-content">
             <div class="device-status-row">
               <div class="status-section">
-                <span class="label">{{ 'dashboard.devices.form.type' | translate }}:</span>
-                <span class="value">{{ device.type }}</span>
-              </div>
-              <div class="status-section">
                 <span class="label">{{ 'dashboard.devices.realTimeStatus' | translate }}:</span>
-                <span class="value status" [class.active]="device.isActive">{{ getStatusText(device.status) }}</span>
-              </div>
-            </div>
-
-            <div class="device-status-row">
-              <div class="status-section">
-                <span class="label">{{ 'dashboard.devices.lastActive' | translate }}:</span>
-                <span class="value">{{ device.lastActive }}</span>
+                <span class="status-badge" [class.status-on]="device.status === 'ON' || device.status === 'CHARGING'" [class.status-off]="device.status === 'OFF' || device.status === 'STANDBY'">
+                  <span class="status-dot"></span>
+                  {{ getStatusText(device.status) }}
+                </span>
               </div>
               <div class="status-section">
                 <span class="label">{{ 'dashboard.devices.form.location' | translate }}:</span>
-                <span class="value">{{ device.location }}</span>
+                <span class="value">{{ device.location || 'N/A' }}</span>
               </div>
             </div>
           </div>
@@ -72,3 +60,4 @@
       }
     </div>
   }
+</div>

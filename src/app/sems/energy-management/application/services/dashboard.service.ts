@@ -6,7 +6,9 @@ import { DashboardStats } from '../../domain/model/entities/dashboard-stats.enti
 import { DailyConsumption } from '../../domain/model/entities/daily-consumption.entity';
 import { ConsumptionByCategory } from '../../domain/model/entities/consumption-by-category.entity';
 import { MonthlyComparison } from '../../domain/model/entities/monthly-comparison.entity';
+import { DeviceConsumption } from '../../domain/model/entities/device-consumption.entity';
 import { Device } from '../../domain/model/device.entity';
+import { UserWeeklyConsumptionResponse } from '../../infrastructure/response/dashboard.response';
 
 @Injectable({
   providedIn: 'root'
@@ -96,6 +98,15 @@ export class DashboardService {
     );
   }
 
+  loadDeviceConsumptions(deviceId: string): Observable<DeviceConsumption[]> {
+    return this.dashboardRepository.getDeviceConsumptions(deviceId).pipe(
+      catchError(error => {
+        this.dashboardStore.setError(error.message || 'Error loading device consumptions');
+        throw error;
+      })
+    );
+  }
+
   // Methods without loading state management for parallel loading
   loadDashboardStatsWithoutLoading(): Observable<DashboardStats> {
     return this.dashboardRepository.getDashboardStats().pipe(
@@ -169,6 +180,15 @@ export class DashboardService {
       catchError(error => {
         console.error('Error loading alerts:', error);
         return of([]);
+      })
+    );
+  }
+
+  loadWeeklyConsumption(userId: string): Observable<UserWeeklyConsumptionResponse> {
+    return this.dashboardRepository.getWeeklyConsumptionByUser(userId).pipe(
+      catchError(error => {
+        console.error('Error loading weekly consumption:', error);
+        throw error;
       })
     );
   }

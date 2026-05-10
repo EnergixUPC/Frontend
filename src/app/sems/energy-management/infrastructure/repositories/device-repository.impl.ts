@@ -8,17 +8,15 @@ import { DeviceRepository } from '../../domain/model/repositories/device.reposit
 import { environment } from '../../../../../environments/environments';
 import { TokenService } from '../../../authentication/infrastructure/services/token.service';
 
-// DTO for API communication
+// DTO matching DeviceResource from the backend API
 export interface DeviceResponse {
   id?: number;
   userId?: string;
-  name: string;
-  category: string;
-  type: string;
-  status: string;
-  lastActivity: string;
-  location: string;
-  active: boolean;
+  nombre: string;
+  categoria: string;
+  estado: string;    // "on" | "off"
+  ubicacion: string;
+  activo: boolean;
 }
 
 @Injectable({
@@ -109,7 +107,7 @@ export class DeviceRepositoryImpl implements DeviceRepository {
 
   updateDevice(device: Device): Observable<Device> {
     const deviceDto = this.mapToDeviceResponse(device);
-    return this.http.put<DeviceResponse>(`${this.apiUrl}/${device.id}`, deviceDto, { headers: this.getHeaders() })
+    return this.http.patch<DeviceResponse>(`${this.apiUrl}/${device.id}`, deviceDto, { headers: this.getHeaders() })
       .pipe(
         map((response: DeviceResponse) => this.mapToDevice(response))
       );
@@ -194,34 +192,32 @@ export class DeviceRepositoryImpl implements DeviceRepository {
 
   // Mappers
   private mapToDevice(response: DeviceResponse): Device {
+    const rawStatus = (response.estado || '').toLowerCase();
     return {
       id: response.id?.toString() || '',
-      name: response.name,
-      category: response.category,
-      type: response.type,
+      name: response.nombre,
+      category: response.categoria,
+      type: response.categoria,
       brand: '',
       model: '',
-      status: (response.status as unknown) as DeviceStatus,
-      realTimeStatus: response.status,
-      lastActive: response.lastActivity,
+      status: rawStatus === 'on' ? DeviceStatus.ON : DeviceStatus.OFF,
+      realTimeStatus: rawStatus,
+      lastActive: '',
       alertHistory: undefined,
       energyConsumption: undefined,
-      location: response.location,
-      isActive: response.active ? 1 : 0
+      location: response.ubicacion,
+      isActive: response.activo ? 1 : 0
     };
   }
 
+  // Request body uses English fields per the API contract (CreateDeviceRequest / UpdateDeviceRequest)
   private mapToDeviceResponse(device: Device): any {
-    const deviceDto = {
+    return {
       name: device.name,
       category: device.category,
-      type: device.type,
-      status: device.status,
-      lastActivity: device.lastActive,
+      status: (device.status || DeviceStatus.OFF).toLowerCase(),
       location: device.location,
       active: device.isActive === 1
     };
-    console.log('DeviceRepository - Mapping device to DTO:', deviceDto);
-    return deviceDto;
   }
 }

@@ -9,7 +9,7 @@
 
   <div class="header-right">
     <button mat-icon-button class="notification-button" (click)="toggleNotifications()" [matBadge]="notificationCount"
-      matBadgeColor="warn" matBadgeSize="small">
+            matBadgeColor="warn" matBadgeSize="small">
       <mat-icon>notifications</mat-icon>
     </button>
 
@@ -18,7 +18,12 @@
     <div class="user-info">
       <span class="greeting">{{ 'header.greeting' | translate }}</span>
       <span class="username">{{ userName }}</span>
-      <img [src]="userAvatarUrl" alt="User Avatar" class="user-avatar" />
+      <ng-container *ngIf="userAvatarUrl; else headerInitials">
+        <img [src]="userAvatarUrl" alt="User Avatar" class="user-avatar" (error)="onAvatarError()" />
+      </ng-container>
+      <ng-template #headerInitials>
+        <div class="user-avatar-initials">{{ userInitials }}</div>
+      </ng-template>
     </div>
 
     <app-lang-switcher></app-lang-switcher>

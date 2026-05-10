@@ -12,6 +12,7 @@
         routerLinkActive="active"
         [routerLinkActiveOptions]="item.route === '/devices' ? { exact: false } : { exact: true }"
         [routerLink]="item.route"
+        (click)="onMenuClick(item)"
         class="menu-item">
         <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
         <span matListItemTitle>{{ getLabel(item.labelKey) }}</span>

@@ -27,9 +27,7 @@ interface ExportPeriod {
 })
 export class ExportCard implements OnInit {
   selectedFormat: string = 'PDF';
-  email: string = '';
   isDownloading: boolean = false;
-  isSending: boolean = false;
 
   exportFormats: ExportFormat[] = [
     { value: 'PDF', label: 'PDF' },
@@ -148,35 +146,6 @@ export class ExportCard implements OnInit {
     });
   }
 
-  onSendReport(): void {
-    if (!this.email.trim()) {
-      const message = this.translate.instant('reports.export.alerts.emailRequired');
-      alert(message);
-      return;
-    }
-
-    this.isSending = true;
-    const selectedPeriod = this.exportPeriods.find(p => p.checked);
-
-    console.log('Sending report:', {
-      format: this.selectedFormat,
-      period: selectedPeriod?.value,
-      periodLabel: selectedPeriod?.labelKey,
-      email: this.email
-    });
-
-    // Simulate send process
-    setTimeout(() => {
-      const periodLabel = this.translate.instant(selectedPeriod?.labelKey || '');
-      const message = this.translate.instant('reports.export.alerts.sendSuccess', {
-        format: this.selectedFormat,
-        period: periodLabel,
-        email: this.email
-      });
-      alert(message);
-      this.isSending = false;
-    }, 2000);
-  }
 
   private generatePDF(topDevices: any[], weeklyConsumption: any[], selectedPeriod: any): void {
     try {
@@ -478,8 +447,4 @@ export class ExportCard implements OnInit {
     }
   }
 
-  isValidEmail(): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(this.email.trim());
-  }
 }

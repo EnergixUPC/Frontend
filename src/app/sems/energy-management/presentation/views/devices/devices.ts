@@ -5,7 +5,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Device } from '../../../domain/model/device.entity';
-import { DashboardService } from '../../../application/services/dashboard.service';
 import { DevicesService } from '../../../application/services/devices.service';
 import { AuthControllerService } from '../../../../authentication/application/services/auth-controller.service';
 
@@ -23,31 +22,19 @@ export class Devices implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(
-    private readonly dashboardService: DashboardService,
     private readonly devicesService: DevicesService,
     private readonly translateService: TranslateService,
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef,
     private readonly authController: AuthControllerService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    console.log('Devices - Component initialized');
-    
-    // Check authentication status
-    const currentUser = this.authController.getCurrentUser();
     const isAuthenticated = this.authController.isAuthenticated();
-    
-    console.log('Devices - Current user:', currentUser);
-    console.log('Devices - Is authenticated:', isAuthenticated);
-    
     if (!isAuthenticated) {
-      console.warn('Devices - User not authenticated, redirecting to login');
       this.router.navigate(['/login']);
       return;
     }
-    
-    // Force change detection
     this.cdr.detectChanges();
     this.loadDevices();
   }
@@ -59,61 +46,28 @@ export class Devices implements OnInit, OnDestroy {
 
   private loadDevices(): void {
     this.loading = true;
-    // Cargar el dashboard unificado que incluye los dispositivos filtrados por usuario
-    this.dashboardService.loadUnifiedDashboard()
+    this.devicesService.getAllDevices()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: () => {
-          // Obtener los dispositivos del estado del dashboard
-          this.dashboardService.getDashboardState()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(state => {
-              console.log('Devices loaded from unified dashboard:', state.devices);
-              setTimeout(() => {
-                this.devices = state.devices || [];
-                this.loading = false;
-                this.cdr.detectChanges();
-              }, 50);
-            });
+        next: (devices) => {
+          this.devices = devices;
+          this.loading = false;
+          this.cdr.detectChanges();
         },
-        error: (error) => {
-          console.error('Error loading devices:', error);
-          setTimeout(() => {
-            this.error = 'Error loading devices';
-            this.loading = false;
-            this.cdr.detectChanges();
-          }, 50);
+        error: () => {
+          this.error = 'Error loading devices';
+          this.loading = false;
+          this.cdr.detectChanges();
         }
       });
   }
 
-  // Getters para las traducciones
   get myDevicesText(): string {
     return this.translateService.instant('dashboard.devices.myDevices');
   }
 
-  get preferencesText(): string {
-    return this.translateService.instant('dashboard.devices.preferences');
-  }
-
   get addDeviceText(): string {
     return this.translateService.instant('dashboard.devices.addDevice');
-  }
-
-  get realTimeStatusText(): string {
-    return this.translateService.instant('dashboard.devices.realTimeStatus');
-  }
-
-  get lastActiveText(): string {
-    return this.translateService.instant('dashboard.devices.lastActive');
-  }
-
-  get alertHistoryText(): string {
-    return this.translateService.instant('dashboard.devices.alertHistory');
-  }
-
-  get energyConsumptionText(): string {
-    return this.translateService.instant('dashboard.devices.energyConsumption');
   }
 
   get noDevicesText(): string {
@@ -121,61 +75,24 @@ export class Devices implements OnInit, OnDestroy {
   }
 
   getStatusText(status: string): string {
-    if (!status) {
-      return 'N/A';
-    }
-
+    if (!status) return 'N/A';
     switch (status.toLowerCase()) {
-      case 'on':
-        return this.translateService.instant('dashboard.devices.status.on');
-      case 'off':
-        return this.translateService.instant('dashboard.devices.status.off');
-      case 'standby':
-        return this.translateService.instant('dashboard.devices.status.standby');
-      case 'charging':
-        return this.translateService.instant('dashboard.devices.status.charging');
-      default:
-        return status;
+      case 'on': return this.translateService.instant('dashboard.devices.status.on');
+      case 'off': return this.translateService.instant('dashboard.devices.status.off');
+      case 'standby': return this.translateService.instant('dashboard.devices.status.standby');
+      case 'charging': return this.translateService.instant('dashboard.devices.status.charging');
+      default: return status;
     }
   }
 
   getCategoryText(category: string): string {
-    // Debug: See what category is arriving
-    console.log('Category received in devices:', category);
-
-    // Handle undefined or null
-    if (!category) {
-      return 'N/A';
-    }
-
-    // Convertir "Heating & Cooling" a "heating_cooling"
+    if (!category) return 'N/A';
     const categoryKey = category.toLowerCase()
-      .replace(/\s*&\s*/g, '_')  // Reemplazar " & " con "_"
-      .replace(/\s+/g, '_');     // Reemplazar espacios con "_"
-
-    console.log('Category key generated:', categoryKey);
-
+      .replace(/\s*&\s*/g, '_')
+      .replace(/\s+/g, '_');
     const translationKey = `dashboard.devices.categories.${categoryKey}`;
     const translated = this.translateService.instant(translationKey);
-
-    console.log('Translation result:', translated);
-
-    // If translation returns the same key, it means translation was not found
     return translated !== translationKey ? translated : category;
-  }
-
-  getAlertText(alert: string): string {
-    if (alert.toLowerCase().includes('no alert')) {
-      return this.translateService.instant('dashboard.devices.alerts.noAlerts');
-    }
-    if (alert.toLowerCase().includes('phantom load')) {
-      return this.translateService.instant('dashboard.devices.alerts.phantomLoad');
-    }
-    return alert;
-  }
-
-  goToPreferences(): void {
-    this.router.navigate(['/device-preferences']);
   }
 
   goToAddDevice(): void {
@@ -186,50 +103,21 @@ export class Devices implements OnInit, OnDestroy {
     const confirmed = confirm(
       this.translateService.instant('dashboard.devices.deleteConfirmation', { name: deviceName })
     );
+    if (!confirmed) return;
 
-    if (confirmed) {
-      console.log('Devices - Attempting to delete device:', deviceId, deviceName);
-      
-      // Check authentication status
-      const currentUser = this.authController.getCurrentUser();
-      const isAuthenticated = this.authController.isAuthenticated();
-      console.log('Devices - Auth check before delete - User:', currentUser?.email);
-      console.log('Devices - Auth check before delete - User role:', currentUser?.role);
-      console.log('Devices - Auth check before delete - Authenticated:', isAuthenticated);
-      
-      if (!isAuthenticated) {
-        console.error('Devices - User not authenticated, redirecting to login');
-        this.router.navigate(['/login']);
-        return;
-      }
-      
-      // Proceed with deletion - backend will validate permissions
-      this.devicesService.deleteDevice(deviceId)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: (success: boolean) => {
-            console.log('Devices - Delete result:', success);
-            if (success) {
-              console.log('Devices - Device deleted successfully, reloading list');
-              // Reload the devices list
-              this.loadDevices();
-            } else {
-              console.error('Devices - Delete failed');
-              alert(this.translateService.instant('dashboard.devices.deleteError'));
-            }
-          },
-          error: (error: any) => {
-            console.error('Devices - Error deleting device:', error);
-            
-            // If it's a 401 error, provide more specific feedback
-            if (error.status === 401) {
-              console.log('Devices - 401 error, checking if user has proper permissions');
-              alert('No tienes permisos suficientes para eliminar este dispositivo. Contacta al administrador.');
-            } else {
-              alert(this.translateService.instant('dashboard.devices.deleteError'));
-            }
+    this.devicesService.deleteDevice(deviceId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (success: boolean) => {
+          if (success) {
+            this.loadDevices();
+          } else {
+            alert(this.translateService.instant('dashboard.devices.deleteError'));
           }
-        });
-    }
+        },
+        error: () => {
+          alert(this.translateService.instant('dashboard.devices.deleteError'));
+        }
+      });
   }
 }

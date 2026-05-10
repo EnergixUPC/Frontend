@@ -69,6 +69,14 @@ export interface MonthlyComparisonResponse {
   previousMonthComparison: number;
 }
 
+export interface DeviceConsumptionResponse {
+  id: number;
+  deviceId: number;
+  period: 'daily' | 'weekly' | 'monthly';
+  consumption: number;
+  createdAt: string;
+}
+
 export interface DeviceResponse {
   id: string;
   name: string;
@@ -79,4 +87,20 @@ export interface DeviceResponse {
   status: string;
   lastActive?: string;
   consumption?: number;
+}
+
+export interface UserWeeklyConsumptionResponse {
+  dailyConsumptions: {
+    date: string;
+    dayName: string;
+    consumptionKwh: number;
+  }[];
+  deviceTotals: {
+    deviceId: string;
+    deviceName: string;
+    weeklyConsumptionKwh: number;
+  }[];
+  totalWeeklyConsumptionKwh: number;
+  weekStart: string;
+  weekEnd: string;
 }
