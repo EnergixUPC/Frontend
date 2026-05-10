@@ -25,7 +25,7 @@ describe('Password', () => {
 
         // Act & Assert
         expect(() => new Password(passwordVacia))
-          .toThrow('Password cannot be empty');
+          .toThrow(new Error('Password cannot be empty'));
       });
 
       it('debe lanzar un error cuando la contraseña es null', () => {
@@ -34,7 +34,7 @@ describe('Password', () => {
 
         // Act & Assert
         expect(() => new Password(passwordNula))
-          .toThrow('Password cannot be empty');
+          .toThrow(new Error('Password cannot be empty'));
       });
 
       it('debe lanzar un error cuando la contraseña tiene menos de 6 caracteres', () => {
@@ -43,7 +43,7 @@ describe('Password', () => {
 
         // Act & Assert
         expect(() => new Password(passwordCorta))
-          .toThrow('Password must be at least 6 characters long');
+          .toThrow(new Error('Password must be at least 6 characters long'));
       });
     });
 
@@ -183,7 +183,7 @@ describe('Password', () => {
         const { reasons } = password.validateStrength();
 
         // Assert
-        expect(reasons).toHaveLength(0);
+        expect(reasons.length).toBe(0);
       });
     });
   });
