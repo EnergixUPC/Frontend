@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../authentication/application/services/auth.service';
+import { OnInit, OnDestroy } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 
 interface PlanCard {
   type: 'basic' | 'premium' | 'annual';
@@ -26,7 +29,7 @@ interface PlanCard {
   templateUrl: './plans.html',
   styleUrls: ['./plans.css']
 })
-export class Plans {
+export class Plans implements OnInit, OnDestroy {
   plans: PlanCard[] = [
     {
       type: 'basic',
@@ -72,11 +75,39 @@ export class Plans {
     }
   ];
 
-  constructor(private router: Router) {}
+  currentPlan: string = 'basic';
+  private destroy$ = new Subject<void>();
+
+  constructor(private router: Router, private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.authService.authState$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((state: any) => {
+        if (state.user) {
+          this.currentPlan = state.user.plan || 'basic';
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   onSubscribe(plan: PlanCard): void {
-    if (plan.type === 'premium' || plan.type === 'annual') {
+    if (plan.type !== this.currentPlan) {
       this.router.navigate(['/plans/payments'], { queryParams: { plan: plan.type } });
+    }
+  }
+
+  onCancelPlan(): void {
+    const currentUser = this.authService.getCurrentUser();
+    if (currentUser) {
+      this.authService.updateUserPlan(currentUser.id, 'basic').subscribe({
+        next: () => window.location.reload(),
+        error: err => console.error('Error cancelling user plan:', err)
+      });
     }
   }
 }

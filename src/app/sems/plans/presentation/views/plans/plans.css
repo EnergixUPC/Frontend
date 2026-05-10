@@ -173,6 +173,17 @@
   background: #1f3a8a;
 }
 
+.plan-card .plan-cta.is-cancel,
+.plan-card.featured .plan-cta.is-cancel {
+  background: #e63946;
+  color: #ffffff;
+}
+
+.plan-card .plan-cta.is-cancel:hover,
+.plan-card.featured .plan-cta.is-cancel:hover {
+  background: #d62828;
+}
+
 @media (max-width: 1200px) {
   .plans-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
