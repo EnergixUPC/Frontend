@@ -306,7 +306,61 @@
       "title": "Support and Help",
       "helpCenter": "Help Center / FAQs",
       "contact": "Contact Support",
-      "tutorials": "Tutorials and Guides"
+      "tutorials": "Tutorials and Guides",
+      "faq": {
+        "title": "Frequently Asked Questions",
+        "questions": [
+          {
+            "question": "How can I reduce my energy consumption?",
+            "answer": "You can activate the automatic saving mode, configure schedules for your devices, and regularly review your consumption reports."
+          },
+          {
+            "question": "What do high consumption notifications mean?",
+            "answer": "These notifications alert you when your consumption exceeds the usual average, helping you identify possible issues or waste."
+          },
+          {
+            "question": "How do automatic reports work?",
+            "answer": "Reports are generated according to the frequency you choose and are sent to your email in the selected format."
+          }
+        ]
+      },
+      "help": {
+        "title": "Help Center",
+        "subtitle": "How can we help you?",
+        "describeLabel": "Describe your problem",
+        "placeholder": "Write your message here...",
+        "sendButton": "Send Message",
+        "contactTitle": "Contact us directly",
+        "emailLabel": "Email",
+        "phoneLabel": "Phone",
+        "whatsappLabel": "WhatsApp",
+        "socialTitle": "Follow us on social media",
+        "emptyMessage": "Please write a message",
+        "successMessage": "Message sent successfully. We will respond soon.",
+        "copiedMessage": "{{type}} copied to clipboard"
+      },
+      "tutorial": {
+        "title": "Tutorials and Guides",
+        "watchButton": "Watch",
+        "items": [
+          {
+            "title": "System Introduction",
+            "description": "Learn the basics of the energy management system"
+          },
+          {
+            "title": "Configure saving mode",
+            "description": "How to activate and customize automatic saving"
+          },
+          {
+            "title": "Read consumption reports",
+            "description": "Understand your charts and statistics"
+          },
+          {
+            "title": "Connect devices",
+            "description": "Add and control new devices"
+          }
+        ]
+      }
     },
     "actions": {
       "save": "Save",
