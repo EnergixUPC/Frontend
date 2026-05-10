@@ -18,6 +18,7 @@ export interface UserResponse {
   isActive: boolean;
   createdAt: string;
   lastLogin?: string;
+  plan?: string;
 }
 
 export interface LoginRequest {
@@ -155,7 +156,12 @@ export class UserRepositoryImpl implements UserRepository, AuthRepository {
       response.role,
       response.isActive,
       new Date(response.createdAt || new Date()),
-      response.lastLogin ? new Date(response.lastLogin) : undefined
+      response.lastLogin ? new Date(response.lastLogin) : undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      response.plan || 'basic'
     );
   }
 
@@ -168,7 +174,8 @@ export class UserRepositoryImpl implements UserRepository, AuthRepository {
       role: user.role,
       isActive: user.isActive,
       createdAt: user.createdAt.toISOString(),
-      lastLogin: user.lastLogin?.toISOString()
+      lastLogin: user.lastLogin?.toISOString(),
+      plan: user.plan
     };
   }
 }
