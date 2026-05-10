@@ -237,10 +237,17 @@ export class Home implements OnInit, OnDestroy {
     }
   }
 
+  private get weeklyTotalKwh(): number {
+    if (!this.weeklyConsumption) return 0;
+    return this.weeklyConsumption.deviceTotals.reduce(
+      (sum, d) => sum + (d.weeklyConsumptionKwh || 0), 0
+    );
+  }
+
   getCalculatedEnergyConsumption(): string {
     const unit = this.translate.instant('dashboard.units.kwh');
     if (this.weeklyConsumption) {
-      return `${this.weeklyConsumption.totalWeeklyConsumptionKwh.toFixed(2)} ${unit}`;
+      return `${this.weeklyTotalKwh.toFixed(2)} ${unit}`;
     }
     return `${this.dashboardStats.energyConsumption.toFixed(1)} ${unit}`;
   }
@@ -248,7 +255,7 @@ export class Home implements OnInit, OnDestroy {
   getEnergyConsumptionSubtitle(): string {
     if (!this.weeklyConsumption) return '';
     const currency = this.translate.instant('dashboard.units.currency');
-    const weeklyCost = this.weeklyConsumption.totalWeeklyConsumptionKwh * this.KWH_RATE_SOL;
+    const weeklyCost = this.weeklyTotalKwh * this.KWH_RATE_SOL;
     return `${currency} ${weeklyCost.toFixed(2)} esta semana`;
   }
 
@@ -275,7 +282,7 @@ export class Home implements OnInit, OnDestroy {
 
   private getProjectedMonthlyKwh(): number {
     if (!this.weeklyConsumption) return 0;
-    const dailyAvg = this.weeklyConsumption.totalWeeklyConsumptionKwh / 7;
+    const dailyAvg = this.weeklyTotalKwh / 7;
     const now = new Date();
     const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
     return dailyAvg * daysInMonth;
