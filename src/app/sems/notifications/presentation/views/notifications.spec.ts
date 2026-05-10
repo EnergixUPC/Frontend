@@ -33,8 +33,8 @@ describe('NotificationsComponent', () => {
 
   beforeEach(async () => {
     notificationServiceMock = {
-      getNotifications: jest.fn().mockReturnValue(of(mockNotifications)),
-      markAsRead: jest.fn().mockReturnValue(of({}))
+      getNotifications: jasmine.createSpy('getNotifications').and.returnValue(of(mockNotifications)),
+      markAsRead: jasmine.createSpy('markAsRead').and.returnValue(of({}))
     };
 
     await TestBed.configureTestingModule({

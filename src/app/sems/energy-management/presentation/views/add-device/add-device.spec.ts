@@ -17,15 +17,15 @@ describe('AddDevice', () => {
 
   beforeEach(async () => {
     devicesServiceMock = {
-      createDevice: jest.fn()
+      createDevice: jasmine.createSpy('createDevice')
     };
 
     dashboardServiceMock = {
-      getDashboardState: jest.fn().mockReturnValue(of({ devices: [] }))
+      getDashboardState: jasmine.createSpy('getDashboardState').and.returnValue(of({ devices: [] }))
     };
 
     routerMock = {
-      navigate: jest.fn()
+      navigate: jasmine.createSpy('navigate')
     };
 
     await TestBed.configureTestingModule({
@@ -54,8 +54,8 @@ describe('AddDevice', () => {
   describe('US05 - Escenario 1: Dispositivo detectado (vinculación exitosa)', () => {
     it('debería vincular el dispositivo exitosamente y redirigir a devices', fakeAsync(() => {
       // Arrange
-      devicesServiceMock.createDevice.mockReturnValue(of({}));
-      
+      devicesServiceMock.createDevice.and.returnValue(of({}));
+
       component.deviceForm.patchValue({
         name: 'Smart TV',
         category: 'Entretenimiento',
@@ -71,8 +71,8 @@ describe('AddDevice', () => {
       // Assert
       expect(component.deviceForm.valid).toBe(true);
       expect(devicesServiceMock.createDevice).toHaveBeenCalled();
-      
-      const args = devicesServiceMock.createDevice.mock.calls[0][0];
+
+      const args = devicesServiceMock.createDevice.calls.mostRecent().args[0];
       expect(args.name).toBe('Smart TV');
       expect(args.category).toBe('Entretenimiento');
       expect(args.power).toBe(120);
@@ -85,8 +85,8 @@ describe('AddDevice', () => {
   describe('US05 - Escenario 2: Dispositivo no compatible (error de conexión)', () => {
     it('debería rechazar la conexión, no redirigir y mostrar un error cuando el servicio falla', fakeAsync(() => {
       // Arrange
-      devicesServiceMock.createDevice.mockReturnValue(throwError(() => new Error('Not compatible')));
-      
+      devicesServiceMock.createDevice.and.returnValue(throwError(() => new Error('Not compatible')));
+
       component.deviceForm.patchValue({
         name: 'Unknown Device',
         category: 'Desconocido',

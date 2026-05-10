@@ -16,11 +16,11 @@ describe('Register View', () => {
 
   beforeEach(async () => {
     routerMock = {
-      navigate: jest.fn()
+      navigate: jasmine.createSpy('navigate')
     };
 
     snackBarMock = {
-      open: jest.fn()
+      open: jasmine.createSpy('open')
     };
 
     authControllerMock = {

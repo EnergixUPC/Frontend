@@ -23,8 +23,8 @@ describe('RegisterForm', () => {
 
     authControllerMock = {
       authState$: authStateSubject.asObservable(),
-      register: jest.fn(),
-      clearAuthError: jest.fn()
+      register: jasmine.createSpy('register'),
+      clearAuthError: jasmine.createSpy('clearAuthError')
     };
 
     await TestBed.configureTestingModule({
@@ -85,8 +85,8 @@ describe('RegisterForm', () => {
   describe('US01 - Escenario 1: Registro válido', () => {
     it('debería crear la cuenta cuando confirmo mi registro con datos completos y válidos', fakeAsync(() => {
       // Arrange
-      authControllerMock.register.mockReturnValue(of(void 0));
-      jest.spyOn(component.onRegisterSuccess, 'emit');
+      authControllerMock.register.and.returnValue(of(void 0));
+      spyOn(component.onRegisterSuccess, 'emit');
 
       component.registerForm.patchValue({
         firstName: 'John',
@@ -120,8 +120,8 @@ describe('RegisterForm', () => {
     it('debería rechazar el proceso cuando un correo ya está registrado', fakeAsync(() => {
       // Arrange
       const errorResponse = new Error('Email already registered');
-      authControllerMock.register.mockReturnValue(throwError(() => errorResponse));
-      jest.spyOn(component.onRegisterError, 'emit');
+      authControllerMock.register.and.returnValue(throwError(() => errorResponse));
+      spyOn(component.onRegisterError, 'emit');
 
       component.registerForm.patchValue({
         firstName: 'John',
