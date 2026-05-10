@@ -1,0 +1,79 @@
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+❯ Building...
+✔ Building...
+Initial chunk files                                                                              | Names                                                                                         |  Raw size
+chunk-V2SLVHME.js                                                                                | -                                                                                             |   2.53 MB | 
+chunk-V273TTAQ.js                                                                                | -                                                                                             |   1.40 MB | 
+polyfills.js                                                                                     | polyfills                                                                                     |   1.03 MB | 
+chunk-YBEBOFHX.js                                                                                | -                                                                                             | 399.56 kB | 
+chunk-W4PLQFOQ.js                                                                                | -                                                                                             | 339.02 kB | 
+chunk-7JNQB6IP.js                                                                                | -                                                                                             | 276.05 kB | 
+chunk-OWZSF2WZ.js                                                                                | -                                                                                             | 243.29 kB | 
+chunk-DJPWKONZ.js                                                                                | -                                                                                             | 242.36 kB | 
+chunk-TUM2VHGQ.js                                                                                | -                                                                                             | 176.13 kB | 
+chunk-X62E2XJD.js                                                                                | -                                                                                             | 163.84 kB | 
+chunk-BDQB2UH4.js                                                                                | -                                                                                             | 161.75 kB | 
+spec-app-sems-energy-management-presentation-views-settings-settings.spec.js                     | spec-app-sems-energy-management-presentation-views-settings-settings.spec                     |  95.30 kB | 
+spec-app-sems-energy-management-presentation-views-home-home.spec.js                             | spec-app-sems-energy-management-presentation-views-home-home.spec                             |  68.45 kB | 
+chunk-CJ2PMC6T.js                                                                                | -                                                                                             |  67.70 kB | 
+jasmine-cleanup-1.js                                                                             | jasmine-cleanup-1                                                                             |  67.20 kB | 
+spec-app-shared-presentation-layouts-layout-home-layout-home.spec.js                             | spec-app-shared-presentation-layouts-layout-home-layout-home.spec                             |  52.08 kB | 
+chunk-XEECQ3HG.js                                                                                | -                                                                                             |  40.29 kB | 
+chunk-CWNZDM7F.js                                                                                | -                                                                                             |  28.48 kB | 
+chunk-GO447WMB.js                                                                                | -                                                                                             |  27.30 kB | 
+spec-app-sems-energy-management-presentation-views-device-preferences-device-preferences.spec.js | spec-app-sems-energy-management-presentation-views-device-preferences-device-preferences.spec |  21.90 kB | 
+test_main.js                                                                                     | test_main                                                                                     |  21.77 kB | 
+spec-app-sems-energy-management-presentation-views-profile-profile.spec.js                       | spec-app-sems-energy-management-presentation-views-profile-profile.spec                       |  20.48 kB | 
+chunk-NBPPZIGJ.js                                                                                | -                                                                                             |  17.83 kB | 
+spec-app-sems-energy-management-presentation-components-daily-chart-daily-chart.spec.js          | spec-app-sems-energy-management-presentation-components-daily-chart-daily-chart.spec          |  17.01 kB | 
+chunk-TVW3B275.js                                                                                | -                                                                                             |  16.91 kB | 
+spec-app-sems-energy-management-presentation-views-devices-devices.spec.js                       | spec-app-sems-energy-management-presentation-views-devices-devices.spec                       |  14.59 kB | 
+chunk-Y7BJOLEP.js                                                                                | -                                                                                             |  14.57 kB | 
+chunk-KSBFORPE.js                                                                                | -                                                                                             |  13.87 kB | 
+spec-app-sems-energy-management-presentation-components-monthly-chart-monthly-chart.spec.js      | spec-app-sems-energy-management-presentation-components-monthly-chart-monthly-chart.spec      |  11.20 kB | 
+chunk-ZAZULIDV.js                                                                                | -                                                                                             |   9.83 kB | 
+spec-app-sems-energy-management-presentation-components-category-chart-category-chart.spec.js    | spec-app-sems-energy-management-presentation-components-category-chart-category-chart.spec    |   9.11 kB | 
+spec-app-sems-energy-management-presentation-views-reports-reports.spec.js                       | spec-app-sems-energy-management-presentation-views-reports-reports.spec                       |   9.02 kB | 
+chunk-3OOTCRSS.js                                                                                | -                                                                                             |   8.29 kB | 
+spec-app-sems-authentication-presentation-views-login-login.spec.js                              | spec-app-sems-authentication-presentation-views-login-login.spec                              |   6.49 kB | 
+spec-app-sems-authentication-domain-model-value-objects-password.value-object.spec.js            | spec-app-sems-authentication-domain-model-value-objects-password.value-object.spec            |   6.46 kB | 
+chunk-AJGSAFQ4.js                                                                                | -                                                                                             |   6.17 kB | 
+chunk-RCEPGG33.js                                                                                | -                                                                                             |   5.90 kB | 
+spec-app-shared-presentation-layouts-layout-login-layout-login.spec.js                           | spec-app-shared-presentation-layouts-layout-login-layout-login.spec                           |   4.74 kB | 
+chunk-SD5GHOGE.js                                                                                | -                                                                                             |   3.66 kB | 
+spec-app-app.spec.js                                                                             | spec-app-app.spec                                                                             |   3.28 kB | 
+spec-app-shared-presentation-views-page-not-found-page-not-found.spec.js                         | spec-app-shared-presentation-views-page-not-found-page-not-found.spec                         |   3.27 kB | 
+chunk-HBW54YOI.js                                                                                | -                                                                                             |   3.02 kB | 
+chunk-QGA72DS2.js                                                                                | -                                                                                             |   2.21 kB | 
+spec-app-sems-energy-management-presentation-views-settings-suports-settings-suports.spec.js     | spec-app-sems-energy-management-presentation-views-settings-suports-settings-suports.spec     |   2.15 kB | 
+spec-app-sems-authentication-presentation-components-login-form-login-form.spec.js               | spec-app-sems-authentication-presentation-components-login-form-login-form.spec               |   2.08 kB | 
+spec-app-shared-presentation-components-sidebar-sidebar.spec.js                                  | spec-app-shared-presentation-components-sidebar-sidebar.spec                                  |   2.03 kB | 
+spec-app-sems-energy-management-presentation-components-export-card-export-card.spec.js          | spec-app-sems-energy-management-presentation-components-export-card-export-card.spec          |   1.98 kB | 
+styles.css                                                                                       | styles                                                                                        |   1.97 kB | 
+spec-app-sems-energy-management-presentation-components-device-list-device-list.spec.js          | spec-app-sems-energy-management-presentation-components-device-list-device-list.spec          |   1.95 kB | 
+spec-app-sems-energy-management-presentation-components-stats-card-stats-card.spec.js            | spec-app-sems-energy-management-presentation-components-stats-card-stats-card.spec            |   1.94 kB | 
+spec-app-sems-energy-management-presentation-components-weekly-chart-weekly-chart.spec.js        | spec-app-sems-energy-management-presentation-components-weekly-chart-weekly-chart.spec        |   1.93 kB | 
+spec-app-sems-energy-management-presentation-components-device-chart-device-chart.spec.js        | spec-app-sems-energy-management-presentation-components-device-chart-device-chart.spec        |   1.93 kB | 
+spec-app-shared-presentation-components-lang-switcher-lang-switcher.spec.js                      | spec-app-shared-presentation-components-lang-switcher-lang-switcher.spec                      |   1.87 kB | 
+chunk-MC57H6EC.js                                                                                | -                                                                                             |   1.74 kB | 
+chunk-RXJTP42G.js                                                                                | -                                                                                             | 917 bytes | 
+chunk-GXYXVD6U.js                                                                                | -                                                                                             | 632 bytes | 
+jasmine-cleanup-0.js                                                                             | jasmine-cleanup-0                                                                             | 519 bytes | 
+
+                                                                                                 | Initial total                                                                                 |   7.69 MB
+
+Lazy chunk files                                                                                 | Names                                                                                         |  Raw size
+chunk-XLL22GLH.js                                                                                | html2canvas                                                                                   | 399.43 kB | 
+chunk-PVJEZPMG.js                                                                                | index-es                                                                                      | 390.88 kB | 
+chunk-EH3R6PVZ.js                                                                                | purify-es                                                                                     |  47.16 kB | 
+
+Application bundle generation complete. [1.548 seconds] - 2026-05-10T20:43:43.757Z
+
+[32m10 05 2026 15:43:43.986:INFO [karma-server]: [39mKarma v6.4.4 server started at http://localhost:9876/
+[32m10 05 2026 15:43:43.987:INFO [launcher]: [39mLaunching browsers ChromeHeadlessCI with concurrency unlimited
+[32m10 05 2026 15:43:43.990:INFO [launcher]: [39mStarting browser ChromeHeadless
+[91m10 05 2026 15:43:43.991:ERROR [launcher]: [39mCannot start ChromeHeadless
+	Can not find the binary /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+	Please set env variable CHROME_BIN
+[91m10 05 2026 15:43:43.991:ERROR [launcher]: [39mChromeHeadless stdout: 
+[91m10 05 2026 15:43:43.991:ERROR [launcher]: [39mChromeHeadless stderr: 
