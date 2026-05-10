@@ -17,6 +17,7 @@ describe('NotificationsComponent', () => {
       message: 'El dispositivo "Aire Acondicionado" superó su consumo.',
       timestamp: new Date().toISOString(),
       type: 'error',
+      isRead: false,
       read: false
     },
     {
@@ -25,6 +26,7 @@ describe('NotificationsComponent', () => {
       message: 'Historial de alertas actualizado',
       timestamp: new Date().toISOString(),
       type: 'info',
+      isRead: true,
       read: true
     }
   ];
