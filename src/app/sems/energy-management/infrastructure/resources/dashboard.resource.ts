@@ -8,7 +8,8 @@ import {
   MonthlyComparisonResponse,
   DeviceConsumptionResponse,
   DeviceResponse,
-  UnifiedDashboardResponse
+  UnifiedDashboardResponse,
+  UserWeeklyConsumptionResponse
 } from '../response/dashboard.response';
 import {
   DashboardStatsRequest,
@@ -89,5 +90,12 @@ export class DashboardResource {
 
   getAlerts(): Observable<any[]> {
     return this.http.get<any[]>(`${environment.apiUrl}/api/v1/alerts`, { headers: this.getHeaders() });
+  }
+
+  getWeeklyConsumptionByUser(userId: string): Observable<UserWeeklyConsumptionResponse> {
+    return this.http.get<UserWeeklyConsumptionResponse>(
+      `${environment.apiUrl}/api/v1/consumptions/weekly/users/${userId}`,
+      { headers: this.getHeaders() }
+    );
   }
 }

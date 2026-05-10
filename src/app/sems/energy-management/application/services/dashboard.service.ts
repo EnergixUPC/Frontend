@@ -8,6 +8,7 @@ import { ConsumptionByCategory } from '../../domain/model/entities/consumption-b
 import { MonthlyComparison } from '../../domain/model/entities/monthly-comparison.entity';
 import { DeviceConsumption } from '../../domain/model/entities/device-consumption.entity';
 import { Device } from '../../domain/model/device.entity';
+import { UserWeeklyConsumptionResponse } from '../../infrastructure/response/dashboard.response';
 
 @Injectable({
   providedIn: 'root'
@@ -179,6 +180,15 @@ export class DashboardService {
       catchError(error => {
         console.error('Error loading alerts:', error);
         return of([]);
+      })
+    );
+  }
+
+  loadWeeklyConsumption(userId: string): Observable<UserWeeklyConsumptionResponse> {
+    return this.dashboardRepository.getWeeklyConsumptionByUser(userId).pipe(
+      catchError(error => {
+        console.error('Error loading weekly consumption:', error);
+        throw error;
       })
     );
   }

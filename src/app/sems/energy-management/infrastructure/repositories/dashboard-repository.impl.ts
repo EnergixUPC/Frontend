@@ -9,6 +9,7 @@ import { DeviceConsumption } from '../../domain/model/entities/device-consumptio
 import { Device } from '../../domain/model/device.entity';
 import { DashboardResource } from '../resources/dashboard.resource';
 import { DashboardAssembler } from '../assemblers/dashboard.assembler';
+import { UserWeeklyConsumptionResponse } from '../response/dashboard.response';
 
 @Injectable({
   providedIn: 'root'
@@ -75,5 +76,9 @@ export class DashboardRepositoryImpl implements DashboardRepository {
 
   getAlerts(): Observable<any[]> {
     return this.dashboardResource.getAlerts();
+  }
+
+  getWeeklyConsumptionByUser(userId: string): Observable<UserWeeklyConsumptionResponse> {
+    return this.dashboardResource.getWeeklyConsumptionByUser(userId);
   }
 }

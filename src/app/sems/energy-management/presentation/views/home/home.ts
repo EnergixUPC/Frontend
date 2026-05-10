@@ -9,12 +9,14 @@ import { DeviceList } from '../../components/device-list/device-list';
 import { Device } from '../../../domain/model/device.entity';
 import { DeviceConsumption } from '../../../domain/model/entities/device-consumption.entity';
 import { DashboardStats } from '../../../domain/model/entities/dashboard-stats.entity';
+import { UserWeeklyConsumptionResponse } from '../../../infrastructure/response/dashboard.response';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { DashboardService } from '../../../application/services/dashboard.service';
 import { AuthService } from '../../../../authentication/application/services/auth.service';
 import { MockDataService } from '../../../infrastructure/services/mock-data.service';
 import { HomeRefreshService } from '../../../../../shared/application/services/home-refresh.service';
+import { DevicesService } from '../../../application/services/devices.service';
 
 @Component({
   selector: 'app-home',
@@ -36,7 +38,10 @@ export class Home implements OnInit, OnDestroy {
   deviceConsumptions: Record<string, DeviceConsumption[]> = {};
   alerts: any[] = [];
   isLoading = false;
+  weeklyConsumption: UserWeeklyConsumptionResponse | null = null;
 
+  private readonly KWH_RATE_SOL = 0.6034;
+  private currentUserId: string | null = null;
   private readonly destroy$ = new Subject<void>();
   private isLoadingBackend = false;
   private isFetchingConsumptions = false;
@@ -51,7 +56,8 @@ export class Home implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     private authService: AuthService,
     private mockDataService: MockDataService,
-    private homeRefreshService: HomeRefreshService
+    private homeRefreshService: HomeRefreshService,
+    private devicesService: DevicesService
   ) { }
 
   ngOnInit(): void {
@@ -96,6 +102,7 @@ export class Home implements OnInit, OnDestroy {
         const currentUser = authState.user;
         console.log('Home - User authenticated - Loading dashboard for user:', currentUser.id, currentUser.email);
 
+        this.currentUserId = currentUser.id;
         this.loadBackendData();
       });
   }
@@ -186,10 +193,8 @@ export class Home implements OnInit, OnDestroy {
         next: (data) => {
           console.log('Unified dashboard data loaded successfully');
 
-          // Update alerts from unified response
           if (data.alerts) {
             this.alerts = data.alerts;
-            console.log('Alerts loaded from unified dashboard:', this.alerts);
           }
 
           this.dashboardService.getDashboardState()
@@ -197,15 +202,16 @@ export class Home implements OnInit, OnDestroy {
             .subscribe(state => {
               if (state.stats) {
                 this.dashboardStats = state.stats;
-                console.log('Dashboard stats:', state.stats);
               }
+            });
 
-              if (state.devices) {
-                this.devices = state.devices || [];
-                console.log('Devices loaded from unified dashboard:', this.devices.length);
-                this.updateChartData();
-                this.loadDeviceConsumptions(this.devices);
-              }
+          this.devicesService.getAllDevices()
+            .pipe(takeUntil(this.destroy$), catchError(() => of([])))
+            .subscribe(devices => {
+              this.devices = devices;
+              this.updateChartData();
+              this.loadDeviceConsumptions(this.devices);
+              this.cdr.detectChanges();
             });
         },
         error: (error: any) => {
@@ -220,30 +226,76 @@ export class Home implements OnInit, OnDestroy {
           }, 50);
         }
       });
+
+    if (this.currentUserId) {
+      this.dashboardService.loadWeeklyConsumption(this.currentUserId)
+        .pipe(catchError(() => of(null)))
+        .subscribe(data => {
+          this.weeklyConsumption = data;
+          this.cdr.detectChanges();
+        });
+    }
+  }
+
+  private get weeklyTotalKwh(): number {
+    if (!this.weeklyConsumption) return 0;
+    return this.weeklyConsumption.deviceTotals.reduce(
+      (sum, d) => sum + (d.weeklyConsumptionKwh || 0), 0
+    );
   }
 
   getCalculatedEnergyConsumption(): string {
-    console.log('Getting energy consumption from API:', this.dashboardStats.energyConsumption);
     const unit = this.translate.instant('dashboard.units.kwh');
+    if (this.weeklyConsumption) {
+      return `${this.weeklyTotalKwh.toFixed(2)} ${unit}`;
+    }
     return `${this.dashboardStats.energyConsumption.toFixed(1)} ${unit}`;
   }
 
+  getEnergyConsumptionSubtitle(): string {
+    if (!this.weeklyConsumption) return '';
+    const currency = this.translate.instant('dashboard.units.currency');
+    const weeklyCost = this.weeklyTotalKwh * this.KWH_RATE_SOL;
+    return `${currency} ${weeklyCost.toFixed(2)} esta semana`;
+  }
+
   getCalculatedTodayConsumption(): string {
-    console.log('Getting today consumption from API:', this.dashboardStats.todayConsumption);
     const unit = this.translate.instant('dashboard.units.kwh');
     return `${this.dashboardStats.todayConsumption.toFixed(2)} ${unit}`;
   }
 
   getCalculatedEstimatedBill(): string {
-    console.log('Getting estimated bill from API:', this.dashboardStats.estimatedBill);
     const currency = this.translate.instant('dashboard.units.currency');
+    if (this.weeklyConsumption) {
+      const bill = this.getProjectedMonthlyBill();
+      return `${currency} ${bill.toFixed(2)}`;
+    }
     return `${currency} ${this.dashboardStats.estimatedBill.toFixed(2)}`;
   }
 
+  getEstimatedBillSubtitle(): string {
+    if (!this.weeklyConsumption) return '';
+    const projected = this.getProjectedMonthlyKwh();
+    const unit = this.translate.instant('dashboard.units.kwh');
+    return `${projected.toFixed(1)} ${unit} proyectados`;
+  }
+
+  private getProjectedMonthlyKwh(): number {
+    if (!this.weeklyConsumption) return 0;
+    const dailyAvg = this.weeklyTotalKwh / 7;
+    const now = new Date();
+    const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    return dailyAvg * daysInMonth;
+  }
+
+  private getProjectedMonthlyBill(): number {
+    return this.getProjectedMonthlyKwh() * this.KWH_RATE_SOL;
+  }
+
   getCalculatedActiveDevices(): string {
-    console.log('Getting active devices from API:', this.dashboardStats.activeDevices);
-    const totalDevicesCount = this.devices.length || this.dashboardStats.activeDevices;
-    return `${this.dashboardStats.activeDevices} ${this.translate.instant('dashboard.stats.active')} / ${totalDevicesCount} ${this.devicesLabel}`;
+    const activeCount = this.devices.filter(d => d.status === 'ON' || d.status === 'CHARGING').length;
+    const totalCount = this.devices.length;
+    return `${activeCount} ${this.translate.instant('dashboard.stats.active')} / ${totalCount} ${this.devicesLabel}`;
   }
 
   getCalculatedSavings(): string {

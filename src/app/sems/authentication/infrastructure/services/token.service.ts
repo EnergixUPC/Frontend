@@ -106,7 +106,8 @@ export class TokenService {
       username: user.username,
       phoneNumber: user.phoneNumber,
       address: user.address,
-      role: user.role
+      role: user.role,
+      plan: user.plan
     });
 
     if (typeof window !== 'undefined' && window.localStorage) {
@@ -124,7 +125,8 @@ export class TokenService {
         role: user.role,
         isActive: user.isActive,
         createdAt: user.createdAt.toISOString(),
-        lastLogin: user.lastLogin?.toISOString()
+        lastLogin: user.lastLogin?.toISOString(),
+        plan: user.plan
       };
 
       console.log('TokenService - Complete user data to save:', userData);
@@ -179,7 +181,8 @@ export class TokenService {
         parsed.username,
         parsed.phoneNumber,
         parsed.address,
-        parsed.profilePhotoUrl
+        parsed.profilePhotoUrl,
+        parsed.plan || 'basic'
       );
 
       console.log('TokenService - User object restored from localStorage:', {
@@ -189,7 +192,8 @@ export class TokenService {
         lastName: user.lastName,
         username: user.username,
         phoneNumber: user.phoneNumber,
-        address: user.address
+        address: user.address,
+        plan: user.plan
       });
 
       return user;

@@ -88,3 +88,19 @@ export interface DeviceResponse {
   lastActive?: string;
   consumption?: number;
 }
+
+export interface UserWeeklyConsumptionResponse {
+  dailyConsumptions: {
+    date: string;
+    dayName: string;
+    consumptionKwh: number;
+  }[];
+  deviceTotals: {
+    deviceId: string;
+    deviceName: string;
+    weeklyConsumptionKwh: number;
+  }[];
+  totalWeeklyConsumptionKwh: number;
+  weekStart: string;
+  weekEnd: string;
+}

@@ -306,7 +306,61 @@
       "title": "Soporte y Ayuda",
       "helpCenter": "Centro de ayuda / Preguntas frecuentes",
       "contact": "Contactar Soporte",
-      "tutorials": "Tutoriales y Guías"
+      "tutorials": "Tutoriales y Guías",
+      "faq": {
+        "title": "Preguntas Frecuentes",
+        "questions": [
+          {
+            "question": "¿Cómo puedo reducir mi consumo de energía?",
+            "answer": "Puedes activar el modo de ahorro automático, configurar horarios para tus dispositivos y revisar regularmente tus informes de consumo."
+          },
+          {
+            "question": "¿Qué significan las notificaciones de alto consumo?",
+            "answer": "Estas notificaciones te alertan cuando tu consumo supera el promedio habitual, ayudándote a identificar posibles problemas o desperdicios."
+          },
+          {
+            "question": "¿Cómo funcionan los informes automáticos?",
+            "answer": "Los informes se generan según la frecuencia que elijas y se envían a tu correo en el formato seleccionado."
+          }
+        ]
+      },
+      "help": {
+        "title": "Centro de Ayuda",
+        "subtitle": "¿Cómo podemos ayudarte?",
+        "describeLabel": "Describe tu problema",
+        "placeholder": "Escribe tu mensaje aquí...",
+        "sendButton": "Enviar Mensaje",
+        "contactTitle": "Contáctanos directamente",
+        "emailLabel": "Correo",
+        "phoneLabel": "Teléfono",
+        "whatsappLabel": "WhatsApp",
+        "socialTitle": "Síguenos en redes sociales",
+        "emptyMessage": "Por favor escribe un mensaje",
+        "successMessage": "Mensaje enviado correctamente. Te responderemos pronto.",
+        "copiedMessage": "{{type}} copiado al portapapeles"
+      },
+      "tutorial": {
+        "title": "Tutoriales y Guías",
+        "watchButton": "Ver",
+        "items": [
+          {
+            "title": "Introducción al sistema",
+            "description": "Aprende los conceptos básicos del sistema de gestión de energía"
+          },
+          {
+            "title": "Configurar modo ahorro",
+            "description": "Cómo activar y personalizar el ahorro automático"
+          },
+          {
+            "title": "Leer informes de consumo",
+            "description": "Entiende tus gráficas y estadísticas"
+          },
+          {
+            "title": "Conectar dispositivos",
+            "description": "Agrega y controla nuevos dispositivos"
+          }
+        ]
+      }
     },
     "actions": {
       "save": "Guardar",
@@ -405,6 +459,7 @@
     "subtitle": "Obtén acceso completo y comienza a ahorrar hoy mismo.",
     "cta": "Suscribirse",
     "currentPlan": "Plan Actual",
+    "cancelPlan": "Cancelar Plan",
     "basic": {
       "title": "Básico",
       "tagline": "Perfecto para tu hogar",

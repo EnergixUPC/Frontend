@@ -11,7 +11,8 @@ export class User {
     public readonly username?: string,
     public readonly phoneNumber?: string,
     public readonly address?: string,
-    public readonly profilePhotoUrl?: string
+    public readonly profilePhotoUrl?: string,
+    public plan: string = 'basic'
   ) {}
 
   public getFullName(): string {
@@ -39,7 +40,8 @@ export class User {
       this.username,
       this.phoneNumber,
       this.address,
-      this.profilePhotoUrl
+      this.profilePhotoUrl,
+      this.plan
     );
   }
 
@@ -56,7 +58,8 @@ export class User {
       this.username,
       this.phoneNumber,
       this.address,
-      this.profilePhotoUrl
+      this.profilePhotoUrl,
+      this.plan
     );
   }
 

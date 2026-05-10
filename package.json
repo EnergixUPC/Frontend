@@ -67,6 +67,8 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "ts-jest": "^29.4.9",
-    "typescript": "~5.9.2"
+    "ts-node": "^10.9.2",
+    "typescript": "~5.9.2",
+    "zone.js": "^0.15.1"
   }
 }
