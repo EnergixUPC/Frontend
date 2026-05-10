@@ -7,11 +7,11 @@ describe('LoginCredentials Value Object', () => {
     });
 
     it('debería lanzar error si username está vacío', () => {
-      expect(() => new LoginCredentials('', 'pass123')).toThrow('Username cannot be empty');
+      expect(() => new LoginCredentials('', 'pass123')).toThrow(new Error('Username cannot be empty'));
     });
 
     it('debería lanzar error si password está vacío', () => {
-      expect(() => new LoginCredentials('user', '')).toThrow('Password cannot be empty');
+      expect(() => new LoginCredentials('user', '')).toThrow(new Error('Password cannot be empty'));
     });
   });
 
