@@ -22,6 +22,8 @@ describe('LayoutHome', () => {
     fixture = TestBed.createComponent(LayoutHome);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    await fixture.whenStable(); // Allow async processes like set timeout and intervals to resolve
+    fixture.detectChanges(); // Trigger change detection again after async operations
   });
 
   it('should create', () => {
