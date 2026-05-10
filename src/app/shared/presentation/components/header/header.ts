@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, NgZone } from '@angular/core';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -32,12 +32,17 @@ export class Header implements OnInit, OnDestroy {
 
   constructor(
     private authController: AuthControllerService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private ngZone: NgZone
   ) {}
 
   ngOnInit(): void {
     this.updateDateTime();
-    this.timeSubscription = interval(1000).subscribe(() => this.updateDateTime());
+    this.ngZone.runOutsideAngular(() => {
+      this.timeSubscription = interval(1000).subscribe(() => {
+        this.ngZone.run(() => this.updateDateTime());
+      });
+    });
     this.translate.onLangChange.subscribe(() => this.updateDateTime());
 
     this.combinedSubscription = this.authController.getCurrentAuthState()
@@ -72,12 +77,14 @@ export class Header implements OnInit, OnDestroy {
   }
 
   getDayOfWeek(): string {
-    const day = this.currentDate.toLocaleDateString(this.translate.currentLang, { weekday: 'long' });
+    const lang = this.translate.currentLang || this.translate.defaultLang || 'es';
+    const day = this.currentDate.toLocaleDateString(lang, { weekday: 'long' });
     return day.charAt(0).toUpperCase() + day.slice(1);
   }
 
   getFormattedDate(): string {
-    const dateStr = this.currentDate.toLocaleDateString(this.translate.currentLang, {
+    const lang = this.translate.currentLang || this.translate.defaultLang || 'es';
+    const dateStr = this.currentDate.toLocaleDateString(lang, {
       month: 'short', day: 'numeric', year: 'numeric'
     });
     return dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
