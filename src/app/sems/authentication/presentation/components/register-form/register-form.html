@@ -15,8 +15,10 @@
           <div class="form-field">
             <label class="field-label">{{ 'auth.register.firstName' | translate }}</label>
             <input
+              id="firstName-input"
               type="text"
               formControlName="firstName"
+              data-testid="first-name-input"
               [placeholder]="'auth.register.firstName' | translate"
               autocomplete="given-name"
               class="custom-input"
@@ -30,8 +32,10 @@
           <div class="form-field">
             <label class="field-label">{{ 'auth.register.lastName' | translate }}</label>
             <input
+              id="lastName"
               type="text"
               formControlName="lastName"
+              data-testid="last-name-input"
               [placeholder]="'auth.register.lastName' | translate"
               autocomplete="family-name"
               class="custom-input"
@@ -46,8 +50,10 @@
         <div class="form-field">
           <label class="field-label">{{ 'auth.register.email' | translate }}</label>
           <input
+            id="email"
             type="email"
             formControlName="email"
+            data-testid="email-input"
             [placeholder]="'auth.register.email' | translate"
             autocomplete="email"
             class="custom-input"
@@ -63,15 +69,19 @@
             <label class="field-label">{{ 'auth.register.password' | translate }}</label>
             <div class="password-wrapper">
               <input
+                id="password"
                 [type]="hidePassword ? 'password' : 'text'"
                 formControlName="password"
+                data-testid="password-input"
                 [placeholder]="'auth.register.password' | translate"
                 autocomplete="new-password"
                 class="custom-input password-input"
                 [class.error]="isFieldInvalid('password')">
               <button
+                id="togglePassword"
                 type="button"
                 (click)="togglePasswordVisibility()"
+                data-testid="register-button"
                 class="password-toggle"
                 [attr.aria-label]="'Toggle password visibility'">
                 <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -87,8 +97,10 @@
             <label class="field-label">{{ 'auth.register.confirmPassword' | translate }}</label>
             <div class="password-wrapper">
               <input
+                id="confirmPassword"
                 [type]="hideConfirmPassword ? 'password' : 'text'"
                 formControlName="confirmPassword"
+                data-testid="confirm-password-input"
                 [placeholder]="'auth.register.confirmPassword' | translate"
                 autocomplete="new-password"
                 class="custom-input password-input"
@@ -111,6 +123,7 @@
         <div class="form-field">
           <label class="field-label">{{ 'auth.register.phoneNumber' | translate }}</label>
           <input
+            id="phoneNumber"
             type="tel"
             formControlName="phoneNumber"
             [placeholder]="'+51 987654321'"
@@ -126,6 +139,7 @@
         <div class="form-field">
           <label class="field-label">{{ 'auth.register.address' | translate }}</label>
           <input
+            id="address"
             type="text"
             formControlName="address"
             [placeholder]="'auth.register.address' | translate"
@@ -152,20 +166,22 @@
 
         <!-- Submit Button -->
         <button
+          id="registerButton"
           type="submit"
+          data-testid="register-button"
           class="register-button"
           [disabled]="authState.isLoading || registerForm.invalid">
-          
-          <mat-spinner 
-            *ngIf="authState.isLoading" 
-            diameter="20" 
+
+          <mat-spinner
+            *ngIf="authState.isLoading"
+            diameter="20"
             class="button-spinner">
           </mat-spinner>
-          
+
           <span *ngIf="!authState.isLoading">
             {{ 'auth.register.registerButton' | translate }}
           </span>
-          
+
           <span *ngIf="authState.isLoading">
             {{ 'auth.register.loading' | translate }}
           </span>
@@ -175,7 +191,7 @@
         <div class="register-link-section">
           <p class="register-text">
             {{ 'auth.register.hasAccount' | translate }}
-            <a routerLink="/login" class="register-link">{{ 'auth.register.loginLink' | translate }}</a>
+            <a routerLink="/login" data-testid="login-link" class="register-link">{{ 'auth.register.loginLink' | translate }}</a>
           </p>
         </div>
       </form>
