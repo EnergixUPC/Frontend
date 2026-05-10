@@ -12,8 +12,10 @@
         <div class="form-field">
           <label class="field-label">{{ emailLabel }}</label>
           <input
+            id="email"
             type="email"
             formControlName="email"
+            data-testid="email-input"
             [placeholder]="emailPlaceholder"
             autocomplete="email"
             class="custom-input"
@@ -28,8 +30,10 @@
           <label class="field-label">{{ passwordLabel }}</label>
           <div class="password-wrapper">
             <input
+              id="password"
               [type]="hidePassword ? 'password' : 'text'"
               formControlName="password"
+              data-testid="password-input"
               [placeholder]="passwordPlaceholder"
               autocomplete="current-password"
               class="custom-input password-input"
@@ -85,7 +89,7 @@
         <div class="register-link-section">
           <p class="register-text">
             {{ 'auth.login.noAccount' | translate }}
-            <a routerLink="/register" class="register-link">{{ 'auth.login.registerLink' | translate }}</a>
+            <a routerLink="/register" data-testid="register-link" class="register-link">{{ 'auth.login.registerLink' | translate }}</a>
           </p>
         </div>
       </form>
