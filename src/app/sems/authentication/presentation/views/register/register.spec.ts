@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Register } from './register';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthControllerService } from '../../../application/services/auth-controller.service';
@@ -35,6 +35,7 @@ describe('Register View', () => {
       ],
       providers: [
         { provide: Router, useValue: routerMock },
+        { provide: ActivatedRoute, useValue: {} },
         { provide: MatSnackBar, useValue: snackBarMock },
         { provide: AuthControllerService, useValue: authControllerMock },
         TranslateService
