@@ -157,6 +157,8 @@
 }
 
 .custom-option {
+  display: flex;
+  align-items: center;
   padding: 12px 16px;
   color: #334155;
   font-size: 14px;
@@ -167,6 +169,31 @@
 .custom-option:hover {
   background-color: #f1f5f9;
   color: #0f172a;
+}
+
+.custom-option-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: default;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.custom-option-empty:hover {
+  background-color: transparent;
+  color: #94a3b8;
+}
+
+.option-hint {
+  font-size: 12px;
+  color: #cbd5e1;
+  font-style: normal;
+}
+
+.placeholder-text {
+  color: #94a3b8;
+  font-size: 14px;
 }
 
 /* Checkbox Group */

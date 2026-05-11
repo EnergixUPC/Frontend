@@ -1,8 +1,9 @@
 <div class="add-device-container">
   <div class="add-device-header">
     <button class="back-button" (click)="onCancel()">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="m15 18-6-6 6-6"/>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6" />
       </svg>
     </button>
     <h1 class="add-device-title">{{ titleText }}</h1>
@@ -18,63 +19,67 @@
           <input type="text" formControlName="name" />
 
           @if (deviceForm.get('name')?.errors?.['required'] && deviceForm.get('name')?.touched) {
-            <div class="error-message">
-              {{ 'dashboard.devices.addDeviceValidation' | translate }}
-            </div>
+          <div class="error-message">
+            {{ 'dashboard.devices.addDeviceValidation' | translate }}
+          </div>
           }
           @if (deviceForm.get('name')?.errors?.['minlength'] && deviceForm.get('name')?.touched) {
-            <div class="error-message">
-              {{ 'dashboard.devices.nameMinLength' | translate }}
-            </div>
+          <div class="error-message">
+            {{ 'dashboard.devices.nameMinLength' | translate }}
+          </div>
           }
           @if (deviceForm.get('name')?.errors?.['maxlength'] && deviceForm.get('name')?.touched) {
-            <div class="error-message">
-              {{ 'dashboard.devices.nameMaxLength' | translate }}
-            </div>
+          <div class="error-message">
+            {{ 'dashboard.devices.nameMaxLength' | translate }}
+          </div>
           }
           @if (deviceForm.get('name')?.errors?.['pattern'] && deviceForm.get('name')?.touched) {
-            <div class="error-message">
-              {{ 'dashboard.devices.namePattern' | translate }}
-            </div>
+          <div class="error-message">
+            {{ 'dashboard.devices.namePattern' | translate }}
+          </div>
           }
         </div>
 
-        <!-- Category with Autocomplete -->
+        <!-- Category Dropdown (select-only) -->
         <div class="form-group">
           <label>{{ 'dashboard.devices.form.category' | translate }}</label>
           <div class="custom-select-container">
-            <input
-              type="text"
-              formControlName="category"
-              autocomplete="off"
-              (focus)="isCategoryDropdownOpen = true"
-              (blur)="isCategoryDropdownOpen = false"
-            />
-            @if (isCategoryDropdownOpen && filteredCategories.length > 0) {
-              <div class="custom-select-options">
-                @for (cat of filteredCategories; track cat) {
-                  <div class="custom-option" (mousedown)="$event.preventDefault(); selectCategory(cat)">
-                    {{ cat }}
-                  </div>
-                }
+            <div class="custom-select-trigger" [class.open]="isCategoryDropdownOpen" (click)="toggleCategoryDropdown()">
+              <span [class.placeholder-text]="!deviceForm.get('category')?.value">
+                {{ selectedCategoryName }}
+              </span>
+              <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+
+            @if (isCategoryDropdownOpen) {
+            <div class="custom-select-options">
+              @if (categories.length === 0) {
+                <div class="custom-option custom-option-empty">
+                  {{ 'dashboard.devices.noCategoriesYet' | translate }}
+                  <span class="option-hint">{{ 'dashboard.devices.manageCategoriesHint' | translate }}</span>
+                </div>
+              }
+              @for (cat of categories; track cat.id) {
+              <div class="custom-option" (click)="selectCategory(cat)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;flex-shrink:0;color:#3b82f6;">
+                  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+                  <line x1="7" y1="7" x2="7.01" y2="7"/>
+                </svg>
+                {{ cat.name }}
               </div>
+              }
+            </div>
             }
           </div>
 
           @if (deviceForm.get('category')?.errors?.['required'] && deviceForm.get('category')?.touched) {
-            <div class="error-message">
-              {{ 'dashboard.devices.addDeviceValidation' | translate }}
-            </div>
-          }
-          @if (deviceForm.get('category')?.errors?.['pattern'] && deviceForm.get('category')?.touched) {
-            <div class="error-message">
-              {{ 'dashboard.devices.categoryPattern' | translate }}
-            </div>
-          }
-          @if (deviceForm.get('category')?.errors?.['maxlength'] && deviceForm.get('category')?.touched) {
-            <div class="error-message">
-              {{ 'dashboard.devices.categoryMaxLength' | translate }}
-            </div>
+          <div class="error-message">
+            {{ 'dashboard.devices.categoryRequired' | translate }}
+          </div>
           }
         </div>
 
@@ -85,56 +90,94 @@
           <div class="custom-select-container">
             <div class="custom-select-trigger" [class.open]="isStatusDropdownOpen" (click)="toggleStatusDropdown()">
               {{ 'dashboard.devices.status.' + (deviceForm.get('status')?.value | lowercase) | translate }}
-              <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="6 9 12 15 18 9"></polyline>
               </svg>
             </div>
 
             <!-- List -->
             @if (isStatusDropdownOpen) {
-              <div class="custom-select-options">
-                <div class="custom-option" (click)="selectStatus('ON')">
-                  {{ 'dashboard.devices.status.on' | translate }}
-                </div>
-                <div class="custom-option" (click)="selectStatus('OFF')">
-                  {{ 'dashboard.devices.status.off' | translate }}
-                </div>
-                <div class="custom-option" (click)="selectStatus('STANDBY')">
-                  {{ 'dashboard.devices.status.standby' | translate }}
-                </div>
-                <div class="custom-option" (click)="selectStatus('CHARGING')">
-                  {{ 'dashboard.devices.status.charging' | translate }}
-                </div>
+            <div class="custom-select-options">
+              <div class="custom-option" (click)="selectStatus('ON')">
+                {{ 'dashboard.devices.status.on' | translate }}
               </div>
+              <div class="custom-option" (click)="selectStatus('OFF')">
+                {{ 'dashboard.devices.status.off' | translate }}
+              </div>
+              <div class="custom-option" (click)="selectStatus('STANDBY')">
+                {{ 'dashboard.devices.status.standby' | translate }}
+              </div>
+              <div class="custom-option" (click)="selectStatus('CHARGING')">
+                {{ 'dashboard.devices.status.charging' | translate }}
+              </div>
+            </div>
             }
           </div>
+        </div>
+
+        <!-- Location Dropdown (select-only) -->
+        <div class="form-group">
+          <label>{{ 'dashboard.devices.form.location' | translate }}</label>
+          <div class="custom-select-container">
+            <div class="custom-select-trigger" [class.open]="isLocationDropdownOpen" (click)="toggleLocationDropdown()">
+              <span [class.placeholder-text]="!deviceForm.get('location')?.value">
+                {{ selectedLocationName }}
+              </span>
+              <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+
+            @if (isLocationDropdownOpen) {
+            <div class="custom-select-options">
+              @if (locations.length === 0) {
+                <div class="custom-option custom-option-empty">
+                  {{ 'dashboard.devices.noLocationsYet' | translate }}
+                  <span class="option-hint">{{ 'dashboard.devices.manageLocationsHint' | translate }}</span>
+                </div>
+              }
+              @for (loc of locations; track loc.id) {
+              <div class="custom-option" (click)="selectLocation(loc)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;flex-shrink:0;color:#10b981;">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                {{ loc.name }}
+              </div>
+              }
+            </div>
+            }
+          </div>
+
+          @if (deviceForm.get('location')?.errors?.['required'] && deviceForm.get('location')?.touched) {
+          <div class="error-message">
+            {{ 'dashboard.devices.locationRequired' | translate }}
+          </div>
+          }
         </div>
 
         <!-- Power (Watts/h) -->
         <div class="form-group">
           <label>{{ 'dashboard.devices.form.power' | translate }}</label>
-          <input
-            type="number"
-            formControlName="power"
-            min="0"
-            max="20000"
-            step="1"
-            [placeholder]="'dashboard.devices.form.powerPlaceholder' | translate"
-          />
+          <input type="number" formControlName="power" min="0" max="20000" step="1"
+            [placeholder]="'dashboard.devices.form.powerPlaceholder' | translate" />
           @if (deviceForm.get('power')?.hasError('required') && deviceForm.get('power')?.touched) {
-            <div class="error-message">
-              {{ 'dashboard.devices.powerRequired' | translate }}
-            </div>
+          <div class="error-message">
+            {{ 'dashboard.devices.powerRequired' | translate }}
+          </div>
           }
           @if (deviceForm.get('power')?.errors?.['min'] && deviceForm.get('power')?.touched) {
-            <div class="error-message">
-              {{ 'dashboard.devices.powerMin' | translate }}
-            </div>
+          <div class="error-message">
+            {{ 'dashboard.devices.powerMin' | translate }}
+          </div>
           }
           @if (deviceForm.get('power')?.errors?.['max'] && deviceForm.get('power')?.touched) {
-            <div class="error-message">
-              {{ 'dashboard.devices.powerMax' | translate }}
-            </div>
+          <div class="error-message">
+            {{ 'dashboard.devices.powerMax' | translate }}
+          </div>
           }
         </div>
 
@@ -147,7 +190,7 @@
         </div>
 
         @if (error) {
-          <div class="error-message">{{ error }}</div>
+        <div class="error-message">{{ error }}</div>
         }
 
         <div class="actions-container">
