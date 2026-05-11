@@ -39,6 +39,7 @@ export class Home implements OnInit, OnDestroy {
   alerts: any[] = [];
   isLoading = false;
   weeklyConsumption: UserWeeklyConsumptionResponse | null = null;
+  currentUserPlan: string = 'basic';
 
   private readonly KWH_RATE_SOL = 0.6034;
   private currentUserId: string | null = null;
@@ -103,6 +104,7 @@ export class Home implements OnInit, OnDestroy {
         console.log('Home - User authenticated - Loading dashboard for user:', currentUser.id, currentUser.email);
 
         this.currentUserId = currentUser.id;
+        this.currentUserPlan = currentUser.plan || 'basic';
         this.loadBackendData();
       });
   }
@@ -194,7 +196,7 @@ export class Home implements OnInit, OnDestroy {
           console.log('Unified dashboard data loaded successfully');
 
           if (data.alerts) {
-            this.alerts = data.alerts;
+            this.alerts = this.mapAlertsToI18n(data.alerts);
           }
 
           this.dashboardService.getDashboardState()
@@ -370,6 +372,45 @@ export class Home implements OnInit, OnDestroy {
 
   get reminderMessageLabel(): string {
     return this.translate.instant('dashboard.alerts.reminderMessage');
+  }
+
+  get userPlan(): string {
+    return this.currentUserPlan;
+  }
+
+  private mapAlertsToI18n(rawAlerts: any[]): any[] {
+    return rawAlerts.map(alert => {
+      const level = alert.level || alert.type || 'info';
+      const isWarning = level === 'warning';
+
+      // Store i18n keys, NOT pre-translated strings
+      const titleKey = isWarning
+        ? 'dashboard.alerts.highConsumption'
+        : 'dashboard.alerts.infoTitle';
+
+      const rawMessage = (alert.message || '').toLowerCase();
+      let messageKey: string;
+
+      if (rawMessage.includes('consumo') || rawMessage.includes('consumption') || rawMessage.includes('above') || rawMessage.includes('excede')) {
+        messageKey = 'dashboard.alerts.highConsumptionMessage';
+      } else if (rawMessage.includes('light') || rawMessage.includes('luz') || rawMessage.includes('patio') || rawMessage.includes('forgot') || rawMessage.includes('olvidaste')) {
+        messageKey = 'dashboard.alerts.reminderMessage';
+      } else if (rawMessage.includes('phantom') || rawMessage.includes('standby') || rawMessage.includes('fantasma')) {
+        messageKey = 'dashboard.alerts.phantomLoadMessage';
+      } else if (rawMessage.includes('maintenance') || rawMessage.includes('mantenimiento')) {
+        messageKey = 'dashboard.alerts.maintenanceMessage';
+      } else {
+        messageKey = 'dashboard.alerts.genericMessage';
+      }
+
+      return {
+        level,
+        type: isWarning ? 'warning' : 'info',
+        titleKey,
+        messageKey,
+        icon: alert.icon || (isWarning ? 'warning' : 'info')
+      };
+    });
   }
 
   getTranslation(key: string): string {

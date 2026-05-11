@@ -217,8 +217,12 @@
       "title": "Alerts",
       "highConsumption": "High consumption detected!",
       "highConsumptionMessage": "Your usage is 20% above average in the last 3 hours.",
+      "infoTitle": "Notice",
       "reminder": "Reminder:",
       "reminderMessage": "You forgot to turn off the patio lights.",
+      "phantomLoadMessage": "A device in standby is consuming unnecessary energy.",
+      "maintenanceMessage": "One of your devices requires preventive maintenance.",
+      "genericMessage": "Check your energy usage for unusual activity.",
       "noAlerts": "No alerts at this time",
       "loading": "Loading alerts..."
     },

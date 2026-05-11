@@ -27,6 +27,7 @@ type Period = 'weekly' | 'monthly';
 export class ConsumptionChart implements OnInit, OnChanges {
   @Input() devices?: Device[];
   @Input() deviceConsumptions?: Record<string, DeviceConsumption[]>;
+  @Input() userPlan: string = 'basic';
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   chartStyle: ChartStyle = 'bar';
@@ -57,6 +58,11 @@ export class ConsumptionChart implements OnInit, OnChanges {
   constructor(private translate: TranslateService) {}
 
   ngOnInit(): void {
+    // Enforce basic plan defaults
+    if (this.isBasicPlan) {
+      this.chartStyle = 'bar';
+      this.period = 'weekly';
+    }
     this.updateChartData();
 
     this.translate.onLangChange.subscribe(() => {
@@ -65,12 +71,25 @@ export class ConsumptionChart implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['devices'] || changes['deviceConsumptions']) {
+    if (changes['userPlan']) {
+      if (this.isBasicPlan) {
+        this.chartStyle = 'bar';
+        this.period = 'weekly';
+      }
+    }
+    if (changes['devices'] || changes['deviceConsumptions'] || changes['userPlan']) {
       this.updateChartData();
     }
   }
 
+  get isBasicPlan(): boolean {
+    return this.userPlan === 'basic';
+  }
+
   setChartStyle(style: ChartStyle): void {
+    if (this.isBasicPlan && style !== 'bar') {
+      return;
+    }
     if (this.chartStyle !== style) {
       this.chartStyle = style;
       this.updateChartData();
@@ -78,6 +97,9 @@ export class ConsumptionChart implements OnInit, OnChanges {
   }
 
   setPeriod(period: Period): void {
+    if (this.isBasicPlan && period !== 'weekly') {
+      return;
+    }
     if (this.period !== period) {
       this.period = period;
       this.updateChartData();

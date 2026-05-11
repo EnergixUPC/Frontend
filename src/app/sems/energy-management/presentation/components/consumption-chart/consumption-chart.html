@@ -16,6 +16,7 @@
             {{ weeklyLabel }}
           </button>
           <button
+            *ngIf="!isBasicPlan"
             type="button"
             class="toggle-button"
             [class.active]="period === 'monthly'"
@@ -36,6 +37,7 @@
             {{ barsLabel }}
           </button>
           <button
+            *ngIf="!isBasicPlan"
             type="button"
             class="toggle-button"
             [class.active]="chartStyle === 'pie'"
@@ -43,6 +45,7 @@
             {{ pieLabel }}
           </button>
           <button
+            *ngIf="!isBasicPlan"
             type="button"
             class="toggle-button"
             [class.active]="chartStyle === 'area'"
@@ -77,4 +80,5 @@
       </div>
     </ng-template>
   </mat-card-content>
+
 </mat-card>

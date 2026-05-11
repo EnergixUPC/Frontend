@@ -217,8 +217,12 @@
       "title": "Alertas",
       "highConsumption": "¡Consumo alto detectado!",
       "highConsumptionMessage": "Tu uso está un 20% por encima del promedio en las últimas 3 horas.",
+      "infoTitle": "Aviso",
       "reminder": "Recordatorio:",
       "reminderMessage": "Olvidaste apagar las luces del patio.",
+      "phantomLoadMessage": "Un dispositivo en espera está consumiendo energía innecesaria.",
+      "maintenanceMessage": "Uno de tus dispositivos requiere mantenimiento preventivo.",
+      "genericMessage": "Revisa tu consumo energético por actividad inusual.",
       "noAlerts": "Sin alertas en este momento",
       "loading": "Cargando alertas..."
     },
