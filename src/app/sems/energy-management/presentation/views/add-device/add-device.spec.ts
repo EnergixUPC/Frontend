@@ -3,6 +3,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AddDevice } from './add-device';
 import { DevicesService } from '../../../application/services/devices.service';
 import { DashboardService } from '../../../application/services/dashboard.service';
+import { CategoryService } from '../../../application/services/category.service';
+import { LocationService } from '../../../application/services/location.service';
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { of, throwError } from 'rxjs';
@@ -13,6 +15,8 @@ describe('AddDevice', () => {
   let fixture: ComponentFixture<AddDevice>;
   let devicesServiceMock: any;
   let dashboardServiceMock: any;
+  let categoryServiceMock: any;
+  let locationServiceMock: any;
   let routerMock: any;
 
   beforeEach(async () => {
@@ -22,6 +26,20 @@ describe('AddDevice', () => {
 
     dashboardServiceMock = {
       getDashboardState: jasmine.createSpy('getDashboardState').and.returnValue(of({ devices: [] }))
+    };
+
+    categoryServiceMock = {
+      getCategories: jasmine.createSpy('getCategories').and.returnValue(of([
+        { id: 1, name: 'General' },
+        { id: 2, name: 'Entretenimiento' }
+      ]))
+    };
+
+    locationServiceMock = {
+      getLocations: jasmine.createSpy('getLocations').and.returnValue(of([
+        { id: 1, name: 'Sala' },
+        { id: 2, name: 'Dormitorio' }
+      ]))
     };
 
     routerMock = {
@@ -37,6 +55,8 @@ describe('AddDevice', () => {
       providers: [
         { provide: DevicesService, useValue: devicesServiceMock },
         { provide: DashboardService, useValue: dashboardServiceMock },
+        { provide: CategoryService, useValue: categoryServiceMock },
+        { provide: LocationService, useValue: locationServiceMock },
         { provide: Router, useValue: routerMock },
         TranslateService
       ]
@@ -60,6 +80,7 @@ describe('AddDevice', () => {
         name: 'Smart TV',
         category: 'Entretenimiento',
         status: DeviceStatus.ON,
+        location: 'Sala',
         power: 120,
         isActive: true
       });
@@ -91,6 +112,7 @@ describe('AddDevice', () => {
         name: 'Unknown Device',
         category: 'Desconocido',
         status: DeviceStatus.OFF,
+        location: 'Dormitorio',
         power: 15,
         isActive: false
       });
