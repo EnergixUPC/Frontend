@@ -29,7 +29,7 @@ export class AddDevice implements OnInit {
     private readonly dashboardService: DashboardService,
     private readonly router: Router,
     private readonly translateService: TranslateService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -50,6 +50,10 @@ export class AddDevice implements OnInit {
         Validators.pattern(/^[a-zA-Z0-9 áéíóúÁÉÍÓÚñÑ\-]+$/)
       ]],
       status: [DeviceStatus.OFF, [Validators.required]],
+      location: ['', [
+        Validators.required,
+        Validators.maxLength(50)
+      ]],
       power: [null, [
         Validators.required,
         Validators.min(0),
@@ -132,7 +136,7 @@ export class AddDevice implements OnInit {
       status: formVal.status as DeviceStatus,
       realTimeStatus: formVal.status,
       lastActive: 'Now',
-      location: 'Sin asignar',
+      location: formVal.location,
       isActive: formVal.isActive ? 1 : 0,
       power: formVal.power ?? undefined
     };
