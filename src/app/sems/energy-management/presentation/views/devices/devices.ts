@@ -99,6 +99,14 @@ export class Devices implements OnInit, OnDestroy {
     this.router.navigate(['/devices/add']);
   }
 
+  goToCategories(): void {
+    this.router.navigate(['/devices/categories']);
+  }
+
+  goToLocations(): void {
+    this.router.navigate(['/devices/locations']);
+  }
+
   deleteDevice(deviceId: string, deviceName: string): void {
     const confirmed = confirm(
       this.translateService.instant('dashboard.devices.deleteConfirmation', { name: deviceName })

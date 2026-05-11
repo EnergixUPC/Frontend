@@ -72,6 +72,14 @@ export const routes: Routes = [
         loadComponent: () => import('./sems/energy-management/presentation/views/add-device/add-device').then(m => m.AddDevice)
       },
       {
+        path: 'devices/categories',
+        loadComponent: () => import('./sems/energy-management/presentation/views/categories/categories').then(m => m.Categories)
+      },
+      {
+        path: 'devices/locations',
+        loadComponent: () => import('./sems/energy-management/presentation/views/locations/locations').then(m => m.Locations)
+      },
+      {
         path: 'device-preferences',
         loadComponent: () => import('./sems/energy-management/presentation/views/device-preferences/device-preferences').then(m => m.DevicePreferences)
       },
