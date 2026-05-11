@@ -5,7 +5,11 @@ import { Router } from '@angular/router';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { DevicesService } from '../../../application/services/devices.service';
 import { DashboardService } from '../../../application/services/dashboard.service';
+import { CategoryService } from '../../../application/services/category.service';
+import { LocationService } from '../../../application/services/location.service';
 import { Device, DeviceStatus } from '../../../domain/model/device.entity';
+import { Category } from '../../../domain/model/category.entity';
+import { Location } from '../../../domain/model/location.entity';
 
 @Component({
   selector: 'app-add-device',
@@ -18,15 +22,22 @@ export class AddDevice implements OnInit {
   deviceForm!: FormGroup;
   saving = false;
   error: string | null = null;
-  uniqueCategories: string[] = [];
+
+  // Dropdown state
   isStatusDropdownOpen = false;
   isCategoryDropdownOpen = false;
-  filteredCategories: string[] = [];
+  isLocationDropdownOpen = false;
+
+  // Data lists
+  categories: Category[] = [];
+  locations: Location[] = [];
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly devicesService: DevicesService,
     private readonly dashboardService: DashboardService,
+    private readonly categoryService: CategoryService,
+    private readonly locationService: LocationService,
     private readonly router: Router,
     private readonly translateService: TranslateService
   ) { }
@@ -34,6 +45,7 @@ export class AddDevice implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.loadCategories();
+    this.loadLocations();
   }
 
   private initForm(): void {
@@ -44,16 +56,9 @@ export class AddDevice implements OnInit {
         Validators.maxLength(50),
         Validators.pattern(/^[a-zA-Z0-9 áéíóúÁÉÍÓÚñÑ\-]+$/)
       ]],
-      category: ['', [
-        Validators.required,
-        Validators.maxLength(25),
-        Validators.pattern(/^[a-zA-Z0-9 áéíóúÁÉÍÓÚñÑ\-]+$/)
-      ]],
+      category: ['', [Validators.required]],
       status: [DeviceStatus.OFF, [Validators.required]],
-      location: ['', [
-        Validators.required,
-        Validators.maxLength(50)
-      ]],
+      location: ['', [Validators.required]],
       power: [null, [
         Validators.required,
         Validators.min(0),
@@ -61,27 +66,27 @@ export class AddDevice implements OnInit {
       ]],
       isActive: [false]
     });
+  }
 
-    this.deviceForm.get('category')?.valueChanges.subscribe(value => {
-      if (!value) {
-        this.filteredCategories = [...this.uniqueCategories];
-      } else {
-        const lower = value.toLowerCase();
-        this.filteredCategories = this.uniqueCategories.filter(c =>
-          c.toLowerCase().includes(lower)
-        );
+  private loadCategories(): void {
+    this.categoryService.getCategories().subscribe({
+      next: (cats) => {
+        this.categories = cats;
+      },
+      error: () => {
+        this.categories = [];
       }
     });
   }
 
-  private loadCategories(): void {
-    this.dashboardService.getDashboardState().subscribe(state => {
-      const devices = state.devices || [];
-      const cats = devices
-        .map(d => d.category)
-        .filter((c): c is string => !!c && c.trim().length > 0);
-      this.uniqueCategories = [...new Set(cats)];
-      this.filteredCategories = [...this.uniqueCategories];
+  private loadLocations(): void {
+    this.locationService.getLocations().subscribe({
+      next: (locs) => {
+        this.locations = locs;
+      },
+      error: () => {
+        this.locations = [];
+      }
     });
   }
 
@@ -97,18 +102,50 @@ export class AddDevice implements OnInit {
     return this.translateService.instant('dashboard.devices.addDeviceCancel');
   }
 
+  // --- Status dropdown ---
   toggleStatusDropdown(): void {
     this.isStatusDropdownOpen = !this.isStatusDropdownOpen;
+    this.isCategoryDropdownOpen = false;
+    this.isLocationDropdownOpen = false;
   }
 
   selectStatus(status: string): void {
-    this.deviceForm.patchValue({ status: status });
+    this.deviceForm.patchValue({ status });
     this.isStatusDropdownOpen = false;
   }
 
-  selectCategory(cat: string): void {
-    this.deviceForm.patchValue({ category: cat });
+  // --- Category dropdown ---
+  toggleCategoryDropdown(): void {
+    this.isCategoryDropdownOpen = !this.isCategoryDropdownOpen;
+    this.isStatusDropdownOpen = false;
+    this.isLocationDropdownOpen = false;
+  }
+
+  selectCategory(cat: Category): void {
+    this.deviceForm.patchValue({ category: cat.name });
     this.isCategoryDropdownOpen = false;
+  }
+
+  get selectedCategoryName(): string {
+    const val = this.deviceForm.get('category')?.value;
+    return val || this.translateService.instant('dashboard.devices.selectCategory');
+  }
+
+  // --- Location dropdown ---
+  toggleLocationDropdown(): void {
+    this.isLocationDropdownOpen = !this.isLocationDropdownOpen;
+    this.isStatusDropdownOpen = false;
+    this.isCategoryDropdownOpen = false;
+  }
+
+  selectLocation(loc: Location): void {
+    this.deviceForm.patchValue({ location: loc.name });
+    this.isLocationDropdownOpen = false;
+  }
+
+  get selectedLocationName(): string {
+    const val = this.deviceForm.get('location')?.value;
+    return val || this.translateService.instant('dashboard.devices.selectLocation');
   }
 
   onCancel(): void {
