@@ -28,7 +28,8 @@
     <div class="chart-full">
       <app-consumption-chart
         [devices]="devices"
-        [deviceConsumptions]="deviceConsumptions">
+        [deviceConsumptions]="deviceConsumptions"
+        [userPlan]="userPlan">
       </app-consumption-chart>
     </div>
   </div>
@@ -46,8 +47,8 @@
             <div *ngFor="let alert of alerts" class="alert-item" [ngClass]="alert.type">
               <mat-icon>{{ alert.icon || (alert.type === 'warning' ? 'warning' : 'info') }}</mat-icon>
               <div class="alert-content">
-                <strong>{{ alert.title }}</strong>
-                <p>{{ alert.message }}</p>
+                <strong>{{ alert.titleKey | translate }}</strong>
+                <p>{{ alert.messageKey | translate }}</p>
               </div>
             </div>
           </div>
