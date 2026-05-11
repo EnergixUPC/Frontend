@@ -1,0 +1,516 @@
+{
+  "id": "a1b2c3d4-e5f6-4a1b-8c2d-3e4f5a6b7c8d",
+  "version": "2.0",
+  "name": "SEMS-Landing-Page",
+  "url": "https://energixlp.netlify.app",
+  "tests": [{
+    "id": "11111111-2222-3333-4444-555555555555",
+    "name": "US17 - Consultar propuesta de valor",
+    "commands": [{
+      "id": "b13040e6-aaf8-4ace-bb0c-480876ae210b",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "132c310e-eaae-4221-b8be-9152cc901a2c",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1048",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c33bf772-2ddd-4c07-a96e-e4c600e485e5",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Beneficios",
+      "targets": [
+        ["linkText=Beneficios", "linkText"],
+        ["css=.menuItem:nth-child(2) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Beneficios')]", "xpath:link"],
+        ["xpath=//nav[@id='nav']/div/div[2]/h3[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '#beneficios')]", "xpath:href"],
+        ["xpath=//h3[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Beneficios')]", "xpath:innerText"]
+      ],
+      "value": "Botón Beneficios que lleva a nuestra propuesta de valor \"¿Por qué Elegir Energix?\""
+    }, {
+      "id": "674a9c8d-ad8c-41d2-bb83-da7c06966caf",
+      "comment": "",
+      "command": "click",
+      "target": "css=.beneficioItem:nth-child(2) > p",
+      "targets": [
+        ["css=.beneficioItem:nth-child(2) > p", "css:finder"],
+        ["xpath=//section[@id='beneficios']/div[2]/div[2]/p", "xpath:idRelative"],
+        ["xpath=//div[2]/p", "xpath:position"],
+        ["xpath=//p[contains(.,'Monitorea el consumo de energía en todos tus dispositivos desde nuestra aplicación SEMS, estés donde estés.')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "22222222-3333-4444-5555-666666666666",
+    "name": "US18 - Acceder a FAQ",
+    "commands": [{
+      "id": "212e732a-af60-4f9f-9d90-608d904a4608",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "43a96283-685d-4a71-a8ac-b9d476263b82",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1048",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2678ff99-1abc-4a2b-b573-230b34d3197d",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=FAQ",
+      "targets": [
+        ["linkText=FAQ", "linkText"],
+        ["css=.menuItem:nth-child(6) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'FAQ')]", "xpath:link"],
+        ["xpath=//nav[@id='nav']/div/div[2]/h3[6]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '#faq')]", "xpath:href"],
+        ["xpath=//h3[6]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'FAQ')]", "xpath:innerText"]
+      ],
+      "value": "Botón que lleva a \"Frequently Asked Questions\" "
+    }, {
+      "id": "9163a9ed-ee0e-4375-94d7-587c3fc28c1c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.faqItem:nth-child(2) > .faqQuestion",
+      "targets": [
+        ["css=.faqItem:nth-child(2) > .faqQuestion", "css:finder"],
+        ["xpath=//section[@id='faq']/div/div/div", "xpath:idRelative"],
+        ["xpath=//section[7]/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "344c9ed7-ea21-4fe0-8cfb-3e305dff546b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.faqItem:nth-child(3) > .faqQuestion",
+      "targets": [
+        ["css=.faqItem:nth-child(3) > .faqQuestion", "css:finder"],
+        ["xpath=//section[@id='faq']/div/div[2]/div", "xpath:idRelative"],
+        ["xpath=//section[7]/div/div[2]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c3d73b7a-de6d-4a32-9fb5-5e06cd507ff8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.faqItem:nth-child(4) h3",
+      "targets": [
+        ["css=.faqItem:nth-child(4) h3", "css:finder"],
+        ["xpath=//section[@id='faq']/div/div[3]/div/h3", "xpath:idRelative"],
+        ["xpath=//div[3]/div/h3", "xpath:position"],
+        ["xpath=//h3[contains(.,'¿Necesito comprar hardware adicional para usar SEMS?')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c0c87fc2-0fa7-46b6-a8de-dd130fb1ae44",
+      "comment": "",
+      "command": "click",
+      "target": "css=.faqItem:nth-child(5) h3",
+      "targets": [
+        ["css=.faqItem:nth-child(5) h3", "css:finder"],
+        ["xpath=//section[@id='faq']/div/div[4]/div/h3", "xpath:idRelative"],
+        ["xpath=//div[4]/div/h3", "xpath:position"],
+        ["xpath=//h3[contains(.,'¿Ofrecen planes para empresas o solo para hogares?')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "33333333-4444-5555-6666-777777777777",
+    "name": "US19 - Revisar planes de suscripción",
+    "commands": [{
+      "id": "f5e36938-20b4-4bac-935e-63c529cd3873",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "11e33642-be0a-406e-91c5-953dd86a1c91",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1048",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d85bf120-1dde-47ae-aacc-00fa2b2bd68c",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Suscripciones",
+      "targets": [
+        ["linkText=Suscripciones", "linkText"],
+        ["css=.menuItem:nth-child(4) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Suscripciones')]", "xpath:link"],
+        ["xpath=//nav[@id='nav']/div/div[2]/h3[4]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '#suscripciones')]", "xpath:href"],
+        ["xpath=//h3[4]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Suscripciones')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ee885acd-afee-400a-acc4-9d99b9fa61cd",
+      "comment": "",
+      "command": "click",
+      "target": "css=.pricing-card:nth-child(1) li:nth-child(1)",
+      "targets": [
+        ["css=.pricing-card:nth-child(1) li:nth-child(1)", "css:finder"],
+        ["xpath=//section[@id='suscripciones']/div[2]/div/ul/li", "xpath:idRelative"],
+        ["xpath=//li", "xpath:position"],
+        ["xpath=//li[contains(.,'✔ Monitoreo de consumo en tiempo real')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "64b9b648-e3df-4028-968d-e4d769592bc3",
+      "comment": "",
+      "command": "click",
+      "target": "css=.plan-features:nth-child(5) > li:nth-child(3)",
+      "targets": [
+        ["css=.plan-features:nth-child(5) > li:nth-child(3)", "css:finder"],
+        ["xpath=//section[@id='suscripciones']/div[2]/div[2]/ul/li[3]", "xpath:idRelative"],
+        ["xpath=//div[2]/ul/li[3]", "xpath:position"],
+        ["xpath=//li[contains(.,'✔ Recomendaciones personalizadas de ahorro')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6eb20ae2-3805-48fe-af37-c40584e92523",
+      "comment": "",
+      "command": "click",
+      "target": "css=.pricing-card:nth-child(3) > .plan-features",
+      "targets": [
+        ["css=.pricing-card:nth-child(3) > .plan-features", "css:finder"],
+        ["xpath=//section[@id='suscripciones']/div[2]/div[3]/ul", "xpath:idRelative"],
+        ["xpath=//div[3]/ul", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "44444444-5555-6666-7777-888888888888",
+    "name": "US20 - Cambiar Idioma",
+    "commands": [{
+      "id": "8c9c2507-95a3-46dd-8370-b2eb23a813bb",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "92ab1791-07a7-4762-bad1-7c5328791032",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1048",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "23fdf216-e1ac-41f6-8127-e1de2ca29592",
+      "comment": "",
+      "command": "click",
+      "target": "id=translateBtn",
+      "targets": [
+        ["id=translateBtn", "id"],
+        ["css=#translateBtn", "css:finder"],
+        ["xpath=//button[@id='translateBtn']", "xpath:attributes"],
+        ["xpath=//nav[@id='nav']/div/div/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'EN')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "af1e7be0-3875-4910-bf18-cba17a9ac671",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Home",
+      "targets": [
+        ["linkText=Home", "linkText"],
+        ["css=.menuItem:nth-child(1) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Home')]", "xpath:link"],
+        ["xpath=//nav[@id='nav']/div/div[2]/h3/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '#inicio')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Home')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "66640a71-9cb3-42d6-9963-74141345e5b7",
+      "comment": "",
+      "command": "click",
+      "target": "id=translateBtn",
+      "targets": [
+        ["id=translateBtn", "id"],
+        ["css=#translateBtn", "css:finder"],
+        ["xpath=//button[@id='translateBtn']", "xpath:attributes"],
+        ["xpath=//nav[@id='nav']/div/div/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'ES')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0180056f-f2a5-4bd1-98f7-6477d6f86382",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Inicio",
+      "targets": [
+        ["linkText=Inicio", "linkText"],
+        ["css=.menuItem:nth-child(1) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Inicio')]", "xpath:link"],
+        ["xpath=//nav[@id='nav']/div/div[2]/h3/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '#inicio')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Inicio')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3bf4de32-32e5-4728-a96d-d2fd684ef8f3",
+      "comment": "",
+      "command": "click",
+      "target": "css=.beneficiosTitle",
+      "targets": [
+        ["css=.beneficiosTitle", "css:finder"],
+        ["xpath=//section[@id='beneficios']/div/h2", "xpath:idRelative"],
+        ["xpath=//h2", "xpath:position"],
+        ["xpath=//h2[contains(.,'¿Por qué Elegir Energix?')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c47233eb-09be-4243-83dd-83c0a73f5f28",
+      "comment": "",
+      "command": "click",
+      "target": "id=translateBtn",
+      "targets": [
+        ["id=translateBtn", "id"],
+        ["css=#translateBtn", "css:finder"],
+        ["xpath=//button[@id='translateBtn']", "xpath:attributes"],
+        ["xpath=//nav[@id='nav']/div/div/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'EN')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "2c474196-bda2-4636-9514-bfcf239f44fc",
+      "comment": "",
+      "command": "click",
+      "target": "css=.beneficiosTitle",
+      "targets": [
+        ["css=.beneficiosTitle", "css:finder"],
+        ["xpath=//section[@id='beneficios']/div/h2", "xpath:idRelative"],
+        ["xpath=//h2", "xpath:position"],
+        ["xpath=//h2[contains(.,'Why Choose Energix?')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "73c634dd-627c-4375-abdb-e492076b36c6",
+      "comment": "",
+      "command": "click",
+      "target": "css=.faqTitle",
+      "targets": [
+        ["css=.faqTitle", "css:finder"],
+        ["xpath=//section[@id='faq']/div/h2", "xpath:idRelative"],
+        ["xpath=//section[7]/div/h2", "xpath:position"],
+        ["xpath=//h2[contains(.,'Frequently Asked Questions')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "952e19aa-63e8-4e55-b18c-a237dd501362",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=FAQ",
+      "targets": [
+        ["linkText=FAQ", "linkText"],
+        ["css=.menuItem:nth-child(6) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'FAQ')]", "xpath:link"],
+        ["xpath=//nav[@id='nav']/div/div[2]/h3[6]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '#faq')]", "xpath:href"],
+        ["xpath=//h3[6]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'FAQ')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "510af308-58f2-458a-99f2-0ea955c6b008",
+    "name": "US16 - Consultar noticias/consejos de ahorro",
+    "commands": [{
+      "id": "788cba47-6481-4a93-bfbc-e2b1c66c4e2f",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d83ac56f-9c86-43ca-8bab-b892c54aff5c",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1048",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7b1b855f-ce40-4f0a-90e7-bacac65e33be",
+      "comment": "",
+      "command": "click",
+      "target": "id=translateBtn",
+      "targets": [
+        ["id=translateBtn", "id"],
+        ["css=#translateBtn", "css:finder"],
+        ["xpath=//button[@id='translateBtn']", "xpath:attributes"],
+        ["xpath=//nav[@id='nav']/div/div/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'EN')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "fb5fff30-e559-4e5d-abfb-c00f212d87c0",
+      "comment": "",
+      "command": "click",
+      "target": "id=translateBtn",
+      "targets": [
+        ["id=translateBtn", "id"],
+        ["css=#translateBtn", "css:finder"],
+        ["xpath=//button[@id='translateBtn']", "xpath:attributes"],
+        ["xpath=//nav[@id='nav']/div/div/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'ES')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ec80b6a1-7172-4895-bad5-1e5be503006e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.footerLeft",
+      "targets": [
+        ["css=.footerLeft", "css:finder"],
+        ["xpath=//section[@id='contacto']/div/footer/div", "xpath:idRelative"],
+        ["xpath=//footer/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d333c90c-5f5f-4667-8296-3a9039b7da6d",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=El ahorro energético",
+      "targets": [
+        ["linkText=El ahorro energético", "linkText"],
+        ["css=.fListItem:nth-child(1) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'El ahorro energético')]", "xpath:link"],
+        ["xpath=//section[@id='contacto']/div/footer/div/div[3]/ul/li/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://www.fundacionendesa.org/es/educacion/endesa-educa/recursos/ahorro-energetico')]", "xpath:href"],
+        ["xpath=//li/a", "xpath:position"],
+        ["xpath=//a[contains(.,'El ahorro energético')]", "xpath:innerText"]
+      ],
+      "value": "",
+      "opensWindow": true,
+      "windowHandleName": "win9142",
+      "windowTimeout": 2000
+    }, {
+      "id": "92a16e8d-b222-4ba1-b57a-5c71168c0dc1",
+      "comment": "",
+      "command": "storeWindowHandle",
+      "target": "root",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c85f9932-4ed6-4742-87eb-92b69f273591",
+      "comment": "",
+      "command": "selectWindow",
+      "target": "handle=${win9142}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "1d332eb4-eae8-4000-ade3-c1141d07d725",
+      "comment": "",
+      "command": "selectWindow",
+      "target": "handle=${root}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b59462e4-2c07-4b57-bb00-4c451a8cba5a",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=7 consejos para disminuir el consumo en casa",
+      "targets": [
+        ["linkText=7 consejos para disminuir el consumo en casa", "linkText"],
+        ["css=.fListItem:nth-child(2) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'7 consejos para disminuir el consumo en casa')]", "xpath:link"],
+        ["xpath=//section[@id='contacto']/div/footer/div/div[3]/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://www.nationalgeographicla.com/medio-ambiente/2022/03/ahorro-de-energia-7-consejos-para-disminuir-el-consumo-en-casa')]", "xpath:href"],
+        ["xpath=//li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'7 consejos para disminuir el consumo en casa')]", "xpath:innerText"]
+      ],
+      "value": "",
+      "opensWindow": true,
+      "windowHandleName": "win8977",
+      "windowTimeout": 2000
+    }, {
+      "id": "af86a2a1-94ef-429a-bdc2-c0803c173042",
+      "comment": "",
+      "command": "selectWindow",
+      "target": "handle=${win8977}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "84eca79d-a2c1-4f6b-b2b3-c60e78958801",
+      "comment": "",
+      "command": "selectWindow",
+      "target": "handle=${root}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d56396e6-541d-43ef-92a3-d4abbc39f07c",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Aparatos para ahorrar luz y energía eléctrica",
+      "targets": [
+        ["linkText=Aparatos para ahorrar luz y energía eléctrica", "linkText"],
+        ["css=.fListItem:nth-child(3) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Aparatos para ahorrar luz y energía eléctrica')]", "xpath:link"],
+        ["xpath=//section[@id='contacto']/div/footer/div/div[3]/ul/li[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'https://www.mipodo.com/blog/aparatos-ahorro-electrico-casa')]", "xpath:href"],
+        ["xpath=//li[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Aparatos para ahorrar luz y energía eléctrica')]", "xpath:innerText"]
+      ],
+      "value": "",
+      "opensWindow": true,
+      "windowHandleName": "win560",
+      "windowTimeout": 2000
+    }, {
+      "id": "d367ddeb-9df1-4b66-8b25-e35746b170f3",
+      "comment": "",
+      "command": "selectWindow",
+      "target": "handle=${win560}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "10d8b8ec-16d9-4e2b-9da3-b372309157c3",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "linkText=¿Ya eres cliente Podo? 900 831 656",
+      "targets": [
+        ["linkText=¿Ya eres cliente Podo? 900 831 656", "linkText"],
+        ["css=.btn-link:nth-child(2)", "css:finder"],
+        ["xpath=//a[contains(@href, 'tel:+34900831656')]", "xpath:href"],
+        ["xpath=//body/div/div/div/div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'¿Ya eres cliente Podo? 900 831 656')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "99999999-aaaa-bbbb-cccc-dddddddddddd",
+    "name": "Landing Page Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["11111111-2222-3333-4444-555555555555", "22222222-3333-4444-5555-666666666666", "33333333-4444-5555-6666-777777777777", "44444444-5555-6666-7777-888888888888"]
+  }],
+  "urls": ["https://energixlp.netlify.app/"],
+  "plugins": []
+}

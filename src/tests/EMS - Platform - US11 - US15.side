@@ -1,0 +1,540 @@
+{
+  "id": "33a63f52-e095-4679-b164-80c1bbb4886c",
+  "version": "2.0",
+  "name": "SEMS-Platform",
+  "url": "http://localhost:4200",
+  "tests": [{
+    "id": "cbc521c4-6ada-4fbc-9421-163c161d8e7f",
+    "name": "US14 - Identificar dispositivos de alto consumo",
+    "commands": [{
+      "id": "7adb1dc2-7e12-4270-97e4-14f7aec90b33",
+      "comment": "",
+      "command": "open",
+      "target": "/home",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e34e8998-a0d4-4634-8ce5-3afdc0bf79d2",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1014x1023",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b85565f1-3d2f-4f50-9549-1f1555703747",
+      "comment": "",
+      "command": "click",
+      "target": "css=.content",
+      "targets": [
+        ["css=.content", "css:finder"],
+        ["xpath=//main", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a912fbd1-d744-4200-918a-243486edf576",
+      "comment": "",
+      "command": "click",
+      "target": "css=.mat-mdc-list-item:nth-child(4) .mat-mdc-list-item-title",
+      "targets": [
+        ["css=.mat-mdc-list-item:nth-child(4) .mat-mdc-list-item-title", "css:finder"],
+        ["xpath=//mat-list-item[4]/span/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "da8df165-11fa-42fc-a705-fd1460521a46",
+      "comment": "",
+      "command": "click",
+      "target": "css=.bar-row:nth-child(1) > .bar",
+      "targets": [
+        ["css=.bar-row:nth-child(1) > .bar", "css:finder"],
+        ["xpath=//div[2]/div[2]/div/div", "xpath:position"]
+      ],
+      "value": "high consumption device bar"
+    }]
+  }, {
+    "id": "cc51277a-3acc-44fa-b5f2-5baf1be6c648",
+    "name": "US13 - Consultar centro de ayuda",
+    "commands": [{
+      "id": "9bc588ec-b289-45c9-9467-a1c0afef348e",
+      "comment": "",
+      "command": "open",
+      "target": "/settings",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5190c180-c211-4deb-91ac-d6c79d83e466",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1013x1025",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a0035fba-e68b-46fc-ba41-e6ee7c918c2f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.active .mat-mdc-list-item-title",
+      "targets": [
+        ["css=.active .mat-mdc-list-item-title", "css:finder"],
+        ["xpath=//mat-list-item[6]/span/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "60b686c6-ddef-4d52-b801-de3044aef50f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.support-link:nth-child(1) > span",
+      "targets": [
+        ["css=.support-link:nth-child(1) > span", "css:finder"],
+        ["xpath=//a/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Help Center / FAQs')]", "xpath:innerText"]
+      ],
+      "value": "Frequently Asked Questions"
+    }, {
+      "id": "2b803fae-274f-486e-995e-6fa7d36a207d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.close-btn > .mat-icon",
+      "targets": [
+        ["css=.close-btn > .mat-icon", "css:finder"],
+        ["xpath=//div[2]/div/button/mat-icon", "xpath:position"],
+        ["xpath=//mat-icon[contains(.,'close')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "36aba1f9-8525-4abb-bacf-ea3e7339df4b",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Tutorials and Guides",
+      "targets": [
+        ["linkText=Tutorials and Guides", "linkText"],
+        ["css=.support-link:nth-child(3)", "css:finder"],
+        ["xpath=//a[3]", "xpath:position"],
+        ["xpath=//a[contains(.,'Tutorials and Guides')]", "xpath:innerText"]
+      ],
+      "value": "Tutorials and Guides"
+    }, {
+      "id": "9db0b929-edf2-4cd9-96e1-c74f53589060",
+      "comment": "",
+      "command": "click",
+      "target": "css=.close-btn > .mat-icon",
+      "targets": [
+        ["css=.close-btn > .mat-icon", "css:finder"],
+        ["xpath=//div[2]/div/button/mat-icon", "xpath:position"],
+        ["xpath=//mat-icon[contains(.,'close')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d1b7ec10-33c6-4a4d-8129-f471481d6284",
+      "comment": "",
+      "command": "click",
+      "target": "css=.support-link:nth-child(2) > span",
+      "targets": [
+        ["css=.support-link:nth-child(2) > span", "css:finder"],
+        ["xpath=//a[2]/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Contact Support')]", "xpath:innerText"]
+      ],
+      "value": "Help Center"
+    }, {
+      "id": "dcde2c7b-b53b-40e1-9677-3b3bd6a2e396",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.contact-item:nth-child(2) .mat-mdc-button-touch-target",
+      "targets": [
+        ["css=.contact-item:nth-child(2) .mat-mdc-button-touch-target", "css:finder"],
+        ["xpath=//div[2]/div[2]/div[2]/div/button/span[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "315ed17f-2bdb-4b80-add2-8fb58014b9cf",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.contact-item:nth-child(2) .mat-mdc-button-touch-target",
+      "targets": [
+        ["css=.contact-item:nth-child(2) .mat-mdc-button-touch-target", "css:finder"],
+        ["xpath=//div[2]/div[2]/div[2]/div/button/span[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9f470b64-37be-4cba-9ba2-9aebd4dad09d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.cdk-focused > .mat-mdc-button-touch-target",
+      "targets": [
+        ["css=.cdk-focused > .mat-mdc-button-touch-target", "css:finder"],
+        ["xpath=//div[2]/div[2]/div[2]/div/button/span[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "835e5833-91f1-4dc8-a9de-23b40c9ead69",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.contact-item:nth-child(3) .mat-mdc-button-touch-target",
+      "targets": [
+        ["css=.contact-item:nth-child(3) .mat-mdc-button-touch-target", "css:finder"],
+        ["xpath=//div[2]/div[2]/button/span[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0ba31867-927b-431c-a86c-aa9efbbe7324",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.contact-item:nth-child(3) .mat-mdc-button-touch-target",
+      "targets": [
+        ["css=.contact-item:nth-child(3) .mat-mdc-button-touch-target", "css:finder"],
+        ["xpath=//div[2]/div[2]/button/span[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fa40e6a2-6f17-40c9-8c55-a76a0f60ec18",
+      "comment": "",
+      "command": "click",
+      "target": "css=.close-btn > .mat-icon",
+      "targets": [
+        ["css=.close-btn > .mat-icon", "css:finder"],
+        ["xpath=//div[2]/div/button/mat-icon", "xpath:position"],
+        ["xpath=//mat-icon[contains(.,'close')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "6e426ed4-825f-4dbc-9ee7-3b7ab4c9673c",
+    "name": "US12 - Consultar historial de consumo mensual",
+    "commands": [{
+      "id": "df5f0d93-b73e-4434-99e1-8e57557f693e",
+      "comment": "",
+      "command": "open",
+      "target": "/home",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a8e5b2a2-a6a9-4e33-a2c9-8ec4d3b8eb64",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1036x1009",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c821bc3b-0458-4d3d-808c-057536869fb9",
+      "comment": "",
+      "command": "click",
+      "target": "css=.active .mat-mdc-list-item-title",
+      "targets": [
+        ["css=.active .mat-mdc-list-item-title", "css:finder"],
+        ["xpath=//span/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c71dad51-dd41-4d1e-b54b-4db848535185",
+      "comment": "",
+      "command": "click",
+      "target": "css=.control-group:nth-child(1) .active",
+      "targets": [
+        ["css=.control-group:nth-child(1) .active", "css:finder"],
+        ["xpath=(//button[@type='button'])[3]", "xpath:attributes"],
+        ["xpath=//div/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Weekly')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5da3d335-2f07-4ee8-862d-2756e6f6a26c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.control-group:nth-child(1) .toggle-button:nth-child(2)",
+      "targets": [
+        ["css=.control-group:nth-child(1) .toggle-button:nth-child(2)", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div/div/div/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Monthly')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a6ae430e-70c1-454e-bd32-248a7bdad658",
+      "comment": "",
+      "command": "click",
+      "target": "css=.control-group:nth-child(2) .toggle-button:nth-child(2)",
+      "targets": [
+        ["css=.control-group:nth-child(2) .toggle-button:nth-child(2)", "css:finder"],
+        ["xpath=(//button[@type='button'])[6]", "xpath:attributes"],
+        ["xpath=//div[2]/div/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Pie')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "83d7877d-cb53-4e4d-a268-e252feac99f3",
+      "comment": "",
+      "command": "click",
+      "target": "css=.toggle-button:nth-child(3)",
+      "targets": [
+        ["css=.toggle-button:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='button'])[7]", "xpath:attributes"],
+        ["xpath=//button[3]", "xpath:position"],
+        ["xpath=//button[contains(.,'Area')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "92cfb442-551b-40cc-a087-99acc7b59875",
+      "comment": "",
+      "command": "click",
+      "target": "css=.control-group:nth-child(2) .toggle-button:nth-child(1)",
+      "targets": [
+        ["css=.control-group:nth-child(2) .toggle-button:nth-child(1)", "css:finder"],
+        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
+        ["xpath=//div[2]/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Bars')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0acdcbd6-cbc6-4e00-9e8d-3e5b9c2791a0",
+      "comment": "",
+      "command": "click",
+      "target": "css=.mat-mdc-list-item:nth-child(4) .mat-mdc-list-item-title",
+      "targets": [
+        ["css=.mat-mdc-list-item:nth-child(4) .mat-mdc-list-item-title", "css:finder"],
+        ["xpath=//mat-list-item[4]/span/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "19085058-c686-491e-a205-f9ba65e14092",
+      "comment": "",
+      "command": "click",
+      "target": "css=.checkbox-group:nth-child(1) > .checkbox-label",
+      "targets": [
+        ["css=.checkbox-group:nth-child(1) > .checkbox-label", "css:finder"],
+        ["xpath=//div[2]/div/label", "xpath:position"],
+        ["xpath=//label[contains(.,'Todos los Datos')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c4911ed6-f0ef-488a-bd1e-7c679112f99d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.checkbox-group:nth-child(2) > .checkbox-label",
+      "targets": [
+        ["css=.checkbox-group:nth-child(2) > .checkbox-label", "css:finder"],
+        ["xpath=//div[2]/label", "xpath:position"],
+        ["xpath=//label[contains(.,'Último Mes')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "409a8756-afda-4973-8fba-83cd1358a4d5",
+      "comment": "",
+      "command": "click",
+      "target": "css=.download-button",
+      "targets": [
+        ["css=.download-button", "css:finder"],
+        ["xpath=//div[2]/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Descargar')]", "xpath:innerText"]
+      ],
+      "value": "Descargar PDF"
+    }, {
+      "id": "301ba81b-0dd2-427e-8061-d0de0b384e80",
+      "comment": "",
+      "command": "assertAlert",
+      "target": "¡Reporte PDF para Último Mes descargado exitosamente!",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "c42decff-3e81-4bf7-94b3-09aee53ff440",
+    "name": "US11 - Proyección de factura mensual",
+    "commands": [{
+      "id": "57ef00e5-51b5-440a-8efb-04dc65d26d41",
+      "comment": "",
+      "command": "open",
+      "target": "/home",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d0960005-5cb9-47c8-a15c-4f471b399fa7",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "971x860",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d1a32214-f230-42f3-a472-dd9bf166d38d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.active .mat-mdc-list-item-title",
+      "targets": [
+        ["css=.active .mat-mdc-list-item-title", "css:finder"],
+        ["xpath=//span/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "be44e331-e5b2-417a-b750-0341b46ec80d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.lang-btn:nth-child(2)",
+      "targets": [
+        ["css=.lang-btn:nth-child(2)", "css:finder"],
+        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'EN')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "850bc05d-761b-4b99-b494-7b456b74f6ab",
+      "comment": "",
+      "command": "click",
+      "target": "css=.lang-btn:nth-child(1)",
+      "targets": [
+        ["css=.lang-btn:nth-child(1)", "css:finder"],
+        ["xpath=//button[@type='button']", "xpath:attributes"],
+        ["xpath=//div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'ES')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "19f3d86d-5b22-4028-9261-c20539750910",
+      "comment": "",
+      "command": "click",
+      "target": "css=app-stats-card:nth-child(4) .mat-mdc-card-content",
+      "targets": [
+        ["css=app-stats-card:nth-child(4) .mat-mdc-card-content", "css:finder"],
+        ["xpath=//app-stats-card[4]/mat-card/mat-card-content", "xpath:position"]
+      ],
+      "value": "Tarjeta con FACTURA ESTIMADA"
+    }, {
+      "id": "70c97215-a7be-4d00-93a2-3e5662973b33",
+      "comment": "",
+      "command": "click",
+      "target": "css=app-stats-card:nth-child(4) .mat-mdc-card-content",
+      "targets": [
+        ["css=app-stats-card:nth-child(4) .mat-mdc-card-content", "css:finder"],
+        ["xpath=//app-stats-card[4]/mat-card/mat-card-content", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "318a9a07-7531-471c-8f15-06fa68545a0f",
+    "name": "US15 - Cambiar idioma de la plataforma",
+    "commands": [{
+      "id": "6573a020-fe5c-4a62-bfa6-a2ea4df77326",
+      "comment": "",
+      "command": "open",
+      "target": "/home",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "41f5b975-9c0d-4dcb-aa5f-c74f24be9cee",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "851x869",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "85f77b1e-ac69-47dd-a0f4-8e6bc1c68b50",
+      "comment": "",
+      "command": "click",
+      "target": "css=.lang-btn:nth-child(1) > .language-text",
+      "targets": [
+        ["css=.lang-btn:nth-child(1) > .language-text", "css:finder"],
+        ["xpath=//div/div/button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'ES')]", "xpath:innerText"]
+      ],
+      "value": "language switch to spanish"
+    }, {
+      "id": "b4d62a2c-cef9-4544-b331-f7693c0c57cd",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=app-stats-card:nth-child(1) .stats-header",
+      "targets": [],
+      "value": "CONSUMO DE ENERGÍA"
+    }, {
+      "id": "cc31e17b-57b7-4261-8988-1b1dfddc51ff",
+      "comment": "",
+      "command": "click",
+      "target": "css=.lang-btn:nth-child(2) > .language-text",
+      "targets": [
+        ["css=.lang-btn:nth-child(2) > .language-text", "css:finder"],
+        ["xpath=//button[2]/span", "xpath:position"],
+        ["xpath=//span[contains(.,'EN')]", "xpath:innerText"]
+      ],
+      "value": "language switch to english"
+    }, {
+      "id": "1aa7182f-dee0-427d-afcb-5cbeeda3d9b5",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=app-stats-card:nth-child(1) .stats-header",
+      "targets": [],
+      "value": "ENERGY CONSUMPTION"
+    }, {
+      "id": "36619982-0fdf-4d95-be64-b93bd858db80",
+      "comment": "",
+      "command": "click",
+      "target": "css=.mat-mdc-list-item:nth-child(2) .mat-mdc-list-item-title",
+      "targets": [
+        ["css=.mat-mdc-list-item:nth-child(2) .mat-mdc-list-item-title", "css:finder"],
+        ["xpath=//mat-list-item[2]/span/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "30689865-f497-4611-8f67-bd72014e18b5",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.page-header",
+      "targets": [],
+      "value": "My Profile"
+    }, {
+      "id": "2a6a60e9-0eca-482c-84fd-406a63b44eec",
+      "comment": "",
+      "command": "click",
+      "target": "css=.lang-btn:nth-child(1) > .language-text",
+      "targets": [],
+      "value": "language switch to spanish"
+    }, {
+      "id": "91162bd7-7edf-476f-a851-f2e0f4f00cc2",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=h1",
+      "targets": [
+        ["css=h1", "css:finder"],
+        ["xpath=//h1", "xpath:position"],
+        ["xpath=//h1[contains(.,'Mi Perfil')]", "xpath:innerText"]
+      ],
+      "value": "Mi Perfil"
+    }, {
+      "id": "b94d480e-7482-45dc-9924-50ff93d04f15",
+      "comment": "",
+      "command": "click",
+      "target": "css=.mat-mdc-list-item:nth-child(4) .mat-mdc-list-item-title",
+      "targets": [
+        ["css=.mat-mdc-list-item:nth-child(4) .mat-mdc-list-item-title", "css:finder"],
+        ["xpath=//mat-list-item[4]/span/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a204ee6c-7be8-4bd2-ae5c-5cd6bf1ea9d1",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=h1",
+      "targets": [],
+      "value": "Mis Reportes"
+    }, {
+      "id": "1885d1a4-2c51-4eeb-bc81-7d72b04bfca9",
+      "comment": "",
+      "command": "click",
+      "target": "css=.lang-btn:nth-child(2) > .language-text",
+      "targets": [],
+      "value": "language switch to english"
+    }, {
+      "id": "4530f80a-9b33-47bc-b273-e3c5f4428b02",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=h1",
+      "targets": [],
+      "value": "My Reports"
+    }]
+  }],
+  "suites": [{
+    "id": "dff51042-90f2-4a27-a1ea-de534392c740",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["http://localhost:4200/"],
+  "plugins": []
+}
