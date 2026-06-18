@@ -21,6 +21,9 @@ import { NotificationsComponent } from '../../../../sems/notifications/presentat
 })
 export class Header implements OnInit, OnDestroy {
   currentDate: Date = new Date();
+  dayOfWeek: string = '';
+  formattedDate: string = '';
+  formattedTime: string = '';
   userName: string = 'User';
   userAvatarUrl: string | null = null;
   userInitials: string = '?';
@@ -43,7 +46,9 @@ export class Header implements OnInit, OnDestroy {
         this.ngZone.run(() => this.updateDateTime());
       });
     });
-    this.translate.onLangChange.subscribe(() => this.updateDateTime());
+    this.translate.onLangChange.subscribe(() => {
+      this.updateDateTime();
+    });
 
     this.combinedSubscription = this.authController.getCurrentAuthState()
       .subscribe(authState => {
@@ -74,24 +79,17 @@ export class Header implements OnInit, OnDestroy {
 
   updateDateTime(): void {
     this.currentDate = new Date();
-  }
-
-  getDayOfWeek(): string {
     const lang = this.translate.currentLang || this.translate.defaultLang || 'es';
+    
     const day = this.currentDate.toLocaleDateString(lang, { weekday: 'long' });
-    return day.charAt(0).toUpperCase() + day.slice(1);
-  }
-
-  getFormattedDate(): string {
-    const lang = this.translate.currentLang || this.translate.defaultLang || 'es';
+    this.dayOfWeek = day.charAt(0).toUpperCase() + day.slice(1);
+    
     const dateStr = this.currentDate.toLocaleDateString(lang, {
       month: 'short', day: 'numeric', year: 'numeric'
     });
-    return dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
-  }
-
-  getFormattedTime(): string {
-    return this.currentDate.toLocaleTimeString('en-US', {
+    this.formattedDate = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+    
+    this.formattedTime = this.currentDate.toLocaleTimeString('en-US', {
       hour: '2-digit', minute: '2-digit', hour12: true
     });
   }

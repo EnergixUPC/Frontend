@@ -22,6 +22,7 @@ import { MonthlyComparison, MonthlyData } from '../../../domain/model/entities/m
 })
 export class MonthlyChart implements OnInit, OnChanges {
   @Input() monthlyComparison?: MonthlyComparison;
+  @Input() monthlyData?: any;
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   public barChartData: ChartConfiguration<'bar'>['data'] = {
@@ -116,35 +117,42 @@ export class MonthlyChart implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['monthlyComparison']) {
+    if (changes['monthlyComparison'] || changes['monthlyData']) {
       console.log('MonthlyChart - Monthly comparison input changed');
       this.updateChartData();
     }
   }
 
   private updateChartData(): void {
-    console.log('MonthlyChart - Generating monthly consumption data');
+    let monthlyDataToUse: MonthlyData[] = [];
 
-    // CHANGE: Generate only 3 months (current + 2 previous)
-    const monthlyData: MonthlyData[] = this.generateMonthlyData();
+    if (this.monthlyData && this.monthlyData.totalMonthlyConsumption !== undefined) {
+      // Create data based on backend response, preserving previous demo months for visual context
+      monthlyDataToUse = this.generateMonthlyData();
+      // Override the last month (current month) with real backend data
+      const currentMonthAbbr = new Date().toLocaleString('es-ES', { month: 'short' }).replace('.', '');
+      monthlyDataToUse[monthlyDataToUse.length - 1] = {
+        month: currentMonthAbbr,
+        year: new Date().getFullYear(),
+        consumption: this.monthlyData.totalMonthlyConsumption
+      };
+    } else {
+      monthlyDataToUse = this.generateMonthlyData();
+    }
 
-    console.log('MonthlyChart - Using demo monthly data:', monthlyData);
-
-    // Obtener mes actual para resaltar
     const currentMonth = new Date().toLocaleString('es-ES', { month: 'short' }).replace('.', '');
 
-    // Colores: verde para meses anteriores, azul oscuro para el mes actual
-    const colors = monthlyData.map(m =>
+    const colors = monthlyDataToUse.map(m =>
       m.month.toLowerCase() === currentMonth.toLowerCase() ? '#1976d2' : '#4CAF50'
     );
 
-    const hoverColors = monthlyData.map(m =>
+    const hoverColors = monthlyDataToUse.map(m =>
       m.month.toLowerCase() === currentMonth.toLowerCase() ? '#0d47a1' : '#388E3C'
     );
 
     this.barChartData = {
       datasets: [{
-        data: monthlyData.map(m => m.consumption),
+        data: monthlyDataToUse.map(m => m.consumption),
         label: this.translate.instant('dashboard.charts.monthlyConsumption'),
         backgroundColor: colors,
         borderColor: colors,
@@ -152,18 +160,12 @@ export class MonthlyChart implements OnInit, OnChanges {
         borderRadius: 8,
         hoverBackgroundColor: hoverColors
       }],
-      labels: monthlyData.map(m => this.getMonthTranslation(m.month))
+      labels: monthlyDataToUse.map(m => this.getMonthTranslation(m.month))
     };
 
-    console.log('MonthlyChart - Chart data updated');
-    console.log('  - Data points:', monthlyData.length);
-    console.log('  - Sample values:', monthlyData.map(m => `${m.month}: ${m.consumption.toFixed(1)}`));
-
-    // Force chart update
     setTimeout(() => {
       if (this.chart) {
         this.chart.update();
-        console.log('MonthlyChart - Chart rendered');
       }
     }, 100);
   }

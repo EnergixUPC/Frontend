@@ -108,6 +108,16 @@ export class ReportService {
     );
   }
 
+  getMonthlyHistory(): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem(environment.tokenKey)}`
+    };
+    return this.http.get<any>(`${environment.apiUrl}/api/v1/reports/monthly-history`, { headers }).pipe(
+      delay(200)
+    );
+  }
+
   private getCurrentUserId(): number | undefined {
     try {
       const userStr = localStorage.getItem(environment.userKey);

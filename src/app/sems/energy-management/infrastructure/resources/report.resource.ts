@@ -84,4 +84,26 @@ export class ReportResource {
       headers: this.getHeaders()
     });
   }
+
+  getMonthlyHistory(format?: string): Observable<any> {
+    let params = new HttpParams();
+    if (format) {
+      params = params.set('format', format);
+    }
+    return this.http.get<any>(`${this.apiUrl}/monthly-history`, {
+      params,
+      headers: this.getHeaders()
+    });
+  }
+
+  getCompare(period1: string, period2: string): Observable<any> {
+    let params = new HttpParams()
+      .set('period1', period1)
+      .set('period2', period2);
+      
+    return this.http.get<any>(`${this.apiUrl}/compare`, {
+      params,
+      headers: this.getHeaders()
+    });
+  }
 }

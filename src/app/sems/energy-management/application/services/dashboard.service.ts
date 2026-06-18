@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, tap, catchError, of, map } from 'rxjs';
+import { Observable, tap, catchError, of, map, throwError } from 'rxjs';
 import { DashboardStore } from '../state/dashboard.store';
 import { DashboardRepositoryImpl } from '../../infrastructure/repositories/dashboard-repository.impl';
 import { DashboardStats } from '../../domain/model/entities/dashboard-stats.entity';
@@ -186,10 +186,18 @@ export class DashboardService {
 
   loadWeeklyConsumption(userId: string): Observable<UserWeeklyConsumptionResponse> {
     return this.dashboardRepository.getWeeklyConsumptionByUser(userId).pipe(
-      catchError(error => {
-        console.error('Error loading weekly consumption:', error);
-        throw error;
-      })
+        catchError(error => {
+          if (error.status === 404) {
+            console.log('No devices found for user, returning empty weekly consumption.');
+            return of({
+              period: 'Week',
+              dailyConsumption: [],
+              deviceBreakdown: []
+            });
+          }
+          console.error('Error loading weekly consumption:', error);
+          return throwError(() => error);
+        })
     );
   }
 }

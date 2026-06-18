@@ -28,6 +28,7 @@ interface CategoryData {
 })
 export class CategoryChart implements OnInit, OnChanges {
   @Input() devices?: Device[];
+  @Input() categoryData?: any[];
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   public doughnutChartData: ChartConfiguration<'doughnut'>['data'] = {
@@ -92,48 +93,55 @@ export class CategoryChart implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['devices']) {
-      console.log('CategoryChart - Devices input changed');
+    if (changes['devices'] || changes['categoryData']) {
+      console.log('CategoryChart - Input changed');
       this.updateChartData();
     }
   }
 
   private updateChartData(): void {
-    console.log('CategoryChart - Generating category consumption data');
+    if (this.categoryData && this.categoryData.length > 0) {
+      this.doughnutChartData = {
+        datasets: [{
+          data: this.categoryData.map(c => c.value || c.consumption || 0),
+          backgroundColor: this.categoryData.map(c => c.color || '#2196F3'),
+          borderWidth: 2,
+          borderColor: '#fff',
+          hoverOffset: 8
+        }],
+        labels: this.categoryData.map(c => c.name || c.category || '')
+      };
+    } else {
+      // Always use static example data (PC, Mobile, TV) if no data
+      const demoData: CategoryData[] = [
+        {
+          category: this.translate.instant('dashboard.categories.computer'),
+          consumption: 8.5, // kWh/semana
+          color: '#2196F3' // Azul
+        },
+        {
+          category: this.translate.instant('dashboard.categories.phone'),
+          consumption: 2.1, // kWh/semana
+          color: '#4CAF50' // Verde
+        },
+        {
+          category: this.translate.instant('dashboard.categories.tv'),
+          consumption: 10.9, // kWh/semana
+          color: '#FF9800' // Naranja
+        }
+      ];
 
-    // Always use static example data (PC, Mobile, TV)
-    const categoryData: CategoryData[] = [
-      {
-        category: this.translate.instant('dashboard.categories.computer'),
-        consumption: 8.5, // kWh/semana
-        color: '#2196F3' // Azul
-      },
-      {
-        category: this.translate.instant('dashboard.categories.phone'),
-        consumption: 2.1, // kWh/semana
-        color: '#4CAF50' // Verde
-      },
-      {
-        category: this.translate.instant('dashboard.categories.tv'),
-        consumption: 10.9, // kWh/semana
-        color: '#FF9800' // Naranja
-      }
-    ];
-
-    console.log('CategoryChart - Using demo data:', categoryData);
-
-    this.doughnutChartData = {
-      datasets: [{
-        data: categoryData.map(c => c.consumption),
-        backgroundColor: categoryData.map(c => c.color),
-        borderWidth: 2,
-        borderColor: '#fff',
-        hoverOffset: 8
-      }],
-      labels: categoryData.map(c => c.category)
-    };
-
-    console.log('CategoryChart - Chart data updated');
+      this.doughnutChartData = {
+        datasets: [{
+          data: demoData.map(c => c.consumption),
+          backgroundColor: demoData.map(c => c.color),
+          borderWidth: 2,
+          borderColor: '#fff',
+          hoverOffset: 8
+        }],
+        labels: demoData.map(c => c.category)
+      };
+    }
 
     setTimeout(() => {
       if (this.chart) {

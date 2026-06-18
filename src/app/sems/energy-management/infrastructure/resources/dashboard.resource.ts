@@ -89,7 +89,7 @@ export class DashboardResource {
   }
 
   getAlerts(): Observable<any[]> {
-    return this.http.get<any[]>(`${environment.apiUrl}/api/v1/alerts`, { headers: this.getHeaders() });
+    return this.http.get<any[]>(`${environment.apiUrl}/api/v1/notifications`, { headers: this.getHeaders() });
   }
 
   getWeeklyConsumptionByUser(userId: string): Observable<UserWeeklyConsumptionResponse> {

@@ -30,4 +30,9 @@ export class ProfileRepositoryImpl implements ProfileRepository {
     return this.http.put<ProfileResponse>(`${BASE_URL}/me`, request, { headers });
   }
 
+  updateLanguage(language: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.patch<any>(`${BASE_URL}/me/language`, { language }, { headers });
+  }
+
 }

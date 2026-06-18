@@ -3,8 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/login',
-    pathMatch: 'full'
+    loadComponent: () => import('./shared/presentation/views/landing-page/landing-page').then(m => m.LandingPage)
   },
   {
     path: 'auth',
@@ -110,6 +109,10 @@ export const routes: Routes = [
       {
         path: 'payment-cancel',
         loadComponent: () => import('./sems/payments/presentation/views/payment-cancel/payment-cancel').then(m => m.PaymentCancel)
+      },
+      {
+        path: 'news',
+        loadComponent: () => import('./sems/energy-management/presentation/views/news/news').then(m => m.News)
       }
     ]
   },

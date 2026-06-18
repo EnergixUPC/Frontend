@@ -31,4 +31,8 @@ export class ProfileService {
     );
   }
 
+  updateLanguage(language: string): Observable<any> {
+    return this.repo.updateLanguage(language);
+  }
+
 }

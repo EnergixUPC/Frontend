@@ -18,6 +18,8 @@ import { MockDataService } from '../../../infrastructure/services/mock-data.serv
 import { HomeRefreshService } from '../../../../../shared/application/services/home-refresh.service';
 import { DevicesService } from '../../../application/services/devices.service';
 
+import { WebsocketService } from '../../../../../shared/infrastructure/services/websocket.service';
+
 @Component({
   selector: 'app-home',
   imports: [
@@ -58,7 +60,8 @@ export class Home implements OnInit, OnDestroy {
     private authService: AuthService,
     private mockDataService: MockDataService,
     private homeRefreshService: HomeRefreshService,
-    private devicesService: DevicesService
+    private devicesService: DevicesService,
+    private websocketService: WebsocketService
   ) { }
 
   ngOnInit(): void {
@@ -74,6 +77,40 @@ export class Home implements OnInit, OnDestroy {
       .subscribe(() => {
         console.log('Home - refresh requested by menu click');
         this.loadDashboardData();
+      });
+
+    // US05: Monitorear consumo en tiempo real
+    this.websocketService.getConsumptions()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((consumptionData: any) => {
+        // Update device matching this consumption
+        const deviceId = consumptionData.deviceId;
+        if (deviceId && this.deviceConsumptions[deviceId]) {
+          // Assuming consumptionData represents the new value
+          const value = consumptionData.value || consumptionData.energyConsumptionValue || 0;
+          this.deviceConsumptions[deviceId].push({
+            id: consumptionData.id || 0,
+            deviceId: deviceId,
+            period: 'daily',
+            consumption: value,
+            createdAt: new Date(consumptionData.timestamp || Date.now()).toISOString()
+          });
+          
+          const device = this.devices.find(d => d.id === deviceId);
+          if (device) {
+            device.energyConsumptionValue += value;
+          }
+          
+          this.dashboardStats = new DashboardStats(
+            this.dashboardStats.energyConsumption + value,
+            this.dashboardStats.estimatedSavings,
+            this.dashboardStats.activeDevices,
+            this.dashboardStats.estimatedBill,
+            this.dashboardStats.todayConsumption + value,
+            this.dashboardStats.currency
+          );
+          this.cdr.detectChanges();
+        }
       });
   }
 

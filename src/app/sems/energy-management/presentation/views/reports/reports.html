@@ -32,6 +32,18 @@
     </div>
   </div>
 
+  <div class="charts-row">
+    <!-- Monthly Consumption History -->
+    <div class="chart-container left-chart">
+      <app-monthly-chart [monthlyData]="monthlyData"></app-monthly-chart>
+    </div>
+
+    <!-- Category Distribution -->
+    <div class="chart-container right-chart">
+      <app-category-chart [categoryData]="categoryData"></app-category-chart>
+    </div>
+  </div>
+
   <!-- Export Section -->
   <div class="export-section">
     <app-export-card></app-export-card>

@@ -41,7 +41,7 @@ export class NotificationService {
     // Use TokenService to obtain the currently saved user (if any).
     const currentUser = this.tokenService.getUser();
     const userId = currentUser ? Number(currentUser.id) : null;
-    const url = userId ? `${this.apiUrl}?user_id=${userId}` : this.apiUrl;
+    const url = userId ? `${this.apiUrl}/user/${userId}` : this.apiUrl;
 
     console.log('NotificationService - Fetching notifications from:', url);
     return this.http.get<any[]>(url, { headers: this.getHeaders() }).pipe(

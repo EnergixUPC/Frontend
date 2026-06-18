@@ -146,7 +146,7 @@ export class AuthService {
   private getUserProfile(token: string): Observable<User> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<any>(`${environment.apiUrl}/api/v1/auth/profile`, { headers }).pipe(
+    return this.http.get<any>(`${environment.apiUrl}/api/v1/profiles/me`, { headers }).pipe(
       map(userData => {
         const user = new User(
           (userData.id ?? 0).toString(),
@@ -323,7 +323,7 @@ export class AuthService {
       error: null
     });
 
-    return this.http.post<any>(`${environment.apiUrl}/api/v1/auth/reset-password`, { email }).pipe(
+    return this.http.post<any>(`${environment.apiUrl}/api/v1/authentication/reset-password`, { email }).pipe(
       tap(() => {
         this.updateAuthState({
           ...this.authStateSubject.value,
@@ -355,7 +355,7 @@ export class AuthService {
     const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
 
     return this.http.post<any>(
-      `${environment.apiUrl}/api/v1/auth/change-password`,
+      `${environment.apiUrl}/api/v1/authentication/change-password`,
       { oldPassword, newPassword },
       headers ? { headers } : {}
     ).pipe(

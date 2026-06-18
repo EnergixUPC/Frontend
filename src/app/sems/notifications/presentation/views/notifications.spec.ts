@@ -1,3 +1,8 @@
+import { DEVICE_PREFERENCE_REPOSITORY_PROVIDER } from 'src/app/sems/energy-management/infrastructure/repositories/device-preference.repository.provider';
+import { DEVICE_REPOSITORY_PROVIDER } from 'src/app/sems/energy-management/infrastructure/repositories/device.repository.provider';
+import { provideRouter } from '@angular/router';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { NotificationsComponent } from './notifications';
 import { NotificationService } from '../../infrastructure/notifications.service';
@@ -45,7 +50,7 @@ describe('NotificationsComponent', () => {
       providers: [
         { provide: NotificationService, useValue: notificationServiceMock },
         TranslateService
-      ]
+      , provideHttpClient(), provideHttpClientTesting(), provideRouter([]), DEVICE_REPOSITORY_PROVIDER, DEVICE_PREFERENCE_REPOSITORY_PROVIDER]
     }).compileComponents();
 
     fixture = TestBed.createComponent(NotificationsComponent);

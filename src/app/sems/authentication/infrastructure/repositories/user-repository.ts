@@ -45,12 +45,13 @@ export interface TokenResponse {
   providedIn: 'root'
 })
 export class UserRepositoryImpl implements UserRepository, AuthRepository {
-  private readonly apiUrl = `${environment.apiUrl}/api/v1/auth`;
+  private readonly authUrl = `${environment.apiUrl}/api/v1/authentication`;
+  private readonly usersUrl = `${environment.apiUrl}/api/v1/users`;
   constructor(private readonly http: HttpClient) {}
 
   // UserRepository methods
   findByEmail(email: string): Observable<User | null> {
-    return this.http.get<UserResponse>(`${this.apiUrl}/users/email/${email}`)
+    return this.http.get<UserResponse>(`${this.usersUrl}/email/${email}`)
       .pipe(
         map(response => this.mapToUser(response)),
         catchError(() => of(null))
@@ -58,7 +59,7 @@ export class UserRepositoryImpl implements UserRepository, AuthRepository {
   }
 
   findById(id: string): Observable<User | null> {
-    return this.http.get<UserResponse>(`${this.apiUrl}/users/${id}`)
+    return this.http.get<UserResponse>(`${this.usersUrl}/${id}`)
       .pipe(
         map(response => this.mapToUser(response)),
         catchError(() => of(null))
@@ -66,7 +67,7 @@ export class UserRepositoryImpl implements UserRepository, AuthRepository {
   }
 
   findByUsername(username: string): Observable<User | null> {
-    return this.http.get<UserResponse>(`${this.apiUrl}/users/username/${username}`)
+    return this.http.get<UserResponse>(`${this.usersUrl}/username/${username}`)
       .pipe(
         map(response => this.mapToUser(response)),
         catchError(() => of(null))
@@ -75,14 +76,14 @@ export class UserRepositoryImpl implements UserRepository, AuthRepository {
 
   save(user: User): Observable<User> {
     const userDto = this.mapToUserResponse(user);
-    return this.http.put<UserResponse>(`${this.apiUrl}/users/${user.id}`, userDto)
+    return this.http.put<UserResponse>(`${this.usersUrl}/${user.id}`, userDto)
       .pipe(
         map(response => this.mapToUser(response))
       );
   }
 
   existsByEmail(email: string): Observable<boolean> {
-    return this.http.get<{ exists: boolean }>(`${this.apiUrl}/users/email/${email}/exists`)
+    return this.http.get<{ exists: boolean }>(`${this.usersUrl}/email/${email}/exists`)
       .pipe(
         map(response => response.exists),
         catchError(() => of(false))
@@ -96,7 +97,7 @@ export class UserRepositoryImpl implements UserRepository, AuthRepository {
       password: credentials.password
     };
 
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, loginRequest)
+    return this.http.post<LoginResponse>(`${this.authUrl}/sign-in`, loginRequest)
       .pipe(
         map(response => ({
           user: this.mapToUser(response.user),
@@ -111,11 +112,11 @@ export class UserRepositoryImpl implements UserRepository, AuthRepository {
   }
 
   logout(token: string): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/logout`, { token });
+    return this.http.post<void>(`${this.authUrl}/sign-out`, { token });
   }
 
   refreshToken(refreshToken: string): Observable<TokenPair> {
-    return this.http.post<TokenResponse>(`${this.apiUrl}/refresh`, { refreshToken })
+    return this.http.post<TokenResponse>(`${this.authUrl}/refresh`, { refreshToken })
       .pipe(
         map(response => new TokenPair(
           response.accessToken,
@@ -128,7 +129,7 @@ export class UserRepositoryImpl implements UserRepository, AuthRepository {
 
   validateToken(token: string): Observable<boolean> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<{ valid: boolean }>(`${this.apiUrl}/validate`, { headers })
+    return this.http.get<{ valid: boolean }>(`${this.authUrl}/validate`, { headers })
       .pipe(
         map(response => response.valid),
         catchError(() => of(false))
@@ -136,11 +137,11 @@ export class UserRepositoryImpl implements UserRepository, AuthRepository {
   }
 
   resetPassword(email: string): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/reset-password`, { email });
+    return this.http.post<void>(`${this.authUrl}/reset-password`, { email });
   }
 
   changePassword(userId: string, oldPassword: string, newPassword: string): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/users/${userId}/password`, {
+    return this.http.put<void>(`${this.usersUrl}/${userId}/password`, {
       oldPassword,
       newPassword
     });

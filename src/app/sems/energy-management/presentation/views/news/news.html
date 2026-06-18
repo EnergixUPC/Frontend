@@ -1,0 +1,46 @@
+<div class="news-container">
+  <div class="page-header">
+    <h1>{{ 'news.title' | translate }}</h1>
+    <p class="subtitle">{{ 'news.subtitle' | translate }}</p>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <mat-icon class="spinner">autorenew</mat-icon>
+    <p>{{ 'common.loading' | translate }}</p>
+  </div>
+
+  <div *ngIf="!isLoading && newsItems.length === 0" class="empty-state">
+    <mat-icon>article</mat-icon>
+    <h3>{{ 'news.emptyTitle' | translate }}</h3>
+    <p>{{ 'news.emptyMessage' | translate }}</p>
+  </div>
+
+  <div *ngIf="!isLoading && newsItems.length > 0" class="news-grid">
+    <mat-card class="news-card" *ngFor="let item of newsItems">
+      <!-- Try to show an image if item has one -->
+      <img *ngIf="item.imageUrl" mat-card-image [src]="item.imageUrl" alt="News Image">
+      <div *ngIf="!item.imageUrl" class="news-card-placeholder">
+        <mat-icon>lightbulb</mat-icon>
+      </div>
+
+      <mat-card-header>
+        <mat-card-title>{{ item.title }}</mat-card-title>
+        <mat-card-subtitle>{{ item.publishedAt | date:'mediumDate' }}</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <p class="news-summary">{{ item.summary || item.content }}</p>
+        <mat-chip-set *ngIf="item.category">
+          <mat-chip class="category-chip">{{ item.category }}</mat-chip>
+        </mat-chip-set>
+      </mat-card-content>
+      
+      <mat-card-actions align="end">
+        <button mat-button color="primary" *ngIf="item.link" [disabled]="!item.link">
+          {{ 'news.readMore' | translate }}
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
