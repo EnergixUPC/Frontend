@@ -1,7 +1,12 @@
 <div class="register-page">
   <!-- Main Register Content -->
   <div class="register-content">
-    <app-register-form 
+    @if (fromDemo) {
+      <div class="demo-banner">
+        Vienes del modo demo{{ demoWeeklyKwh !== null ? ' · consumo simulado esta semana: ' + demoWeeklyKwh.toFixed(1) + ' kWh' : '' }}{{ demoSavingsPct !== null ? ' · ahorro potencial: ' + demoSavingsPct.toFixed(1) + '%' : '' }}. Crea tu cuenta para conectar tus dispositivos reales.
+      </div>
+    }
+    <app-register-form
       (onRegisterSuccess)="onRegisterSuccess()"
       (onRegisterError)="onRegisterError($event)">
     </app-register-form>

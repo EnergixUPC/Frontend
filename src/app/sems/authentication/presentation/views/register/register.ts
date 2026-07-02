@@ -17,12 +17,25 @@ import { AuthControllerService } from '../../../application/services/auth-contro
   styleUrl: './register.css'
 })
 export class Register {
+  /** US25: cuando se llega desde /demo, muestra un resumen de la sesión simulada. */
+  fromDemo = false;
+  demoWeeklyKwh: number | null = null;
+  demoSavingsPct: number | null = null;
+
   constructor(
     private router: Router,
     private snackBar: MatSnackBar,
     private translate: TranslateService,
     private authController: AuthControllerService
-  ) { }
+  ) {
+    const state = this.router.getCurrentNavigation()?.extras.state
+      ?? (typeof window !== 'undefined' ? window.history.state : null);
+    if (state?.['fromDemo']) {
+      this.fromDemo = true;
+      this.demoWeeklyKwh = state['weeklyKwh'] ?? null;
+      this.demoSavingsPct = state['savingsPct'] ?? null;
+    }
+  }
 
   onRegisterSuccess(): void {
     console.log('Register View - Registration success handler called');

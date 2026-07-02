@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -39,7 +39,10 @@ export class ValidateConsumption {
   errorMessage: string | null = null;
   result: ReceiptValidationResponse | null = null;
 
-  constructor(private dashboardResource: DashboardResource) {}
+  constructor(
+    private dashboardResource: DashboardResource,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   submit(): void {
     if (this.billAmount === null || this.billAmount <= 0) {
@@ -53,11 +56,13 @@ export class ValidateConsumption {
       next: (response) => {
         this.result = response;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error validating receipt', err);
         this.errorMessage = 'validateConsumption.error';
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }

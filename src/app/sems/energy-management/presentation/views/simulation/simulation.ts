@@ -70,7 +70,13 @@ export class Simulation implements OnInit {
   }
 
   goToRegister(): void {
-    this.router.navigate(['/register']);
+    this.router.navigate(['/register'], {
+      state: {
+        fromDemo: true,
+        weeklyKwh: this.snapshot.currentWeekKwh,
+        savingsPct: this.snapshot.potentialSavingsPct
+      }
+    });
   }
 
   goToLogin(): void {

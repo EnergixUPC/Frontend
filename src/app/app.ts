@@ -21,19 +21,24 @@ export class App implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Set default language
-    this.translate.setDefaultLang('en');
-    
-    // Load translations manually
+    // Translations must be registered here (in the root shell, present on every
+    // route) rather than only in lang-switcher, otherwise standalone routes that
+    // don't render lang-switcher (e.g. the public /demo route) never load them.
+    this.translate.setDefaultLang('es');
+
     this.http.get<any>('./i18n/en.json').subscribe({
-      next: (translations) => {
-        this.translate.setTranslation('en ', translations);
-        this.translate.use('en');
-      },
-      error: (error) => {
-        console.error('Error loading translations:', error);
-        this.translate.use('en'); // Fallback to default language
-      }
+      next: (translations) => this.translate.setTranslation('en', translations),
+      error: (error) => console.error('Error loading English translations:', error)
     });
+
+    this.http.get<any>('./i18n/es.json').subscribe({
+      next: (translations) => this.translate.setTranslation('es', translations),
+      error: (error) => console.error('Error loading Spanish translations:', error)
+    });
+
+    const savedLanguage = typeof window !== 'undefined' && window.localStorage
+      ? localStorage.getItem('preferred-language')
+      : null;
+    this.translate.use(savedLanguage === 'en' ? 'en' : 'es');
   }
 }

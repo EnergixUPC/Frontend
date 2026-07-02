@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatCardModule } from '@angular/material/card';
@@ -39,7 +39,10 @@ export class RecommendationsImpact implements OnInit {
   errorMessage: string | null = null;
   result: CompareConsumptionResponse | null = null;
 
-  constructor(private reportResource: ReportResource) {}
+  constructor(
+    private reportResource: ReportResource,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.load();
@@ -68,11 +71,13 @@ export class RecommendationsImpact implements OnInit {
         next: (response) => {
           this.result = response;
           this.isLoading = false;
+          this.cdr.detectChanges();
         },
         error: (err) => {
           console.error('Error comparing periods', err);
           this.errorMessage = 'recommendationsImpact.error';
           this.isLoading = false;
+          this.cdr.detectChanges();
         }
       });
   }
