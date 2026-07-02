@@ -3,7 +3,8 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./shared/presentation/views/landing-page/landing-page').then(m => m.LandingPage)
+    pathMatch: 'full',
+    redirectTo: 'login'
   },
   {
     path: 'auth',
