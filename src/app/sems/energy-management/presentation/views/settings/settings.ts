@@ -42,6 +42,12 @@ export class Settings implements OnInit, OnDestroy {
   tempScheduleStart = '05:00';
   tempScheduleEnd = '22:00';
 
+  // US23: configuración de horario de hora punta y umbral de alerta.
+  isEditingPeakHour = false;
+  tempPeakHourStart = '18:00';
+  tempPeakHourEnd = '23:00';
+  tempThresholdKwh: number | null = null;
+
   constructor(
     private translate: TranslateService,
     private settingsService: SettingsService,
@@ -183,6 +189,35 @@ export class Settings implements OnInit, OnDestroy {
   cancelEditSchedule(): void {
     console.log('Cancel inline schedule edit clicked. Discarding temporary changes.');
     this.isEditingSchedule = false;
+  }
+
+  onEditPeakHour(): void {
+    this.tempPeakHourStart = this.editableSettings.peakHourStart || '18:00';
+    this.tempPeakHourEnd = this.editableSettings.peakHourEnd || '23:00';
+    this.tempThresholdKwh = this.editableSettings.highConsumptionThresholdKwh ?? null;
+    this.isEditingPeakHour = true;
+  }
+
+  savePeakHour(): void {
+    if (!this.tempPeakHourStart || !this.tempPeakHourEnd) {
+      this.showError(this.t('settings.messages.scheduleRequired'));
+      return;
+    }
+
+    this.editableSettings.peakHourStart = this.tempPeakHourStart;
+    this.editableSettings.peakHourEnd = this.tempPeakHourEnd;
+    this.editableSettings.highConsumptionThresholdKwh =
+      this.tempThresholdKwh !== null && this.tempThresholdKwh !== undefined && `${this.tempThresholdKwh}` !== ''
+        ? Number(this.tempThresholdKwh)
+        : null;
+
+    this.hasChanges = true;
+    this.isEditingPeakHour = false;
+    this.showSuccess(this.t('settings.messages.scheduleUpdated'));
+  }
+
+  cancelEditPeakHour(): void {
+    this.isEditingPeakHour = false;
   }
 
   saveSettings(): void {

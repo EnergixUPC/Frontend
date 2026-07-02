@@ -1,0 +1,184 @@
+<div class="dashboard-container" *ngIf="snapshot">
+  <!-- Page header -->
+  <div class="sim-header">
+    <div class="sim-heading">
+      <div class="sim-title-row">
+        <h1 class="sim-title">{{ 'simulation.title' | translate }}</h1>
+        <span class="demo-badge">
+          <mat-icon>science</mat-icon>
+          {{ 'simulation.demoBadge' | translate }}
+        </span>
+      </div>
+      <p class="sim-subtitle">{{ 'simulation.subtitle' | translate }}</p>
+    </div>
+
+    <div class="sim-actions">
+      <ng-container *ngIf="!isPublicDemo">
+        <button mat-stroked-button class="sim-btn" (click)="goHome()">
+          <mat-icon>arrow_back</mat-icon>
+          {{ 'simulation.back' | translate }}
+        </button>
+      </ng-container>
+      <ng-container *ngIf="isPublicDemo">
+        <button mat-stroked-button class="sim-btn" (click)="goToLogin()">
+          {{ 'simulation.login' | translate }}
+        </button>
+        <button mat-flat-button color="primary" class="sim-btn sim-btn-primary" (click)="goToRegister()">
+          <mat-icon>person_add</mat-icon>
+          {{ 'simulation.createAccount' | translate }}
+        </button>
+      </ng-container>
+      <button mat-flat-button color="primary" class="sim-btn sim-btn-primary" (click)="regenerate()">
+        <mat-icon>autorenew</mat-icon>
+        {{ 'simulation.regenerate' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Test-data notice -->
+  <div class="demo-notice">
+    <mat-icon>info</mat-icon>
+    <span>{{ isPublicDemo ? ('simulation.demoNoticePublic' | translate) : ('simulation.demoNotice' | translate) }}</span>
+  </div>
+
+  <!-- Stats / metrics row -->
+  <div class="stats-row">
+    <app-stats-card
+      [title]="'simulation.stats.currentWeek' | translate"
+      [value]="currentWeekValue"
+      [subtitle]="currentWeekSubtitle">
+    </app-stats-card>
+
+    <app-stats-card
+      [title]="'simulation.stats.predictedWeek' | translate"
+      [value]="predictedWeekValue"
+      [subtitle]="predictedWeekSubtitle">
+    </app-stats-card>
+
+    <app-stats-card
+      [title]="'simulation.stats.projectedBill' | translate"
+      [value]="monthlyBillValue"
+      subtitle="">
+    </app-stats-card>
+
+    <app-stats-card
+      [title]="'simulation.stats.potentialSavings' | translate"
+      [value]="savingsValue"
+      [subtitle]="savingsSubtitle">
+    </app-stats-card>
+
+    <app-stats-card
+      [title]="'simulation.stats.topDevice' | translate"
+      [value]="topDeviceValue"
+      [subtitle]="topDeviceSubtitle">
+    </app-stats-card>
+  </div>
+
+  <!-- Prediction chart -->
+  <div class="charts-row">
+    <div class="chart-full">
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'simulation.chart.title' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="chart-container">
+            <canvas
+              baseChart
+              [data]="chartData"
+              [options]="chartOptions"
+              type="line">
+            </canvas>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Alerts & recommendations -->
+  <div class="info-row">
+    <div class="alerts-section">
+      <mat-card class="alerts-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'simulation.alerts.title' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div *ngFor="let alert of snapshot.alerts" class="alert-item" [ngClass]="alert.type">
+            <mat-icon>{{ alert.icon }}</mat-icon>
+            <div class="alert-content">
+              <strong>{{ alert.titleKey | translate: translateParams(alert) }}</strong>
+              <p>{{ alert.messageKey | translate: translateParams(alert) }}</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="alerts-section">
+      <mat-card class="alerts-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'simulation.recommendations.title' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="savings-summary">
+            <mat-icon>savings</mat-icon>
+            <div>
+              <span class="savings-amount">{{ savingsValue }}</span>
+              <span class="savings-label">{{ 'simulation.recommendations.summary' | translate }}</span>
+            </div>
+          </div>
+          <div *ngFor="let rec of snapshot.recommendations" class="alert-item info">
+            <mat-icon>{{ rec.icon }}</mat-icon>
+            <div class="alert-content">
+              <strong>{{ rec.titleKey | translate: translateParams(rec) }}</strong>
+              <p>{{ rec.messageKey | translate: translateParams(rec) }}</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Appliance breakdown -->
+  <div class="charts-row">
+    <div class="chart-full">
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'simulation.appliances.title' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="appliance-list">
+            <div class="appliance-item" *ngFor="let appliance of snapshot.appliances">
+              <mat-icon class="appliance-icon" [ngClass]="appliance.iconClass">{{ appliance.icon }}</mat-icon>
+
+              <div class="appliance-info">
+                <div class="appliance-top">
+                  <span class="appliance-name">{{ appliance.nameKey | translate }}</span>
+                  <span class="appliance-power">{{ appliance.powerWatts }} W</span>
+                </div>
+                <div class="share-track">
+                  <div class="share-fill" [style.width.%]="appliance.sharePct"></div>
+                </div>
+              </div>
+
+              <div class="appliance-metrics">
+                <div class="metric">
+                  <span class="metric-value">{{ appliance.weeklyKwh.toFixed(1) }} {{ 'dashboard.units.kwh' | translate }}</span>
+                  <span class="metric-label">{{ 'simulation.appliances.weekly' | translate }}</span>
+                </div>
+                <div class="metric">
+                  <span class="metric-value">{{ appliance.predictedWeeklyKwh.toFixed(1) }} {{ 'dashboard.units.kwh' | translate }}</span>
+                  <span class="metric-label">{{ 'simulation.appliances.predicted' | translate }}</span>
+                </div>
+                <div class="trend-chip" [ngClass]="appliance.trend">
+                  <mat-icon>{{ appliance.trend === 'up' ? 'trending_up' : appliance.trend === 'down' ? 'trending_down' : 'trending_flat' }}</mat-icon>
+                  <span>{{ appliance.trendPct > 0 ? '+' : '' }}{{ appliance.trendPct }}%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

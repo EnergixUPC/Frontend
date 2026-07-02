@@ -108,6 +108,13 @@ export class ReportService {
     );
   }
 
+  // US23: % de consumo de un día que ocurrió en la ventana de hora punta configurada.
+  getPeakHourSummary(date?: string): Observable<any> {
+    return this.reportResource.getPeakHourSummary(date).pipe(
+      delay(200)
+    );
+  }
+
   getMonthlyHistory(): Observable<any> {
     const headers = {
       'Content-Type': 'application/json',

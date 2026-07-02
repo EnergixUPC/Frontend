@@ -7,6 +7,18 @@ export interface DashboardStatsResponse {
   currency: string;
 }
 
+export interface ReceiptValidationResponse {
+  billAmount: number;
+  estimatedBill: number;
+  pricePerKwh: number;
+  differenceAmount: number;
+  differencePercent: number;
+  matchPercent: number;
+  withinTolerance: boolean;
+  message: string;
+  tariffDisclaimer: string;
+}
+
 export interface UnifiedDashboardResponse {
   monthlySavingGoalKwh: number;
   estimatedSavingsPercent: number;

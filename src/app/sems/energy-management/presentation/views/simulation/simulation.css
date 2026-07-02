@@ -1,0 +1,423 @@
+.dashboard-container {
+  max-width: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 32px;
+  box-sizing: border-box;
+}
+
+/* Header */
+.sim-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.sim-title-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.sim-title {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.sim-subtitle {
+  margin: 6px 0 0;
+  font-size: 0.95rem;
+  color: #777;
+}
+
+.demo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #ff9800 0%, #ff6f00 100%);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+}
+
+.demo-badge mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.sim-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.sim-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+/* Test-data notice */
+.demo-notice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  background: #fff8e1;
+  border: 1px solid #ffe0a3;
+  border-left: 4px solid #ff9800;
+  border-radius: 12px;
+  color: #8a6100;
+  font-size: 0.9rem;
+}
+
+.demo-notice mat-icon {
+  color: #ff9800;
+  flex-shrink: 0;
+}
+
+/* Stats Cards Row */
+.stats-row {
+  display: flex;
+  gap: 32px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.stats-row app-stats-card {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Charts Row */
+.charts-row {
+  display: flex;
+  gap: 32px;
+  width: 100%;
+}
+
+.chart-full {
+  flex: 1;
+  min-width: 0;
+}
+
+.chart-card {
+  border-radius: 12px;
+  height: 100%;
+  background: white;
+}
+
+.chart-card mat-card-header {
+  padding: 1.5rem 1.5rem 0;
+}
+
+.chart-card mat-card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.chart-card mat-card-content {
+  padding: 1.5rem !important;
+}
+
+.chart-container {
+  height: 360px;
+  position: relative;
+}
+
+/* Info Row (Alerts & Recommendations) */
+.info-row {
+  display: flex;
+  gap: 32px;
+  width: 100%;
+}
+
+.alerts-section {
+  flex: 1;
+  min-width: 0;
+}
+
+.alerts-card {
+  background: white;
+  height: 100%;
+  border-radius: 20px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+}
+
+.alert-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  border-left: 4px solid;
+}
+
+.alert-item:last-child {
+  margin-bottom: 0;
+}
+
+.alert-item.warning {
+  background-color: #fff8e1;
+  border-left-color: #ffc107;
+  color: #856404;
+}
+
+.alert-item.info {
+  background-color: #e3f2fd;
+  border-left-color: #2196f3;
+  color: #0d47a1;
+}
+
+.alert-item.success {
+  background-color: #e8f5e9;
+  border-left-color: #4caf50;
+  color: #1b5e20;
+}
+
+.alert-item mat-icon {
+  color: inherit;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.alert-content {
+  flex: 1;
+}
+
+.alert-content strong {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.alert-content p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #555;
+}
+
+/* Savings summary highlight */
+.savings-summary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px;
+  margin-bottom: 20px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+}
+
+.savings-summary mat-icon {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  color: #2e7d32;
+}
+
+.savings-summary > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.savings-amount {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1b5e20;
+  line-height: 1.1;
+}
+
+.savings-label {
+  font-size: 0.85rem;
+  color: #388e3c;
+}
+
+/* Appliance breakdown */
+.appliance-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.appliance-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #eef1f6;
+  transition: all 0.2s ease;
+}
+
+.appliance-item:hover {
+  background-color: #f9fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.appliance-icon {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.appliance-icon.sim-cool { background-color: #e3f2fd; color: #1976d2; }
+.appliance-icon.sim-heat { background-color: #fff3e0; color: #ef6c00; }
+.appliance-icon.sim-water { background-color: #e0f7fa; color: #00838f; }
+.appliance-icon.sim-elec { background-color: #f3e5f5; color: #7b1fa2; }
+.appliance-icon.sim-warn { background-color: #fffde7; color: #f9a825; }
+
+.appliance-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.appliance-top {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.appliance-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.appliance-power {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.share-track {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: #eef1f6;
+  overflow: hidden;
+}
+
+.share-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #1976d2, #42a5f5);
+  transition: width 0.4s ease;
+}
+
+.appliance-metrics {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 70px;
+}
+
+.metric-value {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.metric-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #999;
+}
+
+.trend-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  min-width: 64px;
+  justify-content: center;
+}
+
+.trend-chip mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.trend-chip.up { background: #ffebee; color: #c62828; }
+.trend-chip.down { background: #e8f5e9; color: #2e7d32; }
+.trend-chip.stable { background: #eceff1; color: #546e7a; }
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .charts-row,
+  .info-row {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 992px) {
+  .dashboard-container {
+    padding: 24px;
+    gap: 24px;
+  }
+
+  .stats-row app-stats-card {
+    min-width: calc(50% - 16px);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 16px;
+    gap: 20px;
+  }
+
+  .stats-row app-stats-card {
+    min-width: 100%;
+  }
+
+  .appliance-item {
+    flex-wrap: wrap;
+  }
+
+  .appliance-metrics {
+    width: 100%;
+    justify-content: space-between;
+    gap: 12px;
+  }
+}

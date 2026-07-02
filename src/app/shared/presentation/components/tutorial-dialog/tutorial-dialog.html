@@ -1,0 +1,36 @@
+<div class="tutorial-dialog">
+  <div class="tutorial-dialog-header">
+    <div class="step-dots">
+      <span
+        *ngFor="let s of [0, 1, 2, 3]"
+        class="dot"
+        [class.active]="s === currentStep"
+        (click)="goTo(s)">
+      </span>
+    </div>
+    <button mat-icon-button (click)="finish()" [attr.aria-label]="'tutorialDialog.close' | translate">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="tutorial-dialog-body">
+    <h2>{{ ('settings.support.tutorial.items.' + currentStep + '.title') | translate }}</h2>
+    <p class="tutorial-intro">{{ ('settings.support.tutorial.items.' + currentStep + '.description') | translate }}</p>
+
+    <ul class="tutorial-steps">
+      <li *ngFor="let n of [0, 1, 2]">
+        {{ ('settings.support.tutorial.items.' + currentStep + '.steps.' + n) | translate }}
+      </li>
+    </ul>
+  </div>
+
+  <div class="tutorial-dialog-footer">
+    <button mat-stroked-button (click)="previous()" [disabled]="isFirst">
+      {{ 'tutorialDialog.previous' | translate }}
+    </button>
+    <span class="step-counter">{{ currentStep + 1 }} / {{ totalSteps }}</span>
+    <button mat-flat-button color="primary" (click)="isLast ? finish() : next()">
+      {{ (isLast ? 'tutorialDialog.finish' : 'tutorialDialog.next') | translate }}
+    </button>
+  </div>
+</div>

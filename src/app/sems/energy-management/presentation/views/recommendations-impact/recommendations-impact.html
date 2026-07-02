@@ -1,0 +1,48 @@
+<div class="impact-container">
+  <div class="impact-header">
+    <h1>{{ 'recommendationsImpact.title' | translate }}</h1>
+    <p class="impact-subtitle">{{ 'recommendationsImpact.subtitle' | translate }}</p>
+  </div>
+
+  <div class="range-toggle">
+    <mat-button-toggle-group [value]="range" (change)="onRangeChange($event.value)">
+      <mat-button-toggle value="week">{{ 'recommendationsImpact.week' | translate }}</mat-button-toggle>
+      <mat-button-toggle value="month">{{ 'recommendationsImpact.month' | translate }}</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <div class="loading-row" *ngIf="isLoading">
+    <mat-spinner diameter="32"></mat-spinner>
+  </div>
+
+  <div class="error-row" *ngIf="errorMessage && !isLoading">
+    <mat-icon>error_outline</mat-icon>
+    <span>{{ errorMessage | translate }}</span>
+  </div>
+
+  <mat-card class="impact-card" *ngIf="result && !isLoading" [ngClass]="reduced ? 'card-ok' : 'card-neutral'">
+    <mat-card-content>
+      <div class="impact-top">
+        <mat-icon>{{ reduced ? 'trending_down' : 'trending_flat' }}</mat-icon>
+        <div class="impact-pct">{{ reductionPct.toFixed(1) }}%</div>
+      </div>
+
+      <p class="impact-message" *ngIf="reduced">{{ 'recommendationsImpact.reducedMessage' | translate }}</p>
+      <p class="impact-message" *ngIf="!reduced">{{ 'recommendationsImpact.noReductionMessage' | translate }}</p>
+
+      <div class="period-compare">
+        <div class="period-item">
+          <span class="period-label">{{ 'recommendationsImpact.previousPeriod' | translate }}</span>
+          <span class="period-value">{{ result.period1.totalConsumption.toFixed(1) }} kWh</span>
+          <span class="period-dates">{{ result.period1.startDate }} - {{ result.period1.endDate }}</span>
+        </div>
+        <mat-icon class="period-arrow">arrow_forward</mat-icon>
+        <div class="period-item">
+          <span class="period-label">{{ 'recommendationsImpact.currentPeriod' | translate }}</span>
+          <span class="period-value">{{ result.period2.totalConsumption.toFixed(1) }} kWh</span>
+          <span class="period-dates">{{ result.period2.startDate }} - {{ result.period2.endDate }}</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

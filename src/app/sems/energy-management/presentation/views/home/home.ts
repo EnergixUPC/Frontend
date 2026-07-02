@@ -12,6 +12,8 @@ import { DashboardStats } from '../../../domain/model/entities/dashboard-stats.e
 import { UserWeeklyConsumptionResponse } from '../../../infrastructure/response/dashboard.response';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { DashboardService } from '../../../application/services/dashboard.service';
 import { AuthService } from '../../../../authentication/application/services/auth.service';
 import { MockDataService } from '../../../infrastructure/services/mock-data.service';
@@ -19,6 +21,7 @@ import { HomeRefreshService } from '../../../../../shared/application/services/h
 import { DevicesService } from '../../../application/services/devices.service';
 
 import { WebsocketService } from '../../../../../shared/infrastructure/services/websocket.service';
+import { TutorialDialog } from '../../../../../shared/presentation/components/tutorial-dialog/tutorial-dialog';
 
 @Component({
   selector: 'app-home',
@@ -29,7 +32,8 @@ import { WebsocketService } from '../../../../../shared/infrastructure/services/
     ConsumptionChart,
     DeviceList,
     MatCardModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule
   ],
   templateUrl: './home.html',
   styleUrl: './home.css'
@@ -61,8 +65,11 @@ export class Home implements OnInit, OnDestroy {
     private mockDataService: MockDataService,
     private homeRefreshService: HomeRefreshService,
     private devicesService: DevicesService,
-    private websocketService: WebsocketService
+    private websocketService: WebsocketService,
+    private dialog: MatDialog
   ) { }
+
+  private static readonly TUTORIAL_SEEN_KEY = 'hasSeenTutorial';
 
   ngOnInit(): void {
     console.log('Home - ngOnInit. Current language:', this.translate.currentLang);
@@ -71,6 +78,7 @@ export class Home implements OnInit, OnDestroy {
     this.cdr.detectChanges();
 
     this.loadDashboardData();
+    this.maybeShowTutorial();
 
     this.homeRefreshService.onRefresh()
       .pipe(takeUntil(this.destroy$))
@@ -112,6 +120,20 @@ export class Home implements OnInit, OnDestroy {
           this.cdr.detectChanges();
         }
       });
+  }
+
+  // US24: en el primer acceso al dashboard, se muestra automáticamente la guía interactiva
+  // que explica cómo leer los gráficos en kWh y el consumo histórico.
+  private maybeShowTutorial(): void {
+    if (localStorage.getItem(Home.TUTORIAL_SEEN_KEY)) return;
+
+    const dialogRef = this.dialog.open(TutorialDialog, {
+      data: { startIndex: 0 },
+      width: '480px'
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      localStorage.setItem(Home.TUTORIAL_SEEN_KEY, 'true');
+    });
   }
 
   ngOnDestroy(): void {
@@ -452,6 +474,10 @@ export class Home implements OnInit, OnDestroy {
 
   getTranslation(key: string): string {
     return this.translate.instant(key);
+  }
+
+  goToSimulation(): void {
+    this.router.navigate(['/simulation']);
   }
 }
 

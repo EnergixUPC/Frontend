@@ -258,6 +258,11 @@
         "message": "Switching to LED bulbs can save you about $/300 a year on your electricity bill."
       }
     },
+    "peakHour": {
+      "title": "Peak-hour consumption",
+      "message": "Today, {{percent}}% of your consumption happened during peak hours ({{start}} - {{end}}).",
+      "notConfigured": "You haven't configured your peak-hour window in Settings yet."
+    },
     "weeklyChart": {
       "title": "Weekly Consumption Trend",
       "weeklyAverageMessage": "Average weekly consumption",
@@ -295,15 +300,122 @@
       }
     }
   },
+  "simulation": {
+    "simulateButton": "Simulate",
+    "title": "Consumption Simulation",
+    "subtitle": "Realistic forecast of your appliances' consumption",
+    "demoBadge": "Test data",
+    "demoNotice": "This screen uses simulated data for demonstration purposes. It does not reflect your real consumption.",
+    "demoNoticePublic": "You're exploring a demo with sample data. Create an account to connect your own devices.",
+    "back": "Back to home",
+    "login": "Log in",
+    "createAccount": "Create account",
+    "regenerate": "Regenerate data",
+    "stats": {
+      "currentWeek": "This week's consumption",
+      "predictedWeek": "Next week's forecast",
+      "projectedBill": "Projected monthly bill",
+      "potentialSavings": "Potential savings",
+      "topDevice": "Top consumer",
+      "thisWeek": "this week",
+      "perMonth": "per month",
+      "vsCurrentUp": "vs. this week",
+      "vsCurrentDown": "vs. this week"
+    },
+    "chart": {
+      "title": "Actual consumption vs. forecast (kWh/day)",
+      "history": "History (7 days)",
+      "forecast": "Forecast (7 days)"
+    },
+    "appliances": {
+      "title": "Consumption by appliance",
+      "weekly": "Week",
+      "predicted": "Forecast",
+      "share": "of total"
+    },
+    "names": {
+      "ac": "Air conditioner",
+      "heater": "Electric water heater",
+      "fridge": "Refrigerator",
+      "lighting": "Lighting",
+      "pc": "Computer",
+      "tv": "Television",
+      "washer": "Washing machine",
+      "microwave": "Microwave"
+    },
+    "alerts": {
+      "title": "Consumption alerts",
+      "highConsumption": {
+        "title": "High consumption detected",
+        "message": "{{device}} accounts for {{share}}% of your total consumption. Consider optimizing its use."
+      },
+      "trendUp": {
+        "title": "Upward trend",
+        "message": "Your consumption is projected to rise {{pct}}% next week."
+      },
+      "trendDown": {
+        "title": "You're on the right track",
+        "message": "Your consumption is projected to drop {{pct}}% next week."
+      },
+      "standby": {
+        "title": "Standby consumption",
+        "message": "Standby devices would draw ~{{kwh}} kWh (S/. {{cost}}) per month."
+      }
+    },
+    "recommendations": {
+      "title": "Saving recommendations",
+      "summary": "estimated savings per month",
+      "climate": {
+        "title": "Adjust climate control",
+        "message": "Raising the AC by 2 °C or easing the water heater would save ~{{kwh}} kWh (S/. {{cost}}) per month."
+      },
+      "offpeak": {
+        "title": "Use off-peak hours",
+        "message": "Running the washing machine off-peak would save ~{{kwh}} kWh (S/. {{cost}}) per month."
+      },
+      "lighting": {
+        "title": "Switch to LED lighting",
+        "message": "Replacing bulbs with LEDs would save ~{{kwh}} kWh (S/. {{cost}}) per month."
+      },
+      "standby": {
+        "title": "Cut phantom load",
+        "message": "Unplugging standby devices would save ~{{kwh}} kWh (S/. {{cost}}) per month."
+      }
+    }
+  },
   "sidebar": {
     "home": "Home",
     "profile": "Profile",
     "devices": "Devices",
     "reports": "Reports",
+    "validateConsumption": "Validate consumption",
+    "recommendationsImpact": "Recommendations impact",
     "plans": "Plans",
     "news": "News",
     "settings": "Settings",
     "logout": "Log out"
+  },
+  "validateConsumption": {
+    "title": "Validate consumption",
+    "subtitle": "Compare your real electricity bill amount with the platform's estimated bill.",
+    "amountLabel": "Your bill amount",
+    "compare": "Compare",
+    "matchLabel": "match",
+    "yourBill": "Your bill",
+    "estimatedBill": "Estimated bill",
+    "difference": "Difference",
+    "error": "We couldn't compare your bill. Please try again."
+  },
+  "recommendationsImpact": {
+    "title": "Impact of my recommendations",
+    "subtitle": "Compare your current consumption with the previous period, as an approximation of the effect of your habits and applied recommendations.",
+    "week": "Last week",
+    "month": "Last month",
+    "reducedMessage": "Your consumption went down compared to the previous period! Keep it up.",
+    "noReductionMessage": "We haven't detected a significant reduction yet, keep applying the recommendations.",
+    "previousPeriod": "Previous period",
+    "currentPeriod": "Current period",
+    "error": "We couldn't load the period comparison. Please try again."
   },
   "common": {
     "close": "Close",
@@ -315,6 +427,12 @@
       "off": "OFF"
     }
   },
+  "tutorialDialog": {
+    "close": "Close",
+    "previous": "Previous",
+    "next": "Next",
+    "finish": "Got it"
+  },
   "settings": {
     "title": "Settings",
     "autoSavingMode": {
@@ -325,6 +443,10 @@
       "highConsumption": "High Consumption Alerts",
       "summary": "Daily/Weekly Summary",
       "schedule": "Notification Schedule: {{start}} - {{end}}",
+      "peakHour": "Peak hours: {{start}} - {{end}}",
+      "threshold": "Alert threshold: {{value}} kWh",
+      "thresholdLabel": "Alert threshold (kWh, optional)",
+      "thresholdPlaceholder": "E.g. 5.0",
       "edit": "Edit"
     },
     "support": {
@@ -370,19 +492,39 @@
         "items": [
           {
             "title": "System Introduction",
-            "description": "Learn the basics of the energy management system"
+            "description": "Learn the basics of the energy management system",
+            "steps": [
+              "On Home you'll see today's consumption in kWh and your estimated monthly bill.",
+              "Alerts warn you when your consumption goes above the expected average.",
+              "The side menu takes you to Devices, Reports, and Settings."
+            ]
           },
           {
             "title": "Configure saving mode",
-            "description": "How to activate and customize automatic saving"
+            "description": "How to activate and customize automatic saving",
+            "steps": [
+              "In Device Preferences you can enable monitoring by category.",
+              "Set a monthly kWh threshold as your savings goal.",
+              "Enable high-consumption alerts to get automatic warnings."
+            ]
           },
           {
             "title": "Read consumption reports",
-            "description": "Understand your charts and statistics"
+            "description": "Understand your charts and statistics",
+            "steps": [
+              "The weekly chart shows your consumption in kWh day by day.",
+              "The monthly history compares your latest periods to spot trends.",
+              "The device ranking shows you which devices consume the most energy."
+            ]
           },
           {
             "title": "Connect devices",
-            "description": "Add and control new devices"
+            "description": "Add and control new devices",
+            "steps": [
+              "Go to Devices and select 'Add device'.",
+              "Assign a category and location to keep them organized.",
+              "You can turn each device on or off from its card."
+            ]
           }
         ]
       }

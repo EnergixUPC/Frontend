@@ -1,3 +1,17 @@
+export interface PeriodConsumptionDataResponse {
+  startDate: string;
+  endDate: string;
+  totalConsumption: number;
+  dailyConsumptions: { date: string; consumption: number }[];
+}
+
+export interface CompareConsumptionResponse {
+  period1: PeriodConsumptionDataResponse;
+  period2: PeriodConsumptionDataResponse;
+  difference: number;
+  percentageDifference: number;
+}
+
 export interface ReportResponse {
   id: string;
   type: string;

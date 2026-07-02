@@ -1,0 +1,95 @@
+.impact-container {
+  padding: 24px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.impact-header {
+  margin-bottom: 12px;
+}
+
+.impact-subtitle {
+  color: rgba(0, 0, 0, 0.6);
+  margin-top: 4px;
+}
+
+.range-toggle {
+  margin-bottom: 20px;
+}
+
+.loading-row {
+  display: flex;
+  justify-content: center;
+  padding: 30px 0;
+}
+
+.error-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #c62828;
+}
+
+.impact-card {
+  border-radius: 12px;
+  padding: 4px;
+}
+
+.card-ok {
+  background: rgba(46, 125, 50, 0.08);
+  border: 1px solid rgba(46, 125, 50, 0.3);
+}
+
+.card-neutral {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.impact-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.impact-pct {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.impact-message {
+  margin: 8px 0 20px;
+}
+
+.period-compare {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.period-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.period-label {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.6);
+  text-transform: uppercase;
+}
+
+.period-value {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.period-dates {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.period-arrow {
+  color: rgba(0, 0, 0, 0.4);
+}

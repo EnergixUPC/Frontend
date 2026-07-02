@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { take } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { WeeklyChart } from '../../components/weekly-chart/weekly-chart';
 import { DeviceChart } from '../../components/device-chart/device-chart';
@@ -35,6 +36,7 @@ export class Reports implements OnInit {
   insightCards: InsightCard[] = [];
   categoryData: any[] = [];
   monthlyData: any = null;
+  peakHourSummary: any = null;
 
   constructor(
     private translate: TranslateService,
@@ -46,14 +48,28 @@ export class Reports implements OnInit {
     this.initializeInsightCards();
     this.fetchCategoryData();
     this.fetchMonthlyData();
+    this.fetchPeakHourSummary();
+  }
+
+  private fetchPeakHourSummary(): void {
+    this.reportService.getPeakHourSummary().subscribe({
+      next: (data) => {
+        this.peakHourSummary = data;
+      },
+      error: (err) => console.error('Error loading peak-hour summary:', err)
+    });
   }
 
   private fetchCategoryData(): void {
     this.dashboardService.loadUnifiedDashboard().subscribe({
-      next: (data) => {
-        if (data && data.categoryConsumption && data.categoryConsumption.categories) {
-          this.categoryData = data.categoryConsumption.categories;
-        }
+      next: () => {
+        this.dashboardService.getDashboardState()
+          .pipe(take(1))
+          .subscribe(state => {
+            if (state.consumptionByCategory && state.consumptionByCategory.categories) {
+              this.categoryData = state.consumptionByCategory.categories;
+            }
+          });
       },
       error: (err) => console.error('Error loading category data:', err)
     });

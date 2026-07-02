@@ -8,7 +8,8 @@ import {
 } from '../request/report.request';
 import {
   ReportResponse,
-  ReportListResponse
+  ReportListResponse,
+  CompareConsumptionResponse
 } from '../response/report.response';
 
 @Injectable({
@@ -96,12 +97,35 @@ export class ReportResource {
     });
   }
 
-  getCompare(period1: string, period2: string): Observable<any> {
-    let params = new HttpParams()
-      .set('period1', period1)
-      .set('period2', period2);
-      
-    return this.http.get<any>(`${this.apiUrl}/compare`, {
+  /**
+   * US23: resumen del % de consumo de un día que ocurrió en la ventana de hora punta configurada.
+   */
+  getPeakHourSummary(date?: string): Observable<any> {
+    let params = new HttpParams();
+    if (date) {
+      params = params.set('date', date);
+    }
+    return this.http.get<any>(`${this.apiUrl}/peak-hour-summary`, {
+      params,
+      headers: this.getHeaders()
+    });
+  }
+
+  /**
+   * US22: compara el consumo entre dos periodos (fechas ISO yyyy-MM-dd) contra
+   * GET /api/v1/reports/compare, como proxy del impacto de las recomendaciones aplicadas.
+   */
+  getCompare(
+    period1Start: string, period1End: string,
+    period2Start: string, period2End: string
+  ): Observable<CompareConsumptionResponse> {
+    const params = new HttpParams()
+      .set('period1Start', period1Start)
+      .set('period1End', period1End)
+      .set('period2Start', period2Start)
+      .set('period2End', period2End);
+
+    return this.http.get<CompareConsumptionResponse>(`${this.apiUrl}/compare`, {
       params,
       headers: this.getHeaders()
     });

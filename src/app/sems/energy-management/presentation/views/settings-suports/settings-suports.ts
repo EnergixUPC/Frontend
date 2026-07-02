@@ -7,7 +7,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TutorialDialog } from '../../../../../shared/presentation/components/tutorial-dialog/tutorial-dialog';
 
 interface FAQ {
   question: string;
@@ -60,7 +62,21 @@ export class SettingsSuports {
 
   helpMessage = '';
 
-  constructor(private snackBar: MatSnackBar, private translate: TranslateService) { }
+  constructor(
+    private snackBar: MatSnackBar,
+    private translate: TranslateService,
+    private dialog: MatDialog
+  ) { }
+
+  // US24: "Ver tutorial" desde el centro de ayuda vuelve a desplegar la guía interactiva,
+  // abriéndola directamente en el tema seleccionado.
+  watchTutorial(index: number): void {
+    this.showTutorialsModal = false;
+    this.dialog.open(TutorialDialog, {
+      data: { startIndex: index },
+      width: '480px'
+    });
+  }
 
   t(key: string): string {
     return this.translate.instant(key);

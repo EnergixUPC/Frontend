@@ -19,6 +19,30 @@
     </div>
   </div>
 
+  <!-- US23: Resumen de consumo en hora pico -->
+  <div class="insight-cards-row" *ngIf="peakHourSummary">
+    <div class="insight-card card-tip" style="border-left-color:#f59e0b" *ngIf="peakHourSummary.peakHourConfigured">
+      <div class="card-icon">⚡</div>
+      <div class="card-content">
+        <h3 class="card-title">{{ 'reports.peakHour.title' | translate }}</h3>
+        <p class="card-message">
+          {{ 'reports.peakHour.message' | translate: {
+            percent: peakHourSummary.peakPercentage.toFixed(1),
+            start: peakHourSummary.peakHourStart,
+            end: peakHourSummary.peakHourEnd
+          } }}
+        </p>
+      </div>
+    </div>
+    <div class="insight-card card-tip" style="border-left-color:#94a3b8" *ngIf="!peakHourSummary.peakHourConfigured">
+      <div class="card-icon">⚡</div>
+      <div class="card-content">
+        <h3 class="card-title">{{ 'reports.peakHour.title' | translate }}</h3>
+        <p class="card-message">{{ 'reports.peakHour.notConfigured' | translate }}</p>
+      </div>
+    </div>
+  </div>
+
   <!-- Charts Row -->
   <div class="charts-row">
     <!-- Device Ranking Chart -->

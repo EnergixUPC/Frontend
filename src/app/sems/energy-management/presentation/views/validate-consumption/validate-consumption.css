@@ -1,0 +1,110 @@
+.validate-container {
+  padding: 24px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.validate-header {
+  margin-bottom: 20px;
+}
+
+.validate-subtitle {
+  color: rgba(0, 0, 0, 0.6);
+  margin-top: 4px;
+}
+
+.validate-card {
+  border-radius: 12px;
+}
+
+.form-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.amount-field {
+  flex: 1;
+  min-width: 220px;
+}
+
+.submit-btn {
+  height: 56px;
+  margin-top: 4px;
+}
+
+.loading-row {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.error-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #c62828;
+  margin-top: 12px;
+}
+
+.result-row {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 10px;
+}
+
+.result-ok {
+  background: rgba(46, 125, 50, 0.08);
+  border: 1px solid rgba(46, 125, 50, 0.3);
+}
+
+.result-warn {
+  background: rgba(237, 108, 2, 0.08);
+  border: 1px solid rgba(237, 108, 2, 0.3);
+}
+
+.result-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.result-match {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.result-message {
+  margin: 8px 0 16px;
+}
+
+.result-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.detail-label {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.detail-value {
+  font-weight: 600;
+}
+
+.tariff-disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+}

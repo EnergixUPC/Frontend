@@ -76,6 +76,44 @@
                 </div>
               }
             </div>
+
+            <!-- US23: horario de hora punta y umbral de alerta -->
+            <div class="schedule-section peak-hour-section">
+              @if (!isEditingPeakHour) {
+                <p class="schedule-text">
+                  {{ t('settings.notifications.peakHour', {
+                  start: editableSettings.peakHourStart || '18:00',
+                  end: editableSettings.peakHourEnd || '23:00'
+                }) }}
+                </p>
+                <p class="schedule-text" *ngIf="editableSettings.highConsumptionThresholdKwh">
+                  {{ t('settings.notifications.threshold', { value: editableSettings.highConsumptionThresholdKwh }) }}
+                </p>
+                <button class="secondary-btn" (click)="onEditPeakHour()">
+                  {{ t('settings.notifications.edit') }}
+                </button>
+              } @else {
+                <div class="inline-edit-schedule">
+                  <div class="time-inputs">
+                    <input type="time" [(ngModel)]="tempPeakHourStart" class="time-input" lang="en-GB" />
+                    <span class="time-separator">-</span>
+                    <input type="time" [(ngModel)]="tempPeakHourEnd" class="time-input" lang="en-GB" />
+                  </div>
+                  <div class="threshold-input">
+                    <label>{{ t('settings.notifications.thresholdLabel') }}</label>
+                    <input type="number" min="0" step="0.1" [(ngModel)]="tempThresholdKwh" class="time-input" [placeholder]="t('settings.notifications.thresholdPlaceholder')" />
+                  </div>
+                  <div class="inline-actions">
+                    <button class="small-btn cancel" (click)="cancelEditPeakHour()">
+                      {{ t('settings.actions.cancel') }}
+                    </button>
+                    <button class="small-btn save" (click)="savePeakHour()">
+                      {{ t('settings.actions.accept') }}
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
           </div>
         }
       </div>

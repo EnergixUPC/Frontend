@@ -13,6 +13,10 @@ export interface SettingsResource {
   dailyWeeklySummary: boolean;
   notificationScheduleStart: string;
   notificationScheduleEnd: string;
+  // US23: horario de hora punta y umbral de alerta propios del usuario.
+  peakHourStart: string | null;
+  peakHourEnd: string | null;
+  highConsumptionThresholdKwh: number | null;
   reportDaily: boolean;
   reportWeekly: boolean;
   reportMonthly: boolean;

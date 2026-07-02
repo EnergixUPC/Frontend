@@ -118,7 +118,7 @@
           <h4>{{ ('settings.support.tutorial.items.' + i + '.title') | translate }}</h4>
           <p>{{ ('settings.support.tutorial.items.' + i + '.description') | translate }}</p>
         </div>
-        <button mat-stroked-button color="primary">{{ 'settings.support.tutorial.watchButton' | translate }}</button>
+        <button mat-stroked-button color="primary" (click)="watchTutorial(i)">{{ 'settings.support.tutorial.watchButton' | translate }}</button>
       </div>
     </div>
   </div>

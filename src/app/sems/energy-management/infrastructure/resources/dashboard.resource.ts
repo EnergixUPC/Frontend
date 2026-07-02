@@ -9,7 +9,8 @@ import {
   DeviceConsumptionResponse,
   DeviceResponse,
   UnifiedDashboardResponse,
-  UserWeeklyConsumptionResponse
+  UserWeeklyConsumptionResponse,
+  ReceiptValidationResponse
 } from '../response/dashboard.response';
 import {
   DashboardStatsRequest,
@@ -95,6 +96,15 @@ export class DashboardResource {
   getWeeklyConsumptionByUser(userId: string): Observable<UserWeeklyConsumptionResponse> {
     return this.http.get<UserWeeklyConsumptionResponse>(
       `${environment.apiUrl}/api/v1/consumptions/weekly/users/${userId}`,
+      { headers: this.getHeaders() }
+    );
+  }
+
+  // US21: comparar el monto de un recibo real contra la factura estimada por la plataforma.
+  validateReceipt(billAmount: number): Observable<ReceiptValidationResponse> {
+    return this.http.post<ReceiptValidationResponse>(
+      `${environment.apiUrl}/api/v1/dashboard/validate-receipt`,
+      { billAmount },
       { headers: this.getHeaders() }
     );
   }

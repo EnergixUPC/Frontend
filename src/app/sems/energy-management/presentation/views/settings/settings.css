@@ -195,6 +195,25 @@
   align-items: center;
   width: 100%;
   gap: 16px;
+  flex-wrap: wrap;
+}
+
+.peak-hour-section {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.threshold-input {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.threshold-input .time-input {
+  width: 110px;
 }
 
 .time-inputs {

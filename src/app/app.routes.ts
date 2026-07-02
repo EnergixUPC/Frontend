@@ -31,6 +31,11 @@ export const routes: Routes = [
     ]
   },
   {
+    path: 'demo',
+    data: { publicDemo: true },
+    loadComponent: () => import('./sems/energy-management/presentation/views/simulation/simulation').then(m => m.Simulation)
+  },
+  {
     path: 'login',
     loadComponent: () => import('./shared/presentation/layouts/layout-login/layout-login').then(m => m.LayoutLogin),
     children: [
@@ -113,6 +118,18 @@ export const routes: Routes = [
       {
         path: 'news',
         loadComponent: () => import('./sems/energy-management/presentation/views/news/news').then(m => m.News)
+      },
+      {
+        path: 'simulation',
+        loadComponent: () => import('./sems/energy-management/presentation/views/simulation/simulation').then(m => m.Simulation)
+      },
+      {
+        path: 'validate-consumption',
+        loadComponent: () => import('./sems/energy-management/presentation/views/validate-consumption/validate-consumption').then(m => m.ValidateConsumption)
+      },
+      {
+        path: 'recommendations-impact',
+        loadComponent: () => import('./sems/energy-management/presentation/views/recommendations-impact/recommendations-impact').then(m => m.RecommendationsImpact)
       }
     ]
   },

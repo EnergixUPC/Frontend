@@ -1,0 +1,63 @@
+.tutorial-dialog {
+  min-width: 320px;
+  max-width: 480px;
+  padding: 8px 4px;
+}
+
+.tutorial-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.step-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.dot.active {
+  background: #1976d2;
+}
+
+.tutorial-dialog-body {
+  padding: 8px 4px 16px;
+}
+
+.tutorial-dialog-body h2 {
+  margin: 8px 0 4px;
+  font-size: 20px;
+}
+
+.tutorial-intro {
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 16px;
+}
+
+.tutorial-steps {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tutorial-dialog-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.step-counter {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 13px;
+}

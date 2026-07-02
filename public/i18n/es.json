@@ -258,6 +258,11 @@
         "message": "Cambiar a focos LED puede ahorrarte unos $/300 al año en tu factura de luz."
       }
     },
+    "peakHour": {
+      "title": "Consumo en hora pico",
+      "message": "Hoy, el {{percent}}% de tu consumo ocurrió en horario pico ({{start}} - {{end}}).",
+      "notConfigured": "Aún no configuraste tu horario de hora punta en Configuración."
+    },
     "weeklyChart": {
       "title": "Tendencia de Consumo Semanal",
       "weeklyAverageMessage": "Promedio de consumo semanal",
@@ -295,15 +300,122 @@
       }
     }
   },
+  "simulation": {
+    "simulateButton": "Simular",
+    "title": "Simulación de Consumo",
+    "subtitle": "Predicción realista del consumo de tus electrodomésticos",
+    "demoBadge": "Datos de prueba",
+    "demoNotice": "Esta pantalla usa datos simulados con fines demostrativos. No reflejan tu consumo real.",
+    "demoNoticePublic": "Estás explorando una demo con datos de ejemplo. Crea una cuenta para conectar tus propios dispositivos.",
+    "back": "Volver al inicio",
+    "login": "Iniciar sesión",
+    "createAccount": "Crear cuenta",
+    "regenerate": "Regenerar datos",
+    "stats": {
+      "currentWeek": "Consumo esta semana",
+      "predictedWeek": "Predicción próxima semana",
+      "projectedBill": "Factura mensual proyectada",
+      "potentialSavings": "Ahorro potencial",
+      "topDevice": "Mayor consumidor",
+      "thisWeek": "esta semana",
+      "perMonth": "al mes",
+      "vsCurrentUp": "vs. esta semana",
+      "vsCurrentDown": "vs. esta semana"
+    },
+    "chart": {
+      "title": "Consumo real vs. predicción (kWh/día)",
+      "history": "Histórico (7 días)",
+      "forecast": "Predicción (7 días)"
+    },
+    "appliances": {
+      "title": "Consumo por electrodoméstico",
+      "weekly": "Semana",
+      "predicted": "Predicción",
+      "share": "del total"
+    },
+    "names": {
+      "ac": "Aire acondicionado",
+      "heater": "Terma eléctrica",
+      "fridge": "Refrigeradora",
+      "lighting": "Iluminación",
+      "pc": "Computadora",
+      "tv": "Televisor",
+      "washer": "Lavadora",
+      "microwave": "Microondas"
+    },
+    "alerts": {
+      "title": "Alertas de consumo",
+      "highConsumption": {
+        "title": "Consumo elevado detectado",
+        "message": "{{device}} representa el {{share}}% de tu consumo total. Considera optimizar su uso."
+      },
+      "trendUp": {
+        "title": "Tendencia al alza",
+        "message": "Se proyecta un aumento del {{pct}}% en tu consumo la próxima semana."
+      },
+      "trendDown": {
+        "title": "Vas por buen camino",
+        "message": "Se proyecta una reducción del {{pct}}% en tu consumo la próxima semana."
+      },
+      "standby": {
+        "title": "Consumo en espera",
+        "message": "Los dispositivos en espera gastarían ~{{kwh}} kWh (S/. {{cost}}) al mes."
+      }
+    },
+    "recommendations": {
+      "title": "Recomendaciones de ahorro",
+      "summary": "de ahorro estimado al mes",
+      "climate": {
+        "title": "Ajusta la climatización",
+        "message": "Subir 2 °C el aire o moderar la terma ahorraría ~{{kwh}} kWh (S/. {{cost}}) al mes."
+      },
+      "offpeak": {
+        "title": "Usa horarios de menor demanda",
+        "message": "Programar la lavadora fuera de hora punta ahorraría ~{{kwh}} kWh (S/. {{cost}}) al mes."
+      },
+      "lighting": {
+        "title": "Cambia a iluminación LED",
+        "message": "Reemplazar focos por LED ahorraría ~{{kwh}} kWh (S/. {{cost}}) al mes."
+      },
+      "standby": {
+        "title": "Elimina el consumo fantasma",
+        "message": "Desconectar equipos en espera ahorraría ~{{kwh}} kWh (S/. {{cost}}) al mes."
+      }
+    }
+  },
   "sidebar": {
     "home": "Inicio",
     "profile": "Perfil",
     "devices": "Dispositivos",
     "reports": "Reportes",
+    "validateConsumption": "Validar consumo",
+    "recommendationsImpact": "Impacto de recomendaciones",
     "plans": "Planes",
     "news": "Noticias",
     "settings": "Configuración",
     "logout": "Cerrar Sesión"
+  },
+  "validateConsumption": {
+    "title": "Validar consumo",
+    "subtitle": "Compara el monto de tu recibo eléctrico real con la factura estimada por la plataforma.",
+    "amountLabel": "Monto de tu recibo",
+    "compare": "Comparar",
+    "matchLabel": "de coincidencia",
+    "yourBill": "Tu recibo",
+    "estimatedBill": "Factura estimada",
+    "difference": "Diferencia",
+    "error": "No se pudo comparar tu recibo. Intenta nuevamente."
+  },
+  "recommendationsImpact": {
+    "title": "Impacto de mis recomendaciones",
+    "subtitle": "Compara tu consumo actual con el periodo anterior, como aproximación al efecto de tus hábitos y recomendaciones aplicadas.",
+    "week": "Última semana",
+    "month": "Último mes",
+    "reducedMessage": "¡Tu consumo bajó respecto al periodo anterior! Sigue así.",
+    "noReductionMessage": "Aún no se detecta una reducción significativa, sigue aplicando las recomendaciones.",
+    "previousPeriod": "Periodo anterior",
+    "currentPeriod": "Periodo actual",
+    "error": "No se pudo cargar la comparación de periodos. Intenta nuevamente."
   },
   "common": {
     "close": "Cerrar",
@@ -315,6 +427,12 @@
       "off": "APAGADO"
     }
   },
+  "tutorialDialog": {
+    "close": "Cerrar",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "finish": "Entendido"
+  },
   "settings": {
     "title": "Configuración",
     "autoSavingMode": {
@@ -325,6 +443,10 @@
       "highConsumption": "Alertas de alto consumo",
       "summary": "Resumen diario/semanal",
       "schedule": "Horario de notificaciones: {{start}} - {{end}}",
+      "peakHour": "Horario de hora punta: {{start}} - {{end}}",
+      "threshold": "Umbral de alerta: {{value}} kWh",
+      "thresholdLabel": "Umbral de alerta (kWh, opcional)",
+      "thresholdPlaceholder": "Ej. 5.0",
       "edit": "Editar"
     },
     "support": {
@@ -370,19 +492,39 @@
         "items": [
           {
             "title": "Introducción al sistema",
-            "description": "Aprende los conceptos básicos del sistema de gestión de energía"
+            "description": "Aprende los conceptos básicos del sistema de gestión de energía",
+            "steps": [
+              "En el Inicio verás tu consumo de hoy en kWh y tu factura estimada del mes.",
+              "Las alertas te avisan cuando tu consumo supera el promedio esperado.",
+              "El menú lateral te lleva a Dispositivos, Reportes y Configuración."
+            ]
           },
           {
             "title": "Configurar modo ahorro",
-            "description": "Cómo activar y personalizar el ahorro automático"
+            "description": "Cómo activar y personalizar el ahorro automático",
+            "steps": [
+              "En Preferencias de dispositivo puedes activar el monitoreo por categoría.",
+              "Define un umbral mensual de kWh como meta de ahorro.",
+              "Activa alertas de alto consumo para recibir avisos automáticos."
+            ]
           },
           {
             "title": "Leer informes de consumo",
-            "description": "Entiende tus gráficas y estadísticas"
+            "description": "Entiende tus gráficas y estadísticas",
+            "steps": [
+              "El gráfico semanal muestra tu consumo en kWh día por día.",
+              "El historial mensual compara tus últimos periodos para detectar tendencias.",
+              "El ranking de dispositivos te muestra cuáles consumen más energía."
+            ]
           },
           {
             "title": "Conectar dispositivos",
-            "description": "Agrega y controla nuevos dispositivos"
+            "description": "Agrega y controla nuevos dispositivos",
+            "steps": [
+              "Ve a Dispositivos y selecciona 'Agregar dispositivo'.",
+              "Asigna una categoría y ubicación para organizarlos mejor.",
+              "Puedes activar o desactivar cada dispositivo desde su tarjeta."
+            ]
           }
         ]
       }

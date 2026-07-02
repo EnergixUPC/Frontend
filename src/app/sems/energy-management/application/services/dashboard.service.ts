@@ -189,10 +189,13 @@ export class DashboardService {
         catchError(error => {
           if (error.status === 404) {
             console.log('No devices found for user, returning empty weekly consumption.');
+            const today = new Date().toISOString();
             return of({
-              period: 'Week',
-              dailyConsumption: [],
-              deviceBreakdown: []
+              dailyConsumptions: [],
+              deviceTotals: [],
+              totalWeeklyConsumptionKwh: 0,
+              weekStart: today,
+              weekEnd: today
             });
           }
           console.error('Error loading weekly consumption:', error);

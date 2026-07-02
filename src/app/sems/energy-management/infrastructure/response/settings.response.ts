@@ -6,6 +6,9 @@ export interface SettingsResponse {
   dailyWeeklySummary: boolean;
   notificationScheduleStart: string;
   notificationScheduleEnd: string;
+  peakHourStart: string | null;
+  peakHourEnd: string | null;
+  highConsumptionThresholdKwh: number | null;
   reportDaily: boolean;
   reportWeekly: boolean;
   reportMonthly: boolean;

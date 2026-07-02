@@ -9,6 +9,32 @@
   box-sizing: border-box;
 }
 
+/* Action Bar */
+.dashboard-actions {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.simulate-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  font-weight: 600;
+  padding: 0 20px;
+  height: 44px;
+  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(25, 118, 210, 0.25);
+}
+
+.simulate-button mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
 /* Stats Cards Row */
 .stats-row {
   display: flex;

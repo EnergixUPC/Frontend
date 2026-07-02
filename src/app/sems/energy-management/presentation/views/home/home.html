@@ -1,4 +1,16 @@
 <div class="dashboard-container">
+  <!-- Action Bar -->
+  <div class="dashboard-actions">
+    <button
+      mat-flat-button
+      color="primary"
+      class="simulate-button"
+      (click)="goToSimulation()">
+      <mat-icon>science</mat-icon>
+      {{ 'simulation.simulateButton' | translate }}
+    </button>
+  </div>
+
   <!-- Stats Cards Row -->
   <div class="stats-row">
     <app-stats-card
