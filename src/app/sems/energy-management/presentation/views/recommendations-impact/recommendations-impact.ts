@@ -8,6 +8,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReportResource } from '../../../infrastructure/resources/report.resource';
 import { CompareConsumptionResponse } from '../../../infrastructure/response/report.response';
+import { ExperimentService } from '../../../../../shared/infrastructure/services/experiment.service';
 
 type RangeOption = 'week' | 'month';
 
@@ -41,7 +42,8 @@ export class RecommendationsImpact implements OnInit {
 
   constructor(
     private reportResource: ReportResource,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private experimentService: ExperimentService
   ) {}
 
   ngOnInit(): void {
@@ -72,6 +74,15 @@ export class RecommendationsImpact implements OnInit {
           this.result = response;
           this.isLoading = false;
           this.cdr.detectChanges();
+
+          // Q3: registra la reducción medida taggeada por la variante control/tratamiento que
+          // decide el backend por userId (ver GET /api/v1/experiments/personalized-recommendations/results).
+          this.experimentService.track(
+            'personalized-recommendations',
+            'recommendation_period_reduction',
+            { percentageDifference: response.percentageDifference, range: this.range },
+            response.experimentVariant
+          );
         },
         error: (err) => {
           console.error('Error comparing periods', err);
@@ -91,6 +102,15 @@ export class RecommendationsImpact implements OnInit {
 
   get reductionPct(): number {
     return this.result ? Math.abs(this.result.percentageDifference) : 0;
+  }
+
+  /** Q3: true si el usuario cayó en el grupo de control (recomendaciones genéricas, no personalizadas). */
+  get isControlGroup(): boolean {
+    return this.result?.experimentVariant === 'control';
+  }
+
+  get recommendations(): string[] {
+    return this.result?.recommendations ?? [];
   }
 
   private toIso(date: Date): string {

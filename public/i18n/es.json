@@ -415,7 +415,9 @@
     "noReductionMessage": "Aún no se detecta una reducción significativa, sigue aplicando las recomendaciones.",
     "previousPeriod": "Periodo anterior",
     "currentPeriod": "Periodo actual",
-    "error": "No se pudo cargar la comparación de periodos. Intenta nuevamente."
+    "error": "No se pudo cargar la comparación de periodos. Intenta nuevamente.",
+    "recommendationsTitle": "Recomendaciones activas este periodo",
+    "controlGroupNote": "Estás viendo consejos generales de referencia (grupo de comparación base), no recomendaciones personalizadas según tu patrón de consumo."
   },
   "common": {
     "close": "Cerrar",
@@ -665,5 +667,12 @@
         "freeInstall": "Instalación de un dispositivo inteligente gratis"
       }
     }
+  },
+  "news": {
+    "title": "Noticias y consejos",
+    "subtitle": "Mantente al día con las últimas novedades y recomendaciones para ahorrar energía.",
+    "emptyTitle": "No hay noticias por el momento",
+    "emptyMessage": "Vuelve más tarde para ver nuevas noticias y consejos de ahorro energético.",
+    "readMore": "Leer más"
   }
 }

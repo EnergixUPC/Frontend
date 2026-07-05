@@ -9,6 +9,7 @@ import { BaseChartDirective } from 'ng2-charts';
 import { ChartData, ChartOptions } from 'chart.js';
 import { StatsCard } from '../../components/stats-card/stats-card';
 import { SimulationService, SimSnapshot } from '../../../infrastructure/services/simulation.service';
+import { ExperimentService } from '../../../../../shared/infrastructure/services/experiment.service';
 
 @Component({
   selector: 'app-simulation',
@@ -41,11 +42,22 @@ export class Simulation implements OnInit {
     private translate: TranslateService,
     private router: Router,
     private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private experimentService: ExperimentService
   ) {}
 
   ngOnInit(): void {
     this.isPublicDemo = !!this.route.snapshot.data['publicDemo'];
+
+    // Q1: la Landing Page (otro origen) propaga el visitorId por query param; se adopta aquí
+    // y se calienta la cache local de variante para que el evento signup_completed en /register
+    // quede taggeado con la misma variante A/B asignada en la Landing Page.
+    const expVisitor = this.route.snapshot.queryParamMap.get('exp_visitor');
+    if (expVisitor) {
+      this.experimentService.adoptVisitorId(expVisitor);
+      this.experimentService.getVariant('demo-onboarding').subscribe();
+    }
+
     this.regenerate();
     // Translations are fetched over HTTP and applied via setTranslation(),
     // which can resolve after this view's first render (fires onTranslationChange,
@@ -70,6 +82,10 @@ export class Simulation implements OnInit {
   }
 
   goToRegister(): void {
+    // Q6: registra el clic de conversión demo->registro para poder medir la tasa de registro
+    // desde la demo (ver GET /api/v1/experiments/demo-conversion/results).
+    this.experimentService.track('demo-conversion', 'demo_to_register_click');
+
     this.router.navigate(['/register'], {
       state: {
         fromDemo: true,

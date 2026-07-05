@@ -10,6 +10,10 @@ export interface CompareConsumptionResponse {
   period2: PeriodConsumptionDataResponse;
   difference: number;
   percentageDifference: number;
+  /** Q3: recomendaciones activas para el usuario en este periodo. */
+  recommendations?: string[];
+  /** Q3: variante del experimento "personalized-recommendations" ("control" | "treatment"). */
+  experimentVariant?: string;
 }
 
 export interface ReportResponse {

@@ -29,6 +29,14 @@
 
       <p class="impact-message" *ngIf="reduced">{{ 'recommendationsImpact.reducedMessage' | translate }}</p>
       <p class="impact-message" *ngIf="!reduced">{{ 'recommendationsImpact.noReductionMessage' | translate }}</p>
+      <p class="impact-control-note" *ngIf="isControlGroup">{{ 'recommendationsImpact.controlGroupNote' | translate }}</p>
+
+      <div class="impact-recommendations" *ngIf="recommendations.length">
+        <h3>{{ 'recommendationsImpact.recommendationsTitle' | translate }}</h3>
+        <ul>
+          <li *ngFor="let tip of recommendations">{{ tip }}</li>
+        </ul>
+      </div>
 
       <div class="period-compare">
         <div class="period-item">

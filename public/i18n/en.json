@@ -415,7 +415,9 @@
     "noReductionMessage": "We haven't detected a significant reduction yet, keep applying the recommendations.",
     "previousPeriod": "Previous period",
     "currentPeriod": "Current period",
-    "error": "We couldn't load the period comparison. Please try again."
+    "error": "We couldn't load the period comparison. Please try again.",
+    "recommendationsTitle": "Recommendations active this period",
+    "controlGroupNote": "You're seeing general baseline tips (comparison group), not recommendations personalized to your consumption pattern."
   },
   "common": {
     "close": "Close",
@@ -665,5 +667,12 @@
         "freeInstall": "Free smart device installation"
       }
     }
+  },
+  "news": {
+    "title": "News & Tips",
+    "subtitle": "Stay up to date with the latest news and recommendations for saving energy.",
+    "emptyTitle": "No news yet",
+    "emptyMessage": "Check back later for new energy-saving news and tips.",
+    "readMore": "Read more"
   }
 }

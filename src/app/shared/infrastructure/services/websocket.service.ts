@@ -35,7 +35,10 @@ export class WebsocketService {
         }
       });
 
-      this.stompClient.subscribe('/topic/alerts', (message: Message) => {
+      // US23 fix: /user/queue/alerts es un destino por-usuario (Spring UserDestinationMessageHandler,
+      // resuelto en el backend vía StompAuthChannelInterceptor). El canal global /topic/alerts
+      // anterior enviaba las alertas de todos los usuarios a todos los clientes conectados.
+      this.stompClient.subscribe('/user/queue/alerts', (message: Message) => {
         if (message.body) {
           this.alertsSubject.next(JSON.parse(message.body));
         }
