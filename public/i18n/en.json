@@ -77,7 +77,7 @@
       "energyConsumption": "Energy Consumption",
       "estimatedSavings": "Estimated Savings",
       "activeDevices": "Active Devices",
-      "estimatedBill": "Estimated Bill",
+      "estimatedBill": "Consumption Projection",
       "todayConsumption": "Today's Consumption",
       "monthlySavingGoal": "Monthly saving goal",
       "consumption": "Consumption",
@@ -397,12 +397,12 @@
   },
   "validateConsumption": {
     "title": "Validate consumption",
-    "subtitle": "Compare your real electricity bill amount with the platform's estimated bill.",
+    "subtitle": "Compare your real electricity bill amount with the platform's consumption projection.",
     "amountLabel": "Your bill amount",
     "compare": "Compare",
     "matchLabel": "match",
     "yourBill": "Your bill",
-    "estimatedBill": "Estimated bill",
+    "estimatedBill": "Consumption projection",
     "difference": "Difference",
     "error": "We couldn't compare your bill. Please try again."
   },
@@ -496,7 +496,7 @@
             "title": "System Introduction",
             "description": "Learn the basics of the energy management system",
             "steps": [
-              "On Home you'll see today's consumption in kWh and your estimated monthly bill.",
+              "On Home you'll see today's consumption in kWh and your monthly consumption projection.",
               "Alerts warn you when your consumption goes above the expected average.",
               "The side menu takes you to Devices, Reports, and Settings."
             ]
@@ -580,10 +580,10 @@
     "subtitle": "Manage your energy bill payments",
     "form": {
       "title": "Make Payment",
-      "estimatedBill": "Estimated Bill",
+      "estimatedBill": "Consumption Projection",
       "amount": "Amount to Pay",
       "amountPlaceholder": "Enter amount",
-      "useEstimated": "Use Estimated Bill",
+      "useEstimated": "Use Consumption Projection",
       "payButton": "Proceed to Payment",
       "processing": "Processing...",
       "info": "You will be redirected to a secure Stripe payment page. The payment will open in a new tab.",

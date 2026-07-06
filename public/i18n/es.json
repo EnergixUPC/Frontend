@@ -77,7 +77,7 @@
       "energyConsumption": "Consumo de Energía",
       "estimatedSavings": "Ahorros Estimados",
       "activeDevices": "Dispositivos Activos",
-      "estimatedBill": "Factura Estimada",
+      "estimatedBill": "Proyección de consumo",
       "todayConsumption": "Consumo de Hoy",
       "monthlySavingGoal": "Meta de ahorro mensual",
       "consumption": "Consumo",
@@ -397,12 +397,12 @@
   },
   "validateConsumption": {
     "title": "Validar consumo",
-    "subtitle": "Compara el monto de tu recibo eléctrico real con la factura estimada por la plataforma.",
+    "subtitle": "Compara el monto de tu recibo eléctrico real con la proyección de consumo de la plataforma.",
     "amountLabel": "Monto de tu recibo",
     "compare": "Comparar",
     "matchLabel": "de coincidencia",
     "yourBill": "Tu recibo",
-    "estimatedBill": "Factura estimada",
+    "estimatedBill": "Proyección de consumo",
     "difference": "Diferencia",
     "error": "No se pudo comparar tu recibo. Intenta nuevamente."
   },
@@ -496,7 +496,7 @@
             "title": "Introducción al sistema",
             "description": "Aprende los conceptos básicos del sistema de gestión de energía",
             "steps": [
-              "En el Inicio verás tu consumo de hoy en kWh y tu factura estimada del mes.",
+              "En el Inicio verás tu consumo de hoy en kWh y tu proyección de consumo del mes.",
               "Las alertas te avisan cuando tu consumo supera el promedio esperado.",
               "El menú lateral te lleva a Dispositivos, Reportes y Configuración."
             ]
@@ -580,10 +580,10 @@
     "subtitle": "Gestiona tus pagos de facturas de energía",
     "form": {
       "title": "Realizar Pago",
-      "estimatedBill": "Factura Estimada",
+      "estimatedBill": "Proyección de consumo",
       "amount": "Monto a Pagar",
       "amountPlaceholder": "Ingrese el monto",
-      "useEstimated": "Usar Factura Estimada",
+      "useEstimated": "Usar Proyección de consumo",
       "payButton": "Proceder al Pago",
       "processing": "Procesando...",
       "info": "Serás redirigido a una página segura de pago de Stripe. El pago se abrirá en una nueva pestaña.",
