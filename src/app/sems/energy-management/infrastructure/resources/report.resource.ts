@@ -119,11 +119,15 @@ export class ReportResource {
     period1Start: string, period1End: string,
     period2Start: string, period2End: string
   ): Observable<CompareConsumptionResponse> {
-    const params = new HttpParams()
+    let params = new HttpParams()
       .set('period1Start', period1Start)
       .set('period1End', period1End)
       .set('period2Start', period2Start)
       .set('period2End', period2End);
+
+    if (environment.deploymentEnv) {
+      params = params.set('deploymentEnv', environment.deploymentEnv);
+    }
 
     return this.http.get<CompareConsumptionResponse>(`${this.apiUrl}/compare`, {
       params,

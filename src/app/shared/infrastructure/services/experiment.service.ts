@@ -51,7 +51,7 @@ export class ExperimentService {
 
     return this.http.post<{ experimentKey: string; variant: string }>(
       `${environment.apiUrl}/api/v1/experiments/${experimentKey}/assignment`,
-      { subjectId: this.getVisitorId() }
+      { subjectId: this.getVisitorId(), deploymentEnv: environment.deploymentEnv }
     ).pipe(
       map(response => response.variant),
       tap(variant => localStorage.setItem(cacheKey, variant)),
