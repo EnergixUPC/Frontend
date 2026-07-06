@@ -5,5 +5,5 @@ export const environment = {
   refreshTokenKey: 'sems_refresh_token',
   userKey: 'sems_user',
   stripeapiurl: 'https://paypal-integration-plum.vercel.app',
-  deploymentEnv: 'test',
+  deploymentEnv: 'production',
 };
